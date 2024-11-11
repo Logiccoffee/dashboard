@@ -1,603 +1,6 @@
 /* Mengatur box-sizing untuk semua elemen */
+
 * {
-    box-sizing: border-box;
-}
-
-/* Mengatur tampilan secara umum untuk html dan konten */
-html,
-.content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-}
-
-/* Mengatur tabel produk */
-#productTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-#productTable th, #productTable td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: center;
-}
-
-#productTable th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-}
-
-#productTable tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-#productTable tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Tombol dengan border-radius 5px */
-button {
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  width: auto; /* Pastikan ukuran lebar otomatis */
-  height: 40px; /* Atur tinggi sama dengan tombol lain */
-  font-size: 16px; 
-}
-
-/* Posisi tulisan Daftar Produk di kiri atas */
-.content-wrap .content h1 {
-    float: left;
-}
-
-/* Posisi tombol Tambah Produk di kanan atas */
-.content-wrap .content button {
-    float: right;
-}
-
-/* Membersihkan float agar tampilan rapi */
-.content-wrap .content::after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-button.delete-btn {
-    background-color: #f44336;
-    border-radius: 5px;
-    height: 40px; /* Atur tinggi agar seragam */
-}
-button.delete-btn:hover {
-    background-color: #e53935;
-}
-#addProductBtn {
-    background-color: #2196F3;
-    width: auto; /* Lebar otomatis, bisa disesuaikan */
-    height: 40px; /* Sesuaikan tinggi */
-    padding: 10px 20px; /* Sesuaikan padding */
-}
-
-#addProductBtn:hover {
-    background-color: #1976D2;
-}
-
-/* Pengaturan umum untuk tabel */
-table {
-    width: 80%;
-    text-align: center;
-}
-
-thead th {
-    background-color: #f4f4f4;
-    padding: 10px;
-}
-
-tbody td {
-    padding: 8px;
-}
-
-button {
-    margin: 5px;
-}
-
-/* Pengaturan warna dan tampilan umum body */
-body {
-    color: #99a0b0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #f5f5fa;
-    font-size: 16px;
-    line-height: 120%;
-    font-family: "Signika", Arial, sans-serif;
-}
-
-/* Layout dashboard dengan grid */
-.dashboard {
-    display: grid;
-    width: 100%;
-    height: 100%;
-    grid-gap: 0;
-    grid-template-columns: 300px auto;
-    grid-template-rows: 80px auto;
-    grid-template-areas: 'menu search' 'menu content';
-}
-
-.search-wrap {
-    grid-area: search;
-    background: #fff;
-    border-bottom: 1px solid #ede8f0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 3em;
-}
-
-.search-wrap .search {
-    height: 40px;
-}
-
-.search-wrap .search label {
-    display: flex;
-    align-items: center;
-    height: 100%;
-}
-
-.search-wrap .search label svg {
-    display: block;
-}
-
-.search-wrap .search label svg path,
-.search-wrap .search label svg circle {
-    fill: #b6bbc6;
-    transition: fill 0.15s ease;
-}
-
-.search-wrap .search label input {
-    display: block;
-    padding-left: 1em;
-    height: 100%;
-    margin: 0;
-    border: 0;
-}
-
-.search-wrap .search label input:focus {
-    background: #f5f5fa;
-}
-
-.search-wrap .search label:hover svg path,
-.search-wrap .search label:hover svg circle {
-    fill: #2b3a60;
-}
-
-.search-wrap .user-actions button {
-    border: 0;
-    background: none;
-    width: 32px;
-    height: 32px;
-    margin: 0;
-    padding: 0;
-    margin-left: 0.5em;
-}
-
-.search-wrap .user-actions button svg {
-    position: relative;
-    top: 2px;
-}
-
-.search-wrap .user-actions button svg path,
-.search-wrap .user-actions button svg circle {
-    fill: #b6bbc6;
-    transition: fill 0.15s ease;
-}
-
-.search-wrap .user-actions button:hover svg path,
-.search-wrap .user-actions button:hover svg circle {
-    fill: #2b3a60;
-}
-
-/* Menu sidebar */
-.menu-wrap {
-  grid-area: menu;
-  padding-bottom: 3em;
-  overflow: auto;
-  background: #84b8c6;
-  border-right: 1px solid #ede8f0;
-  font-family: "Signika", Arial, sans-serif;
-}
-
-.menu-wrap .user {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin: 0;
-  padding: 1em 3em;
-}
-
-.menu-wrap .user .user-avatar {
-  width: 60px;
-  height: 60px;
-  overflow: hidden;
-}
-
-.menu-wrap .user .user-avatar img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-  object-fit: cover;
-}
-
-.menu-wrap .user figcaption {
-    margin: 0;
-    padding: 0 0 0 1em;
-    color: #1b253d;
-    font-weight: 700;
-    font-size: 0.875em;
-    line-height: 100%;
-}
-
-.menu-wrap nav {
-    display: block;
-    padding: 0 3em;
-}
-
-.menu-wrap nav section {
-    display: block;
-    padding: 3em 0 0;
-}
-
-.menu-wrap nav h3 {
-    margin: 0;
-    font-size: 0.875em;
-    text-transform: uppercase;
-    color: #4b84fe;
-    font-weight: 600;
-}
-
-.menu-wrap nav ul {
-    display: block;
-    padding: 0;
-    margin: 0;
-}
-
-.menu-wrap nav li {
-    display: block;
-    padding: 0;
-    margin: 1em 0 0;
-}
-
-.menu-wrap nav li a {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    color: #99a0b0;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.875em;
-    transition: color 0.15s ease;
-}
-
-.menu-wrap nav li a svg {
-    display: block;
-    margin-right: 1em;
-}
-
-.menu-wrap nav li a svg path,
-.menu-wrap nav li a svg circle {
-    fill: #b6bbc6;
-    transition: fill 0.15s ease;
-}
-
-.menu-wrap nav li a:hover {
-    color: #1b253d;
-}
-
-.menu-wrap nav li a:hover svg path,
-.menu-wrap nav li a:hover svg circle {
-    fill: #2b3a60;
-}
-
-.menu-wrap nav li a.active {
-    color: #4b84fe;
-}
-
-.menu-wrap nav li a.active svg path,
-.menu-wrap nav li a.active svg circle {
-    fill: #4b84fe;
-}
-
-/* Konten di bagian dashboard */
-.content-wrap {
-    grid-area: content;
-    padding: 3em;
-    overflow: auto;
-}
-
-.content-wrap .content-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.content-wrap .content-head h1 {
-  font-family: "Signika", Arial, sans-serif;
-    font-size: 1.375em;
-    float: left;
-    margin-left: 0;
-    line-height: 100%;
-    color: #1b253d;
-    font-weight: 500;
-    padding: 0;
-}
-
-.content-wrap .content-head .action {
-    float: right;
-    margin-right: 0;
-}
-
-
-.content-wrap .content-head .action button {
-    border: 0;
-    background: #4b84fe;
-    color: #fff;
-    width: auto;
-    height: 3.5em;
-    padding: 0 2.25em;
-    border-radius: 3.5em;
-    font-size: 1em;
-    text-transform: uppercase;
-    font-weight: 600;
-    transition: background-color 0.15s ease;
-}
-
-.content-wrap .content-head .action button:hover {
-    background-color: #1861fe;
-}
-
-.content-wrap .content-head .action button:hover:active {
-    background-color: #0149e2;
-    transition: none;
-}
-
-.content-wrap .info-boxes {
-    padding: 3em 0 2em;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    grid-gap: 2em;
-}
-
-.content-wrap .info-boxes .info-box {
-    background: #fff;
-    height: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0 3em;
-    border: 1px solid #ede8f0;
-    border-radius: 5px;
-}
-
-.content-wrap .info-boxes .info-box .box-icon svg {
-    display: block;
-    width: 48px;
-    height: 48px;
-}
-
-.content-wrap .info-boxes .info-box .box-icon svg path,
-.content-wrap .info-boxes .info-box .box-icon svg circle {
-    fill: #4b84fe;
-}
-
-.content-wrap .info-boxes .info-box .box-content {
-    display: block;
-    padding-left: 1em;
-}
-
-.content-wrap .info-boxes .info-box .box-content h2 {
-    margin: 0;
-    font-size: 2em;
-    font-weight: 400;
-    color: #1b253d;
-}
-
-.content-wrap .info-boxes .info-box .box-content p {
-    margin: 0;
-    padding: 0;
-    font-size: 0.875em;
-    font-weight: 600;
-    color: #99a0b0;
-    text-transform: uppercase;
-}
-/* Reset default styling */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: "Signika", 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .edit-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-  }
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 5px;
-    color: #333;
-  }
-  
-  .input-field {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  textarea.input-field {
-    resize: vertical;
-    min-height: 100px;
-  }
-  
-  .form-actions {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .btn {
-    padding: 10px 20px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .btn-save {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  .btn-save:hover {
-    background-color: #218838;
-  }
-  
-  .btn-cancel {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  .btn-cancel:hover {
-    background-color: #c82333;
-  }
-  
-  /* Responsive */
-  @media (max-width: 500px) {
-    .edit-container {
-      padding: 15px;
-    }
-  
-    .btn {
-      width: 100%;
-      margin-top: 10px;
-    }
-  
-    .form-actions {
-      flex-direction: column;
-    }
-  }
-   /* Tambahan styling untuk logo */
-   .logo {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .logo img {
-    width: 50px;
-    height: auto;
-  }
-
-  .logo h2 {
-    font-size: 24px;
-    font-family: 'Arial', sans-serif;
-    color: #333;
-    margin: 10px 0 0;
-  }
-
-  .logo h2 span {
-    color: #007BFF;
-    font-weight: bold;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  th, td {
-    text-align: center; /* Membuat teks di tengah-tengah */
-    padding: 10px;
-  }
-
-  th {
-    background-color: #f2f2f2;
-  }
-
-  td {
-    border: 1px solid #ddd;
-  }
-
-  .action-buttons {
-    display: flex;
-    justify-content: center;
-  }
-
-  .action-buttons button {
-    margin: 0 5px;
-    padding: 8px 16px;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-
-  .edit-button {
-    background-color: orange;
-  }
-
-  .delete-button {
-    background-color: red;
-  }
-
-  .edit-button:hover {
-    background-color: #ffcc80; /* warna lebih terang saat hover */
-  }
-
-  .delete-button:hover {
-    background-color: #ff6666; /* warna lebih terang saat hover */
-  }
-
-  .edit-button:active {
-    background-color: #e69500; /* warna lebih gelap saat diklik */
-  }
-
-  .delete-button:active {
-    background-color: #cc0000; /* warna lebih gelap saat diklik */
-  }
-  * {
   box-sizing: border-box;
 }
 html, body {
@@ -727,7 +130,7 @@ html, body {
   padding: 1em 3em;
 }
 .menu-wrap .user .user-avatar {
-  width: 60px;
+  width: auto;
   height: 60px;
   overflow: hidden;
 }
@@ -736,7 +139,7 @@ html, body {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .menu-wrap .user figcaption {
   color: #033043;
@@ -895,7 +298,6 @@ html, body {
 }
 .content-wrap .info-boxes .info-box .box-content .big {
   display: block;
-  font-size: 50px !important;
   font-weight: bold !important;
   line-height: 150%;
   color: #1b253d;
@@ -936,7 +338,7 @@ html, body {
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .content-wrap .person-boxes .person-box .box-avatar .no-name {
   display: flex;
@@ -996,43 +398,6 @@ html, body {
 .content-wrap .person-boxes .person-box .box-actions button:hover svg circle {
   fill: #2b3a60;
 }
-/* Untuk teks pada ikon Plastiqu.Co */
-.user figcaption {
-  font-family: 'Signika', sans-serif;
-  font-weight: bold;
-
-}
-
-/* Untuk teks "Daftar Produk" */
-.dashboard-tittle {
-  font-family: 'Signika', sans-serif;
-}
-
-/* Untuk teks Nama Pengguna */
-.username {
-  font-family: 'Signika', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
-  color: #333;
-}
-
-.profile-icon {
-  color: #333;
-  font-size: 1.2rem;
-  display: flex;
-  align-items: center;
-}
-.dropdown-menu {
-  min-width: 10rem;
-}
-.profile-edit, .logout {
-  display: flex;
-  align-items: center;
-}
-
-.profile-edit i, .logout i {
-  margin-right: 8px;
-}
 
 /* Style untuk dropdown nama pengguna */
 .dropdown {
@@ -1054,6 +419,7 @@ html, body {
 }
 
 .profile-icon:hover {
+  /*background-color: #f8f9fa;  Ubah warna latar belakang saat hover */
   color: #ffff;
   /* Ubah warna teks saat hover */
 }
@@ -1078,22 +444,496 @@ html, body {
   /* Pastikan dropdown berada di atas elemen lainnya */
   display: none;
   /* Sembunyikan dropdown secara default */
-  background-color: #fff;
-  border: 1px solid #ced4da;
+  width: 220px;
+  /* Atur lebar dropdown */
+  padding: 0;
+  /* Hapus padding */
+  margin: 0;
+  /* Hapus margin */
+  border: 1px solid #ddd;
+  /* Tambahkan border */
   border-radius: 5px;
-  padding: 10px;
-  min-width: 200px;
+  /* Sudut membulat */
+  background-color: white;
+  /* Warna latar belakang dropdown */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Tambahkan bayangan */
+  background-color: #033043 !important;
+  border: none;
 }
 
-.dropdown-menu a {
-  color: #333;
-  text-decoration: none;
-  padding: 8px 10px;
+.dropdown-menu.show {
   display: block;
-  transition: background-color 0.3s;
+  /* Tampilkan dropdown ketika aktif */
 }
 
-.dropdown-menu a:hover {
-  background-color: #f8f9fa;
-  /* Ubah warna latar belakang saat hover */
+.dropdown-item {
+  display: block;
+  padding: 10px 15px;
+  /* Padding dalam item dropdown */
+  color: #ffff !important;
+  /* Warna teks item dropdown */
+  text-decoration: none;
+  /* Hapus garis bawah */
 }
+
+.dropdown-item:hover {
+  background-color: #FDA521 !important;
+  /* Ubah warna latar belakang item saat hover */
+  color: #fff;
+  /* Ubah warna teks item saat hover */
+}
+
+.profile-edit {
+  font-weight: bold;
+  ;
+  /* Bold untuk item edit profil */
+}
+
+.logout {
+  color: #d9534f;
+  /* Warna merah untuk logout */
+}
+
+.logout:hover {
+  color: #c9302c;
+  /* Warna lebih gelap saat hover */
+}
+
+.username {
+  font-size: 1rem;
+  /* Ukuran font default */
+}
+
+/* Mengubah warna border seluruh tabel */
+table {
+  border: 2px solid #033043 !important;
+  border-collapse: collapse !important;
+}
+
+/*Agar teks di header tabel berada di tengah */
+table th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Mengubah warna border pada sel-sel tabel */
+table th,
+table td {
+  border: 1px solid #033043 !important;
+}
+
+/*Mengubah warna background header table */
+table thead th {
+  background-color: #84b8c6 !important;
+  color: white;
+}
+
+/*Membuat isi kolom aksi berada di tengah */
+.action-column {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.action-column .dropdown {
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+td.action-column {
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+  height: 100%;
+  text-align: center !important;
+}
+
+td.action-column .btn {
+  display: inline-flex;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.action-column i {
+  margin: 0 5px;
+}
+
+td.action-column i {
+  margin: 0;
+  /* Hilangkan margin default jika ada */
+}
+
+/* Styling untuk modal */
+.modal-content {
+  border-radius: 10px !important;
+  /* Membuat sudut modal lebih bulat */
+  padding: 20px;
+  /* Menambah padding di dalam modal */
+  font-family: 'signika', sans-serif;
+}
+
+.modal-content .category-title {
+  color: #84b8c6;
+  /* Ganti dengan warna yang diinginkan */
+  font-weight: 700;
+  /* Membuat teks lebih tebal */
+}
+
+/* Menyelaraskan modal di tengah secara vertikal dan horizontal */
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  /* Buat modal dialog memenuhi tinggi viewport */
+}
+
+/* Menghapus margin default pada modal-content untuk sentralisasi lebih baik */
+.modal-content {
+  margin: 0 auto;
+}
+
+/* Untuk memastikan modal fade tetap ditampilkan di tengah layar */
+.modal.fade .modal-dialog {
+  transition: transform 0.3s ease-out;
+}
+
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.logo-img {
+  margin-right: 10px;
+  /* Memberikan jarak antara logo dan teks */
+}
+
+.input-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.brand .text-center {
+  color: #033043;
+  font-weight: 600;
+  font-size: 1.8rem;
+  line-height: 50px;
+  font-family: 'Signika', sans-serif;
+}
+
+.input-group input {
+  width: 100%;
+  font-size: 18px;
+  border-radius: 5px !important;
+  /* Membuat sudut input lebih bulat */
+  padding: 10px;
+  border: 1px solid #ccc;
+  /* Border untuk input */
+  outline: none;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  /* Ganti dengan warna yang diinginkan */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  /* Membuat sudut tombol lebih bulat */
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  /* Ganti dengan warna yang diinginkan */
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.welcome-text {
+  font-weight: normal;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+  display: flex;
+  /* Use flexbox for better alignment */
+  align-items: center;
+  justify-content: center;
+}
+
+.input-group label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  transition: 0.3s ease;
+  background-color: white;
+  padding: 0 5px;
+  color: #033043;
+  pointer-events: none;
+  font-size: 18px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #84b8c6 !important;
+  border-radius: 5px 0 0 5px !important;
+  font-size: 16px;
+  background-color: transparent;
+  outline: none;
+  transition: all 0.3s ease;
+  color: #033043;
+}
+
+.submit-btn {
+  width: 100%;
+  /* Keep submit button at 100% width */
+  padding: 10px;
+  background-color: #033043;
+  color: #E9E3D5;
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #FDA521;
+  color: #033043;
+}
+
+.cancel-btn-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.cancel-btn {
+  font-size: 24px;
+  color: #84b8c6;
+  text-decoration: none;
+}
+
+.cancel-btn:hover {
+  color: #FDA521;
+}
+
+.register-text {
+  margin-top: 10px;
+  font-weight: normal;
+}
+
+.register-link {
+  font-weight: bold;
+  color: #84b8c6;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  color: #FDA521;
+}
+
+.input-group input:focus+label,
+.input-group input:not(:placeholder-shown)+label {
+  top: -10px;
+  transform: translateY(0) !important;
+  font-size: 18px !important;
+  color: #84b8c6;
+  border-color: #033043 !important;
+}
+
+/* Ubah border saat input difokuskan atau diisi */
+.input-group input:focus,
+.input-group input:not(:placeholder-shown) {
+  border-color: #033043 !important;
+  /* Warna border berubah */
+  border-width: 2px;
+  /* Ketebalan border berubah */
+  outline: none;
+  /* Hilangkan outline default */
+}
+
+.form-title {
+  color: #84b8c6;
+  /* Ganti dengan warna yang Anda inginkan */
+  font-weight: 700;
+}
+
+/* Tambahan styling untuk input saat focus */
+.input-group input:focus {
+  border-color: #333;
+  /*ubah warna border saat fokus */
+}
+
+/* Positioning for the eye icon */
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Custom styling for active pagination */
+.pagination .page-item.active .page-link {
+  background-color: #033043; /* Custom blue color */
+  border-color: #033043; /* Border warna biru */
+  color: white; /* Warna teks */
+}
+
+/* Custom border color for pagination */
+.pagination .page-item .page-link {
+  border-color: #033043; /* Custom green border */
+  color: #033043; /* Custom text color for non-active links */
+}
+
+/* Custom background and border for Previous and Next buttons */
+.pagination .page-item:first-child .page-link, 
+.pagination .page-item:last-child .page-link {
+    background-color: #84b8c6; /* Custom orange background */
+    color: white;
+    border-color: #033043; /* Custom orange border */
+}
+
+@media (max-width: 576px) {
+  .username {
+    font-size: 0.8rem;
+    /* Ukuran font untuk perangkat kecil */
+  }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .username {
+    font-size: 0.9rem;
+    /* Ukuran font untuk perangkat menengah */
+  }
+}
+
+@media (min-width: 768px) {
+  .username {
+    font-size: 1rem;
+    /* Ukuran font untuk perangkat besar */
+  }
+}
+
+.medium-big {
+  font-size: 28px;
+  /* Ukuran antara medium dan big */
+  font-weight: bold;
+  /* Untuk memastikan font tetap bold */
+}
+
+
+
+/* Mengatur tabel produk */
+#productTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#productTable th, #productTable td {
+    border: 1px solid #033043 ;
+    padding: 12px;
+    text-align: center;
+}
+
+#productTable th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+#productTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#productTable tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Tombol dengan border-radius 5px */
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: auto; /* Pastikan ukuran lebar otomatis */
+  height: 40px; /* Atur tinggi sama dengan tombol lain */
+  font-size: 16px; 
+}
+
+/* Posisi tulisan Daftar Produk di kiri atas */
+.content-wrap .content h1 {
+    float: left;
+}
+
+/* Posisi tombol Tambah Produk di kanan atas */
+.content-wrap .content button {
+    float: right;
+}
+
+/* Membersihkan float agar tampilan rapi */
+.content-wrap .content::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button.delete-btn {
+    background-color: #f44336;
+    border-radius: 5px;
+    height: 40px; /* Atur tinggi agar seragam */
+}
+button.delete-btn:hover {
+    background-color: #e53935;
+}
+#addProductBtn {
+    background-color: #2196F3;
+    width: auto; /* Lebar otomatis, bisa disesuaikan */
+    height: 40px; /* Sesuaikan tinggi */
+    padding: 10px 20px; /* Sesuaikan padding */
+}
+
+#addProductBtn:hover {
+    background-color: #1976D2;
+}
+.d-flex.justify-content-between {
+  gap: 2px; /* Kurangi jarak antar tombol */
+}
+
+.btn-edit, .btn-delete {
+  margin: 0; /* Hilangkan margin pada tombol */
+  padding: 4px 6px; /* Kurangi padding agar lebih kecil */
+  font-size: 12px; /* Ukuran font kecil agar muat */
+  display: inline-flex; /* Pastikan tombol tetap rapi dalam satu baris */
+  align-items: center; /* Selaraskan ikon dan teks secara vertikal */
+}
+
+.btn-edit i, .btn-delete i {
+  margin-right: 2px; /* Jarak sangat kecil antara ikon dan teks */
+  font-size: 12px; /* Ukuran ikon kecil agar lebih rapi */
+}
+
+.btn-edit, .btn-delete {
+  width: auto; /* Pastikan tombol menyesuaikan dengan konten */
+}
+
