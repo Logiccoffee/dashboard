@@ -1,0 +1,364 @@
+body {
+    font-family: 'Signika', sans-serif;
+    background: #84b8c6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #033043;
+    margin: 0;
+    padding: 20px;
+}
+
+.form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Adjust the maximum width as needed */
+    margin: 20px;
+    position: relative;
+}
+
+.form-container1 {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 500px; /* Tetap menjaga ukuran ini */
+    margin: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Use flexbox for better layout */
+}
+
+h2 {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    color: #84b8c6;
+}
+h3, .variant-input-group input, .add-variant-link {
+    font-family: 'Signika', sans-serif; /* Mengubah font menjadi Signika */
+}
+
+.input-group input, .input-group label {
+    font-family: 'Signika', sans-serif; /* Mengubah font menjadi Signika */
+}
+
+.input-group select, .input-group label {
+    font-family: 'Signika', sans-serif; /* Mengubah font menjadi Signika */
+}
+
+
+.brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.brand .logo-img {
+    margin-right: 10px;
+    
+}
+
+.brand .text-center {
+    color: #033043;
+    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 50px;
+    font-family: 'Signika', sans-serif;
+}
+
+.login-title {
+    font-family: 'Signika', sans-serif;
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+}
+
+.welcome-text {
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.form-control {
+    width: 100%; /* Adjust this value as needed */
+    padding: 10px; /* Adjust padding as needed */
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex; /* Use flexbox for better alignment */
+    align-items: center;
+    justify-content: center;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #84b8c6;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: transparent;
+    outline: none;
+    transition: all 0.3s ease;
+    color: #033043;
+}
+
+label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    background-color: #fff;
+
+    transition: all 0.3s ease;
+    pointer-events: none;
+    color: #033043;
+    font-size: 16px;
+}
+
+input:focus {
+    border-color: #033043;
+}
+
+.submit-btn {
+    width: 100%; /* Keep submit button at 100% width */
+    padding: 10px;
+    background-color: #033043;
+    color: #E9E3D5;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.submit-btn:hover {
+    color: #FDA521;
+}
+
+.cancel-btn-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.cancel-btn {
+    font-size: 24px;
+    color: #84b8c6;
+    text-decoration: none;
+}
+
+.cancel-btn:hover {
+    color: #FDA521;
+}
+
+
+/* Responsiveness */
+
+@media (max-width: 600px) {
+    .input-group {
+        flex-direction: column; /* Stack elements vertically */
+    }
+    .input-group-sejajar {
+        flex-direction: column; /* Stack elements vertically */
+    }
+}
+body {
+    font-family: 'Signika', sans-serif;
+    background-color: #84b8c6; /* Warna latar belakang yang lembut */
+}
+
+.form-container {
+    background-color: #ffffff; /* Warna latar belakang form */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+    margin: 50px auto; /* Center the form */
+}
+
+.brand {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.brand img {
+    height: 50px;
+}
+
+.text-center {
+    color: #333;
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+.title-spacing {
+    margin-top: -30px; /* Atur margin atas khusus untuk h2 */
+}
+
+
+.input-group {
+    margin-bottom: 20px; /* Spasi antar input */
+    position: relative; /* Memungkinkan label untuk diposisikan secara absolut */
+}
+
+.input-group label {
+    position: absolute;
+    top: 5px; /* Menyesuaikan posisi label */
+    left: 5px;
+    font-size: 18.72px;
+    font-weight: bold;
+    color: #033043; /* Warna label yang lebih lembut */
+    pointer-events: none; /* Menghindari interaksi dengan label */
+    transition: 0.2s ease all; /* Transisi halus untuk label */
+}
+
+
+.input-group input,
+.input-group textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    box-sizing: border-box; /* Pastikan padding termasuk dalam ukuran */
+    margin-top: 20px; /* Memberikan jarak antara kolom dan label */
+    outline: none; /* Menghilangkan outline default */
+}
+
+.submit-btn {
+    background-color: #007bff; /* Warna tombol */
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px; /* Jarak antara tombol simpan dan elemen lainnya */
+}
+
+.submit-btn:hover {
+    background-color: #007bff; /* Warna tombol saat hover */
+}
+
+.cancel-btn-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.cancel-btn {
+    color: #FF5C5C;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#imagePreview {
+    margin-top: 10px;
+    max-width: 200px;
+}
+
+/* Styling untuk varian produk */
+.variant-input-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px; /* Spasi antar varian */
+}
+
+.variant-input-group input {
+    flex: 1; /* Memastikan input memiliki lebar yang sama */
+    border: 1px solid  #007bff;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box; /* Pastikan padding termasuk dalam ukuran */
+}
+
+/* Tombol untuk menambah varian */
+.add-variant-link {
+    color: #007bff; /* Warna biru */
+    text-decoration: none; /* Menghilangkan garis bawah */
+    display: block; /* Menjadikannya block agar mengambil lebar penuh */
+    text-align: left; /* Menempatkan teks di sebelah kiri */
+    padding: 10px 0; /* Memberikan padding untuk area klik yang lebih besar */
+    margin-top: 10px; /* Jarak antara tautan dan elemen lainnya */
+    transition: color 0.3s ease; /* Efek transisi saat hover */
+}
+
+.add-variant-link:hover {
+    color: #FFA500; /* Warna oranye saat hover */
+}
+.input-row {
+    display: flex;
+    gap: 10px; /* Atur jarak antara elemen */
+}
+
+.input-row .input-group {
+    flex: 1; /* Supaya masing-masing elemen mengambil porsi yang sama */
+}
+table {
+    width: 100%; /* Atur lebar tabel */
+    border-collapse: collapse; /* Menghilangkan celah antara sel */
+}
+
+th, td {
+    padding: 10px; /* Memberikan ruang di dalam sel */
+    text-align: left; /* Rata kiri */
+}
+
+th {
+    background-color: #f2f2f2; /* Warna latar belakang header */
+}
+
+td img {
+    width: 100px; /* Atur lebar gambar */
+    height: auto; /* Tinggi otomatis sesuai proporsi */
+}
+
+.action-buttons {
+    display: flex; /* Menggunakan flexbox untuk menata tombol */
+    gap: 5px; /* Jarak antara tombol */
+}
+
+.action-buttons button {
+    font-size: 12px; /* Ukuran font tombol kecil */
+    padding: 5px 10px; /* Ruang dalam tombol */
+}
+/* CSS tambahan untuk mengatur kolom gambar dan aksi */
+#productTable img {
+    width: 150px; /* Memperbesar gambar */
+    height: auto; /* Tinggi otomatis agar proporsional */
+    object-fit: cover; /* Menghindari distorsi gambar */
+}
+.action-buttons button {
+    font-size: 12px; /* Ukuran font kecil untuk tombol */
+    padding: 5px 8px; /* Ruang dalam tombol */
+}
+.dropdown .profile-icon .ms-2 {
+    font-size: 20px; /* Ganti dengan ukuran yang diinginkan */
+  }
+  
+  .dropdown .profile-icon i {
+    font-size: 23px; /* Ganti dengan ukuran yang diinginkan */
+  }
+  .fa-solif, .fas {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+  }
+  .menu-wrap .user figcaption {
+    color: #033043;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 100%;
+    font-family: 'signika';
+  }
+  .menu-wrap .user {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 1em 3em;
+  }
+ 

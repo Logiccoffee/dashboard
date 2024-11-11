@@ -1,0 +1,1099 @@
+/* Mengatur box-sizing untuk semua elemen */
+* {
+    box-sizing: border-box;
+}
+
+/* Mengatur tampilan secara umum untuk html dan konten */
+html,
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Mengatur tabel produk */
+#productTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#productTable th, #productTable td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+#productTable th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+#productTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#productTable tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Tombol dengan border-radius 5px */
+button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: auto; /* Pastikan ukuran lebar otomatis */
+  height: 40px; /* Atur tinggi sama dengan tombol lain */
+  font-size: 16px; 
+}
+
+/* Posisi tulisan Daftar Produk di kiri atas */
+.content-wrap .content h1 {
+    float: left;
+}
+
+/* Posisi tombol Tambah Produk di kanan atas */
+.content-wrap .content button {
+    float: right;
+}
+
+/* Membersihkan float agar tampilan rapi */
+.content-wrap .content::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button.delete-btn {
+    background-color: #f44336;
+    border-radius: 5px;
+    height: 40px; /* Atur tinggi agar seragam */
+}
+button.delete-btn:hover {
+    background-color: #e53935;
+}
+#addProductBtn {
+    background-color: #2196F3;
+    width: auto; /* Lebar otomatis, bisa disesuaikan */
+    height: 40px; /* Sesuaikan tinggi */
+    padding: 10px 20px; /* Sesuaikan padding */
+}
+
+#addProductBtn:hover {
+    background-color: #1976D2;
+}
+
+/* Pengaturan umum untuk tabel */
+table {
+    width: 80%;
+    text-align: center;
+}
+
+thead th {
+    background-color: #f4f4f4;
+    padding: 10px;
+}
+
+tbody td {
+    padding: 8px;
+}
+
+button {
+    margin: 5px;
+}
+
+/* Pengaturan warna dan tampilan umum body */
+body {
+    color: #99a0b0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #f5f5fa;
+    font-size: 16px;
+    line-height: 120%;
+    font-family: "Signika", Arial, sans-serif;
+}
+
+/* Layout dashboard dengan grid */
+.dashboard {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-gap: 0;
+    grid-template-columns: 300px auto;
+    grid-template-rows: 80px auto;
+    grid-template-areas: 'menu search' 'menu content';
+}
+
+.search-wrap {
+    grid-area: search;
+    background: #fff;
+    border-bottom: 1px solid #ede8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3em;
+}
+
+.search-wrap .search {
+    height: 40px;
+}
+
+.search-wrap .search label {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.search-wrap .search label svg {
+    display: block;
+}
+
+.search-wrap .search label svg path,
+.search-wrap .search label svg circle {
+    fill: #b6bbc6;
+    transition: fill 0.15s ease;
+}
+
+.search-wrap .search label input {
+    display: block;
+    padding-left: 1em;
+    height: 100%;
+    margin: 0;
+    border: 0;
+}
+
+.search-wrap .search label input:focus {
+    background: #f5f5fa;
+}
+
+.search-wrap .search label:hover svg path,
+.search-wrap .search label:hover svg circle {
+    fill: #2b3a60;
+}
+
+.search-wrap .user-actions button {
+    border: 0;
+    background: none;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+    margin-left: 0.5em;
+}
+
+.search-wrap .user-actions button svg {
+    position: relative;
+    top: 2px;
+}
+
+.search-wrap .user-actions button svg path,
+.search-wrap .user-actions button svg circle {
+    fill: #b6bbc6;
+    transition: fill 0.15s ease;
+}
+
+.search-wrap .user-actions button:hover svg path,
+.search-wrap .user-actions button:hover svg circle {
+    fill: #2b3a60;
+}
+
+/* Menu sidebar */
+.menu-wrap {
+  grid-area: menu;
+  padding-bottom: 3em;
+  overflow: auto;
+  background: #84b8c6;
+  border-right: 1px solid #ede8f0;
+  font-family: "Signika", Arial, sans-serif;
+}
+
+.menu-wrap .user {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 1em 3em;
+}
+
+.menu-wrap .user .user-avatar {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+}
+
+.menu-wrap .user .user-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.menu-wrap .user figcaption {
+    margin: 0;
+    padding: 0 0 0 1em;
+    color: #1b253d;
+    font-weight: 700;
+    font-size: 0.875em;
+    line-height: 100%;
+}
+
+.menu-wrap nav {
+    display: block;
+    padding: 0 3em;
+}
+
+.menu-wrap nav section {
+    display: block;
+    padding: 3em 0 0;
+}
+
+.menu-wrap nav h3 {
+    margin: 0;
+    font-size: 0.875em;
+    text-transform: uppercase;
+    color: #4b84fe;
+    font-weight: 600;
+}
+
+.menu-wrap nav ul {
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-wrap nav li {
+    display: block;
+    padding: 0;
+    margin: 1em 0 0;
+}
+
+.menu-wrap nav li a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #99a0b0;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875em;
+    transition: color 0.15s ease;
+}
+
+.menu-wrap nav li a svg {
+    display: block;
+    margin-right: 1em;
+}
+
+.menu-wrap nav li a svg path,
+.menu-wrap nav li a svg circle {
+    fill: #b6bbc6;
+    transition: fill 0.15s ease;
+}
+
+.menu-wrap nav li a:hover {
+    color: #1b253d;
+}
+
+.menu-wrap nav li a:hover svg path,
+.menu-wrap nav li a:hover svg circle {
+    fill: #2b3a60;
+}
+
+.menu-wrap nav li a.active {
+    color: #4b84fe;
+}
+
+.menu-wrap nav li a.active svg path,
+.menu-wrap nav li a.active svg circle {
+    fill: #4b84fe;
+}
+
+/* Konten di bagian dashboard */
+.content-wrap {
+    grid-area: content;
+    padding: 3em;
+    overflow: auto;
+}
+
+.content-wrap .content-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content-wrap .content-head h1 {
+  font-family: "Signika", Arial, sans-serif;
+    font-size: 1.375em;
+    float: left;
+    margin-left: 0;
+    line-height: 100%;
+    color: #1b253d;
+    font-weight: 500;
+    padding: 0;
+}
+
+.content-wrap .content-head .action {
+    float: right;
+    margin-right: 0;
+}
+
+
+.content-wrap .content-head .action button {
+    border: 0;
+    background: #4b84fe;
+    color: #fff;
+    width: auto;
+    height: 3.5em;
+    padding: 0 2.25em;
+    border-radius: 3.5em;
+    font-size: 1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: background-color 0.15s ease;
+}
+
+.content-wrap .content-head .action button:hover {
+    background-color: #1861fe;
+}
+
+.content-wrap .content-head .action button:hover:active {
+    background-color: #0149e2;
+    transition: none;
+}
+
+.content-wrap .info-boxes {
+    padding: 3em 0 2em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-gap: 2em;
+}
+
+.content-wrap .info-boxes .info-box {
+    background: #fff;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 3em;
+    border: 1px solid #ede8f0;
+    border-radius: 5px;
+}
+
+.content-wrap .info-boxes .info-box .box-icon svg {
+    display: block;
+    width: 48px;
+    height: 48px;
+}
+
+.content-wrap .info-boxes .info-box .box-icon svg path,
+.content-wrap .info-boxes .info-box .box-icon svg circle {
+    fill: #4b84fe;
+}
+
+.content-wrap .info-boxes .info-box .box-content {
+    display: block;
+    padding-left: 1em;
+}
+
+.content-wrap .info-boxes .info-box .box-content h2 {
+    margin: 0;
+    font-size: 2em;
+    font-weight: 400;
+    color: #1b253d;
+}
+
+.content-wrap .info-boxes .info-box .box-content p {
+    margin: 0;
+    padding: 0;
+    font-size: 0.875em;
+    font-weight: 600;
+    color: #99a0b0;
+    text-transform: uppercase;
+}
+/* Reset default styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: "Signika", 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .edit-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  textarea.input-field {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-save {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .btn-save:hover {
+    background-color: #218838;
+  }
+  
+  .btn-cancel {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .btn-cancel:hover {
+    background-color: #c82333;
+  }
+  
+  /* Responsive */
+  @media (max-width: 500px) {
+    .edit-container {
+      padding: 15px;
+    }
+  
+    .btn {
+      width: 100%;
+      margin-top: 10px;
+    }
+  
+    .form-actions {
+      flex-direction: column;
+    }
+  }
+   /* Tambahan styling untuk logo */
+   .logo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .logo img {
+    width: 50px;
+    height: auto;
+  }
+
+  .logo h2 {
+    font-size: 24px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 10px 0 0;
+  }
+
+  .logo h2 span {
+    color: #007BFF;
+    font-weight: bold;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    text-align: center; /* Membuat teks di tengah-tengah */
+    padding: 10px;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  td {
+    border: 1px solid #ddd;
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+  }
+
+  .action-buttons button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .edit-button {
+    background-color: orange;
+  }
+
+  .delete-button {
+    background-color: red;
+  }
+
+  .edit-button:hover {
+    background-color: #ffcc80; /* warna lebih terang saat hover */
+  }
+
+  .delete-button:hover {
+    background-color: #ff6666; /* warna lebih terang saat hover */
+  }
+
+  .edit-button:active {
+    background-color: #e69500; /* warna lebih gelap saat diklik */
+  }
+
+  .delete-button:active {
+    background-color: #cc0000; /* warna lebih gelap saat diklik */
+  }
+  * {
+  box-sizing: border-box;
+}
+html, body {
+	color: #99a0b0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background: #f5f5fa;
+	font-family: 'Signika', Arial, sans-serif;
+}
+.dashboard {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-gap: 0;
+  grid-template-columns: 300px auto;
+  grid-template-rows: 80px auto;
+  grid-template-areas: 'menu search' 'menu content';
+}
+.dashboard-tittle {
+  font-family: 'signika';
+  font-weight: 700;
+  font-size: 2rem;
+}
+.search-wrap {
+  grid-area: search;
+  background: #84b8c6;
+  color: #ffff;
+  border-bottom: 1px solid #ede8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3em;
+}
+.search-form {
+  margin-left: 0px;
+  max-width: 500px; /*menyesuaikan lebar */
+  width: 100%
+}
+
+.search-input {
+  border: 5px solid #ced4da; /* Warna border */
+  border-radius: 5px; /* Sudut melengkung */
+}
+
+.search-input:focus {
+  border-color: #ffc107; /* Warna border saat fokus */
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25); /* Bayangan saat fokus */
+}
+
+.btn-warning {
+  background-color: #ffc107; /* Warna latar belakang tombol */
+  border: none; /* Hapus border */
+}
+
+.btn-warning:hover {
+  background-color: #e0a800; /* Warna saat hover */
+}
+.search-wrap .search {
+  height: 40px;
+}
+.search-wrap .search label {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.search-wrap .search label svg {
+  display: block;
+}
+.search-wrap .search label svg path,
+.search-wrap .search label svg circle {
+  fill: #b6bbc6;
+  transition: fill 0.15s ease;
+}
+.search-wrap .search label input {
+  display: block;
+  padding-left: 1em;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  width: 80%;
+}
+.search-wrap .search label input:focus {
+  background: #f5f5fa;
+}
+.search-wrap .search label:hover svg path,
+.search-wrap .search label:hover svg circle {
+  fill: #2b3a60;
+}
+.search-wrap .user-actions button {
+  border: 0;
+  background: none;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  margin-left: 0.5em;
+}
+.search-wrap .user-actions button svg {
+  position: relative;
+  top: 2px;
+}
+.search-wrap .user-actions button svg path,
+.search-wrap .user-actions button svg circle {
+  fill: #b6bbc6;
+  transition: fill 0.15s ease;
+}
+.search-wrap .user-actions button:hover svg path,
+.search-wrap .user-actions button:hover svg circle {
+  fill: #2b3a60;
+}
+
+.menu-wrap {
+  grid-area: menu;
+  padding-bottom: 3em;
+  overflow: auto;
+  background: #84b8c6;
+  border-right: 1px solid #ede8f0;
+  font-family: "Signika", Arial, sans-serif;
+}
+.menu-wrap .user {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 1em 3em;
+}
+.menu-wrap .user .user-avatar {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+}
+.menu-wrap .user .user-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.menu-wrap .user figcaption {
+  color: #033043;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 100%;
+  font-family: 'signika';
+}
+.menu-wrap nav {
+  display: block;
+  padding: 0 3em;
+}
+.menu-wrap nav section {
+  display: block;
+  padding: 3em 0 0;
+}
+.menu-wrap nav h3 {
+  margin: 0;
+  font-size: 17px;
+  text-transform: uppercase;
+  color: #033043;
+  font-weight: 600;
+}
+.menu-wrap nav ul {
+  display: block;
+  padding: 0;
+  margin: 0.75em 0;
+  margin-top: 1em;
+}
+.menu-wrap nav li {
+  display: block;
+  padding: 0.25em 0;
+  margin: 1em 0 0;
+  margin-bottom: 8px;
+}
+.menu-wrap nav li a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: #ffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: color 0.15s ease;
+  padding-left: 0em;
+}
+.menu-wrap nav ul li {
+  display: block;
+  padding: 0.25em 0;
+  margin: 0em 0;
+}
+.menu-wrap nav li a {
+  padding: 8px 15px;
+  margin-bottom: 5px;
+}
+.menu-wrap nav ul li a.active {
+  background-color: #033043;
+  color: white;
+  border-radius: 5px;
+  border-left: 5px solid #4b84fe;
+  padding-left: 15px;
+  margin-bottom: 5px;
+  padding: 10px 15px;
+}
+.menu-wrap nav li a svg {
+  display: block;
+  margin-right: 1em;
+}
+.menu-wrap nav li a svg path,
+.menu-wrap nav li a svg circle {
+  fill: #b6bbc6;
+  transition: fill 0.15s ease;
+}
+.menu-wrap nav li a:hover {
+  color: #1b253d;
+}
+.menu-wrap nav li a:hover svg path,
+.menu-wrap nav li a:hover svg circle {
+  fill: #2b3a60;
+}
+.menu-wrap nav li a.active {
+  color: #4b84fe;
+}
+.menu-wrap nav li a.active svg path,
+.menu-wrap nav li a.active svg circle {
+  fill: #4b84fe;
+}
+.content-wrap {
+  background-color: #ffff;
+  grid-area: content;
+  padding: 3em;
+  overflow: auto;
+}
+.content-wrap .content-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.content-wrap .content-head h1 {
+  font-size: 2em;
+  line-height: 100%;
+  color: #1b253d;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+}
+.content-wrap .content-head .action button {
+  border: 0;
+  background: #4b84fe;
+  color: #fff;
+  width: auto;
+  height: 3.5em;
+  padding: 0 2.25em;
+  border-radius: 3.5em;
+  font-size: 1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+.content-wrap .content-head .action button:hover {
+  background-color: #1861fe;
+}
+.content-wrap .content-head .action button:hover:active {
+  background-color: #0149e2;
+  transition: none;
+}
+.content-wrap .info-boxes {
+  padding: 3em 0 2em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-gap: 2em;
+}
+.content-wrap .info-boxes .info-box {
+  background: #fff;
+  height: 160px;
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 3em;
+  border: 3px solid #84b8c6 !important;
+  border-radius: 5px;
+}
+.content-wrap .info-boxes .info-box .box-icon svg {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+.content-wrap .info-boxes .info-box .box-icon svg path,
+.content-wrap .info-boxes .info-box .box-icon svg circle {
+  fill: #99a0b0;
+}
+.content-wrap .info-boxes .info-box .box-content {
+  padding-left: 1.25em;
+  white-space: nowrap;
+  font-size: 20px !important;
+}
+.content-wrap .info-boxes .info-box .box-content .big {
+  display: block;
+  font-size: 50px !important;
+  font-weight: bold !important;
+  line-height: 150%;
+  color: #1b253d;
+}
+.content-wrap .info-boxes .info-box.active svg circle,
+.content-wrap .info-boxes .info-box.active svg path {
+  fill: #4b84fe;
+}
+.content-wrap .person-boxes {
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-gap: 2em;
+}
+.content-wrap .person-boxes .person-box {
+  background: #fff;
+  height: 320px;
+  text-align: center;
+  padding: 3em;
+  border: 1px solid #ede8f0;
+  border-radius: 5px;
+}
+.content-wrap .person-boxes .person-box:nth-child(2n) .box-avatar .no-name {
+  background: #4b84fe;
+}
+.content-wrap .person-boxes .person-box:nth-child(5n) .box-avatar .no-name {
+  background: #ffbb09;
+}
+.content-wrap .person-boxes .person-box .box-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0px auto;
+  overflow: hidden;
+}
+.content-wrap .person-boxes .person-box .box-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.content-wrap .person-boxes .person-box .box-avatar .no-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: 600;
+  text-transform: uppercase;
+  width: 100%;
+  height: 100%;
+  background: #fa5b67;
+}
+.content-wrap .person-boxes .person-box .box-bio {
+  white-space: no-wrap;
+}
+.content-wrap .person-boxes .person-box .box-bio .bio-name {
+  margin: 2em 0 0.75em;
+  color: #1b253d;
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 100%;
+}
+.content-wrap .person-boxes .person-box .box-bio .bio-position {
+  margin: 0;
+  font-size: 0.875em;
+  line-height: 100%;
+}
+.content-wrap .person-boxes .person-box .box-actions {
+  margin-top: 1.25em;
+  padding-top: 1.25em;
+  width: 100%;
+  border-top: 1px solid #ede8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.content-wrap .person-boxes .person-box .box-actions button {
+  border: 0;
+  background: none;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+}
+.content-wrap .person-boxes .person-box .box-actions button svg {
+  position: relative;
+  top: 2px;
+}
+.content-wrap .person-boxes .person-box .box-actions button svg path,
+.content-wrap .person-boxes .person-box .box-actions button svg circle {
+  fill: #b6bbc6;
+  transition: fill 0.15s ease;
+}
+.content-wrap .person-boxes .person-box .box-actions button:hover svg path,
+.content-wrap .person-boxes .person-box .box-actions button:hover svg circle {
+  fill: #2b3a60;
+}
+/* Untuk teks pada ikon Plastiqu.Co */
+.user figcaption {
+  font-family: 'Signika', sans-serif;
+  font-weight: bold;
+
+}
+
+/* Untuk teks "Daftar Produk" */
+.dashboard-tittle {
+  font-family: 'Signika', sans-serif;
+}
+
+/* Untuk teks Nama Pengguna */
+.username {
+  font-family: 'Signika', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+.profile-icon {
+  color: #333;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+.dropdown-menu {
+  min-width: 10rem;
+}
+.profile-edit, .logout {
+  display: flex;
+  align-items: center;
+}
+
+.profile-edit i, .logout i {
+  margin-right: 8px;
+}
+
+/* Style untuk dropdown nama pengguna */
+.dropdown {
+  position: relative;
+}
+
+.dropdown.show .dropdown-menu {
+  display: block;
+  /* Menampilkan dropdown saat aktif */
+}
+
+.profile-icon {
+  color: #333;
+  /* Ubah sesuai kebutuhan */
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.profile-icon:hover {
+  color: #ffff;
+  /* Ubah warna teks saat hover */
+}
+
+.dropdown .profile-icon .ms-2 {
+  font-size: 20px;
+  /* Ganti dengan ukuran yang diinginkan */
+}
+
+.dropdown .profile-icon i {
+  font-size: 23px;
+  /* Ganti dengan ukuran yang diinginkan */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  /* Tempatkan dropdown di bawah tombol */
+  right: 0;
+  /* Agar dropdown muncul di sisi kanan */
+  z-index: 1000;
+  /* Pastikan dropdown berada di atas elemen lainnya */
+  display: none;
+  /* Sembunyikan dropdown secara default */
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  padding: 10px;
+  min-width: 200px;
+}
+
+.dropdown-menu a {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 10px;
+  display: block;
+  transition: background-color 0.3s;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f8f9fa;
+  /* Ubah warna latar belakang saat hover */
+}

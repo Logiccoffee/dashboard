@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/assets/circle.png" type="image/png">
+    <title>Edit Produk | Logic Coffee</title>
+    <link rel="stylesheet" href="css/produkte.css">
+
+    <!-- Google fonts signika -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap" rel="stylesheet">
+
+    <!-- FA Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
+</head>
+
+<body>
+    <!-- Form Edit Produk -->
+    <div class="form-container">
+        <form id="editProductForm" action="#" method="POST">
+            <!-- Header with logo and "Edit Produk" -->
+            <div class="brand">
+                <img src="/assets/logo_only_vector.png" alt="Logo">
+                <span class="text-center">Logic Coffee</span>
+            </div>
+            <h2 class="text-center title-spacing">Edit Produk</h2>
+
+
+            <!-- Kategori dan Nama Produk (Sejajar) -->
+            <div class="input-row">
+                <!-- Kategori Dropdown -->
+                <div class="input-group">
+                    <select id="productCategory" required>
+                        <option value="" disabled selected>Pilih Kategori</option>
+                        <option value="Plastik Makanan">Plastik Makanan</option>
+                        <option value="Plastik Minuman">Plastik Minuman</option>
+                        <option value="Kemasan Kertas">Kemasan Kertas</option>
+                    </select>
+                    <label for="productCategory">Kategori</label>
+                </div>
+
+                <!-- Nama Produk -->
+                <div class="input-group">
+                    <input type="text" id="productName" required>
+                    <label for="productName">Nama Produk</label>
+                </div>
+            </div>
+
+            <!-- Deskripsi Produk -->
+            <div class="input-group">
+                <textarea id="productDescription" required></textarea>
+                <label for="productDescription">Deskripsi Produk</label>
+            </div>
+
+            <!-- Varian Produk -->
+            <div id="variantsContainer">
+                <h3>Varian Produk</h3>
+                <!-- Varian akan ditambahkan secara dinamis -->
+            </div>
+            <a href="#" id="addVariantLink" class="add-variant-link">
+                <i class="fa-solid fa-plus"></i> Tambah Varian
+            </a>            
+
+            <!-- Gambar Produk -->
+            <div class="input-group">
+                <input type="file" id="productImage" accept="image/*">
+                <label for="productImage">Gambar Produk</label>
+                <small style="color: #999; margin-top: 5px; display: block;">* Pilih gambar produk untuk preview</small>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">Simpan</button>
+
+            <!-- Cancel Button -->
+            <div class="cancel-btn-container">
+                <a href="produk.html" class="cancel-btn">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Ambil produk dari localStorage
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+
+        // Fungsi untuk mengambil parameter dari URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Ambil index produk dari query parameter
+        const productIndex = getQueryParam('index');
+
+        // Ambil data produk berdasarkan index
+        const product = products[productIndex];
+
+        // Jika produk ditemukan, isi form dengan datanya
+        if (product) {
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productDescription').value = product.description;
+
+            // Isi varian produk
+            const variantsContainer = document.getElementById('variantsContainer');
+            product.variants.forEach(variant => {
+                const variantDiv = document.createElement('div');
+                variantDiv.classList.add('variant-input-group');
+                variantDiv.innerHTML = `
+                    <input type="text" placeholder="Varian" value="${variant.name}" required>
+                    <input type="number" placeholder="Stok" value="${variant.stock}" required>
+                    <input type="number" placeholder="Harga (Range)" value="${variant.price}" required>
+                `;
+                variantsContainer.appendChild(variantDiv);
+            });
+        }
+
+        // Fungsi untuk menambahkan input varian baru
+        document.getElementById('addVariantLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Menghindari navigasi
+            const variantsContainer = document.getElementById('variantsContainer');
+            const newVariant = document.createElement('div');
+            newVariant.classList.add('variant-input-group');
+            newVariant.innerHTML = `
+                <input type="text" placeholder="Varian" required>
+                <input type="number" placeholder="Stok" required>
+                <input type="number" placeholder="Harga (Range)" required>
+            `;
+            variantsContainer.appendChild(newVariant);
+        });
+
+        // Fungsi untuk menyimpan perubahan produk
+        document.getElementById('editProductForm').onsubmit = async function(event) {
+            event.preventDefault();
+
+            const updatedProduct = {
+                category: document.getElementById('productCategory').value,
+                name: document.getElementById('productName').value,
+                description: document.getElementById('productDescription').value,
+                variants: []
+            };
+
+            // Mengambil data varian
+            const variantGroups = document.querySelectorAll('.variant-input-group');
+            variantGroups.forEach(variant => {
+                const variantName = variant.children[0].value;
+                const variantStock = variant.children[1].value;
+                const variantPrice = variant.children[2].value;
+                updatedProduct.variants.push({
+                    name: variantName,
+                    stock: variantStock,
+                    price: variantPrice
+                });
+            });
+
+            // Jika gambar diubah, tambahkan gambar baru
+            const imageFile = document.getElementById('productImage').files[0];
+            if (imageFile) {
+                updatedProduct.image = await getBase64(imageFile);
+            } else {
+                updatedProduct.image = product.image; // Menggunakan gambar yang lama
+            }
+
+            // Perbarui produk di localStorage
+            products[productIndex] = updatedProduct;
+            localStorage.setItem('products', JSON.stringify(products));
+
+            // Tampilkan SweetAlert setelah berhasil menyimpan
+            Swal.fire({
+                title: 'Sukses!',
+                text: 'Produk berhasil diubah!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = 'produk.html'; // Kembali ke halaman produk setelah menekan OK
+            });
+        };
+
+        // Fungsi untuk mengonversi gambar ke Base64
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+    </script>
+</body>
+</html>
