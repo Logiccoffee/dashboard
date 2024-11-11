@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pengguna | Logic Coffee</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+    <link rel="shortcut icon" href="img/logo logic.png" type="image/png">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 -->
+</head>
+
+<body>
+    <div class="dashboard">
+        <aside class="search-wrap">
+            <div class="search">
+                <label for="search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <!-- Isi SVG -->
+                    </svg>
+                </label>
+            </div>
+
+            <form class="d-flex mx-auto my-2 search-form">
+                <input class="form-control me-2 search-input" type="search" placeholder="Cari pengguna..."
+                    aria-label="Search">
+                <button class="btn btn-warning" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+
+            <div class="dropdown">
+                <a href="#" class="profile-icon dropdown-toggle d-flex align-items-center mx-2" id="profileDropdown"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <span class="username ms-2">Nama Pengguna</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item profile-edit" href="/profile"><i class="fa-solid fa-user-edit"></i> Ubah
+                            Profil</a></li>
+                    <li><a class="dropdown-item logout" href="/logout"><i class="fa-solid fa-sign-out-alt"></i>
+                            Logout</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <header class="menu-wrap">
+			<figure class="user">
+				<div class="user-avatar">
+					<img src="img/logo logic.png" alt="Logic Coffee">
+				</div>
+				<figcaption>Logic Coffee</figcaption>
+			</figure>
+
+            <nav>
+                <section class="dicover">
+                    <h3>Kelola</h3>
+                    <ul>
+                        <li>
+                            <a href="index.html">
+                                <i class="fa-solid fa-house" style="margin-right: 10px;"></i>
+                                Dasbor
+                            </a>
+                        </li>
+                        <li>
+                            <a href="analitik.html">
+                                <i class="fa-solid fa-chart-line" style="margin-right: 10px;"></i>
+                                Analitik
+                            </a>
+                        </li>
+                        <li>
+                            <a href="ulasan.html">
+                                <i class="fa-solid fa-comment" style="margin-right: 10px;"></i>
+                                Ulasan
+                            </a>
+                        </li>
+                        <li>
+                            <a href="banner.html">
+                                <i class="fa-solid fa-image" style="margin-right: 10px;"></i>
+                                Kustom Banner
+                            </a>
+                        </li>
+                        <li>
+                            <a href="users.html" class="active">
+                                <i class="fa-solid fa-user-gear" style="margin-right: 10px;"></i>
+                                Pengguna
+                            </a>
+                        </li>
+                        <li>
+                            <a href="alamatpengguna.html">
+                                <i class="fa-solid fa-map" style="margin-right: 10px;"></i>
+                                Alamat Pengguna
+                            </a>
+                        </li>
+                        <li>
+                            <a href="category.html">
+                                <i class="fa-solid fa-list" style="margin-right: 10px;"></i>
+                                Kategori
+                            </a>
+                        </li>
+                        <li>
+                            <a href="produk/produk.html">
+                                <i class="fa-solid fa-pen" style="margin-right: 10px;"></i>
+                                Produk
+                            </a>
+                        </li>
+                        <li>
+                            <a href="daftarpesanan.html">
+                                <i class="fa-solid fa-box" style="margin-right: 10px;"></i>
+                                Daftar Pesanan
+                            </a>
+                        </li>
+                        <li>
+                            <a href="keuangan.html">
+                                <i class="fa-solid fa-hand-holding-dollar" style="margin-right: 10px;"></i>
+                                Keuangan
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </nav>
+
+        </header>
+
+        <main class="content-wrap">
+            <header class="content-head">
+                <h1 class="dashboard-tittle">Manajemen Pengguna</h1>
+            </header>
+
+            <div class="content">
+                <h2 class="mt-4">Daftar Pengguna</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Pengguna</th>
+                            <th>Email</th>
+                            <th>Peran</th>
+                            <th>No. Telepon</th>
+                            <th>Foto</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-list">
+                        <!-- Sample User Item -->
+                        <tr>
+                            <td>1</td>
+                            <td>Johndoe</td>
+                            <td>johndoe@example.com</td>
+                            <td id="role-user-1">User</td> <!--kolom role-->
+                            <td>(123) 456-7890</td>
+                            <td><img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Foto Placeholder"
+                                    class="img-fluid">
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Aksi
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="openEditModal(0)">
+                                                <i class="fas fa-pen text-warning"></i> Ubah
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="openDeleteModal(0)">
+                                                <i class="fas fa-trash-alt text-danger"></i> Hapus
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="openChangePasswordModal(0)">
+                                                <i class="fas fa-key text-success"></i> Ganti Kata Sandi
+                                            </a>
+                                        </li>
+                                        <!-- Button Upgrade to Admin -->
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="upgradeToAdmin(1)">
+                                                <i class="fas fa-user-shield text-primary"></i> Jadikan Sebagai Admin
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Popup Form untuk Edit User -->
+    <div class="modal fade" id="editUsersModal" tabindex="-1" aria-labelledby="editUsersModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="brand">
+                    <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
+                    <span class="text-center">Logic Coffee</span>
+                </div>
+                <h2 class="text-center form-title">Ubah Pengguna</h2>
+                <p class="welcome-text">Ubah Data Pengguna!</p>
+                <form class="register-form" id="edit-users-form" onsubmit="return ValidateUser(event)">
+                    <!--Input untuk ID (Non-editable)-->
+                    <div class="input-group">
+                        <input type="text" id="edit-pengguna-id" placeholder=" " readonly
+                            style="background-color: rgba(215, 237, 255, 0.533)">
+                        <label for="edit-pengguna-id">ID</label>
+                    </div>
+                    <!-- Input untuk Nama Pengguna -->
+                    <div class="input-group">
+                        <input type="text" id="edit-pengguna-username" placeholder=" " required>
+                        <label for="edit-pengguna-nama-username">Nama Pengguna</label>
+                    </div>
+                    <!-- Input untuk Email -->
+                    <div class="input-group">
+                        <input type="text" id="edit-pengguna-email" placeholder=" " required>
+                        <label for="edit-pengguna-email">Email</label>
+                    </div>
+                    <!--Input untuk Peran (Non-editable)-->
+                    <div class="input-group">
+                        <input type="text" id="edit-pengguna-role" placeholder=" " readonly
+                            style="background-color: rgba(215, 237, 255, 0.533)">
+                        <label for="edit-pengguna-role">Peran</label>
+                    </div>
+                    <!-- Input untuk No.telepon -->
+                    <div class="input-group">
+                        <input type="text" id="edit-pengguna-telepon" placeholder=" " required>
+                        <label for="edit-pengguna-telepon">No.telepon</label>
+                    </div>
+                    <!-- Input untuk Foto -->
+                    <div class="input-group">
+                        <input type="file" id="edit-pengguna-foto" accept="assets/*">
+                        <label for="edit-pengguna-foto">Foto</label>
+                        <span id="file-name" class="mt-2"></span> <!-- Tempat untuk menampilkan nama file -->
+                    </div>
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn">Simpan Perubahan</button>
+                    <!-- Cancel Button -->
+                    <div class="cancel-btn-container">
+                        <button type="button" class="cancel-btn" data-bs-dismiss="modal">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- popup untuk menghapus pengguna (Popup) -->
+    <div class="modal fade" id="deleteUsersModal" tabindex="-1" aria-labelledby="deleteUsersModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="brand">
+                    <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
+                    <span class="text-center">Logic Coffee</span>
+                </div>
+                <h2 class="text-center category-title">Hapus Pengguna</h2>
+                <p class="welcome-text">Apakah Anda yakin ingin menghapus Pengguna ini?</p>
+                <div class="text-center">
+                    <!-- Konfirmasi Hapus -->
+                    <button id="confirm-delete-btn" class="submit-btn">Hapus</button>
+                    <!-- Cancel Button -->
+                    <div class="cancel-btn-container">
+                        <button type="button" class="cancel-btn" data-bs-dismiss="modal">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup untuk Ganti Kata Sandi -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="brand">
+                    <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
+                    <span class="text-center">Logic Coffee</span>
+                </div>
+                <h2 class="text-center form-title">Ganti Kata Sandi</h2>
+                <p class="welcome-text">Ganti Kata Sandi Anda!</p>
+                <form class="register-form" id="change-password-form" onsubmit="return changePassword()">
+                    <div class="input-group">
+                        <input type="password" id="now-password" placeholder=" " required>
+                        <label for="now-password">Kata Sandi Saat Ini</label>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('now-password')">
+                            <i class="fa-solid fa-eye" id="eye-now-password"></i>
+                        </span>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="new-password" placeholder=" " required>
+                        <label for="new-password">Kata Sandi Baru</label>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('new-password')">
+                            <i class="fa-solid fa-eye" id="eye-new-password"></i>
+                        </span>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="confirm-password" placeholder=" " required>
+                        <label for="confirm-password">Konfirmasi Kata Sandi</label>
+                        <span class="toggle-password" onclick="togglePasswordVisibility('confirm-password')">
+                            <i class="fa-solid fa-eye" id="eye-confirm-password"></i>
+                        </span>
+                    </div>
+                    <button type="submit" class="submit-btn">Simpan Kata Sandi</button>
+                    <div class="cancel-btn-container">
+                        <button type="button" class="cancel-btn" data-bs-dismiss="modal">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Data pengguna
+        const users = [
+            {
+                id: 1,
+                username: "Johndoe",
+                email: "johndoe@example.com",
+                phone: "(123) 456-7890",
+                role: "User",
+                image: "https://randomuser.me/api/portraits/men/1.jpg",
+            },
+            // Tambahkan data pengguna lainnya di sini...
+        ];
+
+        let deleteIndex = null; // Variable to store the index of the user to be deleted
+        let editIndex = null; // Variable to store the index of the user being edited
+        let changePasswordIndex = null; // Variable to store the index of the user whose password is being changed
+
+
+        function openEditModal(index) {
+            const user = users[index];
+            document.getElementById('edit-pengguna-id').value = user.id;
+            document.getElementById('edit-pengguna-username').value = user.username;
+            document.getElementById('edit-pengguna-email').value = user.email;
+            document.getElementById('edit-pengguna-telepon').value = user.phone;
+            document.getElementById('edit-pengguna-role').value = user.role;
+            // Setel nilai foto ke input
+            document.getElementById('file-name').textContent = user.image; // Menampilkan foto saat ini
+            // Reset input file foto, tidak perlu mengisinya
+            document.getElementById('edit-pengguna-foto').value = '';
+            // Simpan indeks pengguna yang sedang diedit
+            editIndex = index; // Pastikan editIndex diatur di sini
+
+            const modal = new bootstrap.Modal(document.getElementById('editUsersModal'));
+            modal.show();
+        }
+
+        function openDeleteModal(index) {
+            deleteIndex = index; // Store the index of the user to be deleted
+            const modal = new bootstrap.Modal(document.getElementById('deleteUsersModal'));
+            modal.show();
+        }
+
+        // Fungsi untuk menghapus pengguna
+        function deleteUser() {
+            if (deleteIndex !== null) {
+                // Hapus pengguna dari array
+                users.splice(deleteIndex, 1);
+
+                // Perbarui tampilan tabel
+                renderUserList();
+
+                // Reset deleteIndex
+                deleteIndex = null;
+
+                // Tampilkan pemberitahuan sukses dengan SweetAlert2
+                Swal.fire({
+                    title: 'Pengguna Dihapus!',
+                    text: 'Data pengguna berhasil dihapus.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Tutup modal setelah menekan OK di SweetAlert2
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('deleteUsersModal'));
+                    modal.hide();
+                });
+            }
+        }
+
+        // Fungsi untuk memperbarui pengguna
+        function ValidateUser(event) {
+            event.preventDefault(); // Mencegah pengiriman form default
+
+            if (editIndex !== null) {  // Pastikan editIndex digunakan di sini
+                // Ambil data dari form edit
+                users[editIndex].username = document.getElementById('edit-pengguna-username').value;
+                users[editIndex].email = document.getElementById('edit-pengguna-email').value;
+                users[editIndex].phone = document.getElementById('edit-pengguna-telepon').value;
+
+                // Simpan foto baru jika ada yang dipilih
+                const newPhotoInput = document.getElementById('edit-pengguna-foto');
+                if (newPhotoInput.files.length > 0) {
+                    // Anda dapat menambahkan logika untuk mengupload foto
+                    users[editIndex].image = URL.createObjectURL(newPhotoInput.files[0]); // Simulasi pemuatan gambar
+                }
+
+                // Perbarui tampilan tabel setelah data pengguna diedit
+                renderUserList();
+
+                // Tampilkan pemberitahuan sukses dengan SweetAlert2
+                Swal.fire({
+                    title: 'Sukses!',
+                    text: 'Data pengguna berhasil diubah!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Tutup modal setelah menekan OK di SweetAlert2
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editUsersModal'));
+                    modal.hide();
+                });
+
+                // Reset editIndex
+                editIndex = null;
+            }
+
+            return false; // Mencegah pengiriman form default
+        }
+
+
+        // Fungsi untuk menampilkan daftar pengguna di tabel
+        // Fungsi untuk menampilkan daftar pengguna di tabel
+        function renderUserList() {
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = ''; // Kosongkan tabel sebelum memperbarui
+
+            users.forEach((user, index) => {
+                userList.innerHTML += `
+            <tr>
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.email}</td>
+                <td id="role-user-${user.id}">${user.role}</td>
+                <td>${user.phone}</td>
+                <td><img src="${user.image}" alt="Foto" class="img-fluid"></td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">Aksi</button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#" onclick="openEditModal(${index})"><i class="fas fa-pen text-warning"></i> Ubah</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="openDeleteModal(${index})"><i class="fas fa-trash-alt text-danger"></i> Hapus</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="openChangePasswordModal(${index})"><i class="fas fa-key text-success"></i> Ganti Kata Sandi</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="upgradeToAdmin(${user.id})"><i class="fas fa-user-shield text-primary"></i> Jadikan Sebagai Admin</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        `;
+            });
+        }
+
+
+        // upgrade to admin
+        function upgradeToAdmin(userId) {
+            // Ambil elemen role berdasarkan ID pengguna yang di-click
+            var roleElement = document.getElementById(`role-user-${userId}`);
+
+            // Cek apakah elemen ditemukan
+            if (roleElement) {
+                // Cek apakah perannya saat ini adalah "User"
+                if (roleElement.textContent.trim() === 'User') {
+                    // Ubah teks menjadi "Admin"
+                    roleElement.textContent = 'Admin';
+
+                    // Tampilkan pesan sukses
+                    alert(`Pengguna dengan ID ${userId} telah di-upgrade menjadi Admin.`);
+                } else if (roleElement.textContent.trim() === 'Admin') {
+                    // Tampilkan pesan bahwa pengguna sudah admin
+                    alert(`Pengguna dengan ID ${userId} sudah merupakan Admin.`);
+                }
+            } else {
+                // Jika elemen role tidak ditemukan
+                alert(`Tidak dapat menemukan pengguna dengan ID ${userId}.`);
+            }
+        }
+
+
+        // Panggil renderUserList() ketika halaman dimuat
+        document.addEventListener('DOMContentLoaded', renderUserList);
+
+        // Event listener untuk tombol konfirmasi hapus
+        document.getElementById('confirm-delete-btn').addEventListener('click', deleteUser);
+
+        document.getElementById('edit-pengguna-foto').addEventListener('change', updateFileName);
+
+
+        function updateFileName() {
+            const fileInput = document.getElementById('edit-pengguna-foto');
+            const fileNameDisplay = document.getElementById('file-name');
+
+            if (fileInput.files.length > 0) {
+                fileNameDisplay.textContent = fileInput.files[0].name; // Menampilkan nama file
+            } else {
+                fileNameDisplay.textContent = ''; // Kosongkan jika tidak ada file yang dipilih
+            }
+        }
+
+        function openChangePasswordModal(index) {
+            changePasswordIndex = index; // Simpan indeks pengguna yang kata sandinya akan diubah
+            const modal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
+            modal.show();
+        }
+
+        function changePassword() {
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (newPassword === confirmPassword) {
+                // Proses perubahan kata sandi (di sini bisa ditambahkan logika untuk menyimpan kata sandi baru)
+
+                // Tampilkan SweetAlert2 setelah kata sandi berhasil diubah
+                Swal.fire({
+                    title: 'Sukses!',
+                    text: 'Kata sandi berhasil diubah.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    // Tutup modal setelah menekan OK di SweetAlert2
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                    modal.hide();
+
+                    // Reset input kata sandi setelah modal ditutup
+                    document.getElementById('new-password').value = '';
+                    document.getElementById('confirm-password').value = '';
+                });
+
+                return false; // Mencegah pengiriman form default
+            } else {
+                // Jika kata sandi tidak cocok, tampilkan alert
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: 'Kata sandi tidak cocok.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+
+            return false; // Mencegah pengiriman form default
+        }
+
+
+        // Fungsi untuk menampilkan/menyembunyikan password
+        function togglePasswordVisibility(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            const eyeIcon = document.getElementById('eye-' + fieldId);
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+
+            }
+        }
+
+        // Event listener untuk mencegah penempelan (paste) pada input password
+        document.getElementById('register-password').addEventListener('paste', function (e) {
+            e.preventDefault();
+            alert("Penempelan password tidak diizinkan.");
+        });
+        document.getElementById('register-confirm-password').addEventListener('paste', function (e) {
+            e.preventDefault();
+            alert("Penempelan password tidak diizinkan.");
+        });
+
+    </script>
+
+
+</body>
+
+</html>
