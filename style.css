@@ -502,8 +502,13 @@ h2 {
 
 .profile-icon:hover {
   /*background-color: #f8f9fa;  Ubah warna latar belakang saat hover */
-  color: #ffff;
+  color: #09431F;
   /* Ubah warna teks saat hover */
+}
+
+/* Untuk mengubah warna ikon juga saat di-hover */
+.profile-icon:hover i {
+  color: #09431F; /* Ganti #007BFF dengan warna yang Anda inginkan */
 }
 
 .dropdown .profile-icon .ms-2 {
@@ -771,7 +776,7 @@ td.action-column i {
 input {
   width: 100%;
   padding: 10px;
-  border: 2px solid #84b8c6 !important;
+  border: 2px solid #805700 !important;
   border-radius: 5px 0 0 5px !important;
   font-size: 16px;
   background-color: transparent;
@@ -834,7 +839,7 @@ input {
   top: -10px;
   transform: translateY(0) !important;
   font-size: 18px !important;
-  color: #84b8c6;
+  color: #805700;
   border-color: #033043 !important;
 }
 
