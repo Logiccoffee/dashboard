@@ -186,8 +186,7 @@ h2 {
 }
 
 .menu-wrap nav section {
-  display: block;
-  padding: 3em 0 0;
+  margin-bottom: 5px !important;
 }
 
 .menu-wrap nav h3 {
@@ -967,6 +966,11 @@ input {
   font-size: 16px;
   /* Sesuaikan ukuran font jika diperlukan */
   text-align: center;
+}
+
+.discover h3 {
+  color: #09431F !important; /* Ganti dengan kode warna hijau yang kamu inginkan */
+  font-weight: bold !important; /* (Opsional) Menebalkan tulisan agar lebih menonjol */
 }
 
 @media (max-width: 576px) {
