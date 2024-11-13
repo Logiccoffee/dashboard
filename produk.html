@@ -18,172 +18,484 @@
 
 <body>
     <div class="dashboard">
-        <!-- Sidebar dan Topbar -->
-        <aside class="search-wrap">
-            <div class="search">
-                <label for="search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"></svg>
-                </label>
-            </div>
+		<aside class="search-wrap">
+			<div class="search">
+				<label for="search">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+						<!-- Isi SVG -->
+					</svg>
+				</label>
+			</div>
 
-            <form class="d-flex mx-auto my-2 search-form">
-                <input class="form-control me-2 search-input" type="search" placeholder="Cari produk..." aria-label="Search">
-                <button class="btn btn-warning" type="submit">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </form>
+			<form class="d-flex mx-auto my-2 search-form">
+				<input class="form-control me-2 search-input" type="search" placeholder="Cari..." aria-label="Search">
+				<button class="btn btn-warning" type="submit">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+			</form>
 
-            <div class="dropdown">
-                <a href="#" class="profile-icon dropdown-toggle d-flex align-items-center mx-2" id="profileDropdown"
-                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-circle-user"></i>
-                    <span class="username ms-2">Nama Pengguna</span> <!-- Nama Pengguna -->
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                    <li><a class="dropdown-item profile-edit" href="/profile"><i class="fa-solid fa-user-edit"></i> Ubah Profil</a></li>
-                    <li><a class="dropdown-item logout" href="/logout"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
-            </div>
-        </aside>
+			<div class="dropdown">
+				<a href="#" class="profile-icon dropdown-toggle d-flex align-items-center mx-2" id="profileDropdown"
+					role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					<i class="fa-solid fa-circle-user"></i>
+					<span class="username ms-2">Nama Pengguna</span> <!-- Tambahkan kelas 'username' untuk styling -->
+				</a>
+				<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+					<li><a class="dropdown-item profile-edit" href="/profile"><i class="fa-solid fa-user-edit"></i> Ubah
+							Profil</a></li>
+					<li><a class="dropdown-item logout" href="/logout"><i class="fa-solid fa-sign-out-alt"></i>
+							Logout</a></li>
+				</ul>
+			</div>
+		</aside>
 
-        <header class="menu-wrap">
-            <figure class="user">
-                <div class="user-avatar">
-                    <img src="/img/logo logic.png" alt="Plastiqu.Co">
-                </div>
-                <figcaption>LogicCoffee</figcaption>
-            </figure>
+		<header class="menu-wrap">
+			<figure class="user">
+				<div class="user-avatar">
+					<img src="img/logo logic.png" alt="Plastiqu.Co">
+				</div>
+				<figcaption>LogicCoffee</figcaption>
+			</figure>
 
-            <nav>
-                <section class="dicover">
-                    <h3>Kelola</h3>
-                    <ul>
-                        <li><a href="index.html"><i class="fa-solid fa-house" style="margin-right: 10px;"></i> Dasbor</a></li>
-                        <li><a href="analitik.html"><i class="fa-solid fa-chart-line" style="margin-right: 10px;"></i>Analitik</a></li>
-                        <li><a href="ulasan.html"><i class="fa-solid fa-comment" style="margin-right: 10px;"></i>Ulasan</a></li>
-                        <li><a href="banner.html"><i class="fa-solid fa-image" style="margin-right: 10px;"></i>Kustom Banner</a></li>
-                        <li><a href="users.html"><i class="fa-solid fa-user-gear" style="margin-right: 10px;"></i> Pengguna</a></li>
-                        <li><a href="alamatpengguna.html"><i class="fa-solid fa-map" style="margin-right: 10px;"></i> Alamat Pengguna</a></li>
-                        <li><a href="category.html"><i class="fa-solid fa-list" style="margin-right: 10px;"></i> Kategori</a></li>
-                        <li><a href="produk.html" class="active"><i class="fa-solid fa-pen" style="margin-right: 10px;"></i> Produk</a></li>
-                        <li><a href="daftarpesanan.html"><i class="fa-solid fa-box" style="margin-right: 10px;"></i>Daftar Pesanan</a></li>
-                        <li><a href="keuangan.html"><i class="fa-solid fa-hand-holding-dollar" style="margin-right: 10px;"></i> Keuangan</a></li>
-                    </ul>
-                </section>
-            </nav>
-        </header>
+			<nav>
+				<!-- Bagian Dasbor dan Alat Utama -->
+				<section class="main-tools">
+					<ul>
+						<li>
+							<a href="index.html">
+								<i class="fa-solid fa-house" style="margin-right: 10px;"></i>
+								Dasbor
+							</a>
+						</li>
+						<li>
+							<a href="analitik.html">
+								<i class="fa-solid fa-chart-line" style="margin-right: 10px;"></i>
+								Analitik
+							</a>
+						</li>
+						<li>
+							<a href="alamatpengguna.html">
+								<i class="fa-solid fa-map" style="margin-right: 10px;"></i>
+								Alamat Pengguna
+							</a>
+						</li>
+					</ul>
+				</section>
+		
+				<!-- Bagian Kelola -->
+				<section class="discover">
+					<h3>Kelola</h3>
+					<ul>
+						<li>
+							<a href="ulasan.html">
+								<i class="fa-solid fa-comment" style="margin-right: 10px;"></i>
+								Ulasan
+							</a>
+						</li>
+						<li>
+							<a href="banner.html">
+								<i class="fa-solid fa-image" style="margin-right: 10px;"></i>
+								Kustom Banner
+							</a>
+						</li>
+						<li>
+							<a href="users.html">
+								<i class="fa-solid fa-user-gear" style="margin-right: 10px;"></i>
+								Pengguna
+							</a>
+						</li>
+						<li>
+							<a href="category.html">
+								<i class="fa-solid fa-list" style="margin-right: 10px;"></i>
+								Kategori
+							</a>
+						</li>
+						<li>
+							<a href="produk.html" class="active">
+								<i class="fa-solid fa-pen" style="margin-right: 10px;"></i>
+								Produk
+							</a>
+						</li>
+						<li>
+							<a href="daftarpesanan.html">
+								<i class="fa-solid fa-box" style="margin-right: 10px;"></i>
+								Daftar Pesanan
+							</a>
+						</li>
+						<li>
+							<a href="keuangan.html">
+								<i class="fa-solid fa-hand-holding-dollar" style="margin-right: 10px;"></i>
+								Keuangan
+							</a>
+						</li>
+					</ul>
+				</section>
+			</nav>
+		</header>
 
         <main class="content-wrap">
             <header class="content-head d-flex justify-content-between align-items-center">
                 <h1 class="dashboard-tittle">Daftar Produk</h1>
-                <button class="btn btn-primary" onclick="redirectToAdd()">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
                     <i class="fas fa-plus"></i> Tambah Produk
                 </button>
             </header>
-            
-            <table class="table table-striped" id="productTable">
-                <thead>
-                    <tr>
-                        <th>Nama Produk</th>
-                        <th>Varian</th>
-                        <th>Stok</th>
-                        <th>Harga</th>
-                        <th>Deskripsi</th>
-                        <th>Kategori</th>
-                        <th>Gambar</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="productList">
-                    <!-- Data produk akan dimuat di sini -->
-                </tbody>
-            </table>
+
+            <div class="row" id="productList">
+                <!-- Data produk akan dimuat di sini -->
+            </div>
         </main>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-        // Ambil produk dari localStorage
-        const products = JSON.parse(localStorage.getItem('products')) || [];
-
-        // Menampilkan produk dalam tabel
-        const productList = document.getElementById('productList');
-
-        function renderProductList() {
-            productList.innerHTML = ''; // Kosongkan daftar produk
-            products.forEach((product, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${product.name}</td>
-                    <td>${product.variants.map(v => v.name).join(", ")}</td>
-                    <td>${product.variants.map(v => v.stock).join(", ")}</td>
-                    <td>${product.variants.map(v => v.price).join(", ")}</td>
-                    <td>${product.description}</td>
-                    <td>${product.category}</td>
-                    <td>
-                        <img src="${product.image}" alt="${product.name}" style="width: 100px; height: 100px; object-fit: cover;" onerror="this.onerror=null; this.src='/assets/default-image.png';">
-                    </td>
-                `;
-
-                const actionCell = document.createElement('td');
-                actionCell.innerHTML = `
-                    <div class="d-flex justify-content-between">
-                        <button class="btn btn-warning btn-edit" data-index="${index}" onclick="redirectToEdit(${index})">
-                            <i class="fas fa-pen"></i> Ubah
+    
+    <!-- Modal Tambah Produk -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Tambah Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProductForm">
+                        <div class="mb-3">
+                            <label for="productCategory" class="form-label">Kategori</label>
+                            <select class="form-select" id="productCategory" required>
+                                <option value="" disabled selected>Pilih Kategori</option>
+                                <option value="Hot">Hot</option>
+                                <option value="Ice">Ice</option>
+                                <option value="Non Coffee">Non Coffee</option>
+                                <option value="Dessert">Dessert</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productName" class="form-label">Nama Produk</label>
+                            <input type="text" class="form-control" id="productName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productDescription" class="form-label">Deskripsi Produk</label>
+                            <textarea class="form-control" id="productDescription" rows="3" required></textarea>
+                        </div>
+                        <div id="variantsContainer" class="mb-3">
+                            <h6>Varian Produk</h6>
+                            <div class="input-group mb-2">
+                                <input type="text" class="form-control me-1" placeholder="Varian" required>
+                                <input type="number" class="form-control me-1" placeholder="Stok" required>
+                                <input type="number" class="form-control" placeholder="Harga" required>
+                            </div>
+                        </div>
+                        <button type="button" id="addVariantLink" class="btn btn-secondary btn-sm">
+                            <i class="fa-solid fa-plus"></i> Tambah Varian
                         </button>
-                        <button class="btn btn-danger btn-delete" data-index="${index}" onclick="confirmDelete(${index})">
-                            <i class="fas fa-trash-alt"></i> Hapus
-                        </button>
+                        <div class="mb-3">
+                            <label for="productImage" class="form-label">Gambar Produk</label>
+                            <input class="form-control" type="file" id="productImage" accept="image/*" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Tambah Produk</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+   <!-- Modal Edit Produk -->
+<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProductModalLabel">Edit Produk</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm">
+                    <div class="mb-3">
+                        <label for="editProductCategory" class="form-label">Kategori</label>
+                        <input type="text" class="form-control" id="editProductCategory" required>
                     </div>
-                `;
+                    <div class="mb-3">
+                        <label for="editProductName" class="form-label">Nama Produk</label>
+                        <input type="text" class="form-control" id="editProductName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editProductDescription" class="form-label">Deskripsi</label>
+                        <textarea class="form-control" id="editProductDescription" rows="3" required></textarea>
+                    </div>
+                    <!-- Variants container -->
+                    <div id="editVariantsContainer" class="mb-3">
+                        <!-- Variants inputs will be dynamically added here -->
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="addVariantLink">Tambah Varian</button>
+                    <div class="mb-3">
+                        <label for="editProductImage" class="form-label">Gambar Produk</label>
+                        <input type="file" class="form-control" id="editProductImage">
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Simpan Perubahan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-                row.appendChild(actionCell);
-                productList.appendChild(row);
+<!-- SweetAlert2 dan Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Ambil produk dari localStorage
+const products = JSON.parse(localStorage.getItem('products')) || [];
+
+// Fungsi untuk mengambil parameter dari URL
+function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+}
+
+// Fungsi untuk menambahkan input varian baru
+document.getElementById('addVariantLink').addEventListener('click', function(event) {
+    event.preventDefault(); // Menghindari navigasi
+    const variantsContainer = document.getElementById('variantsContainer');
+    const newVariant = document.createElement('div');
+    newVariant.classList.add('variant-input-group');
+    newVariant.innerHTML = `
+        <input type="text" placeholder="Varian" required>
+        <input type="number" placeholder="Stok" required>
+        <input type="number" placeholder="Harga (Range)" required>
+    `;
+    variantsContainer.appendChild(newVariant);
+});
+
+// Fungsi untuk menyimpan perubahan produk
+document.getElementById('editProductForm').onsubmit = async function(event) {
+    event.preventDefault();
+
+    const updatedProduct = {
+        category: document.getElementById('productCategory').value,
+        name: document.getElementById('productName').value.trim(),
+        description: document.getElementById('productDescription').value.trim(),
+        variants: []
+    };
+
+    // Mengambil data varian
+    const variantGroups = document.querySelectorAll('.variant-input-group');
+    variantGroups.forEach(variant => {
+        const variantName = variant.children[0].value.trim();
+        const variantStock = variant.children[1].value.trim();
+        const variantPrice = variant.children[2].value.trim();
+        updatedProduct.variants.push({
+            name: variantName,
+            stock: variantStock,
+            price: variantPrice
+        });
+    });
+
+    // Jika gambar diubah, tambahkan gambar baru
+    const imageFile = document.getElementById('productImage').files[0];
+    if (imageFile) {
+        updatedProduct.image = await getBase64(imageFile);
+    } else {
+        updatedProduct.image = products[productIndex].image; // Menggunakan gambar yang lama
+    }
+
+    // Perbarui produk di localStorage
+    products[productIndex] = updatedProduct;
+    localStorage.setItem('products', JSON.stringify(products));
+
+    // Tampilkan SweetAlert setelah berhasil menyimpan
+    Swal.fire({
+        title: 'Sukses!',
+        text: 'Produk berhasil diubah!',
+        icon: 'success',
+        confirmButtonText: 'OK'
+    }).then(() => {
+        window.location.href = 'produk.html'; // Kembali ke halaman produk setelah menekan OK
+    });
+};
+
+// Fungsi untuk mengonversi gambar ke Base64
+function getBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+// Fungsi untuk menampilkan daftar produk
+function renderProductList() {
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    const productList = document.getElementById('productList');
+    productList.innerHTML = '';
+
+    products.forEach((product, index) => {
+        const card = document.createElement('div');
+        card.className = 'col-md-4 mb-4';
+        card.innerHTML = `
+            <div class="card h-100 shadow-sm">
+                <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="card-text"><strong>Varian:</strong> ${product.variants.map(v => v.name).join(", ")}</p>
+                    <p class="card-text"><strong>Stok:</strong> ${product.variants.map(v => v.stock).join(", ")}</p>
+                    <p class="card-text"><strong>Harga:</strong> Rp${product.variants.map(v => v.price).join(", ")}</p>
+                    <p class="card-text">${product.description}</p>
+                    <p class="card-text"><strong>Kategori:</strong> ${product.category}</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <button class="btn btn-warning btn-edit" onclick="openEditProductPopup(${index})">
+                        <i class="fas fa-pen"></i> Ubah
+                    </button>
+                    <button class="btn btn-danger btn-delete" onclick="confirmDelete(${index})">
+                        <i class="fas fa-trash-alt"></i> Hapus
+                    </button>
+                </div>
+            </div>
+        `;
+        productList.appendChild(card);
+    });
+}
+
+// Fungsi untuk menampilkan daftar produk
+function renderProductList() {
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    const productList = document.getElementById('productList');
+    productList.innerHTML = '';
+
+    products.forEach((product, index) => {
+        const card = document.createElement('div');
+        card.className = 'col-md-4 mb-4';
+        card.innerHTML = `
+            <div class="card h-100 shadow-sm">
+                <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="card-text"><strong>Varian:</strong> ${product.variants.map(v => v.name).join(", ")}</p>
+                    <p class="card-text"><strong>Stok:</strong> ${product.variants.map(v => v.stock).join(", ")}</p>
+                    <p class="card-text"><strong>Harga:</strong> Rp${product.variants.map(v => v.price).join(", ")}</p>
+                    <p class="card-text">${product.description}</p>
+                    <p class="card-text"><strong>Kategori:</strong> ${product.category}</p>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <!-- Tombol Ubah, memanggil openEditProductPopup -->
+                    <button class="btn btn-warning btn-edit" onclick="openEditProductPopup(${index})">
+                        <i class="fas fa-pen"></i> Ubah
+                    </button>
+                    <!-- Tombol Hapus -->
+                    <button class="btn btn-danger btn-delete" onclick="confirmDelete(${index})">
+                        <i class="fas fa-trash-alt"></i> Hapus
+                    </button>
+                </div>
+            </div>
+        `;
+        productList.appendChild(card);
+    });
+}
+
+// Fungsi untuk membuka popup edit produk
+function openEditProductPopup(index) {
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    const product = products[index];
+
+    // Isi form dalam popup dengan data produk yang ingin diubah
+    document.getElementById('editProductCategory').value = product.category;
+    document.getElementById('editProductName').value = product.name;
+    document.getElementById('editProductDescription').value = product.description;
+
+    // Isi varian produk dalam popup
+    const variantsContainer = document.getElementById('editVariantsContainer');
+    variantsContainer.innerHTML = ''; // Clear previous variants
+    product.variants.forEach(variant => {
+        const variantDiv = document.createElement('div');
+        variantDiv.classList.add('variant-input-group');
+        variantDiv.innerHTML = `
+            <input type="text" placeholder="Varian" value="${variant.name}" required>
+            <input type="number" placeholder="Stok" value="${variant.stock}" required>
+            <input type="number" placeholder="Harga (Range)" value="${variant.price}" required>
+        `;
+        variantsContainer.appendChild(variantDiv);
+    });
+
+    // Show the modal using Bootstrap 5 API (tanpa jQuery)
+    var editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+    editProductModal.show();
+}
+
+    // Update product in localStorage when the form is submitted
+    document.getElementById('editProductForm').onsubmit = async function(event) {
+        event.preventDefault();
+
+        const updatedProduct = {
+            category: document.getElementById('editProductCategory').value,
+            name: document.getElementById('editProductName').value.trim(),
+            description: document.getElementById('editProductDescription').value.trim(),
+            variants: []
+        };
+
+        // Mengambil data varian
+        const variantGroups = document.querySelectorAll('.variant-input-group');
+        variantGroups.forEach(variant => {
+            const variantName = variant.children[0].value.trim();
+            const variantStock = variant.children[1].value.trim();
+            const variantPrice = variant.children[2].value.trim();
+            updatedProduct.variants.push({
+                name: variantName,
+                stock: variantStock,
+                price: variantPrice
             });
+        });
+
+        // Jika gambar diubah, tambahkan gambar baru
+        const imageFile = document.getElementById('editProductImage').files[0];
+        if (imageFile) {
+            updatedProduct.image = await getBase64(imageFile);
+        } else {
+            updatedProduct.image = product.image; // Menggunakan gambar yang lama
         }
 
-        // Memanggil fungsi untuk menampilkan produk
-        renderProductList();
+        // Perbarui produk di localStorage
+        products[index] = updatedProduct;
+        localStorage.setItem('products', JSON.stringify(products));
 
-        // Fungsi untuk mengarahkan ke halaman edit
-        function redirectToEdit(index) {
-            window.location.href = `edit_produk.html?index=${index}`;
+        // Tampilkan SweetAlert setelah berhasil menyimpan
+        Swal.fire({
+            title: 'Sukses!',
+            text: 'Produk berhasil diubah!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            $('#editProductModal').modal('hide'); // Hide the modal
+            renderProductList(); // Refresh the product list
+        });
+    };
+
+
+// Fungsi untuk mengonfirmasi penghapusan produk
+function confirmDelete(index) {
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Produk ini akan dihapus!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteProduct(index);
         }
+    });
+}
 
-        // Fungsi untuk mengarahkan ke halaman tambah produk
-        function redirectToAdd() {
-            window.location.href = 'tambah_produk.html';  // Jangan tambahkan query index
-        }
+// Fungsi untuk menghapus produk
+function deleteProduct(index) {
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    products.splice(index, 1);
+    localStorage.setItem('products', JSON.stringify(products));
+    renderProductList(); // Perbarui daftar produk
+}
 
-        // Fungsi konfirmasi hapus
-        function confirmDelete(index) {
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Anda tidak akan dapat mengembalikannya!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Hapus produk dari array
-                    products.splice(index, 1);
-                    // Simpan ke localStorage
-                    localStorage.setItem('products', JSON.stringify(products));
-                    // Perbarui tampilan tabel
-                    renderProductList();
-
-                    Swal.fire(
-                        'Terhapus!',
-                        'Produk telah dihapus.',
-                        'success'
-                    );
-                }
-            });
-        }
-    </script>
+// Panggil renderProductList ketika halaman dimuat
+    renderProductList();
+</script>
 </body>
 </html>
