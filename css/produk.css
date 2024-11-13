@@ -1,16 +1,21 @@
-/* Mengatur box-sizing untuk semua elemen */
-
 * {
   box-sizing: border-box;
 }
-html, body {
-	color: #99a0b0;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	background: #f5f5fa;
-	font-family: 'Signika', Arial, sans-serif;
+
+html,
+body {
+  color: #99a0b0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #f5f5fa;
+  font-family: 'Signika', Arial, sans-serif;
 }
+
+h2 {
+  color: #000;
+}
+
 .dashboard {
   display: grid;
   width: 100%;
@@ -20,14 +25,16 @@ html, body {
   grid-template-rows: 80px auto;
   grid-template-areas: 'menu search' 'menu content';
 }
+
 .dashboard-tittle {
   font-family: 'signika';
   font-weight: 700;
   font-size: 2rem;
 }
+
 .search-wrap {
   grid-area: search;
-  background: #84b8c6;
+  background: #ffff;
   color: #ffff;
   border-bottom: 1px solid #ede8f0;
   display: flex;
@@ -35,46 +42,60 @@ html, body {
   justify-content: space-between;
   padding: 0 3em;
 }
+
 .search-form {
   margin-left: 0px;
-  max-width: 500px; /*menyesuaikan lebar */
+  max-width: 500px;
+  /*menyesuaikan lebar */
   width: 100%
 }
 
 .search-input {
-  border: 5px solid #ced4da; /* Warna border */
-  border-radius: 5px; /* Sudut melengkung */
+  border: 5px solid #ced4da;
+  /* Warna border */
+  border-radius: 5px 5px 5px 5px !important;
+  /* Sudut melengkung */
 }
 
 .search-input:focus {
-  border-color: #ffc107; /* Warna border saat fokus */
-  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25); /* Bayangan saat fokus */
+  border-color: #ffc107;
+  /* Warna border saat fokus */
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+  /* Bayangan saat fokus */
 }
 
 .btn-warning {
-  background-color: #ffc107; /* Warna latar belakang tombol */
-  border: none; /* Hapus border */
+  background-color: #ffc107;
+  /* Warna latar belakang tombol */
+  border: none;
+  /* Hapus border */
 }
 
 .btn-warning:hover {
-  background-color: #e0a800; /* Warna saat hover */
+  background-color: #e0a800;
+  /* Warna saat hover */
 }
+
 .search-wrap .search {
   height: 40px;
 }
+
 .search-wrap .search label {
   display: flex;
   align-items: center;
   height: 100%;
 }
+
 .search-wrap .search label svg {
   display: block;
 }
+
 .search-wrap .search label svg path,
 .search-wrap .search label svg circle {
   fill: #b6bbc6;
   transition: fill 0.15s ease;
 }
+
 .search-wrap .search label input {
   display: block;
   padding-left: 1em;
@@ -83,13 +104,16 @@ html, body {
   border: 0;
   width: 80%;
 }
+
 .search-wrap .search label input:focus {
   background: #f5f5fa;
 }
+
 .search-wrap .search label:hover svg path,
 .search-wrap .search label:hover svg circle {
   fill: #2b3a60;
 }
+
 .search-wrap .user-actions button {
   border: 0;
   background: none;
@@ -99,15 +123,18 @@ html, body {
   padding: 0;
   margin-left: 0.5em;
 }
+
 .search-wrap .user-actions button svg {
   position: relative;
   top: 2px;
 }
+
 .search-wrap .user-actions button svg path,
 .search-wrap .user-actions button svg circle {
   fill: #b6bbc6;
   transition: fill 0.15s ease;
 }
+
 .search-wrap .user-actions button:hover svg path,
 .search-wrap .user-actions button:hover svg circle {
   fill: #2b3a60;
@@ -117,10 +144,11 @@ html, body {
   grid-area: menu;
   padding-bottom: 3em;
   overflow: auto;
-  background: #84b8c6;
+  background: #ffff !important;
   border-right: 1px solid #ede8f0;
   font-family: "Signika", Arial, sans-serif;
 }
+
 .menu-wrap .user {
   height: 80px;
   display: flex;
@@ -129,11 +157,13 @@ html, body {
   margin: 0;
   padding: 1em 3em;
 }
+
 .menu-wrap .user .user-avatar {
-  width: auto;
+  width: 60px;
   height: 60px;
   overflow: hidden;
 }
+
 .menu-wrap .user .user-avatar img {
   display: block;
   width: 100%;
@@ -141,21 +171,24 @@ html, body {
   -o-object-fit: cover;
   object-fit: cover;
 }
+
 .menu-wrap .user figcaption {
-  color: #033043;
+  color: #805700 !important;
   font-weight: 700;
   font-size: 24px;
   line-height: 100%;
   font-family: 'signika';
 }
+
 .menu-wrap nav {
   display: block;
   padding: 0 3em;
 }
+
 .menu-wrap nav section {
-  display: block;
-  padding: 3em 0 0;
+  margin-bottom: 5px !important;
 }
+
 .menu-wrap nav h3 {
   margin: 0;
   font-size: 17px;
@@ -163,82 +196,104 @@ html, body {
   color: #033043;
   font-weight: 600;
 }
+
 .menu-wrap nav ul {
   display: block;
   padding: 0;
   margin: 0.75em 0;
   margin-top: 1em;
 }
+
 .menu-wrap nav li {
   display: block;
   padding: 0.25em 0;
   margin: 1em 0 0;
   margin-bottom: 8px;
 }
+
 .menu-wrap nav li a {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  color: #ffff;
+  color: #033043;
   text-decoration: none;
   font-weight: 600;
   font-size: 16px;
   transition: color 0.15s ease;
   padding-left: 0em;
 }
+
 .menu-wrap nav ul li {
   display: block;
   padding: 0.25em 0;
   margin: 0em 0;
 }
+
 .menu-wrap nav li a {
   padding: 8px 15px;
   margin-bottom: 5px;
 }
+
 .menu-wrap nav ul li a.active {
-  background-color: #033043;
-  color: white;
+  background-color: #09431F;
+  color: white !important;
   border-radius: 5px;
-  border-left: 5px solid #4b84fe;
+  border-left: 5px solid #917c4f;
   padding-left: 15px;
   margin-bottom: 5px;
   padding: 10px 15px;
 }
+
+.menu-wrap nav ul li a {
+  color: #805700 !important;
+}
+
+.menu-wrap nav ul li a:hover {
+  color: #6C7424 !important; /* Ganti #0056b3 dengan warna yang diinginkan saat link di-hover */
+}
+
 .menu-wrap nav li a svg {
   display: block;
   margin-right: 1em;
 }
+
 .menu-wrap nav li a svg path,
 .menu-wrap nav li a svg circle {
   fill: #b6bbc6;
   transition: fill 0.15s ease;
 }
+
 .menu-wrap nav li a:hover {
   color: #1b253d;
 }
+
 .menu-wrap nav li a:hover svg path,
 .menu-wrap nav li a:hover svg circle {
   fill: #2b3a60;
 }
+
 .menu-wrap nav li a.active {
   color: #4b84fe;
 }
+
 .menu-wrap nav li a.active svg path,
 .menu-wrap nav li a.active svg circle {
   fill: #4b84fe;
 }
+
 .content-wrap {
   background-color: #ffff;
   grid-area: content;
   padding: 3em;
   overflow: auto;
 }
+
 .content-wrap .content-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px; /* Tambahkan jarak bawah */
 }
+
 .content-wrap .content-head h1 {
   font-size: 2em;
   line-height: 100%;
@@ -247,6 +302,7 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
 .content-wrap .content-head .action button {
   border: 0;
   background: #4b84fe;
@@ -259,21 +315,24 @@ html, body {
   text-transform: uppercase;
   font-weight: 600;
   transition: background-color 0.15s ease;
-  
 }
+
 .content-wrap .content-head .action button:hover {
   background-color: #1861fe;
 }
+
 .content-wrap .content-head .action button:hover:active {
   background-color: #0149e2;
   transition: none;
 }
+
 .content-wrap .info-boxes {
   padding: 3em 0 2em;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   grid-gap: 2em;
 }
+
 .content-wrap .info-boxes .info-box {
   background: #fff;
   height: 160px;
@@ -281,39 +340,46 @@ html, body {
   align-items: center;
   justify-content: flex-start;
   padding: 0 3em;
-  border: 3px solid #84b8c6 !important;
+  border: 3px solid #805700 !important;
   border-radius: 5px;
 }
+
 .content-wrap .info-boxes .info-box .box-icon svg {
   display: block;
   width: 48px;
   height: 48px;
 }
+
 .content-wrap .info-boxes .info-box .box-icon svg path,
 .content-wrap .info-boxes .info-box .box-icon svg circle {
   fill: #99a0b0;
 }
+
 .content-wrap .info-boxes .info-box .box-content {
   padding-left: 1.25em;
   white-space: nowrap;
   font-size: 20px !important;
 }
+
 .content-wrap .info-boxes .info-box .box-content .big {
   display: block;
   font-weight: bold !important;
   line-height: 150%;
   color: #1b253d;
 }
+
 .content-wrap .info-boxes .info-box.active svg circle,
 .content-wrap .info-boxes .info-box.active svg path {
   fill: #4b84fe;
 }
+
 .content-wrap .person-boxes {
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   grid-gap: 2em;
 }
+
 .content-wrap .person-boxes .person-box {
   background: #fff;
   height: 320px;
@@ -322,12 +388,15 @@ html, body {
   border: 1px solid #ede8f0;
   border-radius: 5px;
 }
+
 .content-wrap .person-boxes .person-box:nth-child(2n) .box-avatar .no-name {
   background: #4b84fe;
 }
+
 .content-wrap .person-boxes .person-box:nth-child(5n) .box-avatar .no-name {
   background: #ffbb09;
 }
+
 .content-wrap .person-boxes .person-box .box-avatar {
   width: 100px;
   height: 100px;
@@ -335,6 +404,7 @@ html, body {
   margin: 0px auto;
   overflow: hidden;
 }
+
 .content-wrap .person-boxes .person-box .box-avatar img {
   display: block;
   width: 100%;
@@ -342,6 +412,7 @@ html, body {
   -o-object-fit: cover;
   object-fit: cover;
 }
+
 .content-wrap .person-boxes .person-box .box-avatar .no-name {
   display: flex;
   align-items: center;
@@ -355,9 +426,11 @@ html, body {
   height: 100%;
   background: #fa5b67;
 }
+
 .content-wrap .person-boxes .person-box .box-bio {
   white-space: no-wrap;
 }
+
 .content-wrap .person-boxes .person-box .box-bio .bio-name {
   margin: 2em 0 0.75em;
   color: #1b253d;
@@ -365,11 +438,13 @@ html, body {
   font-weight: 700;
   line-height: 100%;
 }
+
 .content-wrap .person-boxes .person-box .box-bio .bio-position {
   margin: 0;
   font-size: 0.875em;
   line-height: 100%;
 }
+
 .content-wrap .person-boxes .person-box .box-actions {
   margin-top: 1.25em;
   padding-top: 1.25em;
@@ -379,6 +454,7 @@ html, body {
   align-items: center;
   justify-content: space-between;
 }
+
 .content-wrap .person-boxes .person-box .box-actions button {
   border: 0;
   background: none;
@@ -387,15 +463,18 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
 .content-wrap .person-boxes .person-box .box-actions button svg {
   position: relative;
   top: 2px;
 }
+
 .content-wrap .person-boxes .person-box .box-actions button svg path,
 .content-wrap .person-boxes .person-box .box-actions button svg circle {
   fill: #b6bbc6;
   transition: fill 0.15s ease;
 }
+
 .content-wrap .person-boxes .person-box .box-actions button:hover svg path,
 .content-wrap .person-boxes .person-box .box-actions button:hover svg circle {
   fill: #2b3a60;
@@ -422,8 +501,13 @@ html, body {
 
 .profile-icon:hover {
   /*background-color: #f8f9fa;  Ubah warna latar belakang saat hover */
-  color: #ffff;
+  color: #09431F;
   /* Ubah warna teks saat hover */
+}
+
+/* Untuk mengubah warna ikon juga saat di-hover */
+.profile-icon:hover i {
+  color: #09431F; /* Ganti #007BFF dengan warna yang Anda inginkan */
 }
 
 .dropdown .profile-icon .ms-2 {
@@ -691,7 +775,7 @@ td.action-column i {
 input {
   width: 100%;
   padding: 10px;
-  border: 2px solid #84b8c6 !important;
+  border: 2px solid #805700 !important;
   border-radius: 5px 0 0 5px !important;
   font-size: 16px;
   background-color: transparent;
@@ -754,7 +838,7 @@ input {
   top: -10px;
   transform: translateY(0) !important;
   font-size: 18px !important;
-  color: #84b8c6;
+  color: #805700;
   border-color: #033043 !important;
 }
 
@@ -792,23 +876,101 @@ input {
 
 /* Custom styling for active pagination */
 .pagination .page-item.active .page-link {
-  background-color: #033043; /* Custom blue color */
-  border-color: #033043; /* Border warna biru */
-  color: white; /* Warna teks */
+  background-color: #033043;
+  /* Custom blue color */
+  border-color: #033043;
+  /* Border warna biru */
+  color: white;
+  /* Warna teks */
 }
 
 /* Custom border color for pagination */
 .pagination .page-item .page-link {
-  border-color: #033043; /* Custom green border */
-  color: #033043; /* Custom text color for non-active links */
+  border-color: #033043;
+  /* Custom green border */
+  color: #033043;
+  /* Custom text color for non-active links */
 }
 
 /* Custom background and border for Previous and Next buttons */
-.pagination .page-item:first-child .page-link, 
+.pagination .page-item:first-child .page-link,
 .pagination .page-item:last-child .page-link {
-    background-color: #84b8c6; /* Custom orange background */
-    color: white;
-    border-color: #033043; /* Custom orange border */
+  background-color: #84b8c6;
+  /* Custom orange background */
+  color: white;
+  border-color: #033043;
+  /* Custom orange border */
+}
+
+.banner-item {
+  border: 1px solid #ddd;
+  /* Border ringan di sekitar setiap banner */
+  padding: 15px;
+  /* Ruang di dalam border */
+  border-radius: 8px;
+  /* Sudut border melengkung */
+  background-color: #f9f9f9;
+  /* Warna latar belakang untuk lebih jelas */
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  /* Membuat tombol berada di tengah */
+  gap: 10px;
+  /* Jarak antara tombol Ubah dan Hapus */
+}
+
+.banner-item img {
+  max-width: 100%;
+  height: auto;
+  /* Gambar menyesuaikan ukuran kontainer */
+  border-radius: 8px;
+  /* Sudut gambar melengkung agar sesuai dengan kontainer */
+}
+
+.banner-title {
+  font-size: 18px;
+  font-weight: 600;
+  /* Menebalkan teks judul banner */
+  margin-bottom: 10px;
+  /* Jarak antara teks dan gambar */
+  color: #333;
+  /* Warna teks */
+  font-family: 'Signika';
+}
+
+.content-head {
+  margin-bottom: 20px;
+  /* Tambahkan jarak lebih besar antara judul dan elemen di bawahnya */
+}
+
+.d-flex.justify-content-between.align-items-center.mb-3 {
+  margin-top: 20px;
+  /* Jika ingin memberikan jarak tambahan setelah elemen ini juga */
+}
+
+.user-avatar img {
+  width: 70px;
+  /* Lebar logo */
+  height: auto;
+  /* Menjaga proporsi asli gambar */
+  margin-right: 10px;
+}
+
+.user figcaption {
+  margin-top: 5px !important;
+  /* Atur jarak antara logo dan tulisan */
+  margin-left: 4px;
+  /* Geser teks ke kanan */
+  font-size: 16px;
+  /* Sesuaikan ukuran font jika diperlukan */
+  text-align: center;
+}
+
+.discover h3 {
+  color: #09431F !important; /* Ganti dengan kode warna hijau yang kamu inginkan */
+  font-weight: bold !important; /* (Opsional) Menebalkan tulisan agar lebih menonjol */
 }
 
 @media (max-width: 576px) {
