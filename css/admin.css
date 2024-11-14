@@ -173,7 +173,7 @@ h2 {
 }
 
 .menu-wrap .user figcaption {
-  color: #805700 !important;
+  color: #09431F !important;
   font-weight: 700;
   font-size: 24px;
   line-height: 100%;
@@ -238,7 +238,7 @@ h2 {
   background-color: #09431F;
   color: white !important;
   border-radius: 5px;
-  border-left: 5px solid #917c4f;
+  border-left: 5px solid #c9994c;
   padding-left: 15px;
   margin-bottom: 5px;
   padding: 10px 15px;
@@ -249,7 +249,7 @@ h2 {
 }
 
 .menu-wrap nav ul li a:hover {
-  color: #6C7424 !important; /* Ganti #0056b3 dengan warna yang diinginkan saat link di-hover */
+  color: #c9994c !important; /* Ganti #0056b3 dengan warna yang diinginkan saat link di-hover */
 }
 
 .menu-wrap nav li a svg {
@@ -501,13 +501,13 @@ h2 {
 
 .profile-icon:hover {
   /*background-color: #f8f9fa;  Ubah warna latar belakang saat hover */
-  color: #09431F;
+  color: #c9994c;
   /* Ubah warna teks saat hover */
 }
 
 /* Untuk mengubah warna ikon juga saat di-hover */
 .profile-icon:hover i {
-  color: #09431F; /* Ganti #007BFF dengan warna yang Anda inginkan */
+  color: #c9994c; /* Ganti #007BFF dengan warna yang Anda inginkan */
 }
 
 .dropdown .profile-icon .ms-2 {
@@ -593,8 +593,15 @@ h2 {
 
 /* Mengubah warna border seluruh tabel */
 table {
-  border: 2px solid #033043 !important;
+  border: 2px solid #fff !important;
   border-collapse: collapse !important;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Efek bayangan */
+}
+
+.table-bordered tbody tr:hover {
+  background-color: #FEFAF6; /* Ubah warna latar belakang saat di-hover */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Tambahkan sedikit bayangan saat di-hover */
+  transition: all 0.5s ease; /* Transisi halus untuk efek hover */
 }
 
 /*Agar teks di header tabel berada di tengah */
@@ -606,12 +613,12 @@ table th {
 /* Mengubah warna border pada sel-sel tabel */
 table th,
 table td {
-  border: 1px solid #033043 !important;
+  border: 1px solid #ffff !important;
 }
 
 /*Mengubah warna background header table */
 table thead th {
-  background-color: #B59F78 !important;
+  background-color: #c9994c !important;
   color: white;
 }
 
