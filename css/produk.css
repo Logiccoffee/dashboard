@@ -1066,3 +1066,43 @@ input {
   /* Sesuaikan ukuran font jika diperlukan */
   text-align: center;
 }
+
+/* Ukuran card lebih kecil */
+.card {
+  width: 15rem; /* Lebar card dikurangi menjadi 15rem */
+  height: auto;
+}
+
+/* Ukuran gambar lebih kecil */
+.card-img-top {
+  width: 100%;
+  height: 150px; /* Ukuran gambar diperkecil */
+  object-fit: cover;
+}
+
+/* Grid layout untuk 5 card dalam satu baris */
+@media (min-width: 1200px) {
+  .product-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr); /* 5 card per baris */
+      gap: 5px; /* Mengurangi gap antar card */
+  }
+}
+
+/* 3 card per baris untuk tablet */
+@media (max-width: 1199px) {
+  .product-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* 3 card per baris */
+      gap: 5px; /* Mengurangi gap antar card */
+  }
+}
+
+/* 1 card per baris untuk mobile */
+@media (max-width: 767px) {
+  .product-list {
+      display: grid;
+      grid-template-columns: 1fr; /* 1 card per baris */
+      gap: 5px; /* Mengurangi gap antar card */
+  }
+}
