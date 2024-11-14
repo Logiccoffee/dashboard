@@ -326,31 +326,112 @@
             productList.appendChild(card);
         });
     }
-    
-    // Fungsi untuk mengonfirmasi penghapusan produk
-    function confirmDelete(index) {
-        Swal.fire({
-            title: 'Konfirmasi Hapus',
-            text: 'Apakah Anda yakin ingin menghapus produk ini?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Ya, Hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                deleteProduct(index);
-            }
+    // Fungsi untuk membuka popup edit produk
+function openEditProductPopup(index) {
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    const product = products[index];
+
+    // Isi form dalam popup dengan data produk yang ingin diubah
+    document.getElementById('editProductCategory').value = product.category;
+    document.getElementById('editProductName').value = product.name;
+    document.getElementById('editProductDescription').value = product.description;
+
+    // Isi varian produk dalam popup
+    const variantsContainer = document.getElementById('editVariantsContainer');
+    variantsContainer.innerHTML = ''; // Clear previous variants
+    product.variants.forEach(variant => {
+        const variantDiv = document.createElement('div');
+        variantDiv.classList.add('variant-input-group');
+        variantDiv.innerHTML = `
+            <input type="text" placeholder="Varian" value="${variant.name}" required>
+            <input type="number" placeholder="Stok" value="${variant.stock}" required>
+            <input type="number" placeholder="Harga (Range)" value="${variant.price}" required>
+        `;
+        variantsContainer.appendChild(variantDiv);
+    });
+
+    // Show the modal using Bootstrap 5 API (tanpa jQuery)
+    var editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+    editProductModal.show();
+}
+
+    // Update product in localStorage when the form is submitted
+    document.getElementById('editProductForm').onsubmit = async function(event) {
+        event.preventDefault();
+
+        const updatedProduct = {
+            category: document.getElementById('editProductCategory').value,
+            name: document.getElementById('editProductName').value.trim(),
+            description: document.getElementById('editProductDescription').value.trim(),
+            variants: []
+        };
+
+        // Mengambil data varian
+        const variantGroups = document.querySelectorAll('.variant-input-group');
+        variantGroups.forEach(variant => {
+            const variantName = variant.children[0].value.trim();
+            const variantStock = variant.children[1].value.trim();
+            const variantPrice = variant.children[2].value.trim();
+            updatedProduct.variants.push({
+                name: variantName,
+                stock: variantStock,
+                price: variantPrice
+            });
         });
-    }
-    
-    // Fungsi untuk menghapus produk
-    function deleteProduct(index) {
-        const products = JSON.parse(localStorage.getItem('products')) || [];
-        products.splice(index, 1);
+
+        // Jika gambar diubah, tambahkan gambar baru
+        const imageFile = document.getElementById('editProductImage').files[0];
+        if (imageFile) {
+            updatedProduct.image = await getBase64(imageFile);
+        } else {
+            updatedProduct.image = product.image; // Menggunakan gambar yang lama
+        }
+
+        // Perbarui produk di localStorage
+        products[index] = updatedProduct;
         localStorage.setItem('products', JSON.stringify(products));
-        renderProductList();
-    }
-    
+
+        // Tampilkan SweetAlert setelah berhasil menyimpan
+        Swal.fire({
+            title: 'Sukses!',
+            text: 'Produk berhasil diubah!',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            $('#editProductModal').modal('hide'); // Hide the modal
+            renderProductList(); // Refresh the product list
+        });
+    };
+
+
+// Fungsi untuk mengonfirmasi penghapusan produk
+function confirmDelete(index) {
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Produk ini akan dihapus!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteProduct(index);
+        }
+    });
+}
+
+// Fungsi untuk menghapus produk
+function deleteProduct(index) {
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    products.splice(index, 1);
+    localStorage.setItem('products', JSON.stringify(products));
+    renderProductList(); // Perbarui daftar produk
+}
+
+// Panggil renderProductList ketika halaman dimuat
+    renderProductList();
+
     // Inisialisasi tampilan produk setelah halaman dimuat
     document.addEventListener('DOMContentLoaded', renderProductList);
     </script>
