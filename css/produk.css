@@ -173,7 +173,7 @@ h2 {
 }
 
 .menu-wrap .user figcaption {
-  color: #805700 !important;
+  color: #09431F !important;
   font-weight: 700;
   font-size: 24px;
   line-height: 100%;
@@ -249,7 +249,7 @@ h2 {
 }
 
 .menu-wrap nav ul li a:hover {
-  color: #6C7424 !important; /* Ganti #0056b3 dengan warna yang diinginkan saat link di-hover */
+  color: #c9994c !important; /* Ganti #0056b3 dengan warna yang diinginkan saat link di-hover */
 }
 
 .menu-wrap nav li a svg {
@@ -501,13 +501,13 @@ h2 {
 
 .profile-icon:hover {
   /*background-color: #f8f9fa;  Ubah warna latar belakang saat hover */
-  color: #09431F;
+  color: #c9994c;
   /* Ubah warna teks saat hover */
 }
 
 /* Untuk mengubah warna ikon juga saat di-hover */
 .profile-icon:hover i {
-  color: #09431F; /* Ganti #007BFF dengan warna yang Anda inginkan */
+  color: #c9994c; /* Ganti #007BFF dengan warna yang Anda inginkan */
 }
 
 .dropdown .profile-icon .ms-2 {
