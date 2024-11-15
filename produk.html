@@ -17,60 +17,120 @@
 
 <body>
     <div class="dashboard">
-        <!-- Sidebar dan Topbar -->
-        <aside class="search-wrap">
-            <div class="search">
-                <label for="search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"></svg>
-                </label>
-            </div>
+		<aside class="search-wrap">
+			<div class="search">
+				<label for="search">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+						<!-- Isi SVG -->
+					</svg>
+				</label>
+			</div>
 
-            <form class="d-flex mx-auto my-2 search-form">
-                <input class="form-control me-2 search-input" type="search" placeholder="Cari produk..." aria-label="Search">
-                <button class="btn btn-warning" type="submit">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </form>
+			<form class="d-flex mx-auto my-2 search-form">
+				<input class="form-control me-2 search-input" type="search" placeholder="Cari..." aria-label="Search">
+				<button class="btn btn-warning" type="submit">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+			</form>
 
-            <div class="dropdown">
-                <a href="#" class="profile-icon dropdown-toggle d-flex align-items-center mx-2" id="profileDropdown"
-                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-circle-user"></i>
-                    <span class="username ms-2">Nama Pengguna</span> <!-- Nama Pengguna -->
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                    <li><a class="dropdown-item profile-edit" href="/profile"><i class="fa-solid fa-user-edit"></i> Ubah Profil</a></li>
-                    <li><a class="dropdown-item logout" href="/logout"><i class="fa-solid fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
-            </div>
-        </aside>
+			<div class="dropdown">
+				<a href="#" class="profile-icon dropdown-toggle d-flex align-items-center mx-2" id="profileDropdown"
+					role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					<i class="fa-solid fa-circle-user"></i>
+					<span class="username ms-2">Nama Pengguna</span> <!-- Tambahkan kelas 'username' untuk styling -->
+				</a>
+				<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+					<li><a class="dropdown-item profile-edit" href="/profile"><i class="fa-solid fa-user-edit"></i> Ubah
+							Profil</a></li>
+					<li><a class="dropdown-item logout" href="/logout"><i class="fa-solid fa-sign-out-alt"></i>
+							Logout</a></li>
+				</ul>
+			</div>
+		</aside>
 
-        <header class="menu-wrap">
-            <figure class="user">
-                <div class="user-avatar">
-                    <img src="img/logo logic.png" alt="Logic Coffee">
-                </div>
-                <figcaption>LogicCoffee</figcaption>
-            </figure>
+		<header class="menu-wrap">
+			<figure class="user">
+				<div class="user-avatar">
+					<img src="img/logo logic.png" alt="Plastiqu.Co">
+				</div>
+				<figcaption>LogicCoffee</figcaption>
+			</figure>
 
-            <nav>
-                <section class="dicover">
-                    <h3>Kelola</h3>
-                    <ul>
-                        <li><a href="index.html"><i class="fa-solid fa-house" style="margin-right: 10px;"></i> Dasbor</a></li>
-                        <li><a href="analitik.html"><i class="fa-solid fa-chart-line" style="margin-right: 10px;"></i>Analitik</a></li>
-                        <li><a href="ulasan.html"><i class="fa-solid fa-comment" style="margin-right: 10px;"></i>Ulasan</a></li>
-                        <li><a href="banner.html"><i class="fa-solid fa-image" style="margin-right: 10px;"></i>Kustom Banner</a></li>
-                        <li><a href="users.html"><i class="fa-solid fa-user-gear" style="margin-right: 10px;"></i> Pengguna</a></li>
-                        <li><a href="alamatpengguna.html"><i class="fa-solid fa-map" style="margin-right: 10px;"></i> Alamat Pengguna</a></li>
-                        <li><a href="category.html"><i class="fa-solid fa-list" style="margin-right: 10px;"></i> Kategori</a></li>
-                        <li><a href="produk.html" class="active"><i class="fa-solid fa-pen" style="margin-right: 10px;"></i> Produk</a></li>
-                        <li><a href="daftarpesanan.html"><i class="fa-solid fa-box" style="margin-right: 10px;"></i>Daftar Pesanan</a></li>
-                        <li><a href="keuangan.html"><i class="fa-solid fa-hand-holding-dollar" style="margin-right: 10px;"></i> Keuangan</a></li>
-                    </ul>
-                </section>
-            </nav>
-        </header>
+			<nav>
+				<!-- Bagian Dasbor dan Alat Utama -->
+				<section class="main-tools">
+					<ul>
+						<li>
+							<a href="index.html">
+								<i class="fa-solid fa-house" style="margin-right: 10px;"></i>
+								Dasbor
+							</a>
+						</li>
+						<li>
+							<a href="analitik.html">
+								<i class="fa-solid fa-chart-line" style="margin-right: 10px;"></i>
+								Analitik
+							</a>
+						</li>
+						<li>
+							<a href="alamatpengguna.html">
+								<i class="fa-solid fa-map" style="margin-right: 10px;"></i>
+								Alamat Pengguna
+							</a>
+						</li>
+					</ul>
+				</section>
+		
+				<!-- Bagian Kelola -->
+				<section class="discover">
+					<h3>Kelola</h3>
+					<ul>
+						<li>
+							<a href="ulasan.html">
+								<i class="fa-solid fa-comment" style="margin-right: 10px;"></i>
+								Ulasan
+							</a>
+						</li>
+						<li>
+							<a href="banner.html">
+								<i class="fa-solid fa-image" style="margin-right: 10px;"></i>
+								Kustom Banner
+							</a>
+						</li>
+						<li>
+							<a href="users.html">
+								<i class="fa-solid fa-user-gear" style="margin-right: 10px;"></i>
+								Pengguna
+							</a>
+						</li>
+						<li>
+							<a href="category.html">
+								<i class="fa-solid fa-list" style="margin-right: 10px;"></i>
+								Kategori
+							</a>
+						</li>
+						<li>
+							<a href="produk.html"class="active">
+								<i class="fa-solid fa-pen" style="margin-right: 10px;"></i>
+								Produk
+							</a>
+						</li>
+						<li>
+							<a href="daftarpesanan.html">
+								<i class="fa-solid fa-box" style="margin-right: 10px;"></i>
+								Daftar Pesanan
+							</a>
+						</li>
+						<li>
+							<a href="keuangan.html">
+								<i class="fa-solid fa-hand-holding-dollar" style="margin-right: 10px;"></i>
+								Keuangan
+							</a>
+						</li>
+					</ul>
+				</section>
+			</nav>
+		</header>
 
         <main class="content-wrap">
             <header class="content-head d-flex justify-content-between align-items-center">
