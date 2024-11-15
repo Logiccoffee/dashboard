@@ -1106,3 +1106,6 @@ input {
       gap: 5px; /* Mengurangi gap antar card */
   }
 }
+.d-grid .btn + .btn {
+  margin-top: 10px; /* Sesuaikan jarak sesuai kebutuhan Anda */
+}
