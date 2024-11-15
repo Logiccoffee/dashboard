@@ -173,7 +173,7 @@ h2 {
 }
 
 .menu-wrap .user figcaption {
-  color: #09431F !important;
+  color: #805700 !important;
   font-weight: 700;
   font-size: 24px;
   line-height: 100%;
@@ -249,7 +249,7 @@ h2 {
 }
 
 .menu-wrap nav ul li a:hover {
-  color: #c9994c !important; /* Ganti #0056b3 dengan warna yang diinginkan saat link di-hover */
+  color: #6C7424 !important; /* Ganti #0056b3 dengan warna yang diinginkan saat link di-hover */
 }
 
 .menu-wrap nav li a svg {
@@ -501,13 +501,13 @@ h2 {
 
 .profile-icon:hover {
   /*background-color: #f8f9fa;  Ubah warna latar belakang saat hover */
-  color: #c9994c;
+  color: #09431F;
   /* Ubah warna teks saat hover */
 }
 
 /* Untuk mengubah warna ikon juga saat di-hover */
 .profile-icon:hover i {
-  color: #c9994c; /* Ganti #007BFF dengan warna yang Anda inginkan */
+  color: #09431F; /* Ganti #007BFF dengan warna yang Anda inginkan */
 }
 
 .dropdown .profile-icon .ms-2 {
@@ -1105,7 +1105,4 @@ input {
       grid-template-columns: 1fr; /* 1 card per baris */
       gap: 5px; /* Mengurangi gap antar card */
   }
-}
-.d-grid .btn + .btn {
-  margin-top: 10px; /* Sesuaikan jarak sesuai kebutuhan Anda */
 }
