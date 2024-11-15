@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Konfirmasi Transaksi</title>
+    <title>Konfirmasi Transaksi | Logic Coffee</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="shortcut icon" href="/assets/circle.png" type="image/png">
+    <link rel="shortcut icon" href="img/logo logic.png" type="image/png">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap" rel="stylesheet">
     <style>
@@ -49,8 +49,12 @@
 
         .btn-submit {
             width: 100%;
-            background-color: #84B8C4;
-            border-color: #84B8C4;
+            background-color: #c9994c;
+        }
+
+        .btn-submit:hover {
+            background-color: #a57b32;
+            color: #ffff;
         }
 
         .mt-3 {
@@ -63,16 +67,16 @@
         }
 
         .custom-file-input {
-            border: 1px solid #84B8C4;
+            border: 1px solid #a57b32;
             color: black;
         }
 
         .custom-file-label {
-            background-color: #84B8C4 !important;
+            background-color: #c9994c !important;
         }
 
         .custom-file {
-            border: 2px solid #84B8C4;
+            border: 2px solid #c9994c;
         }
 
         .custom-file-input:focus {
@@ -114,7 +118,7 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Nama Produk + Varian</th>
+                        <th>Nama Produk</th>
                         <th>Jumlah</th>
                         <th>Harga Satuan</th>
                         <th>Harga Total</th>
@@ -122,22 +126,22 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Botol Plastik 500ml</td>
-                        <td>10</td>
-                        <td>Rp 5.000</td>
-                        <td>Rp 50.000</td>
+                        <td>Kopi Susu Tikala</td>
+                        <td>5</td>
+                        <td>Rp 16.000</td>
+                        <td>Rp 80.000</td>
                     </tr>
                     <tr>
-                        <td>Botol Plastik 1L</td>
+                        <td>Berry Dream</td>
                         <td>5</td>
-                        <td>Rp 8.000</td>
-                        <td>Rp 40.000</td>
+                        <td>Rp 18.000</td>
+                        <td>Rp 90.000</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="3" class="text-end">Total Bayar</th>
-                        <th>Rp 90.000</th>
+                        <th>Rp 170.000</th>
                     </tr>
                 </tfoot>
             </table>
@@ -152,7 +156,7 @@
                 <label for="bukti-transfer">Upload Bukti Transfer</label>
                 <input type="file" class="form-control custom-file-input" id="bukti-transfer" accept="image/*">
             </div>
-            <button type="button" class="btn btn-primary btn-submit mt-3">Konfirmasi Pesanan</button>
+            <button type="button" class="btn  btn-submit mt-3">Konfirmasi Pesanan</button>
         </form>
     </div>
 
@@ -169,7 +173,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" id="btn-ok">OK</button>
+                    <button type="button" class="btn id="btn-ok">OK</button>
                 </div>
             </div>
         </div>
