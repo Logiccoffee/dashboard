@@ -173,11 +173,15 @@ h2 {
 }
 
 .menu-wrap .user figcaption {
-  color: #805700 !important;
-  font-weight: 700;
+  color: #09431F !important;
+  font-weight: 700 !important;
   font-size: 24px;
   line-height: 100%;
   font-family: 'signika';
+}
+
+figcaption {
+  font-weight: 700 !important;
 }
 
 .menu-wrap nav {
@@ -238,7 +242,7 @@ h2 {
   background-color: #09431F;
   color: white !important;
   border-radius: 5px;
-  border-left: 5px solid #917c4f;
+  border-left: 5px solid #c9994c;
   padding-left: 15px;
   margin-bottom: 5px;
   padding: 10px 15px;
@@ -249,7 +253,7 @@ h2 {
 }
 
 .menu-wrap nav ul li a:hover {
-  color: #6C7424 !important; /* Ganti #0056b3 dengan warna yang diinginkan saat link di-hover */
+  color: #c9994c !important; /* Ganti #0056b3 dengan warna yang diinginkan saat link di-hover */
 }
 
 .menu-wrap nav li a svg {
