@@ -546,6 +546,7 @@ h2 {
   /* Tambahkan bayangan */
   background-color: #033043 !important;
   border: none;
+  z-index: 999 !important;
 }
 
 .dropdown-menu.show {
@@ -564,7 +565,7 @@ h2 {
 }
 
 .dropdown-item:hover {
-  background-color: #FDA521 !important;
+  background-color: #c9994c !important;
   /* Ubah warna latar belakang item saat hover */
   color: #fff;
   /* Ubah warna teks item saat hover */
@@ -596,6 +597,25 @@ table {
   border: 2px solid #fff !important;
   border-collapse: collapse !important;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Efek bayangan */
+  border-radius: 8px !important; /* Membuat sudut melengkung */
+  overflow: visible; /* Menjaga agar konten mengikuti border-radius */
+}
+
+
+thead tr:first-child th:first-child {
+  border-top-left-radius: 8px; /* Membuat sudut melengkung di kiri atas */
+}
+
+thead tr:first-child th:last-child {
+  border-top-right-radius: 8px; /* Membuat sudut melengkung di kanan atas */
+}
+
+tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 8px; /* Membuat sudut melengkung di kiri bawah */
+}
+
+tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 8px; /* Membuat sudut melengkung di kanan bawah */
 }
 
 .table-bordered tbody tr:hover {
@@ -667,7 +687,7 @@ td.action-column i {
 }
 
 .modal-content .category-title {
-  color: #84b8c6;
+  color: #805700;
   /* Ganti dengan warna yang diinginkan */
   font-weight: 700;
   /* Membuat teks lebih tebal */
@@ -795,8 +815,8 @@ input {
   width: 100%;
   /* Keep submit button at 100% width */
   padding: 10px;
-  background-color: #033043;
-  color: #E9E3D5;
+  background-color: #c9994c;
+  color: #FFFF;
   border: none;
   border-radius: 5px;
   font-size: 20px;
@@ -805,8 +825,8 @@ input {
 }
 
 .submit-btn:hover {
-  background-color: #FDA521;
-  color: #033043;
+  background-color: #A57B32;
+  color: #FFFF;
 }
 
 .cancel-btn-container {
@@ -817,12 +837,12 @@ input {
 
 .cancel-btn {
   font-size: 24px;
-  color: #84b8c6;
+  color: #c9994c;
   text-decoration: none;
 }
 
 .cancel-btn:hover {
-  color: #FDA521;
+  color: #A57B32;
 }
 
 .register-text {
@@ -1008,7 +1028,11 @@ input {
   /* Untuk memastikan font tetap bold */
 }
 
-
+/* Styling untuk header tabel pada halaman ini saja */
+.table-best-seller thead {
+  background-color: #4CAF50 !important; /* Warna latar belakang yang diinginkan */
+  color: white;               /* Warna teks di header tabel */
+}
 
 /* Hover effect for the dropdown button 
   .dropdown .btn-primary:hover {
