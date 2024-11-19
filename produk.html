@@ -195,9 +195,9 @@
                             <input class="form-control" type="file" id="productImage" accept="image/*" required>
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Tambah Produk</button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close">Tutup</button>
-                        </div>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                            <button type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal" aria-label="Close">Tutup</button>
+                        </div>                        
                     </form>
                 </div>
             </div>
@@ -207,39 +207,54 @@
 <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
+            <div class="brand">
+                <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
+                <span class="text-center">Logic Coffee</span>
+            </div>
             <div class="modal-header">
                 <h5 class="modal-title" id="editProductModalLabel">Edit Produk</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="editProductForm">
                     <div class="mb-3">
                         <label for="editProductCategory" class="form-label">Kategori</label>
-                        <input type="text" class="form-control" id="editProductCategory" required>
+                        <select class="form-select" id="editProductCategory" required>
+                            <option value="" disabled selected>Pilih Kategori</option>
+                            <option value="Hot">Hot</option>
+                            <option value="Ice">Ice</option>
+                            <option value="Non Coffee">Non Coffee</option>
+                            <option value="Dessert">Dessert</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="editProductName" class="form-label">Nama Produk</label>
                         <input type="text" class="form-control" id="editProductName" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editProductDescription" class="form-label">Deskripsi</label>
+                        <label for="editProductDescription" class="form-label">Deskripsi Produk</label>
                         <textarea class="form-control" id="editProductDescription" rows="3" required></textarea>
                     </div>
-                    <!-- Variants container -->
                     <div id="editVariantsContainer" class="mb-3">
-                        <!-- Variants inputs will be dynamically added here -->
+                        <h6>Varian Produk</h6>
+                        <!-- Variants will be inserted here dynamically -->
                     </div>
-                    <button type="button" class="btn btn-secondary" id="addVariantLink">Tambah Varian</button>
+                    <button type="button" id="addVariantLink" class="btn btn-secondary btn-sm">
+                        <i class="fa-solid fa-plus"></i> Tambah Varian
+                    </button>
                     <div class="mb-3">
                         <label for="editProductImage" class="form-label">Gambar Produk</label>
-                        <input type="file" class="form-control" id="editProductImage">
+                        <input class="form-control" type="file" id="editProductImage" accept="image/*">
                     </div>
-                    <button type="submit" class="btn btn-success w-100">Simpan Perubahan</button>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <button type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal" aria-label="Close">Tutup</button>
+                    </div>                    
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 <!-- SweetAlert2 dan Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
