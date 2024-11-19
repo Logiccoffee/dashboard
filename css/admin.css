@@ -1004,6 +1004,39 @@ input {
   font-weight: bold !important; /* (Opsional) Menebalkan tulisan agar lebih menonjol */
 }
 
+/* Style Untuk Button Cetak */
+.laporan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.laporan-header h2 {
+  margin: 0;
+  font-family: 'Signika', sans-serif;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Jarak antara ikon dan teks */
+}
+
+.laporan-header .btn-cetak {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Jarak antara ikon dan teks */
+  background-color: #09431f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.laporan-header .btn-cetak:hover {
+  background-color: #c9994c;
+}
 
 
 @media (max-width: 576px) {
