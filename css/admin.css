@@ -735,6 +735,15 @@ td.action-column i {
   margin-bottom: 20px;
 }
 
+/* Placeholder untuk Input Readonly */
+.input-group input[readonly] {
+  background-color: #F2EAD3 !important; /* Warna background input readonly */
+}
+
+.input-group input[readonly]::placeholder {
+  color: #555; /* Warna teks placeholder */
+}
+
 .brand .text-center {
   color: #09431F;
   font-weight: bold;
