@@ -689,12 +689,18 @@ td.action-column i {
   transition: transform 0.3s ease-out;
 }
 
+.modal-header {
+  display: flex !important;
+  align-items: center;
+  justify-content: center !important; /* Gunakan !important untuk memaksa perubahan */
+}
 
 .brand {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 15px;  /* Margin bawah yang sudah ada */
+  margin-top: 100px;     /* Menambahkan margin atas untuk memindahkannya lebih ke bawah */
 }
 
 .logo-img {
