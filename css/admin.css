@@ -736,8 +736,8 @@ td.action-column i {
 }
 
 .brand .text-center {
-  color: #033043;
-  font-weight: 600;
+  color: #09431F;
+  font-weight: bold;
   font-size: 1.8rem;
   line-height: 50px;
   font-family: 'Signika', sans-serif;
@@ -885,7 +885,7 @@ input {
 }
 
 .form-title {
-  color: #84b8c6;
+  color: #805700;
   /* Ganti dengan warna yang Anda inginkan */
   font-weight: 700;
 }
@@ -903,34 +903,6 @@ input {
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-}
-
-/* Custom styling for active pagination */
-.pagination .page-item.active .page-link {
-  background-color: #033043;
-  /* Custom blue color */
-  border-color: #033043;
-  /* Border warna biru */
-  color: white;
-  /* Warna teks */
-}
-
-/* Custom border color for pagination */
-.pagination .page-item .page-link {
-  border-color: #033043;
-  /* Custom green border */
-  color: #033043;
-  /* Custom text color for non-active links */
-}
-
-/* Custom background and border for Previous and Next buttons */
-.pagination .page-item:first-child .page-link,
-.pagination .page-item:last-child .page-link {
-  background-color: #84b8c6;
-  /* Custom orange background */
-  color: white;
-  border-color: #033043;
-  /* Custom orange border */
 }
 
 .banner-item {
@@ -1095,6 +1067,15 @@ input {
   height: 150px;
   object-fit: cover;
   border-radius: 8px;
+}
+
+.product-card:hover {
+  transform: translateY(-10px); /* Efek naik sedikit */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.product-card:hover img {
+  transform: scale(1.1); /* Efek zoom pada gambar */
 }
 
 .product-card h5 {
