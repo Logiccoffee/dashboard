@@ -505,13 +505,13 @@ figcaption {
 
 .profile-icon:hover {
   /*background-color: #f8f9fa;  Ubah warna latar belakang saat hover */
-  color: #09431F;
+  color: #c9994c;
   /* Ubah warna teks saat hover */
 }
 
 /* Untuk mengubah warna ikon juga saat di-hover */
 .profile-icon:hover i {
-  color: #09431F; /* Ganti #007BFF dengan warna yang Anda inginkan */
+  color: #c9994c; /* Ganti #007BFF dengan warna yang Anda inginkan */
 }
 
 .dropdown .profile-icon .ms-2 {
@@ -568,7 +568,7 @@ figcaption {
 }
 
 .dropdown-item:hover {
-  background-color: #FDA521 !important;
+  background-color: #c9994c !important;
   /* Ubah warna latar belakang item saat hover */
   color: #fff;
   /* Ubah warna teks item saat hover */
