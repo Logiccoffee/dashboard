@@ -1168,3 +1168,6 @@ h1 {
   background-color: #033043 !important; /* Ganti dengan warna yang diinginkan */
   color: white !important; /* Ganti dengan warna teks yang diinginkan */
 }
+.card {
+  border: 2px solid #805700 !important;
+}
