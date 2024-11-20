@@ -568,7 +568,7 @@ figcaption {
 }
 
 .dropdown-item:hover {
-  background-color: #FDA521 !important;
+  background-color: #c9994c !important;
   /* Ubah warna latar belakang item saat hover */
   color: #fff;
   /* Ubah warna teks item saat hover */
