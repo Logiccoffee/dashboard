@@ -1,33 +1,36 @@
 function handleAddBanner(event) {
     event.preventDefault(); // Prevent default form submission
 
+    // Ambil input file dan nama banner
     const fileInput = document.getElementById('banner-file');
+    const nameInput = document.getElementById('banner-name');
     const file = fileInput.files[0];
+    const bannerName = nameInput.value.trim();
 
-    if (file) {
-        // Select the banner list
+    if (file && bannerName) {
+        // Pilih elemen banner list
         const bannerList = document.querySelector('.banner-list');
 
-        // Get current number of banners and set the next banner number
+        // Dapatkan jumlah banner saat ini dan tentukan nomor banner berikutnya
         const currentBanners = bannerList.querySelectorAll('.banner-item').length;
         const nextBannerNumber = currentBanners + 1;
 
-        // Create new banner item
+        // Buat elemen banner baru
         const bannerItem = document.createElement('div');
         bannerItem.classList.add('banner-item', 'mb-3');
 
-        // Banner title with the next number
+        // Banner title dengan nomor berikutnya dan nama
         const bannerTitle = document.createElement('h3');
         bannerTitle.classList.add('banner-title');
-        bannerTitle.innerText = `Banner ${nextBannerNumber}`; // Set the name with the number
+        bannerTitle.innerText = `${bannerName} - Banner ${nextBannerNumber}`; // Gabungkan nama dan nomor banner
 
-        // Banner image
+        // Gambar banner
         const bannerImg = document.createElement('img');
-        bannerImg.src = URL.createObjectURL(file); // Preview uploaded image
+        bannerImg.src = URL.createObjectURL(file); // Preview gambar yang diunggah
         bannerImg.alt = `Banner ${nextBannerNumber}`;
         bannerImg.classList.add('img-fluid');
 
-        // Edit and Delete buttons
+        // Tombol Edit dan Hapus
         const buttonGroup = document.createElement('div');
         buttonGroup.classList.add('button-group', 'mt-2');
 
@@ -39,28 +42,28 @@ function handleAddBanner(event) {
         deleteButton.classList.add('btn', 'btn-danger');
         deleteButton.innerHTML = '<i class="fas fa-trash-alt text-light"></i> Hapus';
 
-        // Add buttons to the group
+        // Tambahkan tombol ke grup
         buttonGroup.appendChild(editButton);
         buttonGroup.appendChild(deleteButton);
 
-        // Add title, image, and buttons to banner item
+        // Tambahkan title, gambar, dan tombol ke dalam banner item
         bannerItem.appendChild(bannerTitle);
         bannerItem.appendChild(bannerImg);
         bannerItem.appendChild(buttonGroup);
 
-        // Append new banner item to the list
+        // Tambahkan item banner ke dalam daftar
         bannerList.appendChild(bannerItem);
 
-        // Reset the form
+        // Reset form dan input
         fileInput.value = '';
+        nameInput.value = '';
 
-        // Hide the modal
+        // Tutup modal
         const modalElement = document.getElementById('addBannerModal');
         const modal = bootstrap.Modal.getInstance(modalElement);
         modal.hide();
 
-
-        // Manually remove 'show' class and backdrop if still visible
+        // Hapus class 'show' dan backdrop jika modal masih terlihat
         modalElement.classList.remove('show');
         modalElement.setAttribute('aria-hidden', 'true');
         modalElement.style.display = 'none';
@@ -70,7 +73,7 @@ function handleAddBanner(event) {
             modalBackdrop.remove();
         }
 
-        // Show success message (optional)
+        // Tampilkan pesan sukses (optional)
         Swal.fire({
             title: 'Banner Ditambahkan!',
             text: `Banner ${nextBannerNumber} berhasil ditambahkan.`,
@@ -78,7 +81,7 @@ function handleAddBanner(event) {
             confirmButtonText: 'OK'
         });
 
-        // Tambahkan event listener untuk tombol "Ubah" dan "Hapus" di banner baru
+        // Tambahkan event listener untuk tombol Edit dan Hapus
         editButton.addEventListener('click', function () {
             handleEditButtonClick(bannerItem);
         });
@@ -86,8 +89,17 @@ function handleAddBanner(event) {
         deleteButton.addEventListener('click', function () {
             handleDeleteButtonClick(bannerItem);
         });
+    } else {
+        // Jika tidak ada file atau nama banner kosong
+        Swal.fire({
+            title: 'Gagal',
+            text: 'Mohon isi semua informasi banner.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
     }
 }
+
 
 
 let editingBanner = null; // Variabel untuk menyimpan banner yang sedang di-edit
