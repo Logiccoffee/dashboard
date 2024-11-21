@@ -202,19 +202,28 @@
     </div>
 </div>
 
-   <!-- Modal Edit Produk -->
+ <!-- Modal Edit Produk -->
 <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="brand">
-                <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
-                <span class="text-center">Logic Coffee</span>
+            <!-- Header dengan Logo, Judul, dan Tombol Cancel -->
+            <div class="position-relative p-3">
+                <!-- Logo dan Judul di Tengah -->
+                <div class="text-center">
+                    <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
+                    <span class="fw-bold" style="font-size: 1.8rem;">Logic Coffee</span>
+                </div>
+                <!-- Tombol Cancel di Kanan -->
+                <button type="button" class="cancel-btn position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </button>
             </div>
-            <div class="modal-header">
-                <h5 class="modal-title" id="editProductModalLabel">Edit Produk</h5>
-            </div>
+
+            <h2 class="text-center category-title">Edit Produk</h2>
+            <p class="welcome-text text-center">Ubah detail produk yang ada!</p>
             <div class="modal-body">
                 <form id="editProductForm">
+                    <!-- Input untuk Kategori Produk -->
                     <div class="mb-3">
                         <label for="editProductCategory" class="form-label">Kategori</label>
                         <select class="form-select" id="editProductCategory" required>
@@ -225,29 +234,27 @@
                             <option value="Dessert">Dessert</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label for="editProductName" class="form-label">Nama Produk</label>
-                        <input type="text" class="form-control" id="editProductName" required>
+
+                    <!-- Input untuk Nama Produk -->
+                    <div class="input-group">
+                        <input type="text" id="editProductName" placeholder=" " required>
+                        <label for="editProductName">Masukkan Nama Produk</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="editProductDescription" class="form-label">Deskripsi Produk</label>
-                        <textarea class="form-control" id="editProductDescription" rows="3" required></textarea>
+
+                    <!-- Input untuk Harga Produk -->
+                    <div class="input-group">
+                        <input type="number" id="editProductPrice" placeholder=" " required>
+                        <label for="editProductPrice">Masukkan Harga Produk</label>
                     </div>
-                    <div id="editVariantsContainer" class="mb-3">
-                        <h6>Varian Produk</h6>
-                        <!-- Variants will be inserted here dynamically -->
+
+                    <!-- Input untuk Gambar Produk -->
+                    <div class="input-group">
+                        <input type="file" id="editProductImage" accept="image/*">
+                        <label for="editProductImage">Gambar Produk</label>
                     </div>
-                    <button type="button" id="addVariantLink" class="btn btn-secondary btn-sm">
-                        <i class="fa-solid fa-plus"></i> Tambah Varian
-                    </button>
-                    <div class="mb-3">
-                        <label for="editProductImage" class="form-label">Gambar Produk</label>
-                        <input class="form-control" type="file" id="editProductImage" accept="image/*">
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        <button type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal" aria-label="Close">Tutup</button>
-                    </div>                    
+
+                    <!-- Tombol Submit -->
+                    <button type="submit" class="submit-btn">Simpan Perubahan</button>
                 </form>
             </div>
         </div>
