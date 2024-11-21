@@ -664,7 +664,7 @@ td.action-column i {
 }
 
 .modal-content .category-title {
-  color: #84b8c6;
+  color: #805700;
   /* Ganti dengan warna yang diinginkan */
   font-weight: 700;
   /* Membuat teks lebih tebal */
@@ -700,8 +700,16 @@ td.action-column i {
   align-items: center;
   justify-content: center;
   margin-bottom: 15px;  /* Margin bawah yang sudah ada */
-  margin-top: 100px;     /* Menambahkan margin atas untuk memindahkannya lebih ke bawah */
+  color: #09431F;
 }
+.brand span {
+  font-weight: bold;
+  font-size: 1.8rem;
+  text-align: center; /* Untuk memastikan teks berada di tengah */
+  display: block; /* Supaya teks tampil di bawah logo */
+  margin-top: 10px; /* Memberi jarak dengan logo */
+}
+
 
 .logo-img {
   margin-right: 10px;
@@ -733,6 +741,57 @@ td.action-column i {
   outline: none;
 }
 
+.input-group label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  transition: 0.3s ease;
+  background-color: white;
+  padding: 0 5px;
+  color: #033043;
+  pointer-events: none;
+  font-size: 18px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #805700 !important;
+  border-radius: 5px 0 0 5px !important;
+  font-size: 16px;
+  background-color: transparent;
+  outline: none;
+  transition: all 0.3s ease;
+  color: #033043;
+}
+
+.input-group input:focus+label,
+.input-group input:not(:placeholder-shown)+label {
+  top: -10px;
+  transform: translateY(0) !important;
+  font-size: 18px !important;
+  color: #805700;
+  border-color: #033043 !important;
+}
+
+/* Ubah border saat input difokuskan atau diisi */
+.input-group input:focus,
+.input-group input:not(:placeholder-shown) {
+  border-color: #033043 !important;
+  /* Warna border berubah */
+  border-width: 2px;
+  /* Ketebalan border berubah */
+  outline: none;
+  /* Hilangkan outline default */
+}
+
+/* Tambahan styling untuk input saat focus */
+.input-group input:focus {
+  border-color: #333;
+  /*ubah warna border saat fokus */
+}
+
 .submit-btn {
   width: 100%;
   padding: 10px;
@@ -760,45 +819,11 @@ td.action-column i {
   font-size: 20px;
 }
 
-.input-group {
-  position: relative;
-  margin-bottom: 20px;
-  display: flex;
-  /* Use flexbox for better alignment */
-  align-items: center;
-  justify-content: center;
-}
-
-.input-group label {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  transition: 0.3s ease;
-  background-color: white;
-  padding: 0 5px;
-  color: #033043;
-  pointer-events: none;
-  font-size: 18px;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  border: 2px solid #805700 !important;
-  border-radius: 5px 0 0 5px !important;
-  font-size: 16px;
-  background-color: transparent;
-  outline: none;
-  transition: all 0.3s ease;
-  color: #033043;
-}
-
 .submit-btn {
   width: 100%;
   /* Keep submit button at 100% width */
   padding: 10px;
-  background-color: #033043;
+  background-color: #c9994c;
   color: #E9E3D5;
   border: none;
   border-radius: 5px;
@@ -808,8 +833,7 @@ input {
 }
 
 .submit-btn:hover {
-  background-color: #FDA521;
-  color: #033043;
+  background-color:  #A57B32;
 }
 
 .cancel-btn-container {
@@ -820,12 +844,12 @@ input {
 
 .cancel-btn {
   font-size: 24px;
-  color: #84b8c6;
+  color: #c9994c;
   text-decoration: none;
 }
 
 .cancel-btn:hover {
-  color: #FDA521;
+  color: #A57B32;
 }
 
 .register-text {
@@ -843,25 +867,6 @@ input {
   color: #FDA521;
 }
 
-.input-group input:focus+label,
-.input-group input:not(:placeholder-shown)+label {
-  top: -10px;
-  transform: translateY(0) !important;
-  font-size: 18px !important;
-  color: #805700;
-  border-color: #033043 !important;
-}
-
-/* Ubah border saat input difokuskan atau diisi */
-.input-group input:focus,
-.input-group input:not(:placeholder-shown) {
-  border-color: #033043 !important;
-  /* Warna border berubah */
-  border-width: 2px;
-  /* Ketebalan border berubah */
-  outline: none;
-  /* Hilangkan outline default */
-}
 
 .form-title {
   color: #84b8c6;
@@ -869,11 +874,7 @@ input {
   font-weight: 700;
 }
 
-/* Tambahan styling untuk input saat focus */
-.input-group input:focus {
-  border-color: #333;
-  /*ubah warna border saat fokus */
-}
+
 
 /* Positioning for the eye icon */
 .toggle-password {
@@ -982,6 +983,13 @@ input {
   color: #09431F !important; /* Ganti dengan kode warna hijau yang kamu inginkan */
   font-weight: bold !important; /* (Opsional) Menebalkan tulisan agar lebih menonjol */
 }
+/* Hilangkan tombol increment pada input number untuk semua browser */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 
 @media (max-width: 576px) {
   .username {
@@ -1116,3 +1124,4 @@ input {
       gap: 5px; /* Mengurangi gap antar card */
   }
 }
+
