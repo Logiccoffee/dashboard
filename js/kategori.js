@@ -11,7 +11,7 @@ const categories = [
 ];
 
 let currentEditIndex = null; // Untuk menyimpan index kategori yang sedang diedit
-let currentDeleteIndex = null //Untuk menyimpan index kategori yang akan diapus
+let currentDeleteIndex = null // Untuk menyimpan index kategori yang akan diapus
 
 // Fungsi untuk menampilkan daftar kategori
 function renderCategoryList() {
@@ -55,16 +55,28 @@ document.getElementById('add-category-form').addEventListener('submit', (event) 
     document.getElementById('add-category-form').reset();
     renderCategoryList();
 
-    // Tampilkan SweetAlert2 setelah kategori berhasil ditambahkan
-    Swal.fire({
-        title: 'Sukses!',
-        text: 'Kategori berhasil ditambahkan.',
-        icon: 'success',
-        confirmButtonText: 'OK'
-    }).then(() => {
-        const addCategoryModal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
-        addCategoryModal.hide();
-    });
+    // Mengirim data kategori baru ke server menggunakan postJSON
+    postJSON('https://your-api-endpoint.com/add-category', { name: categoryName })
+        .then(response => {
+            // Tampilkan SweetAlert2 setelah kategori berhasil ditambahkan
+            Swal.fire({
+                title: 'Sukses!',
+                text: 'Kategori berhasil ditambahkan.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                const addCategoryModal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
+                addCategoryModal.hide();
+            });
+        })
+        .catch(error => {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Kategori gagal ditambahkan.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        });
 });
 
 // Menangani submit form untuk mengubah kategori
@@ -74,38 +86,63 @@ document.getElementById('edit-category-form').addEventListener('submit', (event)
     categories[currentEditIndex].name = categoryName;
     document.getElementById('edit-category-form').reset();
     renderCategoryList();
-    // Tampilkan SweetAlert2 setelah kategori berhasil diubah
-    Swal.fire({
-        title: 'Sukses!',
-        text: 'Kategori berhasil diubah.',
-        icon: 'success',
-        confirmButtonText: 'OK'
-    }).then(() => {
-        const editCategoryModal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
-        editCategoryModal.hide();
-    });
+
+    // Mengirim data kategori yang diubah ke server menggunakan postJSON
+    postJSON('https://your-api-endpoint.com/edit-category', { id: currentEditIndex, name: categoryName })
+        .then(response => {
+            // Tampilkan SweetAlert2 setelah kategori berhasil diubah
+            Swal.fire({
+                title: 'Sukses!',
+                text: 'Kategori berhasil diubah.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                const editCategoryModal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
+                editCategoryModal.hide();
+            });
+        })
+        .catch(error => {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Kategori gagal diubah.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        });
 });
 
 // Fungsi untuk menghapus kategori setelah konfirmasi
 document.getElementById('confirm-delete-btn').addEventListener('click', () => {
     if (currentDeleteIndex !== null) {
-        categories.splice(currentDeleteIndex, 1); //Hapus kategori dari array
-        renderCategoryList(); //Render ulang daftar kategori
+        const deletedCategory = categories[currentDeleteIndex];
+        categories.splice(currentDeleteIndex, 1); // Hapus kategori dari array
+        renderCategoryList(); // Render ulang daftar kategori
 
-        // Tampilkan SweetAlert2 setelah kategori berhasil dihapus
-        Swal.fire({
-            title: 'Sukses!',
-            text: 'Kategori berhasil dihapus.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        }).then(() => {
-            const deleteCategoryModal = bootstrap.Modal.getInstance(document.getElementById('deleteCategoryModal'));
-            deleteCategoryModal.hide(); //Tutup modal hapus
-            currentDeleteIndex = null; //Reset index setelah penghapusan
-        });
+        // Mengirim data kategori yang dihapus ke server menggunakan postJSON
+        postJSON('https://your-api-endpoint.com/delete-category', { id: currentDeleteIndex })
+            .then(response => {
+                // Tampilkan SweetAlert2 setelah kategori berhasil dihapus
+                Swal.fire({
+                    title: 'Sukses!',
+                    text: 'Kategori berhasil dihapus.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    const deleteCategoryModal = bootstrap.Modal.getInstance(document.getElementById('deleteCategoryModal'));
+                    deleteCategoryModal.hide(); // Tutup modal hapus
+                    currentDeleteIndex = null; // Reset index setelah penghapusan
+                });
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Kategori gagal dihapus.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
     }
 });
-
 
 // Fungsi untuk membuka modal edit kategori
 function openEditModal(index) {
