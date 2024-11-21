@@ -612,9 +612,27 @@ h2 {
 
 /* Mengubah warna border seluruh tabel */
 table {
-    border: 2px solid #033043 !important;
+    border: 2px solid #fff !important;
     border-collapse: collapse !important;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Efek bayangan */
+    border-radius: 8px !important; /* Membuat sudut melengkung */
 }
+
+thead tr:first-child th:first-child {
+    border-top-left-radius: 8px; /* Membuat sudut melengkung di kiri atas */
+  }
+  
+  thead tr:first-child th:last-child {
+    border-top-right-radius: 8px; /* Membuat sudut melengkung di kanan atas */
+  }
+  
+  tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px; /* Membuat sudut melengkung di kiri bawah */
+  }
+  
+  tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px; /* Membuat sudut melengkung di kanan bawah */
+  }
 
 /*Agar teks di header tabel berada di tengah */
 table th {
