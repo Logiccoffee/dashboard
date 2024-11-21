@@ -147,16 +147,16 @@
 
             <div class="content">
                 <section class="info-boxes d-flex justify-content-between flex-wrap">
-                    <!-- Hasil COD -->
+                    <!-- Hasil Cash -->
                     <div class="info-box border p-3 d-flex justify-content-center align-items-center gap-3"
-                        id="hasilCOD"
+                        id="hasilCash"
                         style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 10px;">
                         <div class="box-icon">
                             <i class="fa-solid fa-truck" style="font-size: 40px;"></i>
                         </div>
                         <div class="box-content text-left">
                             <span class="medium-big d-block" id="codAmount">Rp 5.000.000</span>
-                            <p>Hasil COD</p>
+                            <p>Hasil Cash</p>
                         </div>
                     </div>
 
@@ -165,11 +165,11 @@
                         id="hasilTransfer"
                         style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 10px;">
                         <div class="box-icon">
-                            <img src="img/bank.jpg" alt="Bank Icon" style="width: 40px; height: 40px;">
+                            <i class="fa-solid fa-qrcode" style="font-size: 40px;"></i>
                         </div>
                         <div class="box-content text-left">
                             <span class="medium-big d-block" id="transferAmount">Rp 10.000.000</span>
-                            <p>Hasil Transfer Bank</p>
+                            <p>Hasil Qris</p>
                         </div>
                     </div>
 
@@ -191,9 +191,15 @@
                 <section class="mt-4">
                     <div class="laporan-header">
                         <h2>Laporan Keuangan</h2>
-                        <button id="printButton" class="btn btn-cetak">
-                            <i class="fas fa-print"></i> Cetak
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-cetak dropdown-toggle" type="button" id="dropdownCetak" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-print"></i> Cetak
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownCetak">
+                                <li><a class="dropdown-item" id="cetakQris" href="#">Cetak Qris</a></li>
+                                <li><a class="dropdown-item" id="cetakCash" href="#">Cetak Cash</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <table class="table table-striped">
                         <thead>
@@ -202,6 +208,7 @@
                                 <th>Deskripsi</th>
                                 <th>Metode Transaksi</th>
                                 <th>Pendapatan</th>
+                                <th>Cup Terjual</th>
                                 <th>Detail</th>
                             </tr>
                         </thead>
@@ -209,15 +216,17 @@
                             <tr>
                                 <td>01-10-2024 10:00</td>
                                 <td>Pemasukan dari Penjualan</td>
-                                <td>COD</td>
+                                <td>Cash</td>
                                 <td>Rp 5.000.000</td>
+                                <td>50 Cup</td>
                                 <td><a href="invoice.html" class="btn btn-primary">Detail</a></td>
                             </tr>
                             <tr>
                                 <td>03-10-2024 14:30</td>
-                                <td>Pemasukan dari Transfer</td>
-                                <td>Transfer Bank</td>
+                                <td>Pemasukan dari Penjualan</td>
+                                <td>Qris</td>
                                 <td>Rp 10.000.000</td>
+                                <td>100 Cup</td>
                                 <td><a href="invoice.html" class="btn btn-primary">Detail</a></td>
                             </tr>
                         </tbody>
