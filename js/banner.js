@@ -1,3 +1,7 @@
+let editingBanner = null;
+let deletingBanner = null;
+
+
 document.addEventListener('DOMContentLoaded', function () {
     // Fungsi untuk menangani form "Tambah Banner"
     function handleAddBanner(event) {
@@ -126,8 +130,14 @@ document.addEventListener('DOMContentLoaded', function () {
         editBannerModal.show();
     }
 
+    // Fungsi untuk menangani tombol "Hapus" pada banner
+    function handleDeleteButtonClick(bannerElement) {
+        deletingBanner = bannerElement; // Simpan elemen banner yang akan dihapus
 
-
+        // Tampilkan modal hapus
+        const deleteBannerModal = new bootstrap.Modal(document.getElementById('deleteBannerModal'));
+        deleteBannerModal.show();
+    }
 
     // Event listener untuk form tambah banner
     const addBannerForm = document.getElementById('add-banner-form');
@@ -143,12 +153,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Tambahkan event listener untuk tombol "Hapus" di setiap banner
-    const deleteButtons = document.querySelectorAll('.btn-danger');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const bannerElement = button.closest('.banner-item');
-            handleDeleteButtonClick(bannerElement); // Panggil fungsi hapus ketika "Hapus" diklik
-        });
+    const bannerList = document.querySelector('.banner-list');
+    bannerList.addEventListener('click', function (event) {
+        if (event.target.closest('.btn-danger')) {
+            const bannerElement = event.target.closest('.banner-item');
+            handleDeleteButtonClick(bannerElement);
+        }
     });
 
     // Fungsi untuk menangani form "Edit Banner"
