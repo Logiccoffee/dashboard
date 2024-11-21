@@ -148,61 +148,60 @@
         </main>
     </div>
     
-    <!-- Modal Tambah Produk -->
-    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="brand">
+   <!-- Modal Tambah Produk -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Header dengan Logo, Judul, dan Tombol Cancel -->
+            <div class="position-relative p-3">
+                <!-- Logo dan Judul di Tengah -->
+                <div class="text-center">
                     <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
-                    <span class="text-center">Logic Coffee</span>
+                    <span class="fw-bold" style="font-size: 1.8rem;">Logic Coffee</span>
                 </div>
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addProductModalLabel">Tambah Produk</h5>
-                </div>
-                <div class="modal-body">
-                    <form id="addProductForm">
-                        <div class="mb-3">
-                            <label for="productCategory" class="form-label">Kategori</label>
-                            <select class="form-select" id="productCategory" required>
-                                <option value="" disabled selected>Pilih Kategori</option>
-                                <option value="Hot">Hot</option>
-                                <option value="Ice">Ice</option>
-                                <option value="Non Coffee">Non Coffee</option>
-                                <option value="Dessert">Dessert</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="productName" class="form-label">Nama Produk</label>
-                            <input type="text" class="form-control" id="productName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="productDescription" class="form-label">Deskripsi Produk</label>
-                            <textarea class="form-control" id="productDescription" rows="3" required></textarea>
-                        </div>
-                        <div id="variantsContainer" class="mb-3">
-                            <h6>Varian Produk</h6>
-                            <div class="input-group mb-2">
-                                <input type="text" class="form-control me-1" placeholder="Varian" required>
-                                <input type="number" class="form-control me-1" placeholder="Stok" required>
-                                <input type="number" class="form-control" placeholder="Harga" required>
-                            </div>
-                        </div>
-                        <button type="button" id="addVariantLink" class="btn btn-secondary btn-sm">
-                            <i class="fa-solid fa-plus"></i> Tambah Varian
-                        </button>
-                        <div class="mb-3">
-                            <label for="productImage" class="form-label">Gambar Produk</label>
-                            <input class="form-control" type="file" id="productImage" accept="image/*" required>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                            <button type="button" class="btn btn-danger mt-2" data-bs-dismiss="modal" aria-label="Close">Tutup</button>
-                        </div>                        
-                    </form>
-                </div>
+                <!-- Tombol Cancel di Kanan -->
+                <button type="button" class="cancel-btn position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </button>
+            </div>
+
+            <h2 class="text-center category-title">Tambah Produk</h2>
+            <p class="welcome-text text-center">Masukkan detail produk baru!</p>
+            <div class="modal-body">
+                <form id="addProductForm">
+                    <div class="mb-3">
+                        <label for="productCategory" class="form-label">Kategori</label>
+                        <select class="form-select" id="productCategory" required>
+                            <option value="" disabled selected>Pilih Kategori</option>
+                            <option value="Hot">Hot</option>
+                            <option value="Ice">Ice</option>
+                            <option value="Non Coffee">Non Coffee</option>
+                            <option value="Dessert">Dessert</option>
+                        </select>
+                    </div>
+                    <!-- Input untuk Nama Produk -->
+                    <div class="input-group">
+                        <input type="text" id="product-name" placeholder=" " required>
+                        <label for="product-name">Masukkan Nama Produk</label>
+                    </div>
+                    <!-- Input untuk Harga Produk -->
+                    <div class="input-group">
+                        <input type="number" id="product-price" placeholder=" " required>
+                        <label for="product-price">Masukkan Harga Produk</label>
+                    </div>
+                    <!-- Input untuk Gambar Produk -->
+                    <div class="input-group">
+                        <input type="file" id="product-image" accept="image/*" required>
+                        <label for="product-image">Gambar Produk</label>
+                    </div>
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn">Simpan</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
    <!-- Modal Edit Produk -->
 <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
     <div class="modal-dialog">
