@@ -196,7 +196,7 @@
     </div>
 </div>
 
- <!-- Modal Edit Produk -->
+ <!-- Modal untuk Edit Produk -->
 <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -214,13 +214,12 @@
             </div>
 
             <h2 class="text-center category-title">Edit Produk</h2>
-            <p class="welcome-text text-center">Ubah detail produk yang ada!</p>
+            <p class="welcome-text text-center">Ubah detail produk!</p>
             <div class="modal-body">
                 <form id="editProductForm">
-                    <!-- Input untuk Kategori Produk -->
                     <div class="mb-3">
-                        <label for="editProductCategory" class="form-label">Kategori</label>
-                        <select class="form-select" id="editProductCategory" required>
+                        <label for="edit-product-category" class="form-label">Kategori</label>
+                        <select class="form-select" id="edit-product-category" required>
                             <option value="" disabled selected>Pilih Kategori</option>
                             <option value="Hot">Hot</option>
                             <option value="Ice">Ice</option>
@@ -228,34 +227,28 @@
                             <option value="Dessert">Dessert</option>
                         </select>
                     </div>
-
                     <!-- Input untuk Nama Produk -->
                     <div class="input-group">
-                        <input type="text" id="editProductName" placeholder=" " required>
-                        <label for="editProductName">Masukkan Nama Produk</label>
+                        <input type="text" id="edit-product-name" placeholder=" " required>
+                        <label for="edit-product-name">Nama Produk</label>
                     </div>
-
                     <!-- Input untuk Harga Produk -->
                     <div class="input-group">
-                        <input type="number" id="editProductPrice" placeholder=" " required>
-                        <label for="editProductPrice">Masukkan Harga Produk</label>
+                        <input type="number" id="edit-product-price" placeholder=" " required>
+                        <label for="edit-product-price">Harga Produk</label>
                     </div>
-
                     <!-- Input untuk Gambar Produk -->
                     <div class="input-group">
-                        <input type="file" id="editProductImage" accept="image/*">
-                        <label for="editProductImage">Gambar Produk</label>
+                        <input type="file" id="edit-product-image" accept="image/*" required>
+                        <label for="edit-product-image">Gambar Produk</label>
                     </div>
-
-                    <!-- Tombol Submit -->
-                    <button type="submit" class="submit-btn">Simpan Perubahan</button>
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn">Simpan</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-
 <!-- SweetAlert2 dan Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
