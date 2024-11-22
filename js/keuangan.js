@@ -1,20 +1,21 @@
 import { postJSON } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/api.js';
 import { onClick } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/element.js';
 
-
 document.addEventListener('DOMContentLoaded', function () {
-    const cetakQrisButton = document.getElementById('cetakQris');
-    const cetakCashButton = document.getElementById('cetakCash');
-
     function cetakLaporan(filterMethod) {
         const laporanKeuangan = document.querySelector('.table');
         if (laporanKeuangan) {
             // Filter baris berdasarkan metode transaksi
             const rows = Array.from(laporanKeuangan.querySelectorAll('tbody tr'));
             const filteredRows = rows.filter(row => {
-                const metodeTransaksi = row.cells[2].textContent.trim(); // Ambil kolom metode transaksi
+                const metodeTransaksi = row.cells[2]?.textContent.trim(); // Pastikan kolom ada
                 return metodeTransaksi === filterMethod;
             });
+
+            if (filteredRows.length === 0) {
+                alert(`Tidak ada data dengan metode transaksi: ${filterMethod}`);
+                return;
+            }
 
             // Buat tabel baru hanya dengan baris yang difilter
             const filteredTable = document.createElement('table');
@@ -51,16 +52,37 @@ document.addEventListener('DOMContentLoaded', function () {
             printWindow.document.close();
             printWindow.print();
         } else {
-            console.error("Tabel dengan class 'table' tidak ditemukan!");
+            alert("Tabel dengan class 'table' tidak ditemukan!");
         }
     }
 
-    if (cetakQrisButton) {
-        cetakQrisButton.addEventListener('click', () => cetakLaporan('Qris'));
-    }
-
-    if (cetakCashButton) {
-        cetakCashButton.addEventListener('click', () => cetakLaporan('Cash'));
-    }
+    // Gunakan fungsi onClick dari jscroot untuk tombol Cetak Qris
+    onClick('cetakQris', (event) => {
+        event.stopPropagation();
+        cetakLaporan('Qris');
+        console.log("Button Cetak Qris diklik");
+    });
+    
+    onClick('cetakCash', (event) => {
+        event.stopPropagation();
+        cetakLaporan('Cash');
+        console.log("Button Cetak Cash diklik");
+    });    
 });
 
+document.getElementById('cetakQris').addEventListener('click', () => {
+    cetakLaporan('Qris');
+    console.log("Button Cetak Qris diklik langsung");
+});
+
+document.getElementById('cetakCash').addEventListener('click', () => {
+    cetakLaporan('Cash');
+    console.log("Button Cetak Cash diklik langsung");
+});
+
+
+console.log("keuangan.js berhasil dimuat");
+
+console.log("Library jscroot berhasil dimuat.");
+console.log("Button Cetak Qris ditemukan:", document.getElementById('cetakQris'));
+console.log("Button Cetak Cash ditemukan:", document.getElementById('cetakCash'));
