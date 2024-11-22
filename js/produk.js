@@ -1,4 +1,3 @@
-import { postJSON } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/api.js';
 import { onClick, getValue, addChild, setInner, container } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/element.js';
 import Cookies from 'https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.mjs';
 
