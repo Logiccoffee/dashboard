@@ -1,4 +1,7 @@
-// Fungsi untuk mengonversi gambar ke Base64 (agar gambar dapat disimpan di localStorage)
+import { onClick, getValue, addChild, setInner, container } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/element.js';
+import Cookies from 'https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.mjs';
+
+// Fungsi untuk mengonversi gambar ke Base64
 function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -8,14 +11,33 @@ function getBase64(file) {
     });
 }
 
-// Fungsi untuk menyimpan produk baru ke localStorage
-document.getElementById('addProductForm').onsubmit = async function(event) {
+// Fungsi untuk memuat data produk
+function loadProducts() {
+    let products = [];
+    if (Cookies.get('products')) {
+        products = JSON.parse(Cookies.get('products'));
+    } else if (localStorage.getItem('products')) {
+        products = JSON.parse(localStorage.getItem('products'));
+        // Sinkronisasi ke cookies jika hanya ada di localStorage
+        Cookies.set('products', JSON.stringify(products), { expires: 7 });
+    }
+    return products;
+}
+
+// Fungsi untuk menyimpan produk ke cookies dan localStorage
+function saveProducts(products) {
+    localStorage.setItem('products', JSON.stringify(products));
+    Cookies.set('products', JSON.stringify(products), { expires: 7 });
+}
+
+// Fungsi untuk menyimpan produk baru
+onClick('addProductForm', async function(event) {
     event.preventDefault();
 
-    const productCategory = document.getElementById('productCategory').value;
-    const productName = document.getElementById('product-name').value.trim();
-    const productPrice = document.getElementById('product-price').value.trim();
-    const productImage = document.getElementById('product-image').files[0];
+    const productCategory = getValue('productCategory');
+    const productName = getValue('product-name').trim();
+    const productPrice = getValue('product-price').trim();
+    const productImage = container('product-image').files[0];
 
     // Validasi input produk
     if (!productCategory || !productName || !productPrice || !productImage) {
@@ -27,13 +49,13 @@ document.getElementById('addProductForm').onsubmit = async function(event) {
         category: productCategory,
         name: productName,
         price: productPrice,
-        image: await getBase64(productImage), // Mengkonversi gambar ke base64
+        image: await getBase64(productImage),
     };
 
-    // Menyimpan produk ke localStorage
-    const products = JSON.parse(localStorage.getItem('products')) || [];
+    // Ambil produk yang sudah ada, tambahkan produk baru, lalu simpan
+    const products = loadProducts();
     products.push(newProduct);
-    localStorage.setItem('products', JSON.stringify(products));
+    saveProducts(products);
 
     // Tampilkan SweetAlert setelah berhasil menyimpan
     Swal.fire({
@@ -43,22 +65,19 @@ document.getElementById('addProductForm').onsubmit = async function(event) {
         confirmButtonText: 'OK'
     }).then(() => {
         renderProductList(); // Perbarui daftar produk
-        // Menutup modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+        const modal = bootstrap.Modal.getInstance(container('addProductModal'));
         modal.hide(); // Menutup modal setelah produk ditambahkan
     });
-};
+});
 
 // Fungsi untuk menampilkan daftar produk
 function renderProductList() {
-    const products = JSON.parse(localStorage.getItem('products')) || [];
-    const productList = document.getElementById('productList');
-    productList.innerHTML = ''; // Hapus daftar produk sebelumnya
+    const products = loadProducts();
+    const productList = container('productList');
+    setInner('productList', ''); // Hapus daftar produk sebelumnya
 
     products.forEach((product, index) => {
-        const card = document.createElement('div');
-        card.className = 'col-md-4 mb-4';
-        card.innerHTML = `
+        const content = `
             <div class="card h-100 shadow-sm">
                 <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
@@ -76,12 +95,9 @@ function renderProductList() {
                 </div>
             </div>
         `;
-        productList.appendChild(card);
+        addChild('productList', 'div', 'col-md-4 mb-4', content);
     });
 }
-
-// Panggil fungsi renderProductList untuk menampilkan daftar produk saat halaman dimuat
-document.addEventListener('DOMContentLoaded', renderProductList);
 
 // Fungsi untuk menghapus produk
 function confirmDelete(index) {
@@ -94,72 +110,15 @@ function confirmDelete(index) {
         cancelButtonText: 'Batal'
     }).then(result => {
         if (result.isConfirmed) {
-            const products = JSON.parse(localStorage.getItem('products')) || [];
+            const products = loadProducts();
             products.splice(index, 1);
-            localStorage.setItem('products', JSON.stringify(products));
+            saveProducts(products);
+
             Swal.fire('Terhapus!', 'Produk telah dihapus.', 'success');
             renderProductList(); // Perbarui daftar produk setelah dihapus
         }
     });
 }
 
-// Fungsi untuk membuka modal edit produk dan mengisi data produk yang dipilih
-function openEditProductPopup(index) {
-    const products = JSON.parse(localStorage.getItem('products')) || [];
-    const product = products[index];
-
-    // Mengisi data produk ke dalam formulir edit
-    document.getElementById('edit-product-name').value = product.name;
-    document.getElementById('edit-product-category').value = product.category;
-    document.getElementById('edit-product-price').value = product.price;
-    // Menyimpan index produk untuk digunakan saat menyimpan perubahan
-    document.getElementById('editProductForm').setAttribute('data-index', index);
-
-    // Menampilkan modal edit
-    const modal = new bootstrap.Modal(document.getElementById('editProductModal'));
-    modal.show();
-}
-
-// Fungsi untuk menyimpan perubahan produk
-document.getElementById('editProductForm').onsubmit = async function(event) {
-    event.preventDefault();
-
-    const index = document.getElementById('editProductForm').getAttribute('data-index');
-    const productCategory = document.getElementById('edit-product-category').value.trim();
-    const productName = document.getElementById('edit-product-name').value.trim();
-    const productPrice = document.getElementById('edit-product-price').value.trim();
-    const productImage = document.getElementById('edit-product-image').files[0];
-
-    // Validasi input produk
-    if (!productCategory || !productName || !productPrice || !productImage) {
-        alert("Tolong lengkapi semua informasi produk.");
-        return;
-    }
-
-    // Mengambil produk dari localStorage
-    const products = JSON.parse(localStorage.getItem('products')) || [];
-    const updatedProduct = {
-        category: productCategory,
-        name: productName,
-        price: productPrice,
-        image: await getBase64(productImage), // Mengkonversi gambar ke base64
-    };
-
-    // Update produk di array
-    products[index] = updatedProduct;
-
-    // Simpan kembali ke localStorage
-    localStorage.setItem('products', JSON.stringify(products));
-
-    // Menampilkan SweetAlert setelah berhasil mengedit
-    Swal.fire({
-        title: 'Sukses!',
-        text: 'Produk berhasil diperbarui!',
-        icon: 'success',
-        confirmButtonText: 'OK'
-    }).then(() => {
-        renderProductList(); // Perbarui daftar produk
-        const modal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
-        modal.hide(); // Menutup modal setelah produk diperbarui
-    });
-};
+// Panggil fungsi renderProductList untuk menampilkan daftar produk saat halaman dimuat
+document.addEventListener('DOMContentLoaded', renderProductList);
