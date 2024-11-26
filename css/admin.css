@@ -16,6 +16,14 @@ h2 {
   color: #000;
 }
 
+.sidebar a.active {
+  color: #fff;
+  background-color: #007bff;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+
 .custom-heading {
   color: #09431F !important; /* Warna hijau gelap */
   font-weight: bold !important; /* Opsional, untuk penekanan */
