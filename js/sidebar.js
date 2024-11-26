@@ -15,13 +15,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 <li>
                     <a href="https://logiccoffee.id.biz.id/dashboard/" class="dashboard-link">
                         <i class="fa-solid fa-house" style="margin-right: 10px;"></i>
-                        Dasbor
+                        <span class="sidebar-text">Dasbor</span> <!-- Teks -->
                     </a>
                 </li>
                 <li>
                     <a href="analitik.html" class="analitik-link">
                         <i class="fa-solid fa-chart-line" style="margin-right: 10px;"></i>
-                        Analitik
+                        <span class="sidebar-text">Analitik</span> <!-- Teks -->
                     </a>
                 </li>
             </ul>
@@ -34,19 +34,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 <li>
                     <a href="ulasan.html" class="ulasan-link">
                         <i class="fa-solid fa-comment" style="margin-right: 10px;"></i>
-                        Ulasan
+                        <span class="sidebar-text">Ulasan</span> <!-- Teks -->
                     </a>
                 </li>
                 <li>
                     <a href="banner.html" class="banner-link">
                         <i class="fa-solid fa-image" style="margin-right: 10px;"></i>
-                        Kustom Banner
+                        <span class="sidebar-text">Kustom Banner</span> <!-- Teks -->
                     </a>
                 </li>
                 <li>
                     <a href="users.html" class="users-link">
                         <i class="fa-solid fa-user-gear" style="margin-right: 10px;"></i>
-                        Pengguna
+                        <span class="sidebar-text">Pengguna</span>
                     </a>
                 </li>
             </ul>
@@ -59,13 +59,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 <li>
                     <a href="category.html" class="category-link">
                         <i class="fa-solid fa-list" style="margin-right: 10px;"></i>
-                        Kategori
+                        <span class="sidebar-text">Kategori</span>
                     </a>
                 </li>
                 <li>
                     <a href="menu.html" class="menu-link">
                         <i class="fa-solid fa-mug-saucer" style="margin-right: 10px;"></i>
-                        Menu
+                        <span class="sidebar-text">Menu</span>
                     </a>
                 </li>
             </ul>
@@ -78,13 +78,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 <li>
                     <a href="daftarpesanan.html" class="daftarpesanan-link">
                         <i class="fa-solid fa-box" style="margin-right: 10px;"></i>
-                        Daftar Pesanan
+                        <span class="sidebar-text">Daftar Pesanan</span>
                     </a>
                 </li>
                 <li>
                     <a href="keuangan.html" class="keuangan-link">
                         <i class="fa-solid fa-hand-holding-dollar" style="margin-right: 10px;"></i>
-                        Keuangan
+                        <span class="sidebar-text">Keuangan</span>
                     </a>
                 </li>
             </ul>
