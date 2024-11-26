@@ -1,7 +1,6 @@
 let editingBanner = null;
 let deletingBanner = null;
 
-
 document.addEventListener('DOMContentLoaded', function () {
     // Fungsi untuk menangani form "Tambah Banner"
     function handleAddBanner(event) {
