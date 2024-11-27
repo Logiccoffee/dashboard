@@ -24,7 +24,7 @@
 
 </head>
 
-<body>
+<body data-page="keuangan">
     <div class="dashboard">
         <aside class="search-wrap">
             <div class="search">
@@ -58,7 +58,10 @@
             </div>
         </aside>
 
-        <header class="menu-wrap">
+        <!-- Sidebar akan ditambahkan dari sidebar.js -->
+        <div id="sidebar-container"></div>
+
+        <!-- <header class="menu-wrap">
             <figure class="user">
                 <div class="user-avatar">
                     <img src="img/logo logic.png" alt="Plastiqu.Co">
@@ -66,9 +69,9 @@
                 <figcaption>LogicCoffee</figcaption>
             </figure>
 
-            <nav>
-                <!-- Bagian Dasbor dan Alat Utama -->
-                <section class="main-tools">
+            <nav> -->
+        <!-- Bagian Dasbor dan Alat Utama -->
+        <!-- <section class="main-tools">
                     <ul>
                         <li>
                             <a href="index.html">
@@ -89,10 +92,10 @@
                             </a>
                         </li>
                     </ul>
-                </section>
+                </section> -->
 
-                <!-- Bagian Kelola -->
-                <section class="discover">
+        <!-- Bagian Kelola -->
+        <!-- <section class="discover">
                     <h3>Kelola</h3>
                     <ul>
                         <li>
@@ -140,7 +143,7 @@
                     </ul>
                 </section>
             </nav>
-        </header>
+        </header> -->
 
         <main class="content-wrap">
             <header class="content-head">
@@ -186,7 +189,7 @@
                             <span class="medium-big d-block" id="bayarNantiAmount">Rp 10.000.000</span>
                             <p>Bayar Nanti</p>
                         </div>
-                    </div>
+                    </div>
 
                     <!-- Total Keuangan -->
                     <div class="info-box border p-3 d-flex justify-content-center align-items-center gap-3"
@@ -260,6 +263,9 @@
             console.error("Bootstrap tidak ditemukan!");
         }
     </script>
+
+    <!-- Sidebar -->
+    <script src="js/sidebar.js"></script>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
