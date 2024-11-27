@@ -58,7 +58,7 @@
     </style>
 </head>
 
-<body>
+<body data-page="daftarpesanan">
     <div class="dashboard">
         <aside class="search-wrap">
             <div class="search">
@@ -92,17 +92,20 @@
             </div>
         </aside>
 
-        <header class="menu-wrap">
+        <!-- Sidebar akan ditambahkan dari sidebar.js -->
+        <div id="sidebar-container"></div>
+
+        <!-- <header class="menu-wrap">
             <figure class="user">
                 <div class="user-avatar">
                     <img src="img/logo logic.png" alt="Plastiqu.Co">
                 </div>
                 <figcaption>LogicCoffee</figcaption>
-            </figure>
+            </figure> -->
 
-            <nav>
+            <!-- <nav>  -->
                 <!-- Bagian Dasbor dan Alat Utama -->
-                <section class="main-tools">
+                <!-- <section class="main-tools">
                     <ul>
                         <li>
                             <a href="https://logiccoffee.id.biz.id/dashboard/">
@@ -117,10 +120,10 @@
                             </a>
                         </li>
                     </ul>
-                </section>
+                </section> -->
 
                 <!-- Bagian Kelola -->
-                <section class="discover">
+                <!-- <section class="discover">
                     <h3>Kelola</h3>
                     <ul>
                         <li>
@@ -168,7 +171,7 @@
                     </ul>
                 </section>
             </nav>
-        </header>
+        </header> -->
 
 
         <main class="content-wrap">
@@ -233,6 +236,9 @@
             </div>
         </main>
     </div>
+
+    <!-- Sidebar -->
+	<script src="js/sidebar.js"></script>
 
     <script src="js/daftarpesanan.js" type="module"></script>
 </body>
