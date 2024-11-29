@@ -1,5 +1,6 @@
 import { onClick } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/element.js';
 
+
 document.addEventListener('DOMContentLoaded', function () {
     function cetakLaporan(filterMethod) {
         const laporanKeuangan = document.querySelector('.table');
@@ -19,34 +20,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 <tbody>${filteredRows.map(row => row.outerHTML).join('')}</tbody>
             `;
 
-            // Cetak tabel yang difilter
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Cetak Laporan Keuangan</title>
-                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
-                        <style>
-                            body {
-                                font-family: 'Signika', sans-serif;
-                                padding: 20px;
-                            }
-                            h2 {
-                                text-align: center;
-                                margin-bottom: 20px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <h2>Laporan Keuangan (${filterMethod})</h2>
-                        ${filteredTable.outerHTML}
-                    </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
-        } else {
-            console.error("Tabel dengan class 'table' tidak ditemukan!");
+            // Tampilkan tabel hasil filter di modal
+            const modalBody = document.querySelector('#cetakModal .modal-body');
+            modalBody.innerHTML = '';
+            modalBody.appendChild(filteredTable);
+
+            // Tampilkan modal
+            const cetakModal = new bootstrap.Modal(document.getElementById('cetakModal'));
+            cetakModal.show();
         }
     }
 

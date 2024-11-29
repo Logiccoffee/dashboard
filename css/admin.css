@@ -16,6 +16,13 @@ h2 {
   color: #000;
 }
 
+.custom-heading {
+  color: #09431F !important; /* Warna hijau gelap */
+  font-weight: bold !important; /* Opsional, untuk penekanan */
+  font-size: 1.1rem !important; /* Opsional, untuk ukuran */
+}
+
+
 .dashboard {
   display: grid;
   width: 100%;
@@ -191,10 +198,7 @@ h2 {
 
 .menu-wrap nav h3 {
   margin: 0;
-  font-size: 17px;
   text-transform: uppercase;
-  color: #033043;
-  font-weight: 600;
 }
 
 .menu-wrap nav ul {

@@ -54,7 +54,7 @@
     </style>
 </head>
 
-<body>
+<body data-page="analitik">
     <div class="dashboard">
         <aside class="search-wrap">
             <div class="search">
@@ -87,83 +87,8 @@
             </div>
         </aside>
 
-        <header class="menu-wrap">
-            <figure class="user">
-                <div class="user-avatar">
-                    <img src="img/logo logic.png" alt="LogicCoffee">
-                </div>
-                <figcaption>LogicCoffee</figcaption>
-            </figure>
-
-            <nav>
-                <!-- Bagian Dasbor dan Alat Utama -->
-                <section class="main-tools">
-                    <ul>
-                        <li>
-                            <a href="https://logiccoffee.id.biz.id/dashboard/">
-                                <i class="fa-solid fa-house" style="margin-right: 10px;"></i>
-                                Dasbor
-                            </a>
-                        </li>
-                        <li>
-                            <a href="analitik.html" class="active">
-                                <i class="fa-solid fa-chart-line" style="margin-right: 10px;"></i>
-                                Analitik
-                            </a>
-                        </li>
-                    </ul>
-                </section>
-
-                <!-- Bagian Kelola -->
-                <section class="discover">
-                    <h3>Kelola</h3>
-                    <ul>
-                        <li>
-                            <a href="ulasan.html">
-                                <i class="fa-solid fa-comment" style="margin-right: 10px;"></i>
-                                Ulasan
-                            </a>
-                        </li>
-                        <li>
-                            <a href="banner.html">
-                                <i class="fa-solid fa-image" style="margin-right: 10px;"></i>
-                                Kustom Banner
-                            </a>
-                        </li>
-                        <li>
-                            <a href="users.html">
-                                <i class="fa-solid fa-user-gear" style="margin-right: 10px;"></i>
-                                Pengguna
-                            </a>
-                        </li>
-                        <li>
-                            <a href="category.html">
-                                <i class="fa-solid fa-list" style="margin-right: 10px;"></i>
-                                Kategori
-                            </a>
-                        </li>
-                        <li>
-                            <a href="menu.html">
-                                <i class="fa-solid fa-pen" style="margin-right: 10px;"></i>
-                                Menu
-                            </a>
-                        </li>
-                        <li>
-                            <a href="daftarpesanan.html">
-                                <i class="fa-solid fa-box" style="margin-right: 10px;"></i>
-                                Daftar Pesanan
-                            </a>
-                        </li>
-                        <li>
-                            <a href="keuangan.html">
-                                <i class="fa-solid fa-hand-holding-dollar" style="margin-right: 10px;"></i>
-                                Keuangan
-                            </a>
-                        </li>
-                    </ul>
-                </section>
-            </nav>
-        </header>
+        <!-- Sidebar akan ditambahkan dari sidebar.js -->
+        <div id="sidebar-container"></div>
 
         <div class="content-wrap">
             <header class="content-head">
@@ -228,6 +153,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- Sidebar -->
+        <script src="js/sidebar.js"></script>
 
         <!-- Script untuk Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -29,7 +29,7 @@
 	 
 </head>
 
-<body>
+<body data-page="dashboard">
 	<div class="dashboard">
 		<aside class="search-wrap">
 			<div class="search">
@@ -62,17 +62,19 @@
 			</div>
 		</aside>
 
-		<header class="menu-wrap">
+		<!-- Sidebar akan ditambahkan dari sidebar.js -->
+        <div id="sidebar-container"></div>
+
+		<!-- <header class="menu-wrap">
 			<figure class="user">
 				<div class="user-avatar">
 					<img src="img/logo logic.png" alt="LogicCoffee">
 				</div>
-				<figcaption>LogicCoffee</figcaption>
-			</figure>
-
-			<nav>
+				<figcaption>Logic Coffee</figcaption>
+			</figure> -->			
+			<!-- <nav> -->
 				<!-- Bagian Dasbor dan Alat Utama -->
-				<section class="main-tools">
+				<!-- <section class="main-tools">
 					<ul>
 						<li>
 							<a href="https://logiccoffee.id.biz.id/dashboard/" class="active">
@@ -87,11 +89,11 @@
 							</a>
 						</li>
 					</ul>
-				</section>
-
+				</section> -->
+			
 				<!-- Bagian Kelola -->
-				<section class="discover">
-					<h3>Kelola</h3>
+				<!-- <section class="discover">
+					<h3 class="custom-heading">Kelola</h3>
 					<ul>
 						<li>
 							<a href="ulasan.html">
@@ -111,6 +113,13 @@
 								Pengguna
 							</a>
 						</li>
+					</ul>
+				</section> -->
+			
+				<!-- Bagian Produk -->
+				<!-- <section class="products">
+					<h3 class="custom-heading">Produk</h3>
+					<ul>
 						<li>
 							<a href="category.html">
 								<i class="fa-solid fa-list" style="margin-right: 10px;"></i>
@@ -119,10 +128,17 @@
 						</li>
 						<li>
 							<a href="menu.html">
-								<i class="fa-solid fa-pen" style="margin-right: 10px;"></i>
+								<i class="fa-solid fa-mug-saucer" style="margin-right: 10px;"></i>
 								Menu
 							</a>
 						</li>
+					</ul>
+				</section> -->
+			
+				<!-- Bagian Transaksi -->
+				<!-- <section class="transactions">
+					<h3 class="custom-heading">Transaksi</h3>
+					<ul>
 						<li>
 							<a href="daftarpesanan.html">
 								<i class="fa-solid fa-box" style="margin-right: 10px;"></i>
@@ -136,9 +152,9 @@
 							</a>
 						</li>
 					</ul>
-				</section>
-			</nav>
-		</header>
+				</section> -->
+			<!-- </nav> -->	
+		<!-- </header> -->
 
 		<main class="content-wrap">
 			<header class="content-head">
@@ -212,11 +228,11 @@
 					<div class="info-box border p-3 d-flex justify-content-center align-items-center gap-3"
 						style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 10px;">
 						<div class="box-icon">
-							<i class="fa-solid fa-pen" style="font-size: 40px;"></i>
+							<i class="fa-solid fa-mug-saucer" style="font-size: 40px;"></i>
 						</div>
 						<div class="box-content text-left">
 							<span class="big d-block" style="font-size: 50px;">25</span>
-							<p>Produk</p>
+							<p>Menu</p>
 						</div>
 					</div>
 
@@ -248,6 +264,9 @@
 			</div>
 		</main>
 	</div>
+
+	<!-- Sidebar -->
+	<script src="js/sidebar.js"></script>
 
 	<!-- jQuery -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
