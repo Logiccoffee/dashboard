@@ -1,3 +1,4 @@
+import { postJSON } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/api.js';
 
 // Array untuk menyimpan data kategori
 let categories = [];
