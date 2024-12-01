@@ -1,7 +1,3 @@
-import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
-import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croot.js";
-import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
-
 // Periksa apakah cookie login tersedia
 const loginToken = getCookie("login");
 if (!loginToken) {
@@ -12,7 +8,9 @@ if (!loginToken) {
     // Ambil data pengguna melalui API
     getJSON(
         "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user", // Endpoint API
-        { login: loginToken }, // Header login
+        { 
+            login: loginToken // Header login
+        },
         handleUserResponse // Fungsi callback untuk menangani respons
     );
 }
@@ -23,17 +21,14 @@ function handleUserResponse(result) {
         // Jika respons berhasil, tampilkan data pengguna
         const userData = result.data;
 
-        // Tampilkan foto profil jika tersedia
-        const userPhotoElement = document.getElementById("user-photo");
-        if (userData.profpic) {
-            userPhotoElement.src = userData.profpic;
-            userPhotoElement.style.display = "block"; // Tampilkan foto
-        }
+        // Tampilkan data pengguna pada elemen HTML
+        const userPhoto = document.getElementById("user-photo");
+        const userName = document.getElementById("user-name");
 
-        // Tampilkan nama pengguna
-        setInner("user-name", userData.name || "Pengguna");
+        userPhoto.src = userData.profpic;
+        userPhoto.alt = `Foto Profil ${userData.name}`;
+        userName.textContent = userData.name;
 
-        // Log untuk debugging
         console.log("Data pengguna berhasil dimuat:", userData);
     } else {
         // Jika gagal, tampilkan pesan kesalahan
