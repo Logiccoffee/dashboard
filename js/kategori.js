@@ -95,7 +95,6 @@ function addCategory(event) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'login': 'Bearer your-secret-token' // Menambahkan token dengan format Bearer
         },
         body: JSON.stringify(newCategory)
     })
