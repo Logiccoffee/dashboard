@@ -1,38 +1,31 @@
+import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
+import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croot.js";
+import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+
 // Periksa apakah cookie login tersedia
 const loginToken = getCookie("login");
+console.log("Login token:", loginToken);
+
 if (!loginToken) {
-    // Jika tidak ada cookie, arahkan ke halaman login
     alert("Anda belum login. Silakan login terlebih dahulu.");
     window.location.href = "/login";
 } else {
-    // Ambil data pengguna melalui API
     getJSON(
-        "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user", // Endpoint API
-        { 
-            login: loginToken // Header login
-        },
-        handleUserResponse // Fungsi callback untuk menangani respons
+        "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user",
+        { login: loginToken },
+        (result) => {
+            console.log("Full API response:", result);
+
+            if (result.status === 200 && result.data) {
+                const userData = result.data;
+                console.log("User data:", userData);
+
+                // Tampilkan data pengguna
+                setInner("user-name", userData.name);
+            } else {
+                console.error("Gagal memuat data pengguna:", result.message || "Unknown error");
+                alert("Gagal memuat informasi pengguna. Silakan coba lagi.");
+            }
+        }
     );
-}
-
-// Fungsi untuk menangani respons dari API
-function handleUserResponse(result) {
-    if (result.status === 200 && result.data) {
-        // Jika respons berhasil, tampilkan data pengguna
-        const userData = result.data;
-
-        // Tampilkan data pengguna pada elemen HTML
-        const userPhoto = document.getElementById("user-photo");
-        const userName = document.getElementById("user-name");
-
-        userPhoto.src = userData.profpic;
-        userPhoto.alt = `Foto Profil ${userData.name}`;
-        userName.textContent = userData.name;
-
-        console.log("Data pengguna berhasil dimuat:", userData);
-    } else {
-        // Jika gagal, tampilkan pesan kesalahan
-        console.error("Gagal memuat data pengguna:", result.message || "Unknown error");
-        alert("Gagal memuat informasi pengguna. Silakan coba lagi.");
-    }
 }
