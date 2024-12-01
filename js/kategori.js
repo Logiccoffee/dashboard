@@ -1,8 +1,7 @@
 import { getJSON, postJSON, putJSON, deleteJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/api.js";
 
-
 // Array untuk menyimpan data kategori
-const categories = [
+let categories = [
     { name: 'Signature' },
     { name: 'Manual Brew' },
     { name: 'Coffee' },
@@ -11,17 +10,14 @@ const categories = [
     { name: 'Mojito' }
 ];
 
-let category = []; // Daftar kategori akan diambil dari API
 let currentEditIndex = null; // Untuk menyimpan index kategori yang sedang diedit
-let currentDeleteIndex = null //Untuk menyimpan index kategori yang akan diapus
+let currentDeleteIndex = null; // Untuk menyimpan index kategori yang akan dihapus
 
 const apiUrl = 'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category';
 
 // Fungsi untuk mendapatkan data kategori dari API
 function fetchCategory() {
-    const tokenkey = 'Authorization';
-    const tokenvalue = 'Bearer yourTokenHere'; // Ganti dengan token yang valid
-    getJSON(apiUrl, tokenkey, tokenvalue, (response) => {
+    getJSON(apiUrl, (response) => {
         if (response.status === 200) {
             categories = response.data; // Simpan data kategori dari API
             renderCategoryList(); // Render daftar kategori setelah mendapat data
@@ -30,7 +26,6 @@ function fetchCategory() {
         }
     });
 }
-
 
 // Fungsi untuk menampilkan daftar kategori
 function renderCategoryList() {
@@ -65,16 +60,14 @@ function renderCategoryList() {
     });
 }
 
-/// Menangani submit form untuk menambah kategori
+// Menangani submit form untuk menambah kategori
 document.getElementById('add-category-form').addEventListener('submit', (event) => {
     event.preventDefault();
     const categoryName = document.getElementById('category-name').value;
 
     const dataToAdd = { name: categoryName };
-    const tokenkey = 'Authorization';
-    const tokenvalue = 'Bearer yourTokenHere'; // Ganti dengan token yang valid
 
-    postJSON(apiUrl, tokenkey, tokenvalue, dataToAdd, (response) => {
+    postJSON(apiUrl, dataToAdd, (response) => {
         if (response.status === 200) {
             categories.push(response.data); // Menambahkan kategori yang baru ke dalam array
             renderCategoryList(); // Render ulang daftar kategori
@@ -102,10 +95,8 @@ document.getElementById('edit-category-form').addEventListener('submit', (event)
 
     const dataToUpdate = { name: categoryName };
     const targetUrl = `${apiUrl}/${categories[currentEditIndex].id}`;
-    const tokenkey = 'Authorization';
-    const tokenvalue = 'Bearer yourTokenHere'; // Ganti dengan token yang valid
 
-    putJSON(targetUrl, tokenkey, tokenvalue, dataToUpdate, (response) => {
+    putJSON(targetUrl, dataToUpdate, (response) => {
         if (response.status === 200) {
             categories[currentEditIndex].name = categoryName; // Memperbarui nama kategori di array
             renderCategoryList(); // Render ulang daftar kategori
@@ -130,10 +121,8 @@ document.getElementById('edit-category-form').addEventListener('submit', (event)
 document.getElementById('confirm-delete-btn').addEventListener('click', () => {
     if (currentDeleteIndex !== null) {
         const targetUrl = `${apiUrl}/${categories[currentDeleteIndex].id}`;
-        const tokenkey = 'Authorization';
-        const tokenvalue = 'Bearer yourTokenHere'; // Ganti dengan token yang valid
 
-        deleteJSON(targetUrl, tokenkey, tokenvalue, {}, (response) => {
+        deleteJSON(targetUrl, {}, (response) => {
             if (response.status === 200) {
                 categories.splice(currentDeleteIndex, 1); // Hapus kategori dari array
                 renderCategoryList(); // Render ulang daftar kategori
@@ -178,5 +167,4 @@ document.getElementById('add-category-btn').addEventListener('click', () => {
 });
 
 // Render daftar kategori saat halaman dimuat
-renderCategoryList();
-
+fetchCategory(); // Menambahkan pemanggilan untuk fetchCategory
