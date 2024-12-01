@@ -87,6 +87,8 @@ function addCategory(event) {
         name: categoryName
     };
 
+    const token = localStorage.getItem('authToken'); // Ambil token dari LocalStorage
+
     // Log untuk memeriksa data yang akan dikirim
     console.log('Kategori yang akan ditambahkan:', newCategory);
 
@@ -95,6 +97,7 @@ function addCategory(event) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Tambahkan token ke header
         },
         body: JSON.stringify(newCategory)
     })
