@@ -97,7 +97,7 @@ function addCategory(event) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Tambahkan token ke header
+            'Login': `Bearer ${token}` // Tambahkan token ke header
         },
         body: JSON.stringify(newCategory)
     })
