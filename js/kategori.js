@@ -15,14 +15,23 @@ function fetchCategory() {
             return response.json();
         })
         .then(data => {
-            // Tampilkan data di halaman
+            // Pastikan data diambil sesuai struktur JSON
+            const categoryData = data.data; // Array kategori dalam data JSON
+            
+            // Buat list nama kategori
+            const names = categoryData.map(item => item.name);
+
+            // Tampilkan nama kategori di halaman
             const container = document.getElementById('category-list');
-            container.innerHTML = JSON.stringify(data, null, 2); // Format JSON ke teks
+            container.innerHTML = names
+                .map(name => `<li>${name}</li>`) // Tampilkan setiap nama sebagai list item
+                .join(''); // Gabungkan list item menjadi satu string
         })
         .catch(error => {
             console.error("Terjadi kesalahan:", error);
         });
 }
+
 
 // Fungsi untuk menampilkan daftar kategori
 function renderCategoryList() {
