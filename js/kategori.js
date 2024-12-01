@@ -99,29 +99,33 @@ function addCategory(event) {
         },
         body: JSON.stringify(newCategory)
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Log respons dari API untuk memeriksa apakah data berhasil ditambahkan
-            console.log('Respons dari API:', data);
-            alert('Kategori berhasil ditambahkan!');
-            // Menutup modal setelah kategori ditambahkan
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
-            modal.hide(); // Menutup modal
-            // Memperbarui daftar kategori setelah penambahan
-            fetchCategory();
-            // Mengosongkan input form
-            document.getElementById('category-name').value = '';
-        })
-        .catch(error => {
-            console.error("Terjadi kesalahan:", error);
-            alert('Terjadi kesalahan saat menambah kategori.');
-        });
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Log respons dari API untuk memeriksa apakah data berhasil ditambahkan
+        console.log('Respons dari API:', data);
+        alert('Kategori berhasil ditambahkan!');
+        
+        // Menutup modal setelah kategori ditambahkan
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
+        modal.hide(); // Menutup modal
+        
+        // Memperbarui daftar kategori setelah penambahan
+        fetchCategory(); // Memanggil fetchCategory untuk memperbarui daftar kategori
+        
+        // Mengosongkan input form
+        document.getElementById('category-name').value = '';
+    })
+    .catch(error => {
+        console.error("Terjadi kesalahan:", error);
+        alert('Terjadi kesalahan saat menambah kategori.');
+    });
 }
+
 
 // // Menangani submit form untuk menambah kategori
 // document.getElementById('add-category-form').addEventListener('submit', (event) => {
