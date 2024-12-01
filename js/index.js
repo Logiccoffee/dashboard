@@ -4,34 +4,46 @@ import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croo
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js";
 
-// Cek apakah cookie login ada, jika tidak arahkan ke halaman utama
-const loginCookie = getCookie("login");
-if (!loginCookie) {
-    redirect("/");  // Jika cookie login tidak ada, arahkan ke halaman utama
+// Periksa apakah cookie login tersedia
+if (!getCookie("login")) {
+    redirect("/");
 }
 
-// Ambil data pengguna menggunakan API
-getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user", 
-        "login", loginCookie, responseFunction);
+// Fungsi utama untuk mendapatkan data pengguna
+getJSON(
+    "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user",
+    "login",
+    getCookie("login"),
+    handleResponse
+);
 
 // Fungsi untuk menangani respons API
-function responseFunction(result) {
-    if (!result || result.status === 404) {
-        // Jika pengguna tidak ditemukan, arahkan ke halaman pendaftaran
+function handleResponse(result) {
+    if (!result || typeof result !== "object") {
+        console.error("Respons API tidak valid:", result);
+        setInner("content", "Terjadi kesalahan saat memuat data pengguna.");
+        return;
+    }
+
+    if (result.status === 404) {
+        // Pengguna tidak ditemukan
         setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu.");
         redirect("/register");
-    } else {
-        // Tampilkan pesan selamat datang
-        setInner("content", "Selamat datang, " + result.data.name);
+    } else if (result.status === 200 && result.data) {
+        // Data pengguna ditemukan
+        const { name, role } = result.data;
 
-        // Menampilkan nama pengguna di elemen yang telah disediakan
+        // Tampilkan pesan selamat datang
+        setInner("content", `Selamat datang ${name}`);
+
+        // Perbarui elemen nama pengguna
         const userNameElement = document.getElementById("user-name");
         if (userNameElement) {
-            userNameElement.textContent = result.data.name; // Ganti dengan nama pengguna
+            userNameElement.textContent = name;
         }
 
-        // Arahkan pengguna berdasarkan role
-        switch (result.data.role) {
+        // Arahkan pengguna berdasarkan peran
+        switch (role) {
             case "user":
             case "dosen":
                 redirect("/menu");
@@ -43,11 +55,13 @@ function responseFunction(result) {
                 redirect("/dashboard-cashier");
                 break;
             default:
-                // Jika role tidak dikenali, tetap di halaman utama atau tampilkan pesan error
-                setInner("content", "Role tidak dikenali, silakan hubungi admin.");
-                redirect("/");  // Mengarahkan ke halaman utama jika role tidak valid
+                console.warn("Peran tidak dikenali:", role);
+                redirect("/");
                 break;
         }
+    } else {
+        console.error("Status API tidak dikenali:", result.status);
+        setInner("content", "Terjadi kesalahan saat memproses data.");
     }
-    console.log(result);  // Debugging: Tampilkan hasil dari API
+    console.log(result);
 }
