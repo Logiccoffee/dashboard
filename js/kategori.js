@@ -24,14 +24,13 @@ function fetchCategory() {
             // Tampilkan nama kategori di halaman
             const container = document.getElementById('category-list');
             container.innerHTML = names
-                .map(name => `<li>${name}</li>`) // Tampilkan setiap nama sebagai list item
-                .join(''); // Gabungkan list item menjadi satu string
+                .map(name => `<div>${name}</div>`) // Gunakan <div> untuk tiap baris
+                .join(''); // Gabungkan semua elemen menjadi satu string
         })
         .catch(error => {
             console.error("Terjadi kesalahan:", error);
         });
 }
-
 
 // Fungsi untuk menampilkan daftar kategori
 function renderCategoryList() {
