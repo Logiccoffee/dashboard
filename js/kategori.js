@@ -220,14 +220,14 @@ function openDeleteModal(index) {
 }
 
 function validateCategory() {
-    // Logika validasi kategori di sini
-    const categoryName = document.getElementById('edit-category-name').value;
-    if (!categoryName) {
+    const categoryName = document.getElementById('category-name').value;
+    if (categoryName === '') {
         alert('Nama kategori tidak boleh kosong');
         return false;
     }
     return true;
 }
+
 
 // Event listener untuk tombol Tambah Kategori
 document.getElementById('add-category-btn').addEventListener('click', () => {
