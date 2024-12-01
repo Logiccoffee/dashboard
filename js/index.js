@@ -43,10 +43,10 @@ function responseFunction(result) {
                 console.log("Role:", result.data.role, "Mengarahkan ke /menu");
                 redirect("/menu");
                 break;
-            case "admin":
-                console.log("Role: admin. Mengarahkan ke /dashboard-admin");
-                redirect("/dashboard-admin");
-                break;
+                case "admin":
+                    console.log("Role: admin. Mengarahkan ke /dashboard-admin");
+                    window.location.href = "/dashboard-admin"; // Gunakan ini sebagai pengganti
+                    break;                
             case "cashier":
                 console.log("Role: cashier. Mengarahkan ke /dashboard-cashier");
                 redirect("/dashboard-cashier");
