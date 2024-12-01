@@ -87,6 +87,9 @@ function addCategory(event) {
         name: categoryName
     };
 
+    // Log untuk memeriksa data yang akan dikirim
+    console.log('Kategori yang akan ditambahkan:', newCategory);
+
     // Mengirimkan data ke API
     fetch(apiUrl, {
         method: 'POST',
@@ -103,7 +106,8 @@ function addCategory(event) {
             return response.json();
         })
         .then(data => {
-            // Menampilkan pesan sukses
+            // Log respons dari API untuk memeriksa apakah data berhasil ditambahkan
+            console.log('Respons dari API:', data);
             alert('Kategori berhasil ditambahkan!');
             // Menutup modal setelah kategori ditambahkan
             const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
