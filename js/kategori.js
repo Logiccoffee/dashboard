@@ -16,7 +16,7 @@ function fetchCategory() {
         })
         .then(data => {
             // Tampilkan data di halaman
-            const container = document.getElementById('data-container');
+            const container = document.getElementById('category-list');
             container.innerHTML = JSON.stringify(data, null, 2); // Format JSON ke teks
         })
         .catch(error => {
