@@ -12,9 +12,7 @@ if (!loginToken) {
     // Ambil data pengguna melalui API
     getJSON(
         "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user", // Endpoint API
-        { 
-            "login": loginToken // Hanya header login
-        },
+        { login: loginToken }, // Header login
         handleUserResponse // Fungsi callback untuk menangani respons
     );
 }
@@ -25,11 +23,17 @@ function handleUserResponse(result) {
         // Jika respons berhasil, tampilkan data pengguna
         const userData = result.data;
 
-        // Tampilkan data pengguna pada elemen HTML
-        setInner("user-photo", <img src="${userData.profpic}" alt="Foto Profil" class="user-photo" />);
-        setInner("user-name", userData.name);
-        setInner("user-phone", userData.phonenumber);
+        // Tampilkan foto profil jika tersedia
+        const userPhotoElement = document.getElementById("user-photo");
+        if (userData.profpic) {
+            userPhotoElement.src = userData.profpic;
+            userPhotoElement.style.display = "block"; // Tampilkan foto
+        }
 
+        // Tampilkan nama pengguna
+        setInner("user-name", userData.name || "Pengguna");
+
+        // Log untuk debugging
         console.log("Data pengguna berhasil dimuat:", userData);
     } else {
         // Jika gagal, tampilkan pesan kesalahan
