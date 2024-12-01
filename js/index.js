@@ -25,11 +25,9 @@ async function fetchUserData() {
             },
         });
 
-        console.log("Respons dari API:", response);
-
-        // Jika respons gagal
+        // Validasi respons
         if (!response.ok) {
-            console.error("Respons gagal:", response.status, response.statusText);
+            console.error(`Gagal mengambil data: ${response.status} ${response.statusText}`);
             if (response.status === 404) {
                 setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu.");
                 redirect("/register");
@@ -45,7 +43,7 @@ async function fetchUserData() {
         // Menangani respons pengguna
         handleUserResponse(result);
     } catch (error) {
-        console.error("Error saat mengambil data pengguna:", error);
+        console.error("Error saat mengambil data pengguna:", error.message);
         setInner("content", "Terjadi kesalahan saat memuat data. Silakan coba lagi.");
     }
 }
