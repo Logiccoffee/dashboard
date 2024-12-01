@@ -119,33 +119,33 @@ function addCategory(event) {
         });
 }
 
-// Menangani submit form untuk menambah kategori
-document.getElementById('add-category-form').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const categoryName = document.getElementById('category-name').value;
+// // Menangani submit form untuk menambah kategori
+// document.getElementById('add-category-form').addEventListener('submit', (event) => {
+//     event.preventDefault();
+//     const categoryName = document.getElementById('category-name').value;
 
-    const dataToAdd = { name: categoryName };
+//     const dataToAdd = { name: categoryName };
 
-    postJSON(apiUrl, dataToAdd, (response) => {
-        if (response.status === 200) {
-            categories.push(response.data); // Menambahkan kategori yang baru ke dalam array
-            renderCategoryList(); // Render ulang daftar kategori
+//     postJSON(apiUrl, dataToAdd, (response) => {
+//         if (response.status === 200) {
+//             categories.push(response.data); // Menambahkan kategori yang baru ke dalam array
+//             renderCategoryList(); // Render ulang daftar kategori
 
-            // Tampilkan SweetAlert2 setelah kategori berhasil ditambahkan
-            Swal.fire({
-                title: 'Sukses!',
-                text: 'Kategori berhasil ditambahkan.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                const addCategoryModal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
-                addCategoryModal.hide();
-            });
-        } else {
-            Swal.fire('Gagal', 'Terjadi kesalahan saat menambahkan kategori', 'error');
-        }
-    });
-});
+//             // Tampilkan SweetAlert2 setelah kategori berhasil ditambahkan
+//             Swal.fire({
+//                 title: 'Sukses!',
+//                 text: 'Kategori berhasil ditambahkan.',
+//                 icon: 'success',
+//                 confirmButtonText: 'OK'
+//             }).then(() => {
+//                 const addCategoryModal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
+//                 addCategoryModal.hide();
+//             });
+//         } else {
+//             Swal.fire('Gagal', 'Terjadi kesalahan saat menambahkan kategori', 'error');
+//         }
+//     });
+// });
 
 // Menangani submit form untuk mengubah kategori
 document.getElementById('edit-category-form').addEventListener('submit', (event) => {
