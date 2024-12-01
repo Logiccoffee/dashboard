@@ -18,19 +18,58 @@ function fetchCategory() {
             // Pastikan data diambil sesuai struktur JSON
             const categoryData = data.data; // Array kategori dalam data JSON
             
-            // Buat list nama kategori
-            const names = categoryData.map(item => item.name);
-
-            // Tampilkan nama kategori di halaman
+            // Tampilkan data di dalam tabel
             const container = document.getElementById('category-list');
-            container.innerHTML = names
-                .map(name => `<div style="display: block; margin-bottom: 8px;">${name}</div>`) // Tambahkan CSS inline
-                .join(''); // Gabungkan semua elemen menjadi satu string
+            container.innerHTML = ''; // Hapus data lama jika ada
+            categoryData.forEach((item, index) => {
+                // Membuat baris untuk setiap kategori
+                const row = document.createElement('tr');
+                
+                // Kolom Nama Kategori
+                const nameCell = document.createElement('td');
+                nameCell.textContent = item.name;
+                
+                // Kolom Aksi
+                const actionCell = document.createElement('td');
+                actionCell.classList.add('text-center');
+                
+                // Tombol Ubah
+                const editButton = document.createElement('button');
+                editButton.className = 'btn btn-warning me-2';
+                editButton.innerHTML = '<i class="fas fa-pen"></i> Ubah';
+                // Event listener untuk tombol Ubah
+                editButton.addEventListener('click', () => {
+                    // Tambahkan logika modal untuk edit di sini
+                    console.log(`Edit kategori dengan index: ${index}`);
+                });
+                
+                // Tombol Hapus
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'btn btn-danger';
+                deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Hapus';
+                // Event listener untuk tombol Hapus
+                deleteButton.addEventListener('click', () => {
+                    // Tambahkan logika modal untuk hapus di sini
+                    console.log(`Hapus kategori dengan index: ${index}`);
+                });
+                
+                // Tambahkan tombol ke kolom aksi
+                actionCell.appendChild(editButton);
+                actionCell.appendChild(deleteButton);
+                
+                // Tambahkan kolom ke dalam baris
+                row.appendChild(nameCell);
+                row.appendChild(actionCell);
+                
+                // Tambahkan baris ke dalam container
+                container.appendChild(row);
+            });
         })
         .catch(error => {
             console.error("Terjadi kesalahan:", error);
         });
 }
+
 
 // Fungsi untuk menampilkan daftar kategori
 function renderCategoryList() {
