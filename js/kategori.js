@@ -24,7 +24,7 @@ function fetchCategory() {
             // Tampilkan nama kategori di halaman
             const container = document.getElementById('category-list');
             container.innerHTML = names
-                .map(name => `<div>${name}</div>`) // Gunakan <div> untuk tiap baris
+                .map(name => `<div style="display: block; margin-bottom: 8px;">${name}</div>`) // Tambahkan CSS inline
                 .join(''); // Gabungkan semua elemen menjadi satu string
         })
         .catch(error => {
