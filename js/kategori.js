@@ -1,15 +1,6 @@
-import { getJSON, postJSON, putJSON, deleteJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/api.js";
 
 // Array untuk menyimpan data kategori
-let categories = [
-    { name: 'Signature' },
-    { name: 'Manual Brew' },
-    { name: 'Coffee' },
-    { name: 'Non Coffee' },
-    { name: 'Mocktail' },
-    { name: 'Mojito' }
-];
-
+let categories = [];
 let currentEditIndex = null; // Untuk menyimpan index kategori yang sedang diedit
 let currentDeleteIndex = null; // Untuk menyimpan index kategori yang akan dihapus
 
@@ -17,28 +8,21 @@ const apiUrl = 'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/d
 
 // Fungsi untuk mendapatkan data kategori dari API
 function fetchCategory() {
-    fetch(apiUrl, {
-        method: 'GET',
-        headers: {
-            'Authorization': 'Bearer your_token',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-            'Access-Control-Allow-Headers': 'Content-Type'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 200) {
-            categories = data.data; // Simpan data kategori dari API
-            renderCategoryList(); // Render daftar kategori setelah mendapat data
-        } else {
-            Swal.fire('Gagal', 'Gagal mengambil data kategori', 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        Swal.fire('Gagal', 'Terjadi kesalahan saat mengambil data kategori', 'error');
-    });
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Tampilkan data di halaman
+            const container = document.getElementById('data-container');
+            container.innerHTML = JSON.stringify(data, null, 2); // Format JSON ke teks
+        })
+        .catch(error => {
+            console.error("Terjadi kesalahan:", error);
+        });
 }
 
 // Fungsi untuk menampilkan daftar kategori
