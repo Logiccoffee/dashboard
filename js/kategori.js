@@ -17,13 +17,27 @@ const apiUrl = 'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/d
 
 // Fungsi untuk mendapatkan data kategori dari API
 function fetchCategory() {
-    getJSON(apiUrl, (response) => {
-        if (response.status === 200) {
-            categories = response.data; // Simpan data kategori dari API
+    fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer your_token',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+            'Access-Control-Allow-Headers': 'Content-Type'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 200) {
+            categories = data.data; // Simpan data kategori dari API
             renderCategoryList(); // Render daftar kategori setelah mendapat data
         } else {
             Swal.fire('Gagal', 'Gagal mengambil data kategori', 'error');
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire('Gagal', 'Terjadi kesalahan saat mengambil data kategori', 'error');
     });
 }
 
@@ -158,6 +172,16 @@ function openDeleteModal(index) {
     currentDeleteIndex = index; // Menyimpan index kategori yang akan dihapus
     const deleteCategoryModal = new bootstrap.Modal(document.getElementById('deleteCategoryModal'));
     deleteCategoryModal.show();
+}
+
+function validateCategory() {
+    // Logika validasi kategori di sini
+    const categoryName = document.getElementById('edit-category-name').value;
+    if (!categoryName) {
+        alert('Nama kategori tidak boleh kosong');
+        return false;
+    }
+    return true;
 }
 
 // Event listener untuk tombol Tambah Kategori
