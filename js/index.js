@@ -4,46 +4,42 @@ import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croo
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js";
 
-// Periksa apakah cookie login tersedia
-if (!getCookie("login")) {
+// Fungsi untuk membaca cookie login
+const loginToken = getCookie("login");
+
+// Cek apakah cookie login ada, jika tidak arahkan ke halaman utama
+if (!loginToken || loginToken.trim() === "") {
     redirect("/");
 }
 
-// Fungsi utama untuk mendapatkan data pengguna
+// Ambil data pengguna menggunakan API
 getJSON(
-    "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user",
-    "login",
-    getCookie("login"),
-    handleResponse
+    "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user", 
+    "login", 
+    loginToken, 
+    responseFunction
 );
 
 // Fungsi untuk menangani respons API
-function handleResponse(result) {
-    if (!result || typeof result !== "object") {
-        console.error("Respons API tidak valid:", result);
-        setInner("content", "Terjadi kesalahan saat memuat data pengguna.");
-        return;
-    }
+function responseFunction(result) {
+    console.log("API Response:", result);
 
     if (result.status === 404) {
-        // Pengguna tidak ditemukan
-        setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu.");
+        // Jika pengguna tidak ditemukan, arahkan ke halaman pendaftaran
+        setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu " + (result.data?.name || ""));
         redirect("/register");
-    } else if (result.status === 200 && result.data) {
-        // Data pengguna ditemukan
-        const { name, role } = result.data;
-
+    } else {
         // Tampilkan pesan selamat datang
-        setInner("content", `Selamat datang ${name}`);
+        setInner("content", "Selamat datang " + (result.data?.name || "Pengguna"));
 
-        // Perbarui elemen nama pengguna
+        // Menampilkan nama pengguna di elemen yang telah disediakan
         const userNameElement = document.getElementById("user-name");
         if (userNameElement) {
-            userNameElement.textContent = name;
+            userNameElement.textContent = result.data.name || "Pengguna"; // Ganti dengan nama pengguna
         }
 
-        // Arahkan pengguna berdasarkan peran
-        switch (role) {
+        // Arahkan pengguna berdasarkan role
+        switch (result.data?.role) {
             case "user":
             case "dosen":
                 redirect("/menu");
@@ -55,13 +51,9 @@ function handleResponse(result) {
                 redirect("/dashboard-cashier");
                 break;
             default:
-                console.warn("Peran tidak dikenali:", role);
+                // Jika role tidak dikenali, tetap di halaman utama atau tampilkan pesan error
                 redirect("/");
                 break;
         }
-    } else {
-        console.error("Status API tidak dikenali:", result.status);
-        setInner("content", "Terjadi kesalahan saat memproses data.");
     }
-    console.log(result);
 }
