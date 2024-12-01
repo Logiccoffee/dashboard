@@ -17,22 +17,22 @@ function fetchCategory() {
         .then(data => {
             // Pastikan data diambil sesuai struktur JSON
             const categoryData = data.data; // Array kategori dalam data JSON
-            
+
             // Tampilkan data di dalam tabel
             const container = document.getElementById('category-list');
             container.innerHTML = ''; // Hapus data lama jika ada
             categoryData.forEach((item, index) => {
                 // Membuat baris untuk setiap kategori
                 const row = document.createElement('tr');
-                
+
                 // Kolom Nama Kategori
                 const nameCell = document.createElement('td');
                 nameCell.textContent = item.name;
-                
+
                 // Kolom Aksi
                 const actionCell = document.createElement('td');
                 actionCell.classList.add('text-center');
-                
+
                 // Tombol Ubah
                 const editButton = document.createElement('button');
                 editButton.className = 'btn btn-warning me-2';
@@ -42,7 +42,7 @@ function fetchCategory() {
                     // Tambahkan logika modal untuk edit di sini
                     console.log(`Edit kategori dengan index: ${index}`);
                 });
-                
+
                 // Tombol Hapus
                 const deleteButton = document.createElement('button');
                 deleteButton.className = 'btn btn-danger';
@@ -52,15 +52,15 @@ function fetchCategory() {
                     // Tambahkan logika modal untuk hapus di sini
                     console.log(`Hapus kategori dengan index: ${index}`);
                 });
-                
+
                 // Tambahkan tombol ke kolom aksi
                 actionCell.appendChild(editButton);
                 actionCell.appendChild(deleteButton);
-                
+
                 // Tambahkan kolom ke dalam baris
                 row.appendChild(nameCell);
                 row.appendChild(actionCell);
-                
+
                 // Tambahkan baris ke dalam container
                 container.appendChild(row);
             });
@@ -70,38 +70,53 @@ function fetchCategory() {
         });
 }
 
+// Fungsi untuk menambah kategori
+function addCategory(event) {
+    event.preventDefault(); // Mencegah form submit biasa agar bisa menggunakan JavaScript
 
-// Fungsi untuk menampilkan daftar kategori
-function renderCategoryList() {
-    const categoryList = document.getElementById('category-list');
-    categoryList.innerHTML = ''; // Hapus daftar yang ada
-    categories.forEach((category, index) => {
-        const row = document.createElement('tr');
-        const nameCell = document.createElement('td');
-        const actionCell = document.createElement('td');
-        actionCell.classList.add('text-center'); // Mengatur text di tengah
+    const categoryName = document.getElementById('category-name').value.trim();
 
-        nameCell.textContent = category.name;
+    // Validasi input kategori
+    if (categoryName === '') {
+        alert('Nama kategori tidak boleh kosong!');
+        return false;
+    }
 
-        // Membuat tombol Ubah dan Hapus dengan icon
-        const editButton = document.createElement('button');
-        editButton.className = 'btn btn-warning me-2';
-        editButton.innerHTML = '<i class="fas fa-pen"></i> Ubah';
-        editButton.addEventListener('click', () => openEditModal(index)); // Menambahkan event listener untuk tombol Ubah
+    // Membuat objek kategori baru
+    const newCategory = {
+        name: categoryName
+    };
 
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'btn btn-danger';
-        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Hapus';
-        deleteButton.addEventListener('click', () => openDeleteModal(index)); // Menambahkan event listener untuk tombol Hapus
-
-        // Menambahkan tombol ke dalam actionCell
-        actionCell.appendChild(editButton);
-        actionCell.appendChild(deleteButton);
-
-        row.appendChild(nameCell);
-        row.appendChild(actionCell);
-        categoryList.appendChild(row);
-    });
+    // Mengirimkan data ke API
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'login': 'Bearer your-secret-token' // Menambahkan token dengan format Bearer
+        },
+        body: JSON.stringify(newCategory)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Menampilkan pesan sukses
+            alert('Kategori berhasil ditambahkan!');
+            // Menutup modal setelah kategori ditambahkan
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
+            modal.hide(); // Menutup modal
+            // Memperbarui daftar kategori setelah penambahan
+            fetchCategory();
+            // Mengosongkan input form
+            document.getElementById('category-name').value = '';
+        })
+        .catch(error => {
+            console.error("Terjadi kesalahan:", error);
+            alert('Terjadi kesalahan saat menambah kategori.');
+        });
 }
 
 // Menangani submit form untuk menambah kategori
