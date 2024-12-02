@@ -6,8 +6,6 @@ let categories = [];
 let currentEditIndex = null; // Untuk menyimpan index kategori yang sedang diedit
 let currentDeleteIndex = null; // Untuk menyimpan index kategori yang akan dihapus
 
-const apiUrl = 'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category';
-
 // Ambil token dari cookie dengan nama 'login'
 const token = getCookie('login');
 if (!token) {
@@ -16,7 +14,7 @@ if (!token) {
 }
 
 // Panggil getJSON untuk mengambil data kategori
-getJSON(apiUrl, "Login", token, (response) => {
+getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', "Login", token, (response) => {
     if (response.status === 200) {
         categories = response.data.data || []; // Menyimpan data kategori yang ada
         displayCategories(response);
@@ -141,7 +139,7 @@ function addCategory(event) {
     console.log('Kategori yang akan ditambahkan:', newCategory);
 
     // Memanggil fungsi postJSON dari library untuk mengirimkan data kategori ke API
-    postJSON(apiUrl,        // URL API
+    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category',        // URL API
         'login',       // Nama header untuk token
         token,         // Nilai token dari cookie
         newCategory,   // Data kategori dalam bentuk JSON
@@ -157,7 +155,7 @@ function addCategory(event) {
                 modal.hide(); // Menutup modal
 
                 // Setelah kategori berhasil ditambahkan, ambil data terbaru dari API
-                getJSON(apiUrl, "Login", token, (response) => {
+                getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', "Login", token, (response) => {
                     if (response.status === 200) {
                         categories = response.data.data || []; // Update data kategori
                         displayCategories(response); // Tampilkan kategori terbaru
@@ -194,7 +192,7 @@ document.getElementById('edit-category-form').addEventListener('submit', (event)
         return;
     }
 
-    const targetUrl = `${apiUrl}/${categories[currentEditIndex].id}`; // Endpoint API dengan ID kategori
+    const targetUrl = `${'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category'}/${categories[currentEditIndex].id}`; // Endpoint API dengan ID kategori
 
     // Data yang akan diupdate
     const updatedCategoryData = { name: updatedCategoryName };
@@ -241,7 +239,7 @@ document.getElementById('edit-category-form').addEventListener('submit', (event)
 // Fungsi untuk menghapus kategori setelah konfirmasi
 document.getElementById('confirm-delete-btn').addEventListener('click', () => {
     if (currentDeleteIndex !== null) {
-        const targetUrl = `${apiUrl}/${categories[currentDeleteIndex].id}`;  // Mendapatkan URL dengan ID kategori
+        const targetUrl = `${'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category'}/${categories[currentDeleteIndex].id}`;  // Mendapatkan URL dengan ID kategori
 
         // Ambil token dari cookie
         const token = getCookie('login');
