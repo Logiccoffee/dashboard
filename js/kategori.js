@@ -168,6 +168,14 @@ function addCategory(event) {
                 console.log('Respons dari API:', data);
                 alert('Kategori berhasil ditambahkan!');
 
+                // Menampilkan URL gambar yang berhasil di-upload
+                const imageUrl = data.imageUrl;  // Ambil URL gambar dari response backend
+                console.log('URL Gambar:', imageUrl);
+
+                // Update data kategori terbaru dan tampilkan
+                categories.push({ name: categoryName, image: imageUrl });
+                displayCategories(response);
+
                 // Menutup modal setelah kategori ditambahkan
                 const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
                 modal.hide(); // Menutup modal
