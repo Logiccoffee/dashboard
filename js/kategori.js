@@ -7,23 +7,24 @@ let currentDeleteIndex = null; // Untuk menyimpan index kategori yang akan dihap
 
 const apiUrl = 'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category';
 
+// Ambil token dari cookie dengan nama 'login'
+const token = getCookie('login');
+if (!token) {
+    alert('Token tidak ditemukan, harap login terlebih dahulu!');
+    return;
+}
+
 // Panggil getJSON untuk mengambil data kategori
-getJSON(apiUrl)
-    .then(response => {
+getJSON(apiUrl, "Login", token, (response) => {
+    if (response.status === 200) {
         displayCategories(response);
-    })
-    .catch(error => {
-        console.error("Terjadi kesalahan:", error);
-    });
+    } else {
+        console.error(`Error: ${response.status}`);
+    }
+});
 
 // Fungsi untuk menampilkan data kategori di dalam tabel
 function displayCategories(response) {
-    // Cek apakah status respons adalah 200
-    if (response.status !== 200) {
-        console.error(`Error: ${response.status}`);
-        return;
-    }
-
     const categoryData = response.data.data; // Ambil data kategori dari respons
 
     // Tampilkan data di dalam tabel
