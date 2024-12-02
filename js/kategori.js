@@ -151,7 +151,10 @@ function addCategory(event) {
     }
 
     // Log untuk memeriksa data yang akan dikirim
-    console.log('Kategori yang akan ditambahkan:', newCategory);
+    console.log('Kategori yang akan ditambahkan:', {
+        name: categoryName,
+        image: categoryImage ? categoryImage.name : 'No image'
+    });    
 
     // Memanggil fungsi postJSON dari library untuk mengirimkan data kategori ke API
     postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category',        // URL API
