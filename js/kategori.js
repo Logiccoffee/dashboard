@@ -1,5 +1,5 @@
 import { getJSON, postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
-import { putJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/api.js";
+import { putJSON, deleteJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/api.js";
 
 // Array untuk menyimpan data kategori
 let categories = [];
@@ -235,12 +235,23 @@ document.getElementById('edit-category-form').addEventListener('submit', (event)
 // Fungsi untuk menghapus kategori setelah konfirmasi
 document.getElementById('confirm-delete-btn').addEventListener('click', () => {
     if (currentDeleteIndex !== null) {
-        const targetUrl = `${apiUrl}/${categories[currentDeleteIndex].id}`;
+        const targetUrl = `${apiUrl}/${categories[currentDeleteIndex].id}`;  // Mendapatkan URL dengan ID kategori
 
-        deleteJSON(targetUrl, {}, (response) => {
+        // Ambil token dari cookie
+        const token = getCookie('login');
+        if (!token) {
+            alert('Token tidak ditemukan, harap login terlebih dahulu!');
+            return;
+        }
+
+        // Panggil deleteJSON untuk menghapus kategori
+        deleteJSON(targetUrl, 'Login', token, {}, (response) => {
             if (response.status === 200) {
-                categories.splice(currentDeleteIndex, 1); // Hapus kategori dari array
-                renderCategoryList(); // Render ulang daftar kategori
+                // Hapus kategori dari array lokal setelah berhasil dihapus
+                categories.splice(currentDeleteIndex, 1);
+
+                // Render ulang daftar kategori setelah penghapusan
+                displayCategories({ data: { data: categories } });
 
                 // Tampilkan SweetAlert2 setelah kategori berhasil dihapus
                 Swal.fire({
@@ -249,11 +260,15 @@ document.getElementById('confirm-delete-btn').addEventListener('click', () => {
                     icon: 'success',
                     confirmButtonText: 'OK'
                 }).then(() => {
+                    // Tutup modal hapus
                     const deleteCategoryModal = bootstrap.Modal.getInstance(document.getElementById('deleteCategoryModal'));
-                    deleteCategoryModal.hide(); // Tutup modal hapus
-                    currentDeleteIndex = null; // Reset index setelah penghapusan
+                    deleteCategoryModal.hide();
+
+                    // Reset index setelah penghapusan
+                    currentDeleteIndex = null;
                 });
             } else {
+                // Tampilkan pesan error jika penghapusan gagal
                 Swal.fire('Gagal', 'Terjadi kesalahan saat menghapus kategori', 'error');
             }
         });
