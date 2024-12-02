@@ -1,5 +1,4 @@
-import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
-import { postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import { getJSON, postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 
 // Array untuk menyimpan data kategori
 let categories = [];
@@ -18,6 +17,7 @@ if (!token) {
 // Panggil getJSON untuk mengambil data kategori
 getJSON(apiUrl, "Login", token, (response) => {
     if (response.status === 200) {
+        categories = response.data.data || []; // Menyimpan data kategori yang ada
         displayCategories(response);
     } else {
         console.error(`Error: ${response.status}`);
@@ -142,14 +142,9 @@ function addCategory(event) {
                 const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
                 modal.hide(); // Menutup modal
 
-                // Memperbaiki pengambilan existingCategories, pastikan itu adalah array
-                const existingCategories = Array.isArray(data.data) ? data.data : [];  // Memastikan existingCategories adalah array
-
-                // Menambahkan kategori baru ke dalam array kategori yang sudah ada
-                existingCategories.push(newCategory);
-
-                // Memperbarui tampilan kategori di tabel
-                displayCategories({ data: { data: existingCategories } });
+                /// Menambahkan kategori baru ke array kategori yang ada
+                categories.push(newCategory); // Menambahkan kategori baru ke array global
+                displayCategories(categories); // Memperbarui tampilan kategori
 
                 // Mengosongkan input form
                 document.getElementById('category-name').value = '';
