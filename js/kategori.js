@@ -142,8 +142,14 @@ function addCategory(event) {
                 const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
                 modal.hide(); // Menutup modal
                 
-                // Memperbarui daftar kategori setelah penambahan
-                fetchCategory(); // Memanggil fetchCategory untuk memperbarui daftar kategori
+                // Menambahkan kategori ke daftar yang ada
+                const existingCategories = data.data; // Ambil data kategori dari respons API
+
+                // Menambahkan kategori baru ke dalam array kategori yang sudah ada
+                existingCategories.push(newCategory);
+
+                // Memperbarui tampilan kategori di tabel
+                displayCategories({ data: { data: existingCategories } });
                 
                 // Mengosongkan input form
                 document.getElementById('category-name').value = '';
