@@ -70,6 +70,14 @@ function fetchCategory() {
         });
 }
 
+// Fungsi untuk mendapatkan nilai cookie berdasarkan nama
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null; // Jika cookie tidak ditemukan
+}
+
 // Fungsi untuk menambah kategori
 function addCategory(event) {
     event.preventDefault(); // Mencegah form submit biasa agar bisa menggunakan JavaScript
@@ -87,7 +95,12 @@ function addCategory(event) {
         name: categoryName
     };
 
-    const token = localStorage.getItem('authToken'); // Ambil token dari LocalStorage
+    // Ambil token dari cookie dengan nama 'login'
+    const token = getCookie('login');
+    if (!token) {
+        alert('Token tidak ditemukan, harap login terlebih dahulu!');
+        return;
+    }
 
     // Log untuk memeriksa data yang akan dikirim
     console.log('Kategori yang akan ditambahkan:', newCategory);
@@ -97,7 +110,7 @@ function addCategory(event) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Login': `Bearer ${token}` // Tambahkan token ke header
+            'Login': token // Tambahkan token ke header
         },
         body: JSON.stringify(newCategory)
     })
