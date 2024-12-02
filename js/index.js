@@ -27,18 +27,35 @@ function responseFunction(result) {
             return; // Menghentikan eksekusi setelah redirect
         }
 
-        // Tampilkan pesan selamat datang
-        setInner("content", `Selamat datang ${result.data.name}`);
-
-        // Menampilkan nama pengguna di elemen yang telah disediakan
-        const userNameElement = document.getElementById("user-name");
-        if (userNameElement) {
-            userNameElement.textContent = result.data.name;
-        }
+        // Menampilkan data dashboard
+        setInner("content", `
+            <h1 class="dashboard-tittle">Dasbor Logic Coffee</h1>
+            <section class="info-boxes d-flex justify-content-between flex-wrap">
+                <div class="info-box border p-3 d-flex justify-content-center align-items-center gap-3"
+                    style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 10px;">
+                    <div class="box-icon">
+                        <i class="fa-solid fa-map" style="font-size: 40px;"></i>
+                    </div>
+                    <div class="box-content text-left">
+                        <span class="big d-block" style="font-size: 50px;">${result.data.alamat}</span>
+                        <p>Alamat Pengguna</p>
+                    </div>
+                </div>
+                <div class="info-box border p-3 d-flex justify-content-center align-items-center gap-3"
+                    style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 10px;">
+                    <div class="box-icon">
+                        <i class="fa-solid fa-comment" style="font-size: 40px;"></i>
+                    </div>
+                    <div class="box-content text-left">
+                        <span class="big d-block" style="font-size: 50px;">${result.data.ulasan}</span>
+                        <p>Ulasan</p>
+                    </div>
+                </div>
+            </section>
+        `);
 
     } catch (error) {
-        console.error("Terjadi kesalahan saat memproses respons:", error.message);
-        setInner("content", "Terjadi kesalahan saat memproses data.");
+        console.error("Terjadi kesalahan:", error);
+        setInner("content", "Terjadi kesalahan saat memuat data.");
     }
-    console.log(result);
 }
