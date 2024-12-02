@@ -310,6 +310,3 @@ document.getElementById('add-category-btn').addEventListener('click', () => {
     const addCategoryModal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
     addCategoryModal.show();
 });
-
-// Render daftar kategori saat halaman dimuat
-displayCategories(response); // Menambahkan pemanggilan untuk fetchCategory
