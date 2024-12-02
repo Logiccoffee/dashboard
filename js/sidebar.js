@@ -32,18 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
             <h3 class="custom-heading">Kelola</h3>
             <ul>
                 <li>
-                    <a href="ulasan.html" class="ulasan-link">
-                        <i class="fa-solid fa-comment" style="margin-right: 10px;"></i>
-                        <span class="sidebar-text">Ulasan</span> <!-- Teks -->
-                    </a>
-                </li>
-                <li>
-                    <a href="banner.html" class="banner-link">
-                        <i class="fa-solid fa-image" style="margin-right: 10px;"></i>
-                        <span class="sidebar-text">Kustom Banner</span> <!-- Teks -->
-                    </a>
-                </li>
-                <li>
                     <a href="users.html" class="users-link">
                         <i class="fa-solid fa-user-gear" style="margin-right: 10px;"></i>
                         <span class="sidebar-text">Pengguna</span>
