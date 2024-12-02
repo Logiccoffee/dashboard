@@ -55,7 +55,14 @@ function displayCategories(response) {
         // Kolom Gambar
         const imageCell = document.createElement('td');
         const imageElement = document.createElement('img');
-        imageElement.src = item.image || 'path/to/default-image.jpg'; // Pastikan gambar tersedia
+
+        // Jika gambar adalah string (misalnya base64), tampilkan dengan format data URL
+        if (item.image && item.image.startsWith("data:image")) {
+            imageElement.src = item.image; // Gambar dalam format base64
+        } else {
+            imageElement.src = 'path/to/default-image.jpg'; // Gambar default jika tidak ada gambar
+        }
+
         imageElement.alt = item.name;
         imageElement.style.width = '50px'; // Atur ukuran gambar sesuai kebutuhan
         imageCell.appendChild(imageElement);
@@ -172,7 +179,7 @@ function addCategory(event) {
                 console.log("Kategori yang ditambahkan:", response.data);
 
                 // Menampilkan URL gambar yang berhasil di-upload
-                const imageUrl = data.imageUrl;  // Ambil URL gambar dari response backend
+                const imageUrl = data.image;  // Ambil URL gambar dari response backend
                 console.log('URL Gambar:', imageUrl);
 
                 // Update data kategori terbaru dan tampilkan
