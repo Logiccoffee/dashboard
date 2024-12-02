@@ -128,7 +128,7 @@ function addCategory(event) {
     // Memanggil fungsi postJSON dari library untuk mengirimkan data kategori ke API
     postJSON(
         apiUrl,        // URL API
-        'Login',       // Nama header untuk token
+        'login',       // Nama header untuk token
         token,         // Nilai token dari cookie
         newCategory,   // Data kategori dalam bentuk JSON
         function(response) {
