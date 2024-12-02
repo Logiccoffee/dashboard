@@ -1,3 +1,5 @@
+import {getJSON} from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+
 // Array untuk menyimpan data kategori
 let categories = [];
 let currentEditIndex = null; // Untuk menyimpan index kategori yang sedang diedit
@@ -5,69 +7,65 @@ let currentDeleteIndex = null; // Untuk menyimpan index kategori yang akan dihap
 
 const apiUrl = 'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category';
 
-// Fungsi untuk mendapatkan data kategori dari API
-function fetchCategory() {
-    fetch(apiUrl)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Pastikan data diambil sesuai struktur JSON
-            const categoryData = data.data; // Array kategori dalam data JSON
+// Panggil getJSON untuk mengambil data kategori
+getJSON(apiUrl, displayCategories);
 
-            // Tampilkan data di dalam tabel
-            const container = document.getElementById('category-list');
-            container.innerHTML = ''; // Hapus data lama jika ada
-            categoryData.forEach((item, index) => {
-                // Membuat baris untuk setiap kategori
-                const row = document.createElement('tr');
+// Fungsi untuk menampilkan data kategori di dalam tabel
+function displayCategories(response) {
+    if (response.status !== 200) {
+        console.error(`Error: ${response.status}`);
+        return;
+    }
 
-                // Kolom Nama Kategori
-                const nameCell = document.createElement('td');
-                nameCell.textContent = item.name;
+    const categoryData = response.data.data; // Pastikan data diambil sesuai struktur JSON
 
-                // Kolom Aksi
-                const actionCell = document.createElement('td');
-                actionCell.classList.add('text-center');
+    // Tampilkan data di dalam tabel
+    const container = document.getElementById('category-list');
+    container.innerHTML = ''; // Hapus data lama jika ada
 
-                // Tombol Ubah
-                const editButton = document.createElement('button');
-                editButton.className = 'btn btn-warning me-2';
-                editButton.innerHTML = '<i class="fas fa-pen"></i> Ubah';
-                // Event listener untuk tombol Ubah
-                editButton.addEventListener('click', () => {
-                    // Tambahkan logika modal untuk edit di sini
-                    console.log(`Edit kategori dengan index: ${index}`);
-                });
+    categoryData.forEach((item, index) => {
+        // Membuat baris untuk setiap kategori
+        const row = document.createElement('tr');
 
-                // Tombol Hapus
-                const deleteButton = document.createElement('button');
-                deleteButton.className = 'btn btn-danger';
-                deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Hapus';
-                // Event listener untuk tombol Hapus
-                deleteButton.addEventListener('click', () => {
-                    // Tambahkan logika modal untuk hapus di sini
-                    console.log(`Hapus kategori dengan index: ${index}`);
-                });
+        // Kolom Nama Kategori
+        const nameCell = document.createElement('td');
+        nameCell.textContent = item.name;
 
-                // Tambahkan tombol ke kolom aksi
-                actionCell.appendChild(editButton);
-                actionCell.appendChild(deleteButton);
+        // Kolom Aksi
+        const actionCell = document.createElement('td');
+        actionCell.classList.add('text-center');
 
-                // Tambahkan kolom ke dalam baris
-                row.appendChild(nameCell);
-                row.appendChild(actionCell);
-
-                // Tambahkan baris ke dalam container
-                container.appendChild(row);
-            });
-        })
-        .catch(error => {
-            console.error("Terjadi kesalahan:", error);
+        // Tombol Ubah
+        const editButton = document.createElement('button');
+        editButton.className = 'btn btn-warning me-2';
+        editButton.innerHTML = '<i class="fas fa-pen"></i> Ubah';
+        // Event listener untuk tombol Ubah
+        editButton.addEventListener('click', () => {
+            console.log(`Edit kategori dengan index: ${index}`);
+            // Logika untuk membuka modal edit di sini
         });
+
+        // Tombol Hapus
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'btn btn-danger';
+        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Hapus';
+        // Event listener untuk tombol Hapus
+        deleteButton.addEventListener('click', () => {
+            console.log(`Hapus kategori dengan index: ${index}`);
+            // Logika untuk membuka modal hapus di sini
+        });
+
+        // Tambahkan tombol ke kolom aksi
+        actionCell.appendChild(editButton);
+        actionCell.appendChild(deleteButton);
+
+        // Tambahkan kolom ke dalam baris
+        row.appendChild(nameCell);
+        row.appendChild(actionCell);
+
+        // Tambahkan baris ke dalam container
+        container.appendChild(row);
+    });
 }
 
 // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
