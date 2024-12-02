@@ -8,16 +8,23 @@ let currentDeleteIndex = null; // Untuk menyimpan index kategori yang akan dihap
 const apiUrl = 'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category';
 
 // Panggil getJSON untuk mengambil data kategori
-getJSON(apiUrl, displayCategories);
+getJSON(apiUrl)
+    .then(response => {
+        displayCategories(response);
+    })
+    .catch(error => {
+        console.error("Terjadi kesalahan:", error);
+    });
 
 // Fungsi untuk menampilkan data kategori di dalam tabel
 function displayCategories(response) {
+    // Cek apakah status respons adalah 200
     if (response.status !== 200) {
         console.error(`Error: ${response.status}`);
         return;
     }
 
-    const categoryData = response.data.data; // Pastikan data diambil sesuai struktur JSON
+    const categoryData = response.data.data; // Ambil data kategori dari respons
 
     // Tampilkan data di dalam tabel
     const container = document.getElementById('category-list');
