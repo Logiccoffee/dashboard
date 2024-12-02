@@ -155,6 +155,9 @@ function addCategory(event) {
     );
 }
 
+// Menambahkan event listener untuk form submit
+document.getElementById('add-category-form').addEventListener('submit', addCategory);
+
 
 // // Menangani submit form untuk menambah kategori
 // document.getElementById('add-category-form').addEventListener('submit', (event) => {
