@@ -1102,6 +1102,11 @@ input {
   color: #666;
 }
 
+#sidebar-container {
+  position: relative;
+  z-index: 10; /* Pastikan nilainya lebih tinggi dari elemen lain */
+}
+
 /* Hover effect for the dropdown button 
   .dropdown .btn-primary:hover {
     background-color: #aacdd0;
