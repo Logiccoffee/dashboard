@@ -27,8 +27,8 @@ function responseFunction(result) {
             return; // Menghentikan eksekusi setelah redirect
         }
 
-        // Tampilkan pesan selamat datang
-        setInner("content", `Selamat datang ${result.data.name}`);
+         // Set dashboard sebagai isi utama
+         setInner("content", dashboardHTML);
 
         // Menampilkan nama pengguna di elemen yang telah disediakan
         const userNameElement = document.getElementById("user-name");
