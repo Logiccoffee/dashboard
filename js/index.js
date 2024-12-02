@@ -52,5 +52,5 @@ function logout() {
     localStorage.removeItem("token");
   
     // Redirect ke halaman landing page atau URL yang diinginkan
-    window.location.href = "http://logiccoffee.id.biz.id/";  // Ganti dengan URL yang sesuai
+    window.location.href = "http://logiccoffee.id.biz.id/";
 }
