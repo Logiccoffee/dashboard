@@ -52,6 +52,14 @@ function displayCategories(response) {
         const nameCell = document.createElement('td');
         nameCell.textContent = item.name;
 
+        // Kolom Gambar
+        const imageCell = document.createElement('td');
+        const imageElement = document.createElement('img');
+        imageElement.src = item.image || 'path/to/default-image.jpg'; // Pastikan gambar tersedia
+        imageElement.alt = item.name;
+        imageElement.style.width = '50px'; // Atur ukuran gambar sesuai kebutuhan
+        imageCell.appendChild(imageElement);
+
         // Kolom Aksi
         const actionCell = document.createElement('td');
         actionCell.classList.add('text-center');
@@ -96,6 +104,7 @@ function displayCategories(response) {
 
         // Tambahkan kolom ke dalam baris
         row.appendChild(nameCell);
+        row.appendChild(imageCell);  // Menambahkan kolom gambar
         row.appendChild(actionCell);
 
         // Tambahkan baris ke dalam container
@@ -116,6 +125,7 @@ function addCategory(event) {
     event.preventDefault(); // Mencegah form submit biasa agar bisa menggunakan JavaScript
 
     const categoryName = document.getElementById('category-name').value.trim();
+    const categoryImage = document.getElementById('category-image').files[0]; // Ambil file gambar
 
     // Validasi input kategori
     if (categoryName === '') {
@@ -123,10 +133,15 @@ function addCategory(event) {
         return false;
     }
 
+    if (!categoryImage) {
+        alert('Gambar kategori tidak boleh kosong!');
+        return false;
+    }
+
     // Membuat objek kategori baru
-    const newCategory = {
-        name: categoryName
-    };
+    const formData = new FormData();
+    formData.append('name', categoryName);
+    formData.append('image', categoryImage);  // Menambahkan gambar ke FormData
 
     // Ambil token dari cookie dengan nama 'login'
     const token = getCookie('login');
@@ -142,7 +157,7 @@ function addCategory(event) {
     postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category',        // URL API
         'login',       // Nama header untuk token
         token,         // Nilai token dari cookie
-        newCategory,   // Data kategori dalam bentuk JSON
+        formData,   // Data kategori dalam bentuk JSON
         function (response) {
             const { status, data } = response;
 
@@ -167,6 +182,7 @@ function addCategory(event) {
 
                 // Mengosongkan input form
                 document.getElementById('category-name').value = '';
+                document.getElementById('category-image').value = ''; // Mengosongkan input file
             } else {
                 console.error('Gagal menambah kategori:', data);
                 alert('Gagal menambah kategori!');
