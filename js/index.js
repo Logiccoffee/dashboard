@@ -43,3 +43,14 @@ function responseFunction(result) {
         setInner("content", "Terjadi kesalahan saat memproses data.");
     }
 }
+
+function logout() {
+    // Hapus cookie login yang menyimpan status login
+    document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"; // Menghapus cookie login
+  
+    // Menghapus token dari localStorage jika ada
+    localStorage.removeItem("token");
+  
+    // Redirect ke halaman landing page atau URL yang diinginkan
+    window.location.href = "http://logiccoffee.id.biz.id/";  // Ganti dengan URL yang sesuai
+}
