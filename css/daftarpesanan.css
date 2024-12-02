@@ -1015,6 +1015,11 @@ input {
     /* Untuk memastikan font tetap bold */
 }
 
+#sidebar-container {
+    pointer-events: auto;
+    z-index: 10; /* Pastikan di atas elemen lain */
+    position: relative;
+}
 
 
 /* Hover effect for the dropdown button 
