@@ -11,7 +11,7 @@ const apiUrl = 'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/d
 const token = getCookie('login');
 if (!token) {
     alert('Token tidak ditemukan, harap login terlebih dahulu!');
-    return;
+    throw new Error("Token tidak ditemukan. Harap login ulang.");
 }
 
 // Panggil getJSON untuk mengambil data kategori
@@ -20,15 +20,28 @@ getJSON(apiUrl, "Login", token, (response) => {
         displayCategories(response);
     } else {
         console.error(`Error: ${response.status}`);
+        alert("Gagal memuat data kategori. Silakan coba lagi.");
     }
 });
 
 // Fungsi untuk menampilkan data kategori di dalam tabel
 function displayCategories(response) {
-    const categoryData = response.data.data; // Ambil data kategori dari respons
+    // Validasi apakah response.data.data ada
+    if (!response || !response.data || !response.data.data) {
+        console.error("Data kategori tidak ditemukan di respons API.");
+        alert("Data kategori tidak valid. Silakan hubungi administrator.");
+        return;
+    }
 
-    // Tampilkan data di dalam tabel
+    const categoryData = response.data.data; // Ambil data kategori dari respons
     const container = document.getElementById('category-list');
+
+    // Pastikan elemen container ditemukan
+    if (!container) {
+        console.error("Elemen dengan id 'category-list' tidak ditemukan.");
+        return;
+    }
+    // Tampilkan data di dalam tabel
     container.innerHTML = ''; // Hapus data lama jika ada
 
     categoryData.forEach((item, index) => {
