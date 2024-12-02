@@ -51,11 +51,13 @@
 			<div class="dropdown">
 				<a href="#" class="profile-icon dropdown-toggle d-flex align-items-center mx-2" id="profileDropdown"
 				   role="button" data-bs-toggle="dropdown" aria-expanded="false">
-				   <i class="fa-solid fa-user"></i>
-					<div class="ms-2">
-						<span id="user-name">Nama Pengguna</span> <!-- Nama pengguna akan diubah oleh JS -->
-						<br>
-						<span id="user-role" class="text-muted d-block text-end">Role Pengguna</span> <!-- Role pengguna akan diubah oleh JS -->
+					<div class="d-flex align-items-center">
+						<div class="ms-2 position-relative">
+							<span id="user-name">Nama Pengguna</span> <!-- Nama pengguna akan diubah oleh JS -->
+							<br>
+							<span id="user-role" class="text-muted d-block text-end">Role Pengguna</span> <!-- Role pengguna akan diubah oleh JS -->
+						</div>
+						<i class="fa-solid fa-user position-absolute" style="right: -25px;"></i> <!-- Ikon user berada di belakang nama dan role -->
 					</div>
 				</a>
 				<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
@@ -70,7 +72,7 @@
 						</a>
 					</li>
 				</ul>
-			</div>						
+			</div>							
 		</aside>
 
 		<!-- Sidebar akan ditambahkan dari sidebar.js -->
@@ -84,43 +86,6 @@
 
 			<div class="content">
 				<section class="info-boxes d-flex justify-content-between flex-wrap">
-
-					<!-- Alamat Pengguna -->
-					<div class="info-box border p-3 d-flex justify-content-center align-items-center gap-3"
-						style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 10px;">
-						<div class="box-icon">
-							<i class="fa-solid fa-map" style="font-size: 40px;"></i>
-						</div>
-						<div class="box-content text-left">
-							<span class="big d-block" style="font-size: 50px;">25</span>
-							<p>Alamat Pengguna</p>
-						</div>
-					</div>
-
-					<!-- Umpan Balik -->
-					<div class="info-box border p-3 d-flex justify-content-center align-items-center gap-3"
-						style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 10px;">
-						<div class="box-icon">
-							<i class="fa-solid fa-comment" style="font-size: 40px;"></i>
-						</div>
-						<div class="box-content text-left">
-							<span class="big d-block" style="font-size: 50px;">15</span>
-							<p>Ulasan</p>
-						</div>
-					</div>
-
-					<!-- Kustom Banner -->
-					<div class="info-box border p-3 d-flex justify-content-center align-items-center gap-3"
-						style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 10px;">
-						<div class="box-icon">
-							<i class="fa-solid fa-image" style="font-size: 40px;"></i>
-						</div>
-						<div class="box-content text-left">
-							<span class="big d-block" style="font-size: 50px;">07</span>
-							<p>Banner</p>
-						</div>
-					</div>
-
 					<!-- Pengguna -->
 					<div class="info-box border p-3 d-flex justify-content-center align-items-center gap-3"
 						style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 10px;">
