@@ -142,9 +142,16 @@ function addCategory(event) {
                 const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
                 modal.hide(); // Menutup modal
 
-                /// Menambahkan kategori baru ke array kategori yang ada
-                categories.push(newCategory); // Menambahkan kategori baru ke array global
-                displayCategories(categories); // Memperbarui tampilan kategori
+                // Setelah kategori berhasil ditambahkan, ambil data terbaru dari API
+                getJSON(apiUrl, "Login", token, (response) => {
+                    if (response.status === 200) {
+                        categories = response.data.data || []; // Update data kategori
+                        displayCategories(response); // Tampilkan kategori terbaru
+                    } else {
+                        console.error(`Error: ${response.status}`);
+                        alert("Gagal memuat data kategori. Silakan coba lagi.");
+                    }
+                });
 
                 // Mengosongkan input form
                 document.getElementById('category-name').value = '';
