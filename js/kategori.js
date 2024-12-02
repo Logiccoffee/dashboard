@@ -55,14 +55,7 @@ function displayCategories(response) {
         // Kolom Gambar
         const imageCell = document.createElement('td');
         const imageElement = document.createElement('img');
-
-        // Jika gambar adalah string (misalnya base64), tampilkan dengan format data URL
-        if (item.image && item.image.startsWith("data:image")) {
-            imageElement.src = item.image; // Gambar dalam format base64
-        } else {
-            imageElement.src = 'path/to/default-image.jpg'; // Gambar default jika tidak ada gambar
-        }
-
+        imageElement.src = item.image || 'path/to/default-image.jpg'; // Pastikan gambar tersedia
         imageElement.alt = item.name;
         imageElement.style.width = '50px'; // Atur ukuran gambar sesuai kebutuhan
         imageCell.appendChild(imageElement);
@@ -145,74 +138,71 @@ function addCategory(event) {
         return false;
     }
 
-    // Membaca gambar sebagai base64
-    const reader = new FileReader();
-    reader.onloadend = function () {
-        const imageBase64 = reader.result; // Ini adalah base64 string gambar
+    // Membuat objek kategori baru
+    const formData = new FormData();
+    formData.append('name', categoryName);
+    formData.append('image', categoryImage);  // Menambahkan gambar ke FormData
 
-        // Membuat objek kategori baru
-        const categoryData = {
-            name: categoryName,
-            image: imageBase64,  // Mengirim gambar dalam format base64
-        };
-
-        // Ambil token dari cookie dengan nama 'login'
-        const token = getCookie('login');
-        if (!token) {
-            alert('Token tidak ditemukan, harap login terlebih dahulu!');
-            return;
-        }
-
-        // Log untuk memeriksa data yang akan dikirim
-        console.log('Kategori yang akan ditambahkan:', categoryData);
-
-        // Memanggil fungsi postJSON dari library untuk mengirimkan data kategori ke API
-        postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category',        // URL API
-            'login',       // Nama header untuk token
-            token,         // Nilai token dari cookie
-            categoryData,   // Data kategori dalam bentuk JSON
-            function (response) {
-                const { status, data } = response;
-
-                if (status >= 200 && status < 300) {
-                    console.log('Respons dari API:', data);
-                    alert('Kategori berhasil ditambahkan!');
-
-                    // Setelah mendapatkan data dari API
-                    console.log("Kategori yang ditambahkan:", response.data);
-
-                    // Update data kategori terbaru dan tampilkan
-                    categories.push({ name: categoryName, image: imageBase64 });
-                    displayCategories(response);
-
-                    // Menutup modal setelah kategori ditambahkan
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
-                    modal.hide(); // Menutup modal
-
-                    // Mengosongkan input form
-                    document.getElementById('category-name').value = '';
-                    document.getElementById('category-image').value = ''; // Mengosongkan input file
-
-                    // Setelah kategori berhasil ditambahkan, ambil data terbaru dari API
-                    getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', "Login", token, (response) => {
-                        if (response.status === 200) {
-                            categories = response.data.data || []; // Update data kategori
-                            displayCategories(response); // Tampilkan kategori terbaru
-                        } else {
-                            console.error(`Error: ${response.status}`);
-                            alert("Gagal memuat data kategori. Silakan coba lagi.");
-                        }
-                    });
-                } else {
-                    console.error('Gagal menambah kategori:', data);
-                    alert('Gagal menambah kategori!');
-                }
-            }
-        );
-
-        // Mulai pembacaan gambar sebagai base64
-        reader.readAsDataURL(categoryImage);
+    // Ambil token dari cookie dengan nama 'login'
+    const token = getCookie('login');
+    if (!token) {
+        alert('Token tidak ditemukan, harap login terlebih dahulu!');
+        return;
     }
+
+    // Log untuk memeriksa data yang akan dikirim
+    console.log('Kategori yang akan ditambahkan:', {
+        name: categoryName,
+        image: categoryImage ? categoryImage.name : 'No image'
+    });
+
+    // Memanggil fungsi postJSON dari library untuk mengirimkan data kategori ke API
+    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category',        // URL API
+        'login',       // Nama header untuk token
+        token,         // Nilai token dari cookie
+        formData,   // Data kategori dalam bentuk JSON
+        function (response) {
+            const { status, data } = response;
+
+            if (status >= 200 && status < 300) {
+                console.log('Respons dari API:', data);
+                alert('Kategori berhasil ditambahkan!');
+
+                // Setelah mendapatkan data dari API
+                console.log("Kategori yang ditambahkan:", response.data);
+
+                // Menampilkan URL gambar yang berhasil di-upload
+                const imageUrl = data.imageUrl;  // Ambil URL gambar dari response backend
+                console.log('URL Gambar:', imageUrl);
+
+                // Update data kategori terbaru dan tampilkan
+                categories.push({ name: categoryName, image: imageUrl });
+                displayCategories(response);
+
+                // Menutup modal setelah kategori ditambahkan
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
+                modal.hide(); // Menutup modal
+
+                // Setelah kategori berhasil ditambahkan, ambil data terbaru dari API
+                getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', "Login", token, (response) => {
+                    if (response.status === 200) {
+                        categories = response.data.data || []; // Update data kategori
+                        displayCategories(response); // Tampilkan kategori terbaru
+                    } else {
+                        console.error(`Error: ${response.status}`);
+                        alert("Gagal memuat data kategori. Silakan coba lagi.");
+                    }
+                });
+
+                // Mengosongkan input form
+                document.getElementById('category-name').value = '';
+                document.getElementById('category-image').value = ''; // Mengosongkan input file
+            } else {
+                console.error('Gagal menambah kategori:', data);
+                alert('Gagal menambah kategori!');
+            }
+        }
+    );
 }
 
 // Menunggu hingga DOM selesai dimuat
