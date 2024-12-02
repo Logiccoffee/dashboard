@@ -126,8 +126,7 @@ function addCategory(event) {
     console.log('Kategori yang akan ditambahkan:', newCategory);
 
     // Memanggil fungsi postJSON dari library untuk mengirimkan data kategori ke API
-    postJSON(
-        apiUrl,        // URL API
+    postJSON(apiUrl,        // URL API
         'login',       // Nama header untuk token
         token,         // Nilai token dari cookie
         newCategory,   // Data kategori dalam bentuk JSON
@@ -163,8 +162,11 @@ function addCategory(event) {
     );
 }
 
-// Menambahkan event listener untuk form submit
-document.getElementById('add-category-form').addEventListener('submit', addCategory);
+// Menunggu hingga DOM selesai dimuat
+document.addEventListener('DOMContentLoaded', function() {
+    // Menambahkan event listener untuk form submit setelah DOM dimuat sepenuhnya
+    document.getElementById('add-category-form').addEventListener('submit', addCategory);
+});
 
 
 // // Menangani submit form untuk menambah kategori
