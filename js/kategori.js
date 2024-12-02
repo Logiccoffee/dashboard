@@ -1,4 +1,5 @@
 import {getJSON} from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import {postJSON} from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 
 // Array untuk menyimpan data kategori
 let categories = [];
@@ -124,40 +125,34 @@ function addCategory(event) {
     // Log untuk memeriksa data yang akan dikirim
     console.log('Kategori yang akan ditambahkan:', newCategory);
 
-    // Mengirimkan data ke API
-    fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Login': token // Tambahkan token ke header
-        },
-        body: JSON.stringify(newCategory)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+    // Memanggil fungsi postJSON dari library untuk mengirimkan data kategori ke API
+    postJSON(
+        apiUrl,        // URL API
+        'Login',       // Nama header untuk token
+        token,         // Nilai token dari cookie
+        newCategory,   // Data kategori dalam bentuk JSON
+        function(response) {
+            const { status, data } = response;
+            
+            if (status >= 200 && status < 300) {
+                console.log('Respons dari API:', data);
+                alert('Kategori berhasil ditambahkan!');
+                
+                // Menutup modal setelah kategori ditambahkan
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
+                modal.hide(); // Menutup modal
+                
+                // Memperbarui daftar kategori setelah penambahan
+                fetchCategory(); // Memanggil fetchCategory untuk memperbarui daftar kategori
+                
+                // Mengosongkan input form
+                document.getElementById('category-name').value = '';
+            } else {
+                console.error('Gagal menambah kategori:', data);
+                alert('Gagal menambah kategori!');
+            }
         }
-        return response.json();
-    })
-    .then(data => {
-        // Log respons dari API untuk memeriksa apakah data berhasil ditambahkan
-        console.log('Respons dari API:', data);
-        alert('Kategori berhasil ditambahkan!');
-        
-        // Menutup modal setelah kategori ditambahkan
-        const modal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
-        modal.hide(); // Menutup modal
-        
-        // Memperbarui daftar kategori setelah penambahan
-        fetchCategory(); // Memanggil fetchCategory untuk memperbarui daftar kategori
-        
-        // Mengosongkan input form
-        document.getElementById('category-name').value = '';
-    })
-    .catch(error => {
-        console.error("Terjadi kesalahan:", error);
-        alert('Terjadi kesalahan saat menambah kategori.');
-    });
+    );
 }
 
 
