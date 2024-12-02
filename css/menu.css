@@ -1124,15 +1124,9 @@ input[type="number"]::-webkit-outer-spin-button {
       gap: 5px; /* Mengurangi gap antar card */
   }
 }
-
 #sidebar-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh; /* Tinggi sidebar sesuai viewport */
-  width: 250px; /* Lebar sidebar */
-  overflow-y: auto; /* Menambahkan scroll untuk konten yang panjang */
-  background-color: #f8f9fa; /* Warna latar sidebar */
-  border-right: 1px solid #dee2e6;
-  z-index: 1000; /* Pastikan di atas elemen lainnya */
+  pointer-events: auto;
+  z-index: 10; /* Pastikan di atas elemen lain */
+  position: relative;
 }
+
