@@ -83,12 +83,18 @@ function displayCategories(response) {
         // Event listener untuk tombol Hapus
         deleteButton.addEventListener('click', () => {
             console.log(`Hapus kategori dengan index: ${index}`);
-            // Logika untuk membuka modal hapus di sini
+            // Setel currentDeleteIndex ke index kategori yang ingin dihapus
+            currentDeleteIndex = index;
+
+            // Menampilkan modal konfirmasi hapus
+            const deleteCategoryModal = new bootstrap.Modal(document.getElementById('deleteCategoryModal'));
+            deleteCategoryModal.show();
         });
 
         // Tambahkan tombol ke kolom aksi
         actionCell.appendChild(editButton);
         actionCell.appendChild(deleteButton);
+
 
         // Tambahkan kolom ke dalam baris
         row.appendChild(nameCell);
