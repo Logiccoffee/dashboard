@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <section class="main-tools">
                 <ul>
                     <li>
-                        <a href="https://logiccoffee.id.biz.id/dashboard/" class="dashboard-link">
+                        <a href="https://logiccoffee.id.biz.id/dashboard-admin/" class="dashboard-link">
                             <i class="fa-solid fa-house" style="margin-right: 10px;"></i>
                             <span class="sidebar-text">Dasbor</span>
                         </a>
