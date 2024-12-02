@@ -170,33 +170,64 @@ function addCategory(event) {
 //     });
 // });
 
-// Menangani submit form untuk mengubah kategori
+// Fungsi untuk menangani submit form saat mengubah kategori
 document.getElementById('edit-category-form').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const categoryName = document.getElementById('edit-category-name').value;
+    event.preventDefault(); // Mencegah form submit default
 
-    const dataToUpdate = { name: categoryName };
-    const targetUrl = `${apiUrl}/${categories[currentEditIndex].id}`;
+    const updatedCategoryName = document.getElementById('edit-category-name').value.trim(); // Nama kategori baru
+    if (updatedCategoryName === '') {
+        alert('Nama kategori tidak boleh kosong!');
+        return;
+    }
 
-    putJSON(targetUrl, dataToUpdate, (response) => {
-        if (response.status === 200) {
-            categories[currentEditIndex].name = categoryName; // Memperbarui nama kategori di array
-            renderCategoryList(); // Render ulang daftar kategori
+    const targetUrl = `${apiUrl}/${categories[currentEditIndex].id}`; // Endpoint API dengan ID kategori
 
-            // Tampilkan SweetAlert2 setelah kategori berhasil diubah
-            Swal.fire({
-                title: 'Sukses!',
-                text: 'Kategori berhasil diubah.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                const editCategoryModal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
-                editCategoryModal.hide();
-            });
-        } else {
-            Swal.fire('Gagal', 'Terjadi kesalahan saat mengubah kategori', 'error');
-        }
-    });
+    // Data yang akan diupdate
+    const updatedCategoryData = { name: updatedCategoryName };
+
+    // Ambil token dari cookie
+    const token = getCookie('login');
+    if (!token) {
+        alert('Token tidak ditemukan, harap login terlebih dahulu!');
+        return;
+    }
+
+    // Kirim data ke API untuk mengubah kategori
+    fetch(targetUrl, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Login': token // Header token login
+        },
+        body: JSON.stringify(updatedCategoryData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Perbarui data kategori di array setelah berhasil diubah
+            categories[currentEditIndex].name = updatedCategoryName;
+
+            // Render ulang daftar kategori
+            fetchCategory();
+
+            // Tampilkan notifikasi
+            alert('Kategori berhasil diubah!');
+
+            // Tutup modal edit
+            const editCategoryModal = bootstrap.Modal.getInstance(document.getElementById('editCategoryModal'));
+            editCategoryModal.hide();
+
+            // Reset index edit
+            currentEditIndex = null;
+        })
+        .catch(error => {
+            console.error('Terjadi kesalahan:', error);
+            alert('Terjadi kesalahan saat mengubah kategori.');
+        });
 });
 
 // Fungsi untuk menghapus kategori setelah konfirmasi
@@ -229,8 +260,11 @@ document.getElementById('confirm-delete-btn').addEventListener('click', () => {
 
 // Fungsi untuk membuka modal edit kategori
 function openEditModal(index) {
-    currentEditIndex = index; // Menyimpan index kategori yang akan diedit
-    document.getElementById('edit-category-name').value = categories[index].name;
+    currentEditIndex = index; // Simpan index kategori yang sedang diedit
+    const category = categories[index]; // Ambil data kategori berdasarkan index
+    document.getElementById('edit-category-name').value = category.name; // Isi input dengan nama kategori saat ini
+
+    // Tampilkan modal edit
     const editCategoryModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
     editCategoryModal.show();
 }
