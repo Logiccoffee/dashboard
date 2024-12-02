@@ -163,39 +163,11 @@ function addCategory(event) {
 }
 
 // Menunggu hingga DOM selesai dimuat
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Menambahkan event listener untuk form submit setelah DOM dimuat sepenuhnya
     document.getElementById('add-category-form').addEventListener('submit', addCategory);
 });
 
-
-// // Menangani submit form untuk menambah kategori
-// document.getElementById('add-category-form').addEventListener('submit', (event) => {
-//     event.preventDefault();
-//     const categoryName = document.getElementById('category-name').value;
-
-//     const dataToAdd = { name: categoryName };
-
-//     postJSON(apiUrl, dataToAdd, (response) => {
-//         if (response.status === 200) {
-//             categories.push(response.data); // Menambahkan kategori yang baru ke dalam array
-//             renderCategoryList(); // Render ulang daftar kategori
-
-//             // Tampilkan SweetAlert2 setelah kategori berhasil ditambahkan
-//             Swal.fire({
-//                 title: 'Sukses!',
-//                 text: 'Kategori berhasil ditambahkan.',
-//                 icon: 'success',
-//                 confirmButtonText: 'OK'
-//             }).then(() => {
-//                 const addCategoryModal = bootstrap.Modal.getInstance(document.getElementById('addCategoryModal'));
-//                 addCategoryModal.hide();
-//             });
-//         } else {
-//             Swal.fire('Gagal', 'Terjadi kesalahan saat menambahkan kategori', 'error');
-//         }
-//     });
-// });
 
 // Fungsi untuk menangani submit form saat mengubah kategori
 document.getElementById('edit-category-form').addEventListener('submit', (event) => {
@@ -219,27 +191,21 @@ document.getElementById('edit-category-form').addEventListener('submit', (event)
         return;
     }
 
-    // Kirim data ke API untuk mengubah kategori
-    fetch(targetUrl, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Login': token // Header token login
-        },
-        body: JSON.stringify(updatedCategoryData)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
+    // Log untuk memeriksa data yang akan dikirim
+    console.log('Kategori yang akan diubah:', updatedCategoryData);
+
+    // Kirim data ke API untuk mengubah kategori menggunakan putJSON
+    putJSON(targetUrl, 'Login', token, updatedCategoryData, function (response) {
+        const { status, data } = response;
+
+        if (status >= 200 && status < 300) {
+            console.log('Kategori berhasil diubah:', data);
+
             // Perbarui data kategori di array setelah berhasil diubah
             categories[currentEditIndex].name = updatedCategoryName;
 
             // Render ulang daftar kategori
-            fetchCategory();
+            displayCategories(categories); // Menampilkan data terbaru
 
             // Tampilkan notifikasi
             alert('Kategori berhasil diubah!');
@@ -250,11 +216,11 @@ document.getElementById('edit-category-form').addEventListener('submit', (event)
 
             // Reset index edit
             currentEditIndex = null;
-        })
-        .catch(error => {
-            console.error('Terjadi kesalahan:', error);
-            alert('Terjadi kesalahan saat mengubah kategori.');
-        });
+        } else {
+            console.error('Gagal mengubah kategori:', data);
+            alert('Gagal mengubah kategori!');
+        }
+    });
 });
 
 // Fungsi untuk menghapus kategori setelah konfirmasi
