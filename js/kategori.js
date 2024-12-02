@@ -1,4 +1,5 @@
 import { getJSON, postJSON, putJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import { putJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/api.js";
 
 // Array untuk menyimpan data kategori
 let categories = [];
