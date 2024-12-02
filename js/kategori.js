@@ -1,4 +1,4 @@
-import { getJSON, postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import { getJSON, postJSON, putJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 
 // Array untuk menyimpan data kategori
 let categories = [];
@@ -64,7 +64,15 @@ function displayCategories(response) {
         // Event listener untuk tombol Ubah
         editButton.addEventListener('click', () => {
             console.log(`Edit kategori dengan index: ${index}`);
-            // Logika untuk membuka modal edit di sini
+            // Menyimpan index kategori yang sedang diedit
+            currentEditIndex = index;
+
+            // Menampilkan modal edit kategori
+            const modal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+            modal.show();
+
+            // Mengisi input form dengan nama kategori yang dipilih
+            document.getElementById('edit-category-name').value = categories[index].name;
         });
 
         // Tombol Hapus
@@ -205,7 +213,7 @@ document.getElementById('edit-category-form').addEventListener('submit', (event)
             categories[currentEditIndex].name = updatedCategoryName;
 
             // Render ulang daftar kategori
-            displayCategories(categories); // Menampilkan data terbaru
+            displayCategories({ data: { data: categories } }); // Menampilkan data terbaru
 
             // Tampilkan notifikasi
             alert('Kategori berhasil diubah!');
