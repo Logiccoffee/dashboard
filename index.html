@@ -19,15 +19,15 @@
 	<link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap" rel="stylesheet">
 
 	<!-- Google tag (gtag.js) -->
-	 <script async src="https://www.googletagmanager.com/gtag/js?id=G-JPBPLBY1T1"></script>
-	 <script>
-	 window.dataLayer = window.dataLayer || [];
-	 function gtag(){dataLayer.push(arguments);}
-	 gtag('js', new Date());
-	 
-	 gtag('config', 'G-JPBPLBY1T1');
-	 </script>
-	 
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-JPBPLBY1T1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'G-JPBPLBY1T1');
+	</script>
+
 </head>
 
 <body data-page="dashboard">
@@ -50,12 +50,13 @@
 
 			<div class="dropdown">
 				<a href="#" class="profile-icon dropdown-toggle d-flex align-items-center mx-2" id="profileDropdown"
-				   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					<div class="d-flex align-items-center">
 						<div class="ms-2">
 							<span id="user-name">Nama Pengguna</span> <!-- Nama pengguna akan diubah oleh JS -->
 							<br>
-							<span id="user-role" class="text-muted d-block text-end">Role Pengguna</span> <!-- Role pengguna akan diubah oleh JS -->
+							<span id="user-role" class="text-muted d-block text-end">Role Pengguna</span>
+							<!-- Role pengguna akan diubah oleh JS -->
 						</div>
 						<i class="fa-solid fa-user ms-2"></i> <!-- Ikon user berada setelah nama dan role -->
 					</div>
@@ -68,16 +69,16 @@
 					</li>
 					<li>
 						<a href="http://logiccoffee.id.biz.id/" class="dropdown-item logout" onclick="logout()">
-							<i class="fa-solid fa-sign-o   ut-alt"></i> Logout
+							<i class="fa-solid fa-right-from-bracket"></i> Logout
 						</a>
 					</li>
 				</ul>
-			</div>						
+			</div>
 		</aside>
 
 		<!-- Sidebar akan ditambahkan dari sidebar.js -->
-        <div id="sidebar-container"></div>
-		
+		<div id="sidebar-container"></div>
+
 		<div id="content"></div>
 		<main class="content-wrap">
 			<header class="content-head">
@@ -136,7 +137,7 @@
 
 					<!-- Keuangan -->
 					<div class="info-box border p-3 d-flex justify-content-center align-items-center gap-3"
-					style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 5px 10px 10px 10px;">				
+						style="flex-grow: 1; min-width: 250px; max-width: 350px; height: 150px; margin: 5px 10px 10px 10px;">
 						<div class="box-icon">
 							<i class="fa-solid fa-hand-holding-dollar" style="font-size: 40px;"></i>
 						</div>

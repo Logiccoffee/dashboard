@@ -37,38 +37,39 @@
             </form>
 
             <div class="dropdown">
-				<a href="#" class="profile-icon dropdown-toggle d-flex align-items-center mx-2" id="profileDropdown"
-				   role="button" data-bs-toggle="dropdown" aria-expanded="false">
-					<div class="d-flex align-items-center">
-						<div class="ms-2">
-							<span id="user-name">Nama Pengguna</span> <!-- Nama pengguna akan diubah oleh JS -->
-							<br>
-							<span id="user-role" class="text-muted d-block text-end">Role Pengguna</span> <!-- Role pengguna akan diubah oleh JS -->
-						</div>
-						<i class="fa-solid fa-user ms-2"></i> <!-- Ikon user berada setelah nama dan role -->
-					</div>
-				</a>
-				<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-					<li>
-						<a class="dropdown-item profile-edit" href="/profile">
-							<i class="fa-solid fa-user-edit"></i> Ubah Profil
-						</a>
-					</li>
-					<li>
-						<a href="http://logiccoffee.id.biz.id/" class="dropdown-item logout" onclick="logout()">
-							<i class="fa-solid fa-sign-out-alt"></i> Logout
-						</a>
-					</li>
-				</ul>
-			</div>			
+                <a href="#" class="profile-icon dropdown-toggle d-flex align-items-center mx-2" id="profileDropdown"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="d-flex align-items-center">
+                        <div class="ms-2">
+                            <span id="user-name">Nama Pengguna</span> <!-- Nama pengguna akan diubah oleh JS -->
+                            <br>
+                            <span id="user-role" class="text-muted d-block text-end">Role Pengguna</span>
+                            <!-- Role pengguna akan diubah oleh JS -->
+                        </div>
+                        <i class="fa-solid fa-user ms-2"></i> <!-- Ikon user berada setelah nama dan role -->
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li>
+                        <a class="dropdown-item profile-edit" href="/profile">
+                            <i class="fa-solid fa-user-edit"></i> Ubah Profil
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://logiccoffee.id.biz.id/" class="dropdown-item logout" onclick="logout()">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </aside>
 
         <!-- Sidebar akan ditambahkan dari sidebar.js -->
         <div id="sidebar-container"></div>
 
         <div id="content"></div>
-		<main class="content-wrap">
-			<header class="content-head">
+        <main class="content-wrap">
+            <header class="content-head">
                 <h1 class="dashboard-tittle">Manajemen Pengguna</h1>
             </header>
 
@@ -268,7 +269,7 @@
     <script src="js/users.js"></script>
 
     <!-- Memanggil file JS -->
-	<script type="module" src="js/index.js"></script>
+    <script type="module" src="js/index.js"></script>
 
 </body>
 
