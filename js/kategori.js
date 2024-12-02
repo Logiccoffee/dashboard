@@ -312,4 +312,4 @@ document.getElementById('add-category-btn').addEventListener('click', () => {
 });
 
 // Render daftar kategori saat halaman dimuat
-fetchCategory(); // Menambahkan pemanggilan untuk fetchCategory
+displayCategories(response); // Menambahkan pemanggilan untuk fetchCategory
