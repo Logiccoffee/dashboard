@@ -92,6 +92,15 @@ function addMenu(event) {
         return false;
     }
 
+    // Konversi harga ke float
+    const price = parseFloat(menuPrice.replace(/\./g, '').replace(',', '.'));
+
+    // Validasi apakah harga sudah valid
+    if (isNaN(price)) {
+        alert('Harga harus berupa angka yang valid!');
+        return false;
+    }
+
     // Membuat objek menu baru
     const newMenu = {
         name: menuName,
