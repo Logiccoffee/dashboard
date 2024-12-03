@@ -92,13 +92,22 @@ function addMenu(event) {
         return false;
     }
 
-    // Membuat objek menu baru
-    const newMenu = {
-        name: menuName,
-        category: menuCategory,
-        price: menuPrice,
-        image: menuImage // Pastikan image ditangani dengan benar
-    };
+    // Konversi harga ke float
+    const price = parseFloat(menuPrice.replace(/\./g, '').replace(',', '.'));
+
+    // Validasi apakah harga sudah valid
+    if (isNaN(price)) {
+        alert('Harga harus berupa angka yang valid!');
+        return false;
+    }
+
+    // Membuat objek FormData untuk menyertakan gambar
+    const formData = new FormData();
+    formData.append('name', menuName);
+    formData.append('category', menuCategory);
+    formData.append('price', price);  // Kirim harga sebagai float
+    formData.append('image', menuImage);  // Kirim gambar yang dipilih
+
 
     // Ambil token dari cookie dengan nama 'login'
     const token = getCookie('login');
@@ -108,13 +117,18 @@ function addMenu(event) {
     }
 
     // Log untuk memeriksa data yang akan dikirim
-    console.log('Menu yang akan ditambahkan:', newMenu);
+    console.log('Menu yang akan ditambahkan:', {
+        name: menuName,
+        category: menuCategory,
+        price: price,
+        image: menuImage
+    });
 
     // Memanggil fungsi postJSON dari library untuk mengirimkan data menu ke API
     postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu',        // URL API
         'login',       // Nama header untuk token
         token,         // Nilai token dari cookie
-        newMenu,       // Data menu dalam bentuk JSON
+        formData,       // Data menu dalam bentuk JSON
         function (response) {
             const { status, data } = response;
 
