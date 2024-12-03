@@ -116,7 +116,7 @@ function loadCategories() {
 
         if (response.status === 200) {
             // Pastikan categories adalah array yang valid
-            categories = Array.isArray(response.data.data) ? response.data : [];
+            categories = Array.isArray(response.data.data) ? response.data.data : [];
             displayCategories(categories); // Pastikan kategori yang ditampilkan adalah array
         } else {
             console.error(`Error: ${response.status}`);
