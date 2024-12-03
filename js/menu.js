@@ -98,16 +98,21 @@ function displayCategories(categories) {
     categorySelect.innerHTML = '<option value="">Pilih Kategori</option>';
 
     categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.id;
-        option.textContent = category.name;
-        categorySelect.appendChild(option);
+        // Memastikan data kategori memiliki properti 'name'
+        if (category.name) {
+            const option = document.createElement('option');
+            option.value = category.id; // Menggunakan 'id' untuk nilai option
+            option.textContent = category.name; // Menampilkan hanya 'name' di dropdown
+            categorySelect.appendChild(option);
+        }
     });
 }
 
 // Fungsi untuk mengambil kategori dari API
 function loadCategories() {
     getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', "Login", token, (response) => {
+        console.log("Respons kategori:", response);  // Debugging untuk memastikan respons API
+
         if (response.status === 200) {
             // Pastikan categories adalah array yang valid
             categories = Array.isArray(response.data) ? response.data : [];
