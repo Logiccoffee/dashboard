@@ -128,7 +128,7 @@ function addMenu(event) {
     postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu',        // URL API
         'login',       // Nama header untuk token
         token,         // Nilai token dari cookie
-        newMenu,       // Data menu dalam bentuk JSON
+        formData,       // Data menu dalam bentuk JSON
         function (response) {
             const { status, data } = response;
 
