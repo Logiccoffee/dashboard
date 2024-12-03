@@ -1,3 +1,87 @@
+// Mengimpor modul eksternal
+import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
+import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croot.js";
+import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js";
+
+// Cek apakah cookie login ada
+if (getCookie("login") === "") {
+    console.log("Cookie login tidak ditemukan. Mengarahkan ke halaman utama.");
+    redirect("/");
+}
+
+// Ambil data pengguna menggunakan API
+getJSON(
+    "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user",
+    "login",
+    getCookie("login"),
+    responseFunction
+);
+
+// Fungsi untuk memproses respons API
+function responseFunction(result) {
+    try {
+        if (result.status === 404) {
+            console.log("Pengguna tidak ditemukan. Mengarahkan ke halaman pendaftaran.");
+            setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu.");
+            redirect("/register");
+            return;
+        }
+
+        // Data pengguna
+        const userData = result.data;
+
+        // Tambahkan data pengguna ke tabel
+        const userTable = document.getElementById("user-list");
+        if (userTable) {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${userData.id || "-"}</td>
+                <td>${userData.name || "Nama Tidak Diketahui"}</td>
+                <td>${userData.email || "Email Tidak Diketahui"}</td>
+                <td id="role-user-${userData.id}">${userData.role || "Peran Tidak Diketahui"}</td>
+                <td>${userData.phone || "Telepon Tidak Diketahui"}</td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button"
+                            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Aksi
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="openEditModal(${userData.id})">
+                                    <i class="fas fa-pen text-warning"></i> Ubah
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="openDeleteModal(${userData.id})">
+                                    <i class="fas fa-trash-alt text-danger"></i> Hapus
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="openChangePasswordModal(${userData.id})">
+                                    <i class="fas fa-key text-success"></i> Ganti Kata Sandi
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="upgradeToAdmin(${userData.id})">
+                                    <i class="fas fa-user-shield text-primary"></i> Jadikan Sebagai Admin
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            `;
+
+            userTable.appendChild(row);
+        }
+    } catch (error) {
+        console.error("Terjadi kesalahan saat memproses respons:", error.message);
+        setInner("content", "Terjadi kesalahan saat memproses data.");
+    }
+}
+
 // Data pengguna
 const users = [
     {
