@@ -4,18 +4,14 @@ import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croo
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js";
 
-// URL API
-const apiUrl = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user";
-
-// Cek apakah cookie login ada
-const loginCookie = getCookie("login");
-if (!loginCookie) {
+// Cek apakah cookie login ada, jika tidak arahkan ke halaman utama
+if (getCookie("login") === "") {
     console.log("Cookie login tidak ditemukan. Mengarahkan ke halaman utama.");
     redirect("/");
 }
 
 // Ambil data pengguna menggunakan API
-getJSON(apiUrl, "login", loginCookie, responseFunction);
+getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user","login", getCookie("login"), responseFunction);
 
 // Fungsi untuk menangani respons API
 function responseFunction(result) {
@@ -42,15 +38,4 @@ function responseFunction(result) {
         console.error("Terjadi kesalahan saat memproses respons:", error.message);
         setInner("content", "Terjadi kesalahan saat memproses data.");
     }
-}
-
-function logout() {
-    // Hapus cookie login yang menyimpan status login
-    document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/"; // Menghapus cookie login
-  
-    // Menghapus token dari localStorage jika ada
-    localStorage.removeItem("token");
-  
-    // Redirect ke halaman landing page atau URL yang diinginkan
-    window.location.href = "http://logiccoffee.id.biz.id/";
 }
