@@ -98,12 +98,13 @@ function displayCategories(categories) {
     categorySelect.innerHTML = '<option value="">Pilih Kategori</option>';
 
     categories.forEach(category => {
-        // Memastikan data kategori memiliki properti 'name'
         if (category.name) {
             const option = document.createElement('option');
-            option.value = category.id; // Menggunakan 'id' untuk nilai option
-            option.textContent = category.name; // Menampilkan hanya 'name' di dropdown
+            option.value = category.id; // id sebagai value
+            option.textContent = category.name; // Menampilkan nama kategori
             categorySelect.appendChild(option);
+        } else {
+            console.warn("Kategori tanpa properti 'name':", category);
         }
     });
 }
