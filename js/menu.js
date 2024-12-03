@@ -116,7 +116,7 @@ function loadCategories() {
 
         if (response.status === 200) {
             // Pastikan categories adalah array yang valid
-            categories = Array.isArray(response.data) ? response.data : [];
+            categories = Array.isArray(response.data.data) ? response.data : [];
             displayCategories(categories); // Pastikan kategori yang ditampilkan adalah array
         } else {
             console.error(`Error: ${response.status}`);
@@ -171,7 +171,8 @@ function addMenu(event) {
 
 // Panggil fungsi loadCategories saat modal dibuka
 document.getElementById('addProductModal').addEventListener('show.bs.modal', function() {
-    loadCategories(); // Memuat kategori saat modal ditampilkan
+    console.log("Modal terbuka, memuat kategori...");
+    loadCategories(); // Memuat kategori saat modal dibuka
 });
 
 // Fungsi untuk mengirim menu baru ke API
