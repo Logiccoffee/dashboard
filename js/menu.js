@@ -89,6 +89,11 @@ function displayCategories(categories) {
         return;
     }
 
+    if (!Array.isArray(categories)) {
+        console.error("Data kategori yang diterima bukan array.");
+        return;
+    }
+
     // Mengosongkan kategori yang ada sebelumnya
     categorySelect.innerHTML = '<option value="">Pilih Kategori</option>';
 
@@ -104,24 +109,9 @@ function displayCategories(categories) {
 function loadCategories() {
     getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', "Login", token, (response) => {
         if (response.status === 200) {
-            const categories = response.data || []; // Ambil data kategori dari API
-            const categorySelect = document.getElementById('productCategory');
-
-            // Pastikan kategori select ditemukan
-            if (!categorySelect) {
-                console.error("Dropdown kategori tidak ditemukan.");
-                return;
-            }
-
-            // Bersihkan dropdown dan tambahkan kategori
-            categorySelect.innerHTML = '<option value="" disabled selected>Pilih Kategori</option>'; // Reset option pertama
-
-            categories.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category.id; // Gunakan id kategori atau nama kategori sesuai dengan API Anda
-                option.textContent = category.name; // Menampilkan nama kategori
-                categorySelect.appendChild(option);
-            });
+            // Pastikan categories adalah array yang valid
+            categories = Array.isArray(response.data) ? response.data : [];
+            displayCategories(categories); // Pastikan kategori yang ditampilkan adalah array
         } else {
             console.error(`Error: ${response.status}`);
             alert("Gagal memuat kategori. Silakan coba lagi.");
@@ -235,12 +225,30 @@ function submitAddMenu(menuName, menuCategory, price, menuImage) {
     );
 }
 
-// Menunggu hingga DOM selesai dimuat
+// Memastikan DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', function () {
-    // Memuat kategori saat halaman dimuat
+    // Ambil token dari cookie dengan nama 'login'
+    const token = getCookie('login');
+    if (!token) {
+        alert('Token tidak ditemukan, harap login terlebih dahulu!');
+        throw new Error("Token tidak ditemukan. Harap login ulang.");
+    }
+
+    // Panggil getJSON untuk mengambil data menu setelah token valid
+    getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
+        if (response.status === 200) {
+            menus = response.data.data || []; // Menyimpan data menu yang ada
+            displayMenus(response); // Menampilkan data menu yang diambil
+        } else {
+            console.error(`Error: ${response.status}`);
+            alert("Gagal memuat data menu. Silakan coba lagi.");
+        }
+    });
+
+    // Fungsi untuk menampilkan kategori saat halaman dimuat
     loadCategories();
 
-    // Menambahkan event listener untuk form submit setelah DOM dimuat sepenuhnya
+    // Menambahkan event listener untuk form submit
     const addProductForm = document.getElementById('addProductForm');
     if (addProductForm) {
         addProductForm.addEventListener('submit', addMenu);
