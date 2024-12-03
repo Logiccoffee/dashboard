@@ -83,7 +83,8 @@
     </div>
 
     <!-- Modal Tambah Produk -->
-    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Header dengan Logo, Judul, dan Tombol Cancel -->
@@ -94,11 +95,12 @@
                         <span class="fw-bold" style="font-size: 1.8rem;">Logic Coffee</span>
                     </div>
                     <!-- Tombol Cancel di Kanan -->
-                    <button type="button" class="cancel-btn position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="cancel-btn position-absolute top-0 end-0 mt-2 me-2"
+                        data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa-solid fa-circle-xmark"></i>
                     </button>
                 </div>
-    
+
                 <h2 class="text-center category-title">Tambah Menu</h2>
                 <p class="welcome-text text-center">Masukkan detail menu baru!</p>
                 <div class="modal-body">
@@ -129,6 +131,14 @@
                             <input type="file" id="product-image" accept="image/*" required>
                             <label for="product-image">Gambar Menu</label>
                         </div>
+                        <!-- Dropdown untuk Status -->
+                        <div class="mb-3">
+                            <label for="productStatus" class="form-label">Status</label>
+                            <select class="form-select" id="productStatus" required>
+                                <option value="" disabled selected>Pilih Status</option>
+                                <!-- Status options akan diisi dari backend -->
+                            </select>
+                        </div>
                         <!-- Submit Button -->
                         <button type="submit" class="submit-btn">Simpan</button>
                     </form>
@@ -136,7 +146,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Modal untuk Edit Produk -->
     <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
         aria-hidden="true">
@@ -202,7 +212,8 @@
                     <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
                     <span class="text-center">Logic Coffee</span>
                 </div>
-                <h2 class="text-center category-title">Hapus <Menu></Menu></h2>
+                <h2 class="text-center category-title">Hapus <Menu></Menu>
+                </h2>
                 <p class="welcome-text">Apakah Anda yakin ingin menghapus menu ini?</p>
                 <div class="text-center">
                     <!-- Konfirmasi Hapus -->

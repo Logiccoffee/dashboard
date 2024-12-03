@@ -125,6 +125,35 @@ function loadCategories() {
     });
 }
 
+// Array untuk menyimpan data status (Tersedia / Tidak Tersedia)
+const statuses = ['Tersedia', 'Tidak Tersedia'];
+
+// Fungsi untuk menampilkan status dalam dropdown
+function displayStatuses() {
+    const statusSelect = document.getElementById('product-status');
+    if (!statusSelect) {
+        console.error("Elemen dengan id 'product-status' tidak ditemukan.");
+        return;
+    }
+
+    // Mengosongkan status yang ada sebelumnya
+    statusSelect.innerHTML = '<option value="">Pilih Status</option>';
+
+    // Loop untuk menambahkan pilihan status ke dropdown
+    statuses.forEach(status => {
+        const option = document.createElement('option');
+        option.value = status;
+        option.textContent = status;
+        statusSelect.appendChild(option);
+    });
+}
+
+// Panggil fungsi displayStatuses saat modal dibuka
+document.getElementById('addProductModal').addEventListener('show.bs.modal', function() {
+    console.log("Modal terbuka, memuat status...");
+    displayStatuses(); // Memuat status saat modal dibuka
+});
+
 // Fungsi untuk menambah menu
 function addMenu(event) {
     event.preventDefault(); // Mencegah form submit biasa agar bisa menggunakan JavaScript
@@ -132,6 +161,7 @@ function addMenu(event) {
     const menuName = document.getElementById('product-name').value.trim();
     const menuCategory = document.getElementById('productCategory').value.trim();
     const menuPrice = document.getElementById('product-price').value.trim();
+    const menuStatus = document.getElementById('product-status').value.trim(); // Ambil status
     const menuImage = document.getElementById('product-image').files[0];
 
     // Validasi input menu
@@ -158,14 +188,14 @@ function addMenu(event) {
                 // Reload kategori
                 loadCategories();
                 // Lanjutkan untuk menambahkan menu
-                submitAddMenu(menuName, menuCategory, price, menuImage);
+                submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage);
             } else {
                 alert('Gagal menambah kategori baru!');
             }
         });
     } else {
         // Jika kategori sudah ada, lanjutkan menambah menu
-        submitAddMenu(menuName, menuCategory, price, menuImage);
+        submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage);
     }
 }
 
@@ -176,12 +206,13 @@ document.getElementById('addProductModal').addEventListener('show.bs.modal', fun
 });
 
 // Fungsi untuk mengirim menu baru ke API
-function submitAddMenu(menuName, menuCategory, price, menuImage) {
+function submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage) {
     // Membuat objek FormData untuk menyertakan gambar
     const formData = new FormData();
     formData.append('name', menuName);
     formData.append('category', menuCategory);
     formData.append('price', price);  // Kirim harga sebagai float
+    formData.append('status', menuStatus);  // Kirim status
     formData.append('image', menuImage);  // Kirim gambar yang dipilih
 
 
@@ -190,6 +221,7 @@ function submitAddMenu(menuName, menuCategory, price, menuImage) {
         name: menuName,
         category: menuCategory,
         price: price,
+        status: menuStatus, // Menambahkan status di sini
         image: menuImage
     });
 
@@ -224,6 +256,7 @@ function submitAddMenu(menuName, menuCategory, price, menuImage) {
                 document.getElementById('product-name').value = '';
                 document.getElementById('product-price').value = '';
                 document.getElementById('product-image').value = '';
+                document.getElementById('product-status').value = '';  // Mengosongkan status
             } else {
                 console.error('Gagal menambah menu:', data);
                 alert('Gagal menambah menu!');
