@@ -83,8 +83,7 @@
     </div>
 
     <!-- Modal Tambah Produk -->
-    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- Header dengan Logo, Judul, dan Tombol Cancel -->
@@ -95,12 +94,11 @@
                         <span class="fw-bold" style="font-size: 1.8rem;">Logic Coffee</span>
                     </div>
                     <!-- Tombol Cancel di Kanan -->
-                    <button type="button" class="cancel-btn position-absolute top-0 end-0 mt-2 me-2"
-                        data-bs-dismiss="modal" aria-label="Close">
+                    <button type="button" class="cancel-btn position-absolute top-0 end-0 mt-2 me-2" data-bs-dismiss="modal" aria-label="Close">
                         <i class="fa-solid fa-circle-xmark"></i>
                     </button>
                 </div>
-
+    
                 <h2 class="text-center category-title">Tambah Menu</h2>
                 <p class="welcome-text text-center">Masukkan detail menu baru!</p>
                 <div class="modal-body">
@@ -109,10 +107,6 @@
                             <label for="productCategory" class="form-label">Kategori</label>
                             <select class="form-select" id="productCategory" required>
                                 <option value="" disabled selected>Pilih Kategori</option>
-                                <option value="Hot">Hot</option>
-                                <option value="Ice">Ice</option>
-                                <option value="Non Coffee">Non Coffee</option>
-                                <option value="Dessert">Dessert</option>
                             </select>
                         </div>
                         <!-- Input untuk Nama Produk -->
@@ -122,13 +116,18 @@
                         </div>
                         <!-- Input untuk Harga Produk -->
                         <div class="input-group">
-                            <input type="number" id="product-price" placeholder=" " required>
+                            <input type="text" id="product-price" placeholder=" " required>
                             <label for="product-price">Masukkan Harga Menu</label>
                         </div>
                         <!-- Input untuk Gambar Produk -->
                         <div class="input-group">
                             <input type="file" id="product-image" accept="image/*" required>
                             <label for="product-image">Gambar Menu</label>
+                        </div>
+                        <!-- Input untuk Deskripsi Produk -->
+                        <div class="input-group">
+                            <input type="text" id="product-description" placeholder=" " required>
+                            <label for="product-description">Masukkan Deskripsi Menu</label>
                         </div>
                         <!-- Submit Button -->
                         <button type="submit" class="submit-btn">Simpan</button>
@@ -137,7 +136,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Modal untuk Edit Produk -->
     <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
         aria-hidden="true">

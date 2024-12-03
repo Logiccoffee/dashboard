@@ -5,6 +5,7 @@ import { putJSON, deleteJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0
 let menus = [];
 let currentEditIndex = null; // Untuk menyimpan index menu yang sedang diedit
 let currentDeleteIndex = null; // Untuk menyimpan index menu yang akan dihapus
+let categories = []; //untuk menyimpan data kategori
 
 // Ambil token dari cookie dengan nama 'login'
 const token = getCookie('login');
@@ -80,6 +81,54 @@ function getCookie(name) {
     return null; // Jika cookie tidak ditemukan
 }
 
+// Fungsi untuk menampilkan kategori dalam dropdown
+function displayCategories(categories) {
+    const categorySelect = document.getElementById('productCategory');
+    if (!categorySelect) {
+        console.error("Elemen dengan id 'productCategory' tidak ditemukan.");
+        return;
+    }
+
+    // Mengosongkan kategori yang ada sebelumnya
+    categorySelect.innerHTML = '<option value="">Pilih Kategori</option>';
+
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
+    });
+}
+
+// Fungsi untuk mengambil kategori dari API
+function loadCategories() {
+    getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', "Login", token, (response) => {
+        if (response.status === 200) {
+            const categories = response.data || []; // Ambil data kategori dari API
+            const categorySelect = document.getElementById('productCategory');
+
+            // Pastikan kategori select ditemukan
+            if (!categorySelect) {
+                console.error("Dropdown kategori tidak ditemukan.");
+                return;
+            }
+
+            // Bersihkan dropdown dan tambahkan kategori
+            categorySelect.innerHTML = '<option value="" disabled selected>Pilih Kategori</option>'; // Reset option pertama
+
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id; // Gunakan id kategori atau nama kategori sesuai dengan API Anda
+                option.textContent = category.name; // Menampilkan nama kategori
+                categorySelect.appendChild(option);
+            });
+        } else {
+            console.error(`Error: ${response.status}`);
+            alert("Gagal memuat kategori. Silakan coba lagi.");
+        }
+    });
+}
+
 // Fungsi untuk menambah menu
 function addMenu(event) {
     event.preventDefault(); // Mencegah form submit biasa agar bisa menggunakan JavaScript
@@ -104,6 +153,33 @@ function addMenu(event) {
         return false;
     }
 
+    // Cek apakah kategori ada, jika tidak, tambahkan kategori baru
+    if (!categories.some(category => category.id === menuCategory)) {
+        // Jika kategori tidak ada, tambahkan kategori baru melalui API (misalnya, 'postJSON')
+        postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', 'Login', token, { name: menuCategory }, function (response) {
+            if (response.status === 200) {
+                alert('Kategori baru berhasil ditambahkan!');
+                // Reload kategori
+                loadCategories();
+                // Lanjutkan untuk menambahkan menu
+                submitAddMenu(menuName, menuCategory, price, menuImage);
+            } else {
+                alert('Gagal menambah kategori baru!');
+            }
+        });
+    } else {
+        // Jika kategori sudah ada, lanjutkan menambah menu
+        submitAddMenu(menuName, menuCategory, price, menuImage);
+    }
+}
+
+// Panggil fungsi loadCategories saat modal dibuka
+document.getElementById('addProductModal').addEventListener('show.bs.modal', function() {
+    loadCategories(); // Memuat kategori saat modal ditampilkan
+});
+
+// Fungsi untuk mengirim menu baru ke API
+function submitAddMenu(menuName, menuCategory, price, menuImage) {
     // Membuat objek FormData untuk menyertakan gambar
     const formData = new FormData();
     formData.append('name', menuName);
@@ -111,13 +187,6 @@ function addMenu(event) {
     formData.append('price', price);  // Kirim harga sebagai float
     formData.append('image', menuImage);  // Kirim gambar yang dipilih
 
-
-    // Ambil token dari cookie dengan nama 'login'
-    const token = getCookie('login');
-    if (!token) {
-        alert('Token tidak ditemukan, harap login terlebih dahulu!');
-        return;
-    }
 
     // Log untuk memeriksa data yang akan dikirim
     console.log('Menu yang akan ditambahkan:', {
@@ -168,15 +237,13 @@ function addMenu(event) {
 
 // Menunggu hingga DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', function () {
+    // Memuat kategori saat halaman dimuat
+    loadCategories();
+
     // Menambahkan event listener untuk form submit setelah DOM dimuat sepenuhnya
     const addProductForm = document.getElementById('addProductForm');
     if (addProductForm) {
         addProductForm.addEventListener('submit', addMenu);
-    }
-
-    const editProductForm = document.getElementById('editProductForm');
-    if (editProductForm) {
-        editProductForm.addEventListener('submit', editMenu); // Pastikan Anda punya fungsi editMenu
     }
 });
 
