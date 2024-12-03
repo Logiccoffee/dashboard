@@ -34,11 +34,11 @@ function displayMenus(response) {
     }
 
     const menuData = response.data.data; // Ambil data menu dari respons
-    const container = document.getElementById('menu-list');
+    const container = document.getElementById('productList');
 
     // Pastikan elemen container ditemukan
     if (!container) {
-        console.error("Elemen dengan id 'menu-list' tidak ditemukan.");
+        console.error("Elemen dengan id 'productList' tidak ditemukan.");
         return;
     }
 
