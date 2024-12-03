@@ -129,59 +129,24 @@
                         </tr>
                     </thead>
                     <tbody id="transaction-list">
-                        <tr>
-                            <td>TRX12345</td>
-                            <td>08123456789</td>
-                            <td>Kopi Susu Tikala</td>
-                            <td>5 x Rp 16.000</td>
-                            <td>Rp 80.000</td>
-                            <td>Transfer Bank</td>
-                            <td style="text-align: center;">
-                                <div class="status-field" id="status-0">Diproses</div>
-                            </td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle" type="button"
-                                        id="dropdownMenuButton0" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Aksi
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton0">
-                                        <li><a class="dropdown-item" href="invoice.html"><i
-                                                    class="fas fa-eye text-primary"></i> Lihat</a></li>
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle" href="#"><i
-                                                    class="fas fa-sync text-info"></i> Perbarui Status</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="#"
-                                                        onclick="updateStatus(0, 'Diproses')">Diproses</a></li>
-                                                <li><a class="dropdown-item" href="#"
-                                                        onclick="updateStatus(0, 'Dikirim')">Dikirim</a></li>
-                                                <li><a class="dropdown-item" href="#"
-                                                        onclick="updateStatus(0, 'Selesai')">Selesai</a></li>
-                                                <li><a class="dropdown-item" href="#"
-                                                        onclick="updateStatus(0, 'Ditolak')">Dibatalkan</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                        <!-- Data transaksi akan dimuat di sini menggunakan JavaScript -->
                     </tbody>
                 </table>
             </div>
+            
         </main>
     </div>
 
     <!-- Sidebar -->
     <script src="js/sidebar.js"></script>
 
-    <script src="js/daftarpesanan.js" type="module"></script>
+    <script src="js/order.js" type="module"></script>
 
     <!-- Memanggil file JS -->
     <script type="module" src="js/index.js"></script>
     <script src="js/sidebar.js"></script>
 
-    <script src="js/daftarpesanan.js" type="module"></script>
+    <script src="js/order.js" type="module"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/src/sweetalert2.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.css">
