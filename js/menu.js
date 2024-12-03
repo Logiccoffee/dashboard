@@ -144,11 +144,11 @@ function addMenu(event) {
 // Menunggu hingga DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', function () {
     // Menambahkan event listener untuk form submit setelah DOM dimuat sepenuhnya
-    document.getElementById('add-menu-form').addEventListener('submit', addMenu);
+    document.getElementById(addProductModal).addEventListener('submit', addMenu);
 });
 
 // Fungsi untuk menangani submit form saat mengubah menu
-document.getElementById('edit-menu-form').addEventListener('submit', (event) => {
+document.getElementById('editProductModal').addEventListener('submit', (event) => {
     event.preventDefault(); // Mencegah form submit default
 
     const updatedMenuName = document.getElementById('edit-menu-name').value.trim(); // Nama menu baru
