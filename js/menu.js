@@ -54,6 +54,9 @@ function displayMenus(response) {
                 <img src="${item.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">${item.name}</h5>
+                    <p class="card-text">Deskripsi: ${item.description || 'Tidak ada deskripsi'}</p>
+                    <p class="card-text">Harga: ${item.price}</p>
+                    <p class="card-text">Status: ${item.status}</p>
                 </div>
                 <div class="card-footer text-center">
                     <button class="btn btn-warning btn-edit" onclick="openEditMenuPopup(${index})">
