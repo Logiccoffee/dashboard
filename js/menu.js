@@ -34,11 +34,11 @@ function displayMenus(response) {
     }
 
     const menuData = response.data.data; // Ambil data menu dari respons
-    const container = document.getElementById('menu-list');
+    const container = document.getElementById('productList');
 
     // Pastikan elemen container ditemukan
     if (!container) {
-        console.error("Elemen dengan id 'menu-list' tidak ditemukan.");
+        console.error("Elemen dengan id 'productList' tidak ditemukan.");
         return;
     }
 
@@ -81,17 +81,23 @@ function getCookie(name) {
 function addMenu(event) {
     event.preventDefault(); // Mencegah form submit biasa agar bisa menggunakan JavaScript
 
-    const menuName = document.getElementById('menu-name').value.trim();
+    const menuName = document.getElementById('product-name').value.trim();
+    const menuCategory = document.getElementById('productCategory').value.trim();
+    const menuPrice = document.getElementById('product-price').value.trim();
+    const menuImage = document.getElementById('product-image').files[0];
 
     // Validasi input menu
-    if (menuName === '') {
-        alert('Nama menu tidak boleh kosong!');
+    if (menuName === '' || menuCategory === '' || menuPrice === '' || !menuImage) {
+        alert('Semua data menu harus diisi!');
         return false;
     }
 
     // Membuat objek menu baru
     const newMenu = {
-        name: menuName
+        name: menuName,
+        category: menuCategory,
+        price: menuPrice,
+        image: menuImage // Pastikan image ditangani dengan benar
     };
 
     // Ambil token dari cookie dengan nama 'login'
@@ -117,7 +123,7 @@ function addMenu(event) {
                 alert('Menu berhasil ditambahkan!');
 
                 // Menutup modal setelah menu ditambahkan
-                const modal = bootstrap.Modal.getInstance(document.getElementById('addMenuModal'));
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
                 modal.hide(); // Menutup modal
 
                 // Setelah menu berhasil ditambahkan, ambil data terbaru dari API
@@ -132,7 +138,9 @@ function addMenu(event) {
                 });
 
                 // Mengosongkan input form
-                document.getElementById('menu-name').value = '';
+                document.getElementById('product-name').value = '';
+                document.getElementById('product-price').value = '';
+                document.getElementById('product-image').value = '';
             } else {
                 console.error('Gagal menambah menu:', data);
                 alert('Gagal menambah menu!');
@@ -144,14 +152,22 @@ function addMenu(event) {
 // Menunggu hingga DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', function () {
     // Menambahkan event listener untuk form submit setelah DOM dimuat sepenuhnya
-    document.getElementById(addProductModal).addEventListener('submit', addMenu);
+    const addProductForm = document.getElementById('addProductForm');
+    if (addProductForm) {
+        addProductForm.addEventListener('submit', addMenu);
+    }
+
+    const editProductForm = document.getElementById('editProductForm');
+    if (editProductForm) {
+        editProductForm.addEventListener('submit', editMenu); // Pastikan Anda punya fungsi editMenu
+    }
 });
 
 // Fungsi untuk menangani submit form saat mengubah menu
-document.getElementById('editProductModal').addEventListener('submit', (event) => {
+function editMenu(event) {
     event.preventDefault(); // Mencegah form submit default
 
-    const updatedMenuName = document.getElementById('edit-menu-name').value.trim(); // Nama menu baru
+    const updatedMenuName = document.getElementById('edit-product-name').value.trim(); // Nama menu baru
     if (updatedMenuName === '') {
         alert('Nama menu tidak boleh kosong!');
         return;
@@ -183,20 +199,20 @@ document.getElementById('editProductModal').addEventListener('submit', (event) =
             menus[currentEditIndex].name = updatedMenuName;
 
             // Render ulang daftar menu
-            displayMenus({ data: { data: menus } }); // Menampilkan data terbaru
+            displayMenus({ data: { data: menus } });
 
-            // Tampilkan notifikasi
-            alert('Menu berhasil diubah!');
+            // Menutup modal setelah perubahan berhasil
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+            modal.hide(); // Menutup modal
 
-            // Tutup modal edit
-            const editMenuModal = bootstrap.Modal.getInstance(document.getElementById('editMenuModal'));
-            editMenuModal.hide();
+            // Reset form
+            document.getElementById('edit-product-name').value = '';
         } else {
             console.error('Gagal mengubah menu:', data);
             alert('Gagal mengubah menu!');
         }
     });
-});
+}
 
 // Fungsi untuk menghapus menu
 document.getElementById('confirm-delete').addEventListener('click', () => {
