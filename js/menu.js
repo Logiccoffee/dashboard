@@ -152,6 +152,7 @@ function displayStatuses() {
 document.getElementById('addProductModal').addEventListener('show.bs.modal', function() {
     console.log("Modal terbuka, memuat status...");
     displayStatuses(); // Memuat status saat modal dibuka
+    loadCategories(); // Memuat kategori saat modal dibuka
 });
 
 // Fungsi untuk menambah menu
@@ -198,12 +199,6 @@ function addMenu(event) {
         submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage);
     }
 }
-
-// Panggil fungsi loadCategories saat modal dibuka
-document.getElementById('addProductModal').addEventListener('show.bs.modal', function() {
-    console.log("Modal terbuka, memuat kategori...");
-    loadCategories(); // Memuat kategori saat modal dibuka
-});
 
 // Fungsi untuk mengirim menu baru ke API
 function submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage) {
