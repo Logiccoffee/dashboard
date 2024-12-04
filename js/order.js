@@ -81,7 +81,7 @@ const totalPriceCell = document.createElement('td');
 // Pastikan order.total adalah angka valid
 let total = order.total ? order.total.toString().replace(/[^\d]/g, '') : '-'; // Hanya angka
 totalPriceCell.textContent = total !== '-' 
-    ? `Rp ${parseInt(total, 10).toLocaleString('id-ID')}` // Tambahkan kembali "Rp" jika valid
+    ? ` ${parseInt(total, 10).toLocaleString('id-ID')}` // Tambahkan kembali "Rp" jika valid
     : '-'; // Jika kosong, tampilkan "-"
 
 row.appendChild(totalPriceCell);
