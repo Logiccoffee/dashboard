@@ -62,20 +62,20 @@ function displayOrders(orders) {
         `;
         row.appendChild(customerInfoCell);
 
-        /// Kolom Produk (Nama Produk, Jumlah dan Harga Satuan)
-const productInfoCell = document.createElement('td');
+                // Kolom Produk (Nama Produk, Jumlah dan Harga Satuan)
+        const productInfoCell = document.createElement('td');
 
-// Cek apakah ada data dalam order.orders
-if (order.orders && order.orders.length > 0) {
-    // Gabungkan Nama Produk, Kuantitas dan Harga Satuan dalam satu kolom
-    productInfoCell.innerHTML = order.orders.map(item => {
-        return `${item.menu_name || 'Tidak Diketahui'} - ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`;
-    }).join('<br>'); // Menggunakan <br> untuk memisahkan tiap item dalam baris baru
-} else {
-    productInfoCell.textContent = '-'; // Tampilkan '-' jika tidak ada data
-}
+        // Cek apakah ada data dalam order.orders
+        if (order.orders && order.orders.length > 0) {
+            // Gabungkan Nama Produk, Kuantitas dan Harga Satuan dalam satu kolom
+            productInfoCell.innerHTML = order.orders.map(item => {
+                return `${item.menu_name || 'Tidak Diketahui'} - ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`;
+            }).join('<br>'); // Menggunakan <br> untuk memisahkan tiap item dalam baris baru
+        } else {
+            productInfoCell.textContent = '-'; // Tampilkan '-' jika tidak ada data
+        }
 
-row.appendChild(productInfoCell);
+            row.appendChild(productInfoCell)
 
 
 
@@ -102,8 +102,12 @@ row.appendChild(totalPriceCell);
         paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
         row.appendChild(paymentStatusCell);
 
-        // Kolom Aksi
+
+
+         // Kolom aksi
         const actionCell = document.createElement('td');
+
+        // Tombol "Lihat" untuk menampilkan detail pesanan
         const viewButton = document.createElement('button');
         viewButton.className = 'btn btn-primary btn-sm';
         viewButton.textContent = 'Lihat';
@@ -111,7 +115,33 @@ row.appendChild(totalPriceCell);
             alert(`Detail pesanan:\n\n${JSON.stringify(order, null, 2)}`);
         });
         actionCell.appendChild(viewButton);
+        
+        // Dropdown untuk Status Pesanan
+        const statusDropdown = document.createElement('select');
+        statusDropdown.className = 'form-control form-control-sm'; // CSS untuk tampilan dropdown
+        const statusOptions = ['Diproses', 'Selesai'];
+        
+        // Menambahkan pilihan status ke dropdown
+        statusOptions.forEach(status => {
+            const option = document.createElement('option');
+            option.value = status;
+            option.textContent = status;
+            statusDropdown.appendChild(option);
+        });
+        
+        // Menambahkan event listener untuk mengubah status pesanan
+        statusDropdown.addEventListener('change', () => {
+            const selectedStatus = statusDropdown.value;
+            alert(`Status pesanan diubah menjadi: ${selectedStatus}`);
+        });
+        
+        // Tambahkan dropdown status ke dalam kolom aksi
+        actionCell.appendChild(statusDropdown);
+        
+        // Tambahkan baris ke tabel
         row.appendChild(actionCell);
+        container.appendChild(row);
+        
 
         // Tambahkan baris ke tabel
         container.appendChild(row);
