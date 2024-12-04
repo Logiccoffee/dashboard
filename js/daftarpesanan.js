@@ -1,7 +1,4 @@
-
 import { postJSON } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/api.js';
-import { onClick } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/element.js';
-
 
 // Fungsi untuk membuka halaman invoice
 function openInvoice(index) {
@@ -29,7 +26,6 @@ document.querySelectorAll('.dropdown-menu a.dropdown-item').forEach((item) => {
     });
 });
 
-
 function updateStatus(index, newStatus) {
     // Perbarui elemen status
     const statusCell = document.getElementById(`status-${index}`);
@@ -48,10 +44,16 @@ function updateStatus(index, newStatus) {
     }
 }
 
-onClick('update-status-btn', function () {
-    const index = 1; // Ganti dengan index yang sesuai
-    const newStatus = 'Diproses'; // Ganti dengan status baru yang sesuai
-    updateStatus(index, newStatus);
-});
+// Gunakan addEventListener langsung pada tombol jika elemen update-status-btn ada
+const updateStatusButton = document.getElementById('update-status-btn');
+if (updateStatusButton) {
+    updateStatusButton.addEventListener('click', function () {
+        const index = 1; // Ganti dengan index yang sesuai
+        const newStatus = 'Diproses'; // Ganti dengan status baru yang sesuai
+        updateStatus(index, newStatus);
+    });
+} else {
+    console.error('Tombol update-status-btn tidak ditemukan');
+}
 
 window.updateStatus = updateStatus;
