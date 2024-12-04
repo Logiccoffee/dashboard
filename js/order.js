@@ -62,19 +62,15 @@ function displayOrders(orders) {
         `;
         row.appendChild(customerInfoCell);
 
-        // Kolom Nama Produk
-        const menuNameCell = document.createElement('td');
-        menuNameCell.textContent = order.orders && order.orders.length > 0
-            ? order.orders.map(item => item.menu_name || 'Tidak Diketahui').join(', ') // Tangani kasus `menu_name` kosong
-            : '-';
-        row.appendChild(menuNameCell);
+        // Kolom Nama Produk dan Jumlah + Harga Satuan
+            const productInfoCell = document.createElement('td');
+            productInfoCell.innerHTML = order.orders && order.orders.length > 0
+                ? order.orders.map(item => 
+                    `${item.menu_name || 'Tidak Diketahui'} - ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`
+                ).join('<br>') // Gunakan <br> untuk memisahkan tiap produk
+                : '-';
+            row.appendChild(productInfoCell);
 
-        // Kolom Jumlah + Harga Satuan
-        const quantityPriceCell = document.createElement('td');
-        quantityPriceCell.textContent = order.orders && order.orders.length > 0
-            ? order.orders.map(item => `${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`).join(', ')
-            : '-';
-        row.appendChild(quantityPriceCell);
 
       // Kolom Harga Total
 const totalPriceCell = document.createElement('td');
