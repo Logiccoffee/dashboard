@@ -11,7 +11,7 @@ if (getCookie("login") === "") {
 }
 
 // Ambil data pengguna menggunakan API
-getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users","login", getCookie("login"), responseFunction);
+getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users", "login", getCookie("login"), responseFunction);
 
 // Fungsi untuk menangani respons API
 function responseFunction(result) {
@@ -85,16 +85,24 @@ function populateDropdown(userId, currentRole, roles) {
     const dropdownMenu = document.getElementById(`dropdown-role-${userId}`);
     dropdownMenu.innerHTML = ""; // Kosongkan opsi sebelumnya
 
-    // Menambahkan opsi ke dropdown jika peran berbeda
-    roles.forEach((role) => {
-        if (role !== currentRole) { // Jangan menambahkan peran yang sudah dipilih
-            const listItem = document.createElement("li");
-            listItem.innerHTML = `
-                <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}')">
-                    <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
-                </a>`;
-            dropdownMenu.appendChild(listItem);
-        }
+    // Filter opsi berdasarkan peran saat ini
+    let filteredRoles = [];
+    if (currentRole === "Admin") {
+        filteredRoles = ["Dosen", "User"];
+    } else if (currentRole === "User") {
+        filteredRoles = ["Admin", "Dosen"];
+    } else if (currentRole === "Dosen") {
+        filteredRoles = ["User", "Admin"];
+    }
+
+    // Menambahkan opsi ke dropdown sesuai peran
+    filteredRoles.forEach((role) => {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `
+            <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}')">
+                <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
+            </a>`;
+        dropdownMenu.appendChild(listItem);
     });
 }
 
