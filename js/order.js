@@ -1,62 +1,61 @@
-// URL API
-const apiUrl = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
-
 // Fungsi untuk memuat data pesanan
-async function loadOrders() {
+const loadOrders = async () => {
     try {
-        const response = await fetch(apiUrl);
+        // URL API untuk mengambil data pesanan
+        const apiURL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
+
+        // Fetch data dari API
+        const response = await fetch(apiURL);
+
+        // Jika respon tidak OK, lempar error
         if (!response.ok) {
-            throw new Error("Gagal mengambil data pesanan");
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
 
-        const orders = await response.json(); // Mengambil data JSON dari API
+        // Parse data JSON dari respon
+        const orders = await response.json();
+
+        // Debugging: Cek data pesanan di console
+        console.log("Data pesanan berhasil diambil:", orders);
+
+        // Ambil elemen tbody untuk menampilkan data
         const transactionList = document.getElementById("transaction-list");
-        transactionList.innerHTML = ""; // Membersihkan isi sebelumnya
 
-        // Iterasi data pesanan untuk ditampilkan
+        // Kosongkan isi tbody sebelum memasukkan data baru
+        transactionList.innerHTML = "";
+
+        // Jika tidak ada data, tampilkan pesan kosong
+        if (orders.length === 0) {
+            Swal.fire("Info", "Tidak ada data pesanan untuk ditampilkan.", "info");
+            return;
+        }
+
+        // Iterasi data pesanan dan masukkan ke tabel
         orders.forEach((order, index) => {
-            const row = document.createElement("tr");
-
-            row.innerHTML = `
-                <td>${order.orderNumber || "N/A"}</td>
-                <td>${order.queueNumber || "N/A"}</td>
-                <td>
-                    ${order.orders.map(item => `<div>${item.product_name || "Produk"} (${item.quantity || 0}x)</div>`).join("")}
-                </td>
-                <td>
-                    ${order.orders.map(item => `<div>${item.price || 0} IDR</div>`).join("")}
-                </td>
-                <td>${order.total || 0} IDR</td>
-                <td>${order.payment_method || "Tidak diketahui"}</td>
-                <td>
-                    <span class="status-field">${order.status || "Tidak diketahui"}</span>
-                </td>
-                <td>
-                    <button class="btn btn-primary btn-sm" onclick="viewOrderDetails('${order.id}')">
-                        <i class="fa fa-eye"></i> Detail
-                    </button>
-                </td>
+            const row = `
+                <tr>
+                    <td>${order.kodeTransaksi || "Tidak Ada"}</td>
+                    <td>${index + 1}</td>
+                    <td>${order.namaProduk || "Tidak Ada"}</td>
+                    <td>${order.jumlah} x ${order.hargaSatuan || 0}</td>
+                    <td>${order.hargaTotal || 0}</td>
+                    <td>${order.metodePembayaran || "Tidak Ada"}</td>
+                    <td>${order.status || "Tidak Ada"}</td>
+                    <td>
+                        <button class="btn btn-primary">Detail</button>
+                    </td>
+                </tr>
             `;
-
-            transactionList.appendChild(row);
+            transactionList.innerHTML += row;
         });
     } catch (error) {
-        console.error("Error:", error);
-        Swal.fire("Gagal Memuat Data", "Terjadi kesalahan saat mengambil data pesanan", "error");
+        // Tampilkan error di console
+        console.error("Error:", error.message);
+
+        // Beri notifikasi error ke user
+        Swal.fire("Error", `Gagal mengambil data pesanan: ${error.message}`, "error");
     }
-}
+};
 
-// Fungsi untuk melihat detail pesanan
-function viewOrderDetails(orderId) {
-    Swal.fire({
-        title: "Detail Pesanan",
-        text: `Pesanan dengan ID ${orderId} sedang dalam pengembangan`,
-        icon: "info",
-        confirmButtonText: "OK"
-    });
-}
-
-// Memuat data ketika halaman selesai dimuat
-document.addEventListener("DOMContentLoaded", () => {
-    loadOrders();
-});
+// Panggil fungsi loadOrders saat halaman dimuat
+document.addEventListener("DOMContentLoaded", loadOrders);
