@@ -24,10 +24,11 @@ function responseFunction(result) {
         const userList = document.getElementById("user-list");
 
         if (userList) {
-            const userData = result.data;
+            // Pastikan result.data adalah array
+            const userData = Array.isArray(result.data) ? result.data : [result.data];
 
             // Tambahkan pengguna ke tabel
-            userData.forEach((user, index) => addUserRow(user, index)); // Tambahkan nomor urut
+            userData.forEach((user, index) => addUserRow(user, index));
         }
 
         console.log("Data pengguna berhasil ditambahkan:", result.data);
