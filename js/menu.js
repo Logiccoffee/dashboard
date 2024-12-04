@@ -421,24 +421,13 @@ function openEditMenuPopup(index) {
         productName, productCategory, productPrice, productDescription, productStatus, productImage
     });
 
-    // Ambil elemen form
-    const nameField = document.getElementById('edit-product-name');
-    const categoryField = document.getElementById('edit-product-category');
-    const priceField = document.getElementById('edit-product-price');
-    const descriptionField = document.getElementById('edit-product-description');
-    const statusField = document.getElementById('edit-product-status');
-    const imagePreview = document.getElementById('edit-product-image');
-
-    // Isi data ke form
-    nameField.value = productName || '';
-    categoryField.value = productCategory || '';
-    priceField.value = productPrice || '';
-    descriptionField.value = productDescription || '';
-    statusField.value = productStatus || '';
-    imagePreview.src = productImage || 'path/to/default-image.jpg';
-
-    // **Set kategori yang dipilih di dropdown**
-    categoryField.value = productCategory || '';  // Pastikan kategori yang dipilih sesuai
+    // Isi data ke dalam form modal
+    document.getElementById('edit-product-name').value = productName;
+    document.getElementById('edit-product-category').value = productCategory;
+    document.getElementById('edit-product-price').value = productPrice;
+    document.getElementById('edit-product-description').value = productDescription;
+    document.getElementById('edit-product-status').value = productStatus;
+    document.getElementById('edit-product-image').src = productImage; // Perbarui gambar
 
     // Tampilkan modal
     const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
