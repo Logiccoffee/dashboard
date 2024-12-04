@@ -48,6 +48,10 @@ function displayMenus(response) {
     container.innerHTML = '';
 
     menuData.forEach((item, index) => {
+        // Cari nama kategori berdasarkan category_id
+        const category = categories.find(cat => cat.id === item.category_id);
+        const categoryName = category ? category.name : 'Tidak ada kategori';
+
         // Membuat card untuk setiap menu
         const card = document.createElement('div');
         card.className = 'col-md-4 mb-4';
@@ -57,7 +61,7 @@ function displayMenus(response) {
                 <div class="card-body">
                     <h5 class="card-title">${item.name}</h5>
                     <p class="card-text">Deskripsi: ${item.description || 'Tidak ada deskripsi'}</p>
-                    <p class="card-text">Kategori: ${item.category || 'Tidak ada kategori'}</p>
+                    <p class="card-text">Kategori: ${categoryName}</p>
                     <p class="card-text">Harga: ${item.price}</p>
                     <p class="card-text">Status: ${item.status || 'Tidak Tersedia'}</p>
                 </div>
