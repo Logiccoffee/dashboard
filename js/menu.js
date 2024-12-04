@@ -55,6 +55,13 @@ function displayMenus(response) {
         // Membuat card untuk setiap menu
         const card = document.createElement('div');
         card.className = 'col-md-4 mb-4';
+        card.setAttribute('data-index', index); // Tambahkan data-index
+        card.setAttribute('data-name', item.name || '');
+        card.setAttribute('data-category', item.category_id || '');
+        card.setAttribute('data-price', item.price || '');
+        card.setAttribute('data-description', item.description || '');
+        card.setAttribute('data-status', item.status || '');
+        card.setAttribute('data-image', item.image || 'path/to/default-image.jpg');
 
         // Bagian deskripsi hanya ditambahkan jika ada
         const descriptionHtml = item.description
@@ -62,7 +69,6 @@ function displayMenus(response) {
             : '';
         card.innerHTML = `
             <div class="card h-100 shadow-sm">
-            data-index="${index}" 
                 <img src="${item.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">${item.name}</h5>
@@ -408,6 +414,11 @@ function openEditMenuPopup(index) {
     const productDescription = card.getAttribute('data-description');
     const productStatus = card.getAttribute('data-status');
     const productImage = card.getAttribute('data-image');
+
+    // Debug untuk memastikan data ditarik
+    console.log('Data dari card:', {
+        productName, productCategory, productPrice, productDescription, productStatus, productImage
+    });
 
     // Ambil elemen form
     const nameField = document.getElementById('edit-product-name');
