@@ -437,6 +437,9 @@ function openEditMenuPopup(index) {
     statusField.value = productStatus || '';
     imagePreview.src = productImage || 'path/to/default-image.jpg';
 
+    // **Set kategori yang dipilih di dropdown**
+    categoryField.value = productCategory || '';  // Pastikan kategori yang dipilih sesuai
+
     // Tampilkan modal
     const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
     editProductModal.show();
