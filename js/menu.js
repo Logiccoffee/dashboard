@@ -349,7 +349,7 @@ editButtons.forEach((button) => {
 });
 
 // Form submit logic untuk menyimpan perubahan
-document.getElementById("editProductForm").addEventListener("submit", function(event) {
+document.getElementById("editProductForm").addEventListener("submit", function (event) {
     event.preventDefault();  // Mencegah halaman reload
 
     // Ambil nilai yang diubah dari form
@@ -384,8 +384,9 @@ function openEditMenuPopup(index) {
         document.getElementById('edit-product-description').value = menu.description;
         document.getElementById('edit-product-status').value = menu.status;
 
-        // Tampilkan modal edit form
-        $('#editProductModal').modal('show');
+        // Pastikan modal editProductModal ada di DOM dan tampilkan modal
+        const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+        editProductModal.show();
     } else {
         console.error('Form edit tidak ditemukan!');
     }
@@ -397,20 +398,29 @@ document.addEventListener('DOMContentLoaded', () => {
     editButtons.forEach((button) => {
         button.addEventListener("click", () => {
             const card = button.closest(".card");
-            const productName = card.querySelector(".product-name").textContent.trim();
-            const productPrice = card.querySelector(".product-price").textContent.trim();
-            const productDescription = card.querySelector(".product-description").textContent.trim();
-            const productCategory = card.getAttribute("data-category");
-            const productStatus = card.getAttribute("data-status");
+            // Pastikan card ditemukan sebelum mengambil data
+            if (card) {
+                const productName = card.querySelector(".product-name").textContent.trim();
+                const productPrice = card.querySelector(".product-price").textContent.trim();
+                const productDescription = card.querySelector(".product-description").textContent.trim();
+                const productCategory = card.getAttribute("data-category");
+                const productStatus = card.getAttribute("data-status");
 
-            document.getElementById("edit-product-name").value = productName;
-            document.getElementById("edit-product-price").value = productPrice;
-            document.getElementById("edit-product-description").value = productDescription;
-            if (productCategory) {
-                document.getElementById("edit-productCategory").value = productCategory;
-            }
-            if (productStatus) {
-                document.getElementById("product-status").value = productStatus;
+                // Isi form modal dengan data dari card
+                document.getElementById("edit-product-name").value = productName;
+                document.getElementById("edit-product-price").value = productPrice;
+                document.getElementById("edit-product-description").value = productDescription;
+                if (productCategory) {
+                    document.getElementById("edit-productCategory").value = productCategory;
+                }
+                if (productStatus) {
+                    document.getElementById("product-status").value = productStatus;
+                }
+                // Tampilkan modal
+                const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+                editProductModal.show();
+            } else {
+                console.error('Card tidak ditemukan.');
             }
         });
     });
@@ -474,13 +484,6 @@ function submitEditMenu(name, category, price, description, status) {
         }
     });
 }
-
-// Panggil fungsi loadCategories dan displayStatuses saat modal dibuka
-$('#addProductModal').on('show.bs.modal', function () {
-    loadCategories();
-    displayStatuses();
-});
-
 
 // Tangani submit form edit menu
 document.getElementById('editProductForm').addEventListener('submit', function (event) {
