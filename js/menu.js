@@ -168,12 +168,13 @@ function addMenu(event) {
     const menuName = document.getElementById('product-name').value.trim();
     const menuCategory = document.getElementById('productCategory').value.trim();
     const menuPrice = document.getElementById('product-price').value.trim();
+    const menuDescription = document.getElementById('product-description').value.trim();
     const menuStatus = document.getElementById('product-status').value.trim(); // Ambil status
     console.log("Status yang dipilih:", menuStatus);
     const menuImage = document.getElementById('product-image').files[0];
 
     // Validasi input menu
-    if (menuName === '' || menuCategory === '' || menuPrice === '' || !menuImage) {
+    if (menuName === '' || menuCategory === '' || menuPrice === '' || menuDescription === '' || !menuImage) {
         alert('Semua data menu harus diisi!');
         return false;
     }
@@ -221,7 +222,8 @@ function submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage) {
 
         const menuData = {
             name: menuName,
-            category: menuCategory,
+            category_id: menuCategory, // Kirim ID kategori, bukan nama
+            description: menuDescription, // Sertakan deskripsi
             price: price,
             status: menuStatus,
             image: imageData // Sertakan data gambar dalam Base64
@@ -250,6 +252,7 @@ function submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage) {
                     // Mengosongkan input form
                     document.getElementById('product-name').value = '';
                     document.getElementById('productCategory').value = '';
+                    document.getElementById('product-description').value = '';
                     document.getElementById('product-price').value = '';
                     document.getElementById('product-image').value = '';
                     document.getElementById('product-status').value = '';  // Mengosongkan status
