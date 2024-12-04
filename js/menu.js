@@ -62,6 +62,13 @@ function displayMenus(response) {
             : '';
         card.innerHTML = `
             <div class="card h-100 shadow-sm">
+             data-index="${index}" 
+                data-name="${item.name || ''}" 
+                data-category="${item.category_id || ''}" 
+                data-price="${item.price || ''}" 
+                data-description="${item.description || ''}" 
+                data-status="${item.status || ''}" 
+                data-image="${item.image || 'path/to/default-image.jpg'}">
                 <img src="${item.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">${item.name}</h5>
@@ -394,11 +401,19 @@ document.getElementById("editProductForm").addEventListener("submit", function (
 
 // Fungsi untuk membuka pop-up edit menu
 function openEditMenuPopup(index) {
-    const menu = menus[index]; // Ambil menu berdasarkan index
-    if (!menu) {
-        console.error('Menu tidak ditemukan untuk index:', index);
-        return;
+    const card = document.querySelector(`.card[data-index="${index}"]`);
+    if (!card) {
+        console.error('Card tidak ditemukan untuk index:', index);
+        return; // Hentikan eksekusi jika card tidak ditemukan
     }
+
+    // Ambil data dari atribut card
+    const productName = card.getAttribute('data-name');
+    const productCategory = card.getAttribute('data-category');
+    const productPrice = card.getAttribute('data-price');
+    const productDescription = card.getAttribute('data-description');
+    const productStatus = card.getAttribute('data-status');
+    const productImage = card.getAttribute('data-image');
 
     // Ambil elemen form
     const nameField = document.getElementById('edit-product-name');
@@ -406,30 +421,15 @@ function openEditMenuPopup(index) {
     const priceField = document.getElementById('edit-product-price');
     const descriptionField = document.getElementById('edit-product-description');
     const statusField = document.getElementById('edit-product-status');
-    const image = document.getElementById('edit-product-image');
+    const imagePreview = document.getElementById('edit-product-image');
 
-    if (!nameField || !categoryField || !priceField || !descriptionField || !statusField || !image) {
-        console.error('Form field tidak ditemukan!');
-        return;
-    }
-
-    // Isi data menu ke form
-    nameField.value = menu.name || '';
-    categoryField.value = menu.category_id || '';
-    priceField.value = menu.price || '';
-    descriptionField.value = menu.description || '';
-    statusField.value = menu.status || '';
-    image.src = menu.image || 'path/to/default-image.jpg'; // Tampilkan gambar di preview
-
-    // Debug untuk memastikan data ditarik dengan benar
-    console.log("Data menu yang dimasukkan ke form:", {
-        name: menu.name,
-        category_id: menu.category_id,
-        price: menu.price,
-        description: menu.description,
-        status: menu.status,
-        image: menu.image
-    });
+    // Isi data ke form
+    nameField.value = productName || '';
+    categoryField.value = productCategory || '';
+    priceField.value = productPrice || '';
+    descriptionField.value = productDescription || '';
+    statusField.value = productStatus || '';
+    imagePreview.src = productImage || 'path/to/default-image.jpg';
 
     // Tampilkan modal
     const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
