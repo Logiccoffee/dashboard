@@ -438,12 +438,8 @@ function openEditMenuPopup(index) {
         categoryDropdown.appendChild(option);
     });
 
-    // Mengisi dropdown status dengan nilai yang sudah ada
-    const statusSelect = document.getElementById('edit-product-status');
-    if (statusSelect) {
-        // Pilih status yang sudah ada
-        statusSelect.value = menu.status || 'Tersedia';  // Default 'Tersedia' jika tidak ada status
-    }
+    // Mengisi dropdown status dengan nilai yang sudah ada (dari menu)
+    displayStatusesEdit(menu.status);  // Pastikan status yang terpilih tampil di dropdown
 
     // Untuk gambar, tidak bisa mengisi input file melalui JS, hanya biarkan kosong
     const imageInput = document.getElementById('edit-product-image');
@@ -502,6 +498,35 @@ function editMenu(event) {
     submitEditMenu(menuName, menuCategory, price, menuDescription, menuStatus, imageBase64);
 }
 
+// Fungsi untuk menampilkan status dalam dropdown (edit)
+function displayStatusesEdit(statusValue) {
+    const statusSelect = document.getElementById('edit-product-status');
+    if (!statusSelect) {
+        console.error("Elemen dengan id 'edit-product-status' tidak ditemukan.");
+        return;
+    }
+
+    // Mengosongkan status yang ada sebelumnya
+    statusSelect.innerHTML = '<option value="">Pilih Status</option>';
+
+    // Menambahkan opsi status ke dropdown
+    statuses.forEach(status => {
+        const option = document.createElement('option');
+        option.value = status;
+        option.textContent = status;
+        statusSelect.appendChild(option);
+    });
+
+    // Menyeting nilai status yang terpilih (jika ada)
+    if (statusValue) {
+        statusSelect.value = statusValue;
+    } else {
+        statusSelect.value = 'Tersedia';  // Default 'Tersedia' jika status tidak ada
+    }
+
+    console.log("Dropdown status edit berhasil diisi:", statuses);
+}
+
 // Fungsi untuk mengonversi gambar menjadi Base64
 function convertToBase64(file) {
     return new Promise((resolve, reject) => {
@@ -525,25 +550,25 @@ function submitEditMenu(menuName, menuCategory, price, menuDescription, menuStat
         image: menuImageData || null // Jika tidak ada gambar baru, biarkan null
     };
 
-// Memanggil fungsi putJSON dari library untuk mengirimkan data menu yang telah diedit
-putJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', 'Login', token, menuData, function (response) {
-    if (response.status >= 200 && response.status < 300) {
-        alert('Menu berhasil diperbarui!');
-        // Ambil data terbaru setelah sukses
-        getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
-            if (response.status === 200) {
-                menus = response.data.data || []; // Update data menu
-                displayMenus(response); // Tampilkan menu terbaru
-            } else {
-                console.error('Gagal memuat menu:', response);
-            }
-        });
-        // Menutup modal edit setelah sukses
-        $('#editProductModal').modal('hide');
-    } else {
-        alert(`Gagal memperbarui menu: ${response.message || 'Coba lagi.'}`);
-    }
-});
+    // Memanggil fungsi putJSON dari library untuk mengirimkan data menu yang telah diedit
+    putJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', 'Login', token, menuData, function (response) {
+        if (response.status >= 200 && response.status < 300) {
+            alert('Menu berhasil diperbarui!');
+            // Ambil data terbaru setelah sukses
+            getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
+                if (response.status === 200) {
+                    menus = response.data.data || []; // Update data menu
+                    displayMenus(response); // Tampilkan menu terbaru
+                } else {
+                    console.error('Gagal memuat menu:', response);
+                }
+            });
+            // Menutup modal edit setelah sukses
+            $('#editProductModal').modal('hide');
+        } else {
+            alert(`Gagal memperbarui menu: ${response.message || 'Coba lagi.'}`);
+        }
+    });
 }
 
 // Fungsi untuk membuka pop-up edit kategori jika diperlukan
