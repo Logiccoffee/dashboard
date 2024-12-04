@@ -68,199 +68,48 @@
         <div id="sidebar-container"></div>
 
         <div id="content"></div>
-        <main class="content-wrap">
-            <header class="content-head">
-                <h1 class="dashboard-tittle">Manajemen Pengguna</h1>
-            </header>
+<main class="content-wrap">
+    <header class="content-head">
+        <h1 class="dashboard-tittle">Manajemen Pengguna</h1>
+    </header>
 
-            <div class="content">
-                <h2 class="mt-4">Daftar Pengguna</h2>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nama Pengguna</th>
-                            <th>Email</th>
-                            <th>Peran</th>
-                            <th>No. Telepon</th>
-                            <!-- <th>Foto</th> -->
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="user-list">
-                        <!-- Sample User Item -->
-                        <tr>
-                            <td>1</td>
-                            <td>Johndoe</td>
-                            <td>johndoe@example.com</td>
-                            <td id="role-user-1">User</td> <!--kolom role-->
-                            <td>(123) 456-7890</td>
-                            <!-- <td><img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Foto Placeholder" -->
-                                    <!-- class="img-fluid"> -->
-                            <!-- </td> -->
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Aksi
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <li>
-                                            <a class="dropdown-item" href="#" onclick="openEditModal(0)">
-                                                <i class="fas fa-pen text-warning"></i> Ubah
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="" onclick="openDeleteModal(0)">
-                                                <i class="fas fa-trash-alt text-danger"></i> Hapus
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#" onclick="openChangePasswordModal(0)">
-                                                <i class="fas fa-key text-success"></i> Ganti Kata Sandi
-                                            </a>
-                                        </li>
-                                        <!-- Button Upgrade to Admin -->
-                                        <li>
-                                            <a class="dropdown-item" href="#" onclick="upgradeToAdmin(1)">
-                                                <i class="fas fa-user-shield text-primary"></i> Jadikan Sebagai Admin
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </main>
+    <div class="content">
+        <h2 class="mt-4">Daftar Pengguna</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama Pengguna</th>
+                    <th>Email</th>
+                    <th>Peran</th>
+                    <th>No. Telepon</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody id="user-list">
+                <!-- Sample User Item -->
+                <tr>
+                    <td>1</td>
+                    <td>Johndoe</td>
+                    <td>johndoe@example.com</td>
+                    <td id="role-user-1">Admin</td>
+                    <td>(123) 456-7890</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button"
+                                id="dropdownMenuButton-1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Role
+                            </button>
+                            <ul class="dropdown-menu" id="dropdown-role-1" aria-labelledby="dropdownMenuButton-1">
+                                <!-- Dropdown Options will be dynamically generated -->
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-
-    <!-- Popup Form untuk Edit User -->
-    <div class="modal fade" id="editUsersModal" tabindex="-1" aria-labelledby="editUsersModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="brand">
-                    <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
-                    <span class="text-center">Logic Coffee</span>
-                </div>
-                <h2 class="text-center form-title">Ubah Pengguna</h2>
-                <p class="welcome-text">Ubah Data Pengguna!</p>
-                <form class="register-form" id="edit-users-form" onsubmit="return ValidateUser(event)">
-                    <!--Input untuk ID (Non-editable)-->
-                    <div class="input-group">
-                        <input type="text" id="edit-pengguna-id" placeholder=" " readonly
-                            style="background-color: rgba(215, 237, 255, 0.533)">
-                        <label for="edit-pengguna-id">ID</label>
-                    </div>
-                    <!-- Input untuk Nama Pengguna -->
-                    <div class="input-group">
-                        <input type="text" id="edit-pengguna-username" placeholder=" " required>
-                        <label for="edit-pengguna-nama-username">Nama Pengguna</label>
-                    </div>
-                    <!-- Input untuk Email -->
-                    <div class="input-group">
-                        <input type="text" id="edit-pengguna-email" placeholder=" " required>
-                        <label for="edit-pengguna-email">Email</label>
-                    </div>
-                    <!--Input untuk Peran (Non-editable)-->
-                    <div class="input-group">
-                        <input type="text" id="edit-pengguna-role" placeholder=" " readonly
-                            style="background-color: rgba(215, 237, 255, 0.533)">
-                        <label for="edit-pengguna-role">Peran</label>
-                    </div>
-                    <!-- Input untuk No.telepon -->
-                    <div class="input-group">
-                        <input type="text" id="edit-pengguna-telepon" placeholder=" " required>
-                        <label for="edit-pengguna-telepon">No.telepon</label>
-                    </div>
-                    <!-- Input untuk Foto -->
-                    <!-- <div class="input-group"> -->
-                        <!-- <input type="file" id="edit-pengguna-foto" accept="assets/*"> -->
-                        <!-- <label for="edit-pengguna-foto">Foto</label> -->
-                        <!-- <span id="file-name" class="mt-2"></span> Tempat untuk menampilkan nama file -->
-                    </div>
-                    <!-- Submit Button -->
-                    <button type="submit" class="submit-btn">Simpan Perubahan</button>
-                    <!-- Cancel Button -->
-                    <div class="cancel-btn-container">
-                        <button type="button" class="cancel-btn" data-bs-dismiss="modal">
-                            <i class="fa-solid fa-circle-xmark"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- popup untuk menghapus pengguna (Popup) -->
-    <div class="modal fade" id="deleteUsersModal" tabindex="-1" aria-labelledby="deleteUsersModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="brand">
-                    <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
-                    <span class="text-center">Logic Coffee</span>
-                </div>
-                <h2 class="text-center category-title">Hapus Pengguna</h2>
-                <p class="welcome-text">Apakah Anda yakin ingin menghapus Pengguna ini?</p>
-                <div class="text-center">
-                    <!-- Konfirmasi Hapus -->
-                    <button id="confirm-delete-btn" class="submit-btn">Hapus</button>
-                    <!-- Cancel Button -->
-                    <div class="cancel-btn-container">
-                        <button type="button" class="cancel-btn" data-bs-dismiss="modal">
-                            <i class="fa-solid fa-circle-xmark"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Popup untuk Ganti Kata Sandi -->
-    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="brand">
-                    <img src="img/logo logic.png" alt="Logo" height="50" class="logo-img">
-                    <span class="text-center">Logic Coffee</span>
-                </div>
-                <h2 class="text-center form-title">Ganti Kata Sandi</h2>
-                <p class="welcome-text">Ganti Kata Sandi Anda!</p>
-                <form class="register-form" id="change-password-form" onsubmit="return changePassword()">
-                    <div class="input-group">
-                        <input type="password" id="now-password" placeholder=" " required>
-                        <label for="now-password">Kata Sandi Saat Ini</label>
-                        <span class="toggle-password" onclick="togglePasswordVisibility('now-password')">
-                            <i class="fa-solid fa-eye" id="eye-now-password"></i>
-                        </span>
-                    </div>
-                    <div class="input-group">
-                        <input type="password" id="new-password" placeholder=" " required>
-                        <label for="new-password">Kata Sandi Baru</label>
-                        <span class="toggle-password" onclick="togglePasswordVisibility('new-password')">
-                            <i class="fa-solid fa-eye" id="eye-new-password"></i>
-                        </span>
-                    </div>
-                    <div class="input-group">
-                        <input type="password" id="confirm-password" placeholder=" " required>
-                        <label for="confirm-password">Konfirmasi Kata Sandi</label>
-                        <span class="toggle-password" onclick="togglePasswordVisibility('confirm-password')">
-                            <i class="fa-solid fa-eye" id="eye-confirm-password"></i>
-                        </span>
-                    </div>
-                    <button type="submit" class="submit-btn">Simpan Kata Sandi</button>
-                    <div class="cancel-btn-container">
-                        <button type="button" class="cancel-btn" data-bs-dismiss="modal">
-                            <i class="fa-solid fa-circle-xmark"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+</main>
 
     <!-- Sidebar -->
     <script src="js/sidebar.js"></script>
