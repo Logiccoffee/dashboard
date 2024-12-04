@@ -282,13 +282,7 @@ function submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatu
             }
         );
     };
-
-    reader.onerror = function (error) {
-        console.error('Gagal membaca file gambar:', error);
-        alert('Terjadi kesalahan saat membaca file gambar. Silakan coba lagi.');
-    };
-
-    // Mulai membaca data gambar dalam format Base64
+    // Membaca file gambar sebagai Base64
     reader.readAsDataURL(menuImage);
 }
 
