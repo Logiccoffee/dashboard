@@ -4,28 +4,30 @@ import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js"
 let orders = [];
 
 // URL API
+// URL API
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
 
-// Ambil token dari cookie
+// Ambil token dari cookie dengan nama 'login'
 const token = getCookie('login');
 if (!token) {
     alert('Token tidak ditemukan, harap login terlebih dahulu!');
     throw new Error("Token tidak ditemukan. Harap login ulang.");
 }
 
-// Panggil API untuk mengambil data pesanan
+// Panggil API untuk mengambil data pesanan menggunakan fetch()
 fetch(API_URL, {
     method: 'GET',
     headers: {
-        'login': token,
+        'login': token, 
         'Content-Type': 'application/json',
     }
 })
-    .then(response => response.json())
+    .then(response => response.json()) // Parse JSON dari respons
     .then(response => {
+        // Periksa status 'success' pada response
         if (response.status === "success") {
-            orders = response.data || [];
-            displayOrders(orders);
+            const orders = response.data || []; // Pastikan data diakses dengan benar
+            displayOrders(orders); // Tampilkan data pesanan
         } else {
             console.error(`Error: ${response.status}`);
             alert("Gagal memuat data pesanan. Silakan coba lagi.");
@@ -40,14 +42,17 @@ fetch(API_URL, {
 function displayOrders(orders) {
     const container = document.getElementById('transaction-list');
 
+    // Pastikan elemen container ditemukan
     if (!container) {
         console.error("Elemen dengan ID 'transaction-list' tidak ditemukan.");
         return;
     }
 
-    container.innerHTML = ''; // Bersihkan data lama
+    // Hapus data lama jika ada
+    container.innerHTML = '';
 
-    orders.forEach((order, index) => {
+    // Tampilkan data pesanan
+    orders.forEach((order) => {
         const row = document.createElement('tr');
 
         // Kolom Kode Transaksi
@@ -60,17 +65,17 @@ function displayOrders(orders) {
         queueNumberCell.textContent = order.queueNumber || '-';
         row.appendChild(queueNumberCell);
 
-        // Kolom Nama Menu
-        const menuNameCell = document.createElement('td');
-        menuNameCell.textContent = order.orders
-            ? order.orders.map(item => item.MenuName).join(', ')
+        // Kolom Nama Produk
+        const MenuNameCell = document.createElement('td');
+        MenuNameCell.textContent = order.orders && order.orders.length > 0
+            ? order.orders.map(item => item.menu_name).join(', ') // Sesuaikan dengan 'menu_name'
             : '-';
-        row.appendChild(menuNameCell);
+        row.appendChild(MenuNameCell);
 
         // Kolom Jumlah + Harga Satuan
         const quantityPriceCell = document.createElement('td');
-        quantityPriceCell.textContent = order.orders
-            ? order.orders.map(item => `${item.quantity} x Rp ${item.price.toLocaleString()}`).join(', ')
+        quantityPriceCell.textContent = order.orders && order.orders.length > 0
+            ? order.orders.map(item => `${item.quantity} x ${item.price}`).join(', ')
             : '-';
         row.appendChild(quantityPriceCell);
 
@@ -80,13 +85,12 @@ function displayOrders(orders) {
         row.appendChild(totalPriceCell);
 
         // Kolom Metode Pembayaran
-        const paymentMethodCell = document.createElement('td');
-        paymentMethodCell.textContent = order.PaymentMethod || '-';
-        row.appendChild(paymentMethodCell);
+        const PaymentMethodCell = document.createElement('td');
+        PaymentMethodCell.textContent = order.payment_method || '-'; // Sesuaikan dengan 'payment_method'
+        row.appendChild(PaymentMethodCell);
 
         // Kolom Status
         const statusCell = document.createElement('td');
-        statusCell.id = `status-${index}`;
         statusCell.textContent = order.status || '-';
         row.appendChild(statusCell);
 
@@ -99,10 +103,6 @@ function displayOrders(orders) {
             alert(`Detail pesanan:\n\n${JSON.stringify(order, null, 2)}`);
         });
         actionCell.appendChild(viewButton);
-
-        const dropdown = createActionDropdown(index);
-        actionCell.appendChild(dropdown);
-
         row.appendChild(actionCell);
 
         // Tambahkan baris ke tabel
@@ -110,80 +110,10 @@ function displayOrders(orders) {
     });
 }
 
-// Fungsi untuk membuat dropdown aksi
-function createActionDropdown(index) {
-    const dropdown = document.createElement('div');
-    dropdown.className = 'dropdown';
-
-    const button = document.createElement('button');
-    button.className = 'btn btn-secondary btn-sm dropdown-toggle';
-    button.id = `dropdownMenuButton${index}`;
-    button.setAttribute('data-toggle', 'dropdown');
-    button.textContent = 'Aksi';
-    dropdown.appendChild(button);
-
-    const menu = document.createElement('div');
-    menu.className = 'dropdown-menu';
-
-    const actions = ['Diproses', 'Dikirim', 'Selesai', 'Dibatalkan'];
-    actions.forEach(action => {
-        const item = document.createElement('a');
-        item.className = 'dropdown-item';
-        item.href = '#';
-        item.textContent = action;
-        item.addEventListener('click', function (event) {
-            event.preventDefault();
-            updateStatus(index, action);
-        });
-        menu.appendChild(item);
-    });
-
-    dropdown.appendChild(menu);
-    return dropdown;
-}
-
-// Fungsi untuk memperbarui status pesanan
-function updateStatus(index, newStatus) {
-    const order = orders[index];
-    const statusCell = document.getElementById(`status-${index}`);
-    if (statusCell) {
-        statusCell.textContent = newStatus;
-
-        // Kirim data ke backend
-        const targetUrl = `${API_URL}/update-status`; // Sesuaikan URL
-        const data = {
-            id: order.id,
-            status: newStatus,
-        };
-
-        fetch(targetUrl, {
-            method: 'POST',
-            headers: {
-                'login': token,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-            .then(response => response.json())
-            .then(response => {
-                if (response.status === "success") {
-                    console.log('Status berhasil diperbarui:', response);
-                } else {
-                    console.error('Gagal memperbarui status:', response);
-                    alert("Gagal memperbarui status pesanan.");
-                }
-            })
-            .catch(error => {
-                console.error('Error updating status:', error);
-                alert("Terjadi kesalahan saat memperbarui status.");
-            });
-    }
-}
-
-// Fungsi untuk mendapatkan nilai cookie
+// Fungsi untuk mendapatkan nilai cookie berdasarkan nama
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
-    return null;
+    return null; // Jika cookie tidak ditemukan
 }
