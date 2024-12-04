@@ -77,12 +77,14 @@ function displayOrders(orders) {
 
         // Kolom Harga Total
         const totalPriceCell = document.createElement('td');
-
-// Hilangkan "Rp" jika sudah ada, lalu format ulang
-let total = order.total ? order.total.toString().replace(/Rp\s*/, '') : '-';
-totalPriceCell.textContent = total !== '-' 
-    ? parseFloat(total.replace(',', '')).toLocaleString('id-ID') 
-    : '-'; // Format angka tanpa "Rp"
+        // Hilangkan "Rp" jika sudah ada, lalu format ulang
+        let total = order.total ? order.total.toString().replace(/Rp\s*/, '') : '-';
+        totalPriceCell.textContent = total !== '-' 
+            ? parseFloat(total.replace(',', '')).toLocaleString('id-ID') 
+            : '-'; // Format angka tanpa "Rp"
+        
+        row.appendChild(totalPriceCell);
+        
 
 row.appendChild(totalPriceCell);
 
