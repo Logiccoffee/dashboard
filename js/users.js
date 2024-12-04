@@ -1,7 +1,6 @@
 // Mengimpor modul eksternal
 import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croot.js";
-import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js";
 
 // Cek apakah cookie login ada, jika tidak arahkan ke halaman utama
@@ -10,29 +9,53 @@ if (getCookie("login") === "") {
     redirect("/");
 }
 
-// Ambil data pengguna menggunakan API
-getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users", "login", getCookie("login"), responseFunction);
+// Mulai pengambilan data pengguna menggunakan API
+console.log("Memulai pengambilan data pengguna...");
+fetch("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users", {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        login: getCookie("login"), // Kirim cookie sebagai header
+    },
+})
+    .then((response) => {
+        console.log("Status respons API:", response.status);
+        if (!response.ok) {
+            throw new Error(`Gagal mengambil data. Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then((result) => {
+        console.log("Respons API diterima:", result);
 
-// Fungsi untuk menangani respons API
-function responseFunction(result) {
-    try {
+        // Cek jika pengguna tidak ditemukan
         if (result.status === 404) {
             console.log("Pengguna tidak ditemukan. Mengarahkan ke halaman pendaftaran.");
             setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu.");
             redirect("/register");
-            return; // Menghentikan eksekusi setelah redirect
+            return;
         }
 
-        // Validasi dan proses data pengguna
-        const userData = result.data;
+        // Proses data pengguna
+        processUserData(result.data);
+    })
+    .catch((error) => {
+        console.error("Terjadi kesalahan saat memproses data pengguna:", error.message);
+        setInner("content", "Terjadi kesalahan saat memproses data.");
+    });
+
+// Fungsi untuk memproses data pengguna
+function processUserData(userData) {
+    try {
         if (!userData) {
             throw new Error("Data pengguna tidak ditemukan!");
         }
 
+        console.log("Memproses data pengguna:", userData);
+
         if (Array.isArray(userData)) {
             console.log("Data pengguna adalah array.");
             userData.forEach((user, index) => {
-                console.log("Menambahkan pengguna:", user); // Debug untuk setiap pengguna
                 addUserRow(user, index); // Tambahkan baris untuk setiap pengguna
             });
         } else if (typeof userData === "object" && userData !== null) {
@@ -41,10 +64,8 @@ function responseFunction(result) {
         } else {
             throw new Error("Data pengguna bukan array atau objek!");
         }
-
-        console.log("Data pengguna berhasil diproses:", userData);
     } catch (error) {
-        console.error("Terjadi kesalahan saat memproses respons:", error.message);
+        console.error("Kesalahan saat memproses data pengguna:", error.message);
         setInner("content", "Terjadi kesalahan saat memproses data.");
     }
 }
@@ -85,24 +106,16 @@ function populateDropdown(userId, currentRole, roles) {
     const dropdownMenu = document.getElementById(`dropdown-role-${userId}`);
     dropdownMenu.innerHTML = ""; // Kosongkan opsi sebelumnya
 
-    // Filter opsi berdasarkan peran saat ini
-    let filteredRoles = [];
-    if (currentRole === "Admin") {
-        filteredRoles = ["Dosen", "User"];
-    } else if (currentRole === "User") {
-        filteredRoles = ["Admin", "Dosen"];
-    } else if (currentRole === "Dosen") {
-        filteredRoles = ["User", "Admin"];
-    }
-
-    // Menambahkan opsi ke dropdown sesuai peran
-    filteredRoles.forEach((role) => {
-        const listItem = document.createElement("li");
-        listItem.innerHTML = `
-            <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}')">
-                <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
-            </a>`;
-        dropdownMenu.appendChild(listItem);
+    // Menambahkan opsi ke dropdown jika peran berbeda
+    roles.forEach((role) => {
+        if (role !== currentRole) { // Jangan menambahkan peran yang sudah dipilih
+            const listItem = document.createElement("li");
+            listItem.innerHTML = `
+                <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}')">
+                    <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
+                </a>`;
+            dropdownMenu.appendChild(listItem);
+        }
     });
 }
 
