@@ -4,7 +4,6 @@ import { getJSON, postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7
 let order = [];
 
 // URL API
-// URL API
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
 
 // Ambil token dari cookie dengan nama 'login'
@@ -24,15 +23,18 @@ fetch(API_URL, {
 })
     .then(response => response.json()) // Parse JSON dari respons
     .then(response => {
-        if (response.status === 200) {
+        // Periksa status 'success' pada response
+        if (response.status === "success") {
             const orders = response.data || []; // Memastikan data diakses dengan benar
-            displayOrders(orders);
+            displayOrders(orders);  // Tampilkan data pesanan
         } else {
+            // Jika status bukan 'success', tampilkan pesan error
             console.error(`Error: ${response.status}`);
             alert("Gagal memuat data pesanan. Silakan coba lagi.");
         }
     })
     .catch(error => {
+        // Menangani kesalahan lainnya
         console.error("Error fetching data: ", error);
         alert("Terjadi kesalahan saat memuat data pesanan.");
     });
