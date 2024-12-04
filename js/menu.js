@@ -326,6 +326,12 @@ editButtons.forEach((button) => {
         // Ambil card terkait tempat tombol "Ubah" ditekan
         const card = button.closest(".card");
 
+        // Pastikan card ditemukan
+        if (!card) {
+            console.error("Card tidak ditemukan.");
+            return;
+        }
+        
         // Ambil data dari card (misalnya nama, harga, deskripsi, dll)
         const productName = card.querySelector(".product-name").textContent.trim();
         const productPrice = card.querySelector(".product-price").textContent.trim();
@@ -333,10 +339,16 @@ editButtons.forEach((button) => {
         const productCategory = card.getAttribute("data-category");  // Ambil data kategori
         const productStatus = card.getAttribute("data-status");  // Ambil data status
 
-        // Masukkan data ke dalam form modal
+        // Isi data ke dalam form edit modal
         document.getElementById("edit-product-name").value = productName;
         document.getElementById("edit-product-price").value = productPrice;
         document.getElementById("edit-product-description").value = productDescription;
+        document.getElementById("edit-product-category").value = productCategory;
+        document.getElementById("edit-product-status").value = productStatus;
+
+        // Tampilkan modal edit
+        const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+        editProductModal.show();
 
         // Set kategori dan status jika ada
         if (productCategory) {
