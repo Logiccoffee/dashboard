@@ -77,10 +77,11 @@ function displayOrders(orders) {
 
         // Kolom Harga Total
         const totalPriceCell = document.createElement('td');
-        totalPriceCell.textContent = order.total 
-            ? `Rp ${order.total.toLocaleString('id-ID')}` 
-            : '-'; // Gunakan tanda backtick untuk string template
-        row.appendChild(totalPriceCell);
+totalPriceCell.textContent = order.total 
+    ? order.total.toLocaleString('id-ID') 
+    : '-'; // Tampilkan angka tanpa "Rp"
+row.appendChild(totalPriceCell);
+
         
 
         // Kolom Metode Pembayaran & Status
