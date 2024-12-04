@@ -1,3 +1,5 @@
+import { getJSON, postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+
 // Array untuk menyimpan data kategori
 let order = [];
 
@@ -15,7 +17,7 @@ if (!token) {
 fetch(API_URL, {
     method: 'GET', // or 'POST' depending on your API method
     headers: {
-        'Authorization': `Bearer ${token}`, // Assuming token is needed in the Authorization header
+        'login': token, // Menggunakan 'login' sebagai header untuk token
         'Content-Type': 'application/json',
     }
 })
