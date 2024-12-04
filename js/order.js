@@ -50,21 +50,16 @@ function displayOrders(orders) {
     // Tampilkan data pesanan
     orders.forEach((order) => {
         const row = document.createElement('tr');
-        
-        // Kolom Identitas (Gabungan orderNumber, queueNumber, name, whatsapp, dan note)
+
+        // Kolom Identitas / Customer Info
         const customerInfoCell = document.createElement('td');
-    
-        // Format data untuk kolom
-        const customerInfoContent = `
+        customerInfoCell.innerHTML = `
             Order Number: ${order.orderNumber || '-'}<br>
             Queue Number: ${order.queueNumber > 0 ? order.queueNumber : '-'}<br>
             Name: ${order.user_info?.name || '-'}<br>
             Whatsapp: ${order.user_info?.whatsapp || '-'}<br>
             Note: ${order.user_info?.note || '-'}
         `;
-    
-        // Masukkan data ke kolom
-        customerInfoCell.innerHTML = customerInfoContent; 
         row.appendChild(customerInfoCell);
 
         // Kolom Nama Produk
