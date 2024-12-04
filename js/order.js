@@ -1,36 +1,41 @@
-// Fungsi untuk memuat data pesanan
+// Pastikan SweetAlert2 sudah dimuat dengan benar di HTML
+import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+
+// Fungsi untuk mengambil dan menampilkan data pesanan
 const loadOrders = async () => {
     try {
-        // URL API untuk mengambil data pesanan
+        // Gantilah API URL sesuai dengan URL yang benar
         const apiURL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
 
-        // Fetch data dari API
-        const response = await fetch(apiURL);
+        // Lakukan permintaan GET ke API
+        const response = await fetch(apiURL, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // Jika API memerlukan header autentikasi, masukkan di sini
+                // 'Authorization': 'Bearer <API_KEY>' 
+            },
+        });
 
-        // Jika respon tidak OK, lempar error
+        // Jika response tidak berhasil, lemparkan error
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
 
-        // Parse data JSON dari respon
+        // Ambil data dalam format JSON
         const orders = await response.json();
-
-        // Debugging: Cek data pesanan di console
         console.log("Data pesanan berhasil diambil:", orders);
 
-        // Ambil elemen tbody untuk menampilkan data
+        // Ambil elemen tbody untuk menampilkan data pesanan
         const transactionList = document.getElementById("transaction-list");
+        transactionList.innerHTML = "";  // Bersihkan data sebelumnya
 
-        // Kosongkan isi tbody sebelum memasukkan data baru
-        transactionList.innerHTML = "";
-
-        // Jika tidak ada data, tampilkan pesan kosong
         if (orders.length === 0) {
             Swal.fire("Info", "Tidak ada data pesanan untuk ditampilkan.", "info");
             return;
         }
 
-        // Iterasi data pesanan dan masukkan ke tabel
+        // Loop untuk menampilkan setiap pesanan
         orders.forEach((order, index) => {
             const row = `
                 <tr>
@@ -46,16 +51,14 @@ const loadOrders = async () => {
                     </td>
                 </tr>
             `;
+            // Tambahkan row baru ke dalam tbody
             transactionList.innerHTML += row;
         });
     } catch (error) {
-        // Tampilkan error di console
         console.error("Error:", error.message);
-
-        // Beri notifikasi error ke user
         Swal.fire("Error", `Gagal mengambil data pesanan: ${error.message}`, "error");
     }
 };
 
-// Panggil fungsi loadOrders saat halaman dimuat
+// Pastikan untuk menjalankan fungsi loadOrders setelah halaman selesai dimuat
 document.addEventListener("DOMContentLoaded", loadOrders);
