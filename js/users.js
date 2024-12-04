@@ -89,15 +89,24 @@ function populateDropdown(userId, currentRole, roles) {
 
     dropdownMenu.innerHTML = ''; // Kosongkan opsi sebelumnya
 
-    roles.forEach((role) => {
-        if (role !== currentRole) { // Jangan menambahkan peran yang sudah dipilih
-            const listItem = document.createElement('li');
-            listItem.innerHTML = `
-                <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}')">
-                    <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
-                </a>`;
-            dropdownMenu.appendChild(listItem);
-        }
+    // Tentukan opsi berdasarkan currentRole
+    let filteredRoles = [];
+    if (currentRole === "admin") {
+        filteredRoles = roles.filter(role => role === "user" || role === "dosen");
+    } else if (currentRole === "user") {
+        filteredRoles = roles.filter(role => role === "admin" || role === "dosen");
+    } else if (currentRole === "dosen") {
+        filteredRoles = roles.filter(role => role === "admin" || role === "user");
+    }
+
+    // Tambahkan opsi dropdown
+    filteredRoles.forEach((role) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+            <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}')">
+                <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
+            </a>`;
+        dropdownMenu.appendChild(listItem);
     });
 }
 
