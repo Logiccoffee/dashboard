@@ -7,28 +7,20 @@ import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js
 // Cek apakah cookie login ada, jika tidak arahkan ke halaman utama
 if (getCookie("login") === "") {
     console.log("Cookie login tidak ditemukan. Mengarahkan ke halaman utama.");
-    redirect("/"); // Arahkan jika cookie tidak ada
+    redirect("/");
 }
 
 // Ambil data pengguna menggunakan API
-getJSON(
-    "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users",
-    "login",
-    getCookie("login"),
-    responseFunction // Fungsi untuk menangani respons
-);
+getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user","login", getCookie("login"), responseFunction);
 
 // Fungsi untuk menangani respons API
 function responseFunction(result) {
     try {
-        console.log("Respons API:", result); // Debug respons API
-
-        // Cek status respons API
         if (result.status === 404) {
             console.log("Pengguna tidak ditemukan. Mengarahkan ke halaman pendaftaran.");
             setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu.");
             redirect("/register");
-            return;
+            return; // Menghentikan eksekusi setelah redirect
         }
 
         // Validasi dan proses data pengguna
