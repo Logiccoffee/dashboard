@@ -439,12 +439,12 @@ function openEditMenuPopup(index) {
     });
 
     // Menampilkan gambar yang sudah ada jika ada
-    const imagePreview = document.getElementById('edit-product-image-preview');
+    const imagePreview = document.getElementById('edit-product-image');
     if (menu.image) {
         imagePreview.src = menu.image; // Tampilkan gambar sebelumnya
     } else {
         imagePreview.src = 'path/to/default-image.jpg'; // Gambar default jika tidak ada
-    }    
+    }
 
     // Tampilkan modal
     const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
