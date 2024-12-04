@@ -186,10 +186,10 @@ function addMenu(event) {
     const price = parseFloat(menuPrice.replace(/\./g, '').replace(',', '.'));
 
     // Validasi apakah harga sudah valid
-    if (isNaN(price)) {
-        alert('Harga harus berupa angka yang valid!');
+    if (isNaN(price) || price <= 0) {
+        alert('Harga harus berupa angka positif!');
         return false;
-    }
+    }    
 
     // Cek apakah kategori ada, jika tidak, tambahkan kategori baru
     if (!categories.some(category => category.id === menuCategory)) {
@@ -213,173 +213,175 @@ function addMenu(event) {
 
 // Fungsi untuk mengirim menu baru ke API
 function submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage) {
-    // Membuat objek FormData untuk menyertakan gambar
-    const formData = new FormData();
-    formData.append('name', menuName);
-    formData.append('category', menuCategory);
-    formData.append('price', price);  // Kirim harga sebagai float
-    formData.append('status', menuStatus);  // Kirim status
-    formData.append('image', menuImage);  // Kirim gambar yang dipilih
+    // Konversi gambar ke Base64 jika diperlukan oleh API
+    const reader = new FileReader();
+    reader.onload = function () {
+        const imageData = reader.result; // Data Base64 dari gambar
 
+        const menuData = {
+            name: menuName,
+            category: menuCategory,
+            price: price,
+            status: menuStatus,
+            image: imageData // Sertakan data gambar dalam Base64
+        };
 
-    // Log untuk memeriksa data yang akan dikirim
-    console.log('Menu yang akan ditambahkan:', {
-        name: menuName,
-        category: menuCategory,
-        price: price,
-        status: menuStatus, // Menambahkan status di sini
-        image: menuImage
-    });
+        console.log('Menu yang akan ditambahkan:', menuData);
 
-    // Memanggil fungsi postJSON dari library untuk mengirimkan data menu ke API
-    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu',        // URL API
-        'login',       // Nama header untuk token
-        token,         // Nilai token dari cookie
-        formData,       // Data menu dalam bentuk JSON
-        function (response) {
-            if (response.status >= 200 && response.status < 300) {
-                alert('Menu berhasil ditambahkan!');
-                // Ambil data terbaru setelah sukses
-                getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
-                    if (response.status === 200) {
-                        menus = response.data.data || []; // Update data menu
-                        displayMenus(response); // Tampilkan menu terbaru
-                    } else {
-                        console.error('Gagal menambah menu:', response);
-                        alert(`Gagal menambah menu: ${response.response || 'Coba lagi.'}`);
-                    }
-                });
+        // Memanggil fungsi postJSON dari library untuk mengirimkan data menu ke API
+        postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu',        // URL API
+            'login',       // Nama header untuk token
+            token,         // Nilai token dari cookie
+            menuData,       // Data menu dalam bentuk JSON
+            function (response) {
+                if (response.status >= 200 && response.status < 300) {
+                    alert('Menu berhasil ditambahkan!');
+                    // Ambil data terbaru setelah sukses
+                    getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
+                        if (response.status === 200) {
+                            menus = response.data.data || []; // Update data menu
+                            displayMenus(response); // Tampilkan menu terbaru
+                        } else {
+                            console.error('Gagal memuat menu:', response);
+                        }
+                    });
 
-                // Mengosongkan input form
-                document.getElementById('product-name').value = '';
-                document.getElementById('product-price').value = '';
-                document.getElementById('product-image').value = '';
-                document.getElementById('product-status').value = '';  // Mengosongkan status
-            } else {
-                console.error('Gagal menambah menu:', data);
-                alert('Gagal menambah menu!');
+                    // Mengosongkan input form
+                    document.getElementById('product-name').value = '';
+                    document.getElementById('product-price').value = '';
+                    document.getElementById('product-image').value = '';
+                    document.getElementById('product-status').value = '';  // Mengosongkan status
+                } else {
+                    alert(`Gagal menambah menu: ${response.message || 'Coba lagi.'}`);
+                }
             }
-        }
-    );
-}
-
-// Memastikan DOM selesai dimuat
-document.addEventListener('DOMContentLoaded', function () {
-    // Ambil token dari cookie dengan nama 'login'
-    const token = getCookie('login');
-    if (!token) {
-        alert('Token tidak ditemukan, harap login terlebih dahulu!');
-        throw new Error("Token tidak ditemukan. Harap login ulang.");
-    }
-
-    // Panggil getJSON untuk mengambil data menu setelah token valid
-    getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
-        if (response.status === 200) {
-            menus = response.data.data || []; // Menyimpan data menu yang ada
-            displayMenus(response); // Menampilkan data menu yang diambil
+        );
+    };
+        // Membaca file gambar dan mengonversinya menjadi Base64
+        if (menuImage) {
+            reader.readAsDataURL(menuImage);
         } else {
-            console.error(`Error: ${response.status}`);
-            alert("Gagal memuat data menu. Silakan coba lagi.");
+            alert('Harap pilih gambar!');
         }
-    });
-
-    // Fungsi untuk menampilkan kategori saat halaman dimuat
-    loadCategories();
-
-    // Menambahkan event listener untuk form submit
-    const addProductForm = document.getElementById('addProductForm');
-    if (addProductForm) {
-        addProductForm.addEventListener('submit', addMenu);
-    }
-});
-
-// Fungsi untuk menangani submit form saat mengubah menu
-function editMenu(event) {
-    event.preventDefault(); // Mencegah form submit default
-
-    const updatedMenuName = document.getElementById('edit-product-name').value.trim(); // Nama menu baru
-    if (updatedMenuName === '') {
-        alert('Nama menu tidak boleh kosong!');
-        return;
     }
 
-    const targetUrl = `${'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu'}/${menus[currentEditIndex].id}`; // Endpoint API dengan ID menu
+        // Memastikan DOM selesai dimuat
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ambil token dari cookie dengan nama 'login'
+            const token = getCookie('login');
+            if (!token) {
+                alert('Token tidak ditemukan, harap login terlebih dahulu!');
+                throw new Error("Token tidak ditemukan. Harap login ulang.");
+            }
 
-    // Data yang akan diupdate
-    const updatedMenuData = { name: updatedMenuName };
+            // Panggil getJSON untuk mengambil data menu setelah token valid
+            getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
+                if (response.status === 200) {
+                    menus = response.data.data || []; // Menyimpan data menu yang ada
+                    displayMenus(response); // Menampilkan data menu yang diambil
+                } else {
+                    console.error(`Error: ${response.status}`);
+                    alert("Gagal memuat data menu. Silakan coba lagi.");
+                }
+            });
 
-    // Ambil token dari cookie
-    const token = getCookie('login');
-    if (!token) {
-        alert('Token tidak ditemukan, harap login terlebih dahulu!');
-        return;
-    }
+            // Fungsi untuk menampilkan kategori saat halaman dimuat
+            loadCategories();
 
-    // Log untuk memeriksa data yang akan dikirim
-    console.log('Menu yang akan diubah:', updatedMenuData);
+            // Menambahkan event listener untuk form submit
+            const addProductForm = document.getElementById('addProductForm');
+            if (addProductForm) {
+                addProductForm.addEventListener('submit', addMenu);
+            }
+        });
 
-    // Kirim data ke API untuk mengubah menu menggunakan putJSON
-    putJSON(targetUrl, 'Login', token, updatedMenuData, function (response) {
-        const { status, data } = response;
+        // Fungsi untuk menangani submit form saat mengubah menu
+        function editMenu(event) {
+            event.preventDefault(); // Mencegah form submit default
 
-        if (status >= 200 && status < 300) {
-            console.log('Menu berhasil diubah:', data);
+            const updatedMenuName = document.getElementById('edit-product-name').value.trim(); // Nama menu baru
+            if (updatedMenuName === '') {
+                alert('Nama menu tidak boleh kosong!');
+                return;
+            }
 
-            // Perbarui data menu di array setelah berhasil diubah
-            menus[currentEditIndex].name = updatedMenuName;
+            const targetUrl = `${'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu'}/${menus[currentEditIndex].id}`; // Endpoint API dengan ID menu
 
-            // Render ulang daftar menu
-            displayMenus({ data: { data: menus } });
+            // Data yang akan diupdate
+            const updatedMenuData = { name: updatedMenuName };
 
-            // Menutup modal setelah perubahan berhasil
-            const modal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
-            modal.hide(); // Menutup modal
+            // Ambil token dari cookie
+            const token = getCookie('login');
+            if (!token) {
+                alert('Token tidak ditemukan, harap login terlebih dahulu!');
+                return;
+            }
 
-            // Reset form
-            document.getElementById('edit-product-name').value = '';
-        } else {
-            console.error('Gagal mengubah menu:', data);
-            alert('Gagal mengubah menu!');
+            // Log untuk memeriksa data yang akan dikirim
+            console.log('Menu yang akan diubah:', updatedMenuData);
+
+            // Kirim data ke API untuk mengubah menu menggunakan putJSON
+            putJSON(targetUrl, 'Login', token, updatedMenuData, function (response) {
+                const { status, data } = response;
+
+                if (status >= 200 && status < 300) {
+                    console.log('Menu berhasil diubah:', data);
+
+                    // Perbarui data menu di array setelah berhasil diubah
+                    menus[currentEditIndex].name = updatedMenuName;
+
+                    // Render ulang daftar menu
+                    displayMenus({ data: { data: menus } });
+
+                    // Menutup modal setelah perubahan berhasil
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+                    modal.hide(); // Menutup modal
+
+                    // Reset form
+                    document.getElementById('edit-product-name').value = '';
+                } else {
+                    console.error('Gagal mengubah menu:', data);
+                    alert('Gagal mengubah menu!');
+                }
+            });
         }
-    });
-}
 
-// Fungsi untuk menghapus menu
-document.getElementById('confirm-delete').addEventListener('click', () => {
-    if (currentDeleteIndex === null) return;
+        // Fungsi untuk menghapus menu
+        document.getElementById('confirm-delete').addEventListener('click', () => {
+            if (currentDeleteIndex === null) return;
 
-    const menuToDelete = menus[currentDeleteIndex];
-    const targetUrl = `${'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu'}/${menuToDelete.id}`;
+            const menuToDelete = menus[currentDeleteIndex];
+            const targetUrl = `${'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu'}/${menuToDelete.id}`;
 
-    // Ambil token dari cookie
-    const token = getCookie('login');
-    if (!token) {
-        alert('Token tidak ditemukan, harap login terlebih dahulu!');
-        return;
-    }
+            // Ambil token dari cookie
+            const token = getCookie('login');
+            if (!token) {
+                alert('Token tidak ditemukan, harap login terlebih dahulu!');
+                return;
+            }
 
-    // Menghapus menu menggunakan deleteJSON
-    deleteJSON(targetUrl, 'Login', token, function (response) {
-        const { status, data } = response;
+            // Menghapus menu menggunakan deleteJSON
+            deleteJSON(targetUrl, 'Login', token, function (response) {
+                const { status, data } = response;
 
-        if (status >= 200 && status < 300) {
-            console.log('Menu berhasil dihapus:', data);
+                if (status >= 200 && status < 300) {
+                    console.log('Menu berhasil dihapus:', data);
 
-            // Menghapus menu dari array
-            menus.splice(currentDeleteIndex, 1);
+                    // Menghapus menu dari array
+                    menus.splice(currentDeleteIndex, 1);
 
-            // Render ulang daftar menu
-            displayMenus({ data: { data: menus } });
+                    // Render ulang daftar menu
+                    displayMenus({ data: { data: menus } });
 
-            // Tampilkan notifikasi
-            alert('Menu berhasil dihapus!');
+                    // Tampilkan notifikasi
+                    alert('Menu berhasil dihapus!');
 
-            // Tutup modal hapus
-            const deleteMenuModal = bootstrap.Modal.getInstance(document.getElementById('deleteMenuModal'));
-            deleteMenuModal.hide();
-        } else {
-            console.error('Gagal menghapus menu:', data);
-            alert('Gagal menghapus menu!');
-        }
-    });
-});
+                    // Tutup modal hapus
+                    const deleteMenuModal = bootstrap.Modal.getInstance(document.getElementById('deleteMenuModal'));
+                    deleteMenuModal.hide();
+                } else {
+                    console.error('Gagal menghapus menu:', data);
+                    alert('Gagal menghapus menu!');
+                }
+            });
+        });
