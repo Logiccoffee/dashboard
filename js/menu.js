@@ -222,6 +222,13 @@ function addMenu(event) {
 
 // Fungsi untuk mengirim menu baru ke API
 function submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImage) {
+    // Validasi apakah menuImage adalah file yang valid
+    if (!(menuImage instanceof File)) {
+        alert('File gambar tidak valid. Harap unggah ulang gambar!');
+        console.error('menuImage bukan tipe File:', menuImage);
+        return;
+    }
+
     // Konversi gambar ke Base64 jika diperlukan oleh API
     const reader = new FileReader();
     reader.onload = function () {
@@ -269,6 +276,13 @@ function submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatu
             }
         );
     };
+    
+    reader.onerror = function (error) {
+        console.error('Gagal membaca file gambar:', error);
+        alert('Terjadi kesalahan saat membaca file gambar. Silakan coba lagi.');
+    };
+
+    // Mulai membaca data gambar dalam format Base64
     reader.readAsDataURL(menuImage);
 }
 
