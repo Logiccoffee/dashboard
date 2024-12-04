@@ -421,6 +421,16 @@ function openEditMenuPopup(index) {
     statusField.value = menu.status || '';
     image.src = menu.image || 'path/to/default-image.jpg'; // Tampilkan gambar di preview
 
+    // Debug untuk memastikan data ditarik dengan benar
+    console.log("Data menu yang dimasukkan ke form:", {
+        name: menu.name,
+        category_id: menu.category_id,
+        price: menu.price,
+        description: menu.description,
+        status: menu.status,
+        image: menu.image
+    });
+
     // Tampilkan modal
     const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
     editProductModal.show();
