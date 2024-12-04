@@ -319,36 +319,57 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Ambil semua tombol "Ubah" dari setiap card
-const editButtons = document.querySelectorAll(".edit-button"); // Pastikan tombol memiliki class ini
+const editButtons = document.querySelectorAll(".edit-button");
 
-// Tambahkan event listener ke setiap tombol
 editButtons.forEach((button) => {
-    button.addEventListener("click", (event) => {
-        // Ambil data dari atribut tombol atau elemen card
-        const card = button.closest(".card"); // Pastikan tombol ada dalam card
-        const productName = card.querySelector(".product-name").textContent;
-        const productPrice = card.querySelector(".product-price").textContent;
-        const productDescription = card.querySelector(".product-description").textContent;
+    button.addEventListener("click", () => {
+        // Ambil card terkait tempat tombol "Ubah" ditekan
+        const card = button.closest(".card");
 
-        // Isi data ke form popup
-        document.getElementById("edit-product-name").value = productName.trim();
-        document.getElementById("edit-product-price").value = productPrice.trim();
-        document.getElementById("edit-product-description").value = productDescription.trim();
+        // Ambil data dari card (misalnya nama, harga, deskripsi, dll)
+        const productName = card.querySelector(".product-name").textContent.trim();
+        const productPrice = card.querySelector(".product-price").textContent.trim();
+        const productDescription = card.querySelector(".product-description").textContent.trim();
+        const productCategory = card.getAttribute("data-category");  // Ambil data kategori
+        const productStatus = card.getAttribute("data-status");  // Ambil data status
 
-        // Jika ada kategori dan status, isi juga (opsional)
-        const productCategory = card.getAttribute("data-category");
-        const productStatus = card.getAttribute("data-status");
+        // Masukkan data ke dalam form modal
+        document.getElementById("edit-product-name").value = productName;
+        document.getElementById("edit-product-price").value = productPrice;
+        document.getElementById("edit-product-description").value = productDescription;
 
+        // Set kategori dan status jika ada
         if (productCategory) {
             document.getElementById("edit-productCategory").value = productCategory;
         }
-
         if (productStatus) {
             document.getElementById("product-status").value = productStatus;
         }
     });
 });
 
+// Form submit logic untuk menyimpan perubahan
+document.getElementById("editProductForm").addEventListener("submit", function(event) {
+    event.preventDefault();  // Mencegah halaman reload
+
+    // Ambil nilai yang diubah dari form
+    const updatedProductName = document.getElementById("edit-product-name").value;
+    const updatedProductPrice = document.getElementById("edit-product-price").value;
+    const updatedProductDescription = document.getElementById("edit-product-description").value;
+    const updatedProductCategory = document.getElementById("edit-productCategory").value;
+    const updatedProductStatus = document.getElementById("product-status").value;
+
+    // Proses pembaruan data (misalnya mengirim data ke server, atau memperbarui elemen card)
+    console.log("Data yang diperbarui:", {
+        updatedProductName,
+        updatedProductPrice,
+        updatedProductDescription,
+        updatedProductCategory,
+        updatedProductStatus
+    });
+
+    // Jika perlu, kirim data ke server atau lakukan update pada DOM
+});
 
 // Fungsi untuk membuka pop-up edit menu
 function openEditMenuPopup(index) {
