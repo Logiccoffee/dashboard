@@ -1,4 +1,5 @@
-import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+// URL API
+const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
 
 // Ambil token dari cookie dengan nama 'login'
 const token = getCookie('login');
@@ -8,7 +9,7 @@ if (!token) {
 }
 
 // Panggil API untuk mengambil data pesanan
-getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order', "Login", token, (response) => {
+getJSON(API_URL, "Login", token, (response) => {
     if (response.status === 200) {
         const orders = response.data.data || [];
         displayOrders(orders);
