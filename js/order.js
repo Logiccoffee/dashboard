@@ -62,15 +62,20 @@ function displayOrders(orders) {
         `;
         row.appendChild(customerInfoCell);
 
-        // Kolom Nama Produk dan Jumlah + Harga Satuan
-           // Kolom Nama Produk dan Jumlah + Harga Satuan
-            const productInfoCell = document.createElement('td');
-            productInfoCell.innerHTML = order.orders && order.orders.length > 0
-                ? order.orders.map(item => 
-                    `${item.menu_name || 'Tidak Diketahui'} - ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`
-                ).join('<br>') // Gunakan <br> untuk memisahkan tiap produk
-                : '-';
-            row.appendChild(productInfoCell);
+        /// Kolom Produk (Nama Produk, Jumlah dan Harga Satuan)
+const productInfoCell = document.createElement('td');
+
+// Cek apakah ada data dalam order.orders
+if (order.orders && order.orders.length > 0) {
+    // Gabungkan Nama Produk, Kuantitas dan Harga Satuan dalam satu kolom
+    productInfoCell.innerHTML = order.orders.map(item => {
+        return `${item.menu_name || 'Tidak Diketahui'} - ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`;
+    }).join('<br>'); // Menggunakan <br> untuk memisahkan tiap item dalam baris baru
+} else {
+    productInfoCell.textContent = '-'; // Tampilkan '-' jika tidak ada data
+}
+
+row.appendChild(productInfoCell);
 
 
 
