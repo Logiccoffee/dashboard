@@ -438,16 +438,13 @@ function openEditMenuPopup(index) {
         categoryDropdown.appendChild(option);
     });
 
-    // Menampilkan gambar yang sudah ada jika ada
-    const imagePreview = document.getElementById('edit-product-image');
+    // Menangani Gambar (input file)
+    const imageInput = document.getElementById('edit-product-image');
+    // Gambar tidak bisa di-set melalui JS, jadi hanya menampilkan gambar yang ada sebelumnya
     if (menu.image) {
-        imagePreview.src = menu.image; // Tampilkan gambar sebelumnya
-    } else {
-        imagePreview.src = 'path/to/default-image.jpg'; // Gambar default jika tidak ada
+        // Menampilkan gambar lama yang sudah ada dalam input file
+        // Namun, kita tidak bisa mengisi input file melalui JavaScript, jadi kita biarkan gambar lama di form
     }
-
-    // Kosongkan input file gambar (karena file input tidak bisa diisi melalui JS)
-    document.getElementById('edit-product-image').value = '';
 
     // Tampilkan modal
     const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
