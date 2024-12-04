@@ -66,29 +66,29 @@ function displayOrders(orders) {
         queueNumberCell.textContent = order.queueNumber || '-';
         row.appendChild(queueNumberCell);
 
-        // Kolom Nama Produk
-        const productNameCell = document.createElement('td');
-        productNameCell.textContent = order.orders
-            ? order.orders.map(item => item.productName).join(', ')
+        // Kolom Nama Menu
+        const MenuNameCell = document.createElement('td');
+        MenuNameCell.textContent = order.orders
+            ? order.orders.map(item => item.MenuName).join(', ')
             : '-';
-        row.appendChild(productNameCell);
+        row.appendChild(MenuNameCell);
 
         // Kolom Jumlah + Harga Satuan
         const quantityPriceCell = document.createElement('td');
         quantityPriceCell.textContent = order.orders
-            ? order.orders.map(item => `${item.quantity} x Rp ${item.price}`).join(', ')
+            ? order.orders.map(item => `${item.quantity} x  ${item.price}`).join(', ')
             : '-';
         row.appendChild(quantityPriceCell);
 
         // Kolom Harga Total
         const totalPriceCell = document.createElement('td');
-        totalPriceCell.textContent = order.total ? `Rp ${order.total.toLocaleString()}` : '-';
+        totalPriceCell.textContent = order.total ? ` ${order.total.toLocaleString()}` : '-';
         row.appendChild(totalPriceCell);
 
         // Kolom Metode Pembayaran
-        const paymentMethodCell = document.createElement('td');
-        paymentMethodCell.textContent = order.paymentMethod || '-';
-        row.appendChild(paymentMethodCell);
+        const PaymentMethodCell = document.createElement('td');
+        PaymentMethodCell.textContent = order.PaymentMethod || '-';
+        row.appendChild(PaymentMethodCell);
 
         // Kolom Status
         const statusCell = document.createElement('td');
