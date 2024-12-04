@@ -52,14 +52,14 @@ function displayOrders(orders) {
         const row = document.createElement('tr');
     
          // Kolom Kode Transaksi (orderNumber)
-         const orderNumberCell = document.createElement('td');
-         orderNumberCell.textContent = order.OrderNumber || '-'; // Ganti dengan '-' jika kosong
-         row.appendChild(orderNumberCell);
+         const OrderNumberCell = document.createElement('td');
+         OrderNumberCell.textContent = order.OrderNumber  || '-'; // Ganti dengan '-' jika kosong
+         row.appendChild(OrderNumberCell);
          
          // Kolom Nomor Antrian (queueNumber)
-         const queueNumberCell = document.createElement('td');
-         queueNumberCell.textContent = order.QueueNumber > 0 ? order.QueueNumber : '-';  // Ganti dengan '-' jika 0
-         row.appendChild(queueNumberCell);
+         const QueueNumberCell = document.createElement('td');
+         QueueNumberCell.textContent = order.QueueNumber > 0 ? order.QueueNumber : '-';  // Ganti dengan '-' jika 0
+         row.appendChild(QueueNumberCell);
 
         // Kolom Nama Produk
         const menuNameCell = document.createElement('td');
