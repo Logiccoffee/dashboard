@@ -56,7 +56,7 @@ function displayOrders(orders) {
          OrderNumberCell.textContent = order.orderNumber  || '-'; // Ganti dengan '-' jika kosong
          row.appendChild(OrderNumberCell);
          
-         // Kolom Nomor Antrian (queueNumber)
+         // Kolom Nomor Antrian (queueNumber) ...
          const QueueNumberCell = document.createElement('td');
          QueueNumberCell.textContent = order.queueNumber > 0 ? order.queueNumber : '-';  // Ganti dengan '-' jika 0
          row.appendChild(QueueNumberCell);
