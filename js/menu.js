@@ -142,9 +142,9 @@ const statuses = ['Tersedia', 'Tidak Tersedia'];
 
 // Fungsi untuk menampilkan status dalam dropdown
 function displayStatuses() {
-    const statusSelect = document.getElementById('edit-product-status');
+    const statusSelect = document.getElementById('product-status');
     if (!statusSelect) {
-        console.error("Elemen dengan id 'edit-product-status' tidak ditemukan.");
+        console.error("Elemen dengan id 'product-status' tidak ditemukan.");
         return;
     }
 
