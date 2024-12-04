@@ -331,16 +331,54 @@ function openEditMenuPopup(index) {
         return;
     }
 
-    // Isi form edit dengan data menu
-    document.getElementById('edit-product-category').value = menu.category_id || '';
+    // Isi data menu ke dalam form edit
     document.getElementById('edit-product-name').value = menu.name || '';
+    document.getElementById('edit-productCategory').value = menu.category_id || '';
     document.getElementById('edit-product-price').value = menu.price || '';
-    document.getElementById('edit-product-image').value = ''; // Reset input file
+    document.getElementById('edit-product-description').value = menu.description || '';
+    document.getElementById('edit-product-status').value = menu.status || '';
 
-    // Tampilkan modal edit menu
-    const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
-    editProductModal.show();
+    // Tampilkan modal popup
+    const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+    editModal.show();
 }
+
+function saveMenuChanges() {
+    if (currentEditIndex === null) {
+        alert('Tidak ada menu yang dipilih untuk diedit!');
+        return;
+    }
+
+    const editedMenu = {
+        name: document.getElementById('edit-product-name').value.trim(),
+        category_id: document.getElementById('edit-productCategory').value.trim(),
+        price: parseFloat(document.getElementById('edit-product-price').value.trim()),
+        description: document.getElementById('edit-product-description').value.trim(),
+        status: document.getElementById('edit-product-status').value.trim()
+    };
+
+    if (!editedMenu.name || !editedMenu.category_id || isNaN(editedMenu.price) || !editedMenu.status) {
+        alert('Harap lengkapi semua data!');
+        return;
+    }
+
+    putJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menus[currentEditIndex].id}`, "Login", token, editedMenu, (response) => {
+        if (response.status >= 200 && response.status < 300) {
+            alert('Menu berhasil diperbarui!');
+            // Perbarui data menu lokal dan tampilkan ulang daftar menu
+            menus[currentEditIndex] = { ...menus[currentEditIndex], ...editedMenu };
+            displayMenus({ data: { data: menus } });
+            currentEditIndex = null;
+
+            // Tutup modal
+            const editModal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+            editModal.hide();
+        } else {
+            alert('Gagal memperbarui menu. Silakan coba lagi.');
+        }
+    });
+}
+
 
 function saveEditedMenu(event) {
     event.preventDefault();

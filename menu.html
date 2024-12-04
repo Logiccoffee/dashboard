@@ -168,7 +168,7 @@
                         <!-- Dropdown Kategori -->
                         <div class="mb-3">
                             <label for="edit-product-category" class="form-label">Kategori</label>
-                            <select class="form-select" id="edit-product-category" required>
+                            <select class="form-select" id="edit-productCategory" required>
                                 <option value="" disabled selected>Pilih Kategori</option>
                             </select>
                         </div>
@@ -182,10 +182,23 @@
                             <input type="number" id="edit-product-price" placeholder=" " required>
                             <label for="edit-product-price">Harga Menu</label>
                         </div>
+                        <!-- Input untuk Deskripsi Produk -->
+                        <div class="input-group">
+                            <input type="text" id="edit-product-description" placeholder=" ">
+                            <label for="edit-product-description">Deskripsi Menu</label>
+                        </div>
                         <!-- Input untuk Gambar Produk -->
                         <div class="input-group">
                             <input type="file" id="edit-product-image" accept="image/*" required>
                             <label for="edit-product-image">Gambar Menu</label>
+                        </div>
+                        <!-- Dropdown untuk Status -->
+                        <div class="mb-3">
+                            <label for="productStatus" class="form-label">Status</label>
+                            <select class="form-select" id="edit-product-status" required>
+                                <option value="" disabled selected>Pilih Status</option>
+                                <!-- Status options akan diisi dari backend -->
+                            </select>
                         </div>
                         <!-- Submit Button -->
                         <button type="submit" class="submit-btn">Simpan</button>
