@@ -63,6 +63,7 @@ function displayOrders(orders) {
         row.appendChild(customerInfoCell);
 
         // Kolom Nama Produk dan Jumlah + Harga Satuan
+           // Kolom Nama Produk dan Jumlah + Harga Satuan
             const productInfoCell = document.createElement('td');
             productInfoCell.innerHTML = order.orders && order.orders.length > 0
                 ? order.orders.map(item => 
@@ -70,6 +71,7 @@ function displayOrders(orders) {
                 ).join('<br>') // Gunakan <br> untuk memisahkan tiap produk
                 : '-';
             row.appendChild(productInfoCell);
+
 
 
       // Kolom Harga Total
