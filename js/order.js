@@ -1,4 +1,5 @@
-import { getJSON, postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+// Array untuk menyimpan data kategori
+let order = [];
 
 // URL API
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
