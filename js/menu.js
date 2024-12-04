@@ -483,6 +483,13 @@ document.addEventListener('DOMContentLoaded', () => {
 // Pastikan fungsi tersedia di global scope
 window.openEditMenuPopup = openEditMenuPopup;
 
+function parsePrice(price) {
+    // Hapus simbol 'Rp' dan format ribuan
+    return parseFloat(price.replace(/[^\d.-]/g, '').replace(',', '.'));
+}
+
+priceField.value = parsePrice(productPrice) || '';
+
 // Fungsi untuk menyimpan perubahan pada menu
 function saveMenuChanges(event) {
     event.preventDefault(); // Mencegah form submit biasa
