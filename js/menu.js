@@ -420,7 +420,7 @@ function openEditMenuPopup(index) {
 
     // Isi field di dalam modal dengan data menu
     document.getElementById('edit-product-name').value = menu.name || '';
-    document.getElementById('edit-product-price').value = formatPrice(menu.price) || ''; // Mengisi harga (formatkan harga sesuai locale)
+    document.getElementById('edit-product-price').value = menu.price.toLocaleString() || ''; // Mengisi harga (formatkan harga sesuai locale)
     document.getElementById('edit-product-description').value = menu.description || '';
     document.getElementById('edit-product-image').value = ''; // Kosongkan karena input file tidak dapat diisi secara program
     document.getElementById('edit-product-status').value = menu.status || '';
@@ -437,6 +437,13 @@ function openEditMenuPopup(index) {
         }
         categoryDropdown.appendChild(option);
     });
+
+    // Mengisi dropdown status dengan nilai yang sudah ada
+    const statusSelect = document.getElementById('edit-product-status');
+    if (statusSelect) {
+        // Pilih status yang sudah ada
+        statusSelect.value = menu.status || 'Tersedia';  // Default 'Tersedia' jika tidak ada status
+    }
 
     // Untuk gambar, tidak bisa mengisi input file melalui JS, hanya biarkan kosong
     const imageInput = document.getElementById('edit-product-image');
