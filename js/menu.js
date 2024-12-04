@@ -401,7 +401,8 @@ document.getElementById("editProductForm").addEventListener("submit", function (
 
 // Fungsi untuk membuka pop-up edit menu
 function openEditMenuPopup(index) {
-    const card = document.querySelector(`.card[data-index="${index}"]`);
+    console.log(`Mencoba membuka pop-up untuk index: ${index}`);
+    const card = document.querySelector(`.col-md-4[data-index="${index}"]`);
     if (!card) {
         console.error('Card tidak ditemukan untuk index:', index);
         return; // Hentikan eksekusi jika card tidak ditemukan
