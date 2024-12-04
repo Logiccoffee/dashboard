@@ -62,6 +62,7 @@ function displayMenus(response) {
             : '';
         card.innerHTML = `
             <div class="card h-100 shadow-sm">
+            data-index="${index}" 
                 <img src="${item.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">${item.name}</h5>
