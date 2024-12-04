@@ -158,65 +158,80 @@ function addOrder(event) {
 
 // Menunggu hingga DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('add-order-form').addEventListener('submit', addOrder);
-});
+    const addOrderForm = document.getElementById('add-order-form');
+    const editOrderForm = document.getElementById('edit-order-form');
+    const deleteOrderForm = document.getElementById('delete-order-form');
 
-// Fungsi untuk mengubah status order
-document.getElementById('edit-order-form').addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const updatedOrderStatus = document.getElementById('edit-order-status').value.trim();
-
-    if (updatedOrderStatus === '') {
-        alert('Status order tidak boleh kosong!');
-        return;
+    // Mengecek apakah elemen ada sebelum menambahkan event listener
+    if (addOrderForm) {
+        addOrderForm.addEventListener('submit', addOrder);
+    } else {
+        console.error("Element with id 'add-order-form' not found.");
     }
 
-    const targetUrl = `https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order/${orders[currentEditIndex].id}`;
-    const updatedOrderData = { status: updatedOrderStatus };
+    if (editOrderForm) {
+        editOrderForm.addEventListener('submit', (event) => {
+            event.preventDefault();
 
-    putJSON(targetUrl, 'Login', token, updatedOrderData, function (response) {
-        const { status, data } = response;
+            const updatedOrderStatus = document.getElementById('edit-order-status').value.trim();
 
-        if (status >= 200 && status < 300) {
-            orders[currentEditIndex].status = updatedOrderStatus;
-            displayOrders({ data: { data: orders } });
+            if (updatedOrderStatus === '') {
+                alert('Status order tidak boleh kosong!');
+                return;
+            }
 
-            alert('Status order berhasil diubah!');
+            const targetUrl = `https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order/${orders[currentEditIndex].id}`;
+            const updatedOrderData = { status: updatedOrderStatus };
 
-            const editOrderModal = bootstrap.Modal.getInstance(document.getElementById('editOrderModal'));
-            editOrderModal.hide();
-        } else {
-            alert('Gagal mengubah status order!');
-        }
-    });
-});
+            putJSON(targetUrl, 'Login', token, updatedOrderData, function (response) {
+                const { status, data } = response;
 
-// Fungsi untuk menghapus order
-document.getElementById('delete-order-form').addEventListener('submit', (event) => {
-    event.preventDefault();
+                if (status >= 200 && status < 300) {
+                    orders[currentEditIndex].status = updatedOrderStatus;
+                    displayOrders({ data: { data: orders } });
 
-    const token = getCookie('login');
-    if (!token) {
-        alert('Token tidak ditemukan, harap login terlebih dahulu!');
-        return;
+                    alert('Status order berhasil diubah!');
+
+                    const editOrderModal = bootstrap.Modal.getInstance(document.getElementById('editOrderModal'));
+                    editOrderModal.hide();
+                } else {
+                    alert('Gagal mengubah status order!');
+                }
+            });
+        });
+    } else {
+        console.error("Element with id 'edit-order-form' not found.");
     }
 
-    const orderIdToDelete = orders[currentDeleteIndex].id;
+    if (deleteOrderForm) {
+        deleteOrderForm.addEventListener('submit', (event) => {
+            event.preventDefault();
 
-    deleteJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order/${orderIdToDelete}`, 'Login', token, (response) => {
-        const { status, data } = response;
+            const token = getCookie('login');
+            if (!token) {
+                alert('Token tidak ditemukan, harap login terlebih dahulu!');
+                return;
+            }
 
-        if (status >= 200 && status < 300) {
-            orders.splice(currentDeleteIndex, 1);
-            displayOrders({ data: { data: orders } });
+            const orderIdToDelete = orders[currentDeleteIndex].id;
 
-            alert('Order berhasil dihapus!');
+            deleteJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order/${orderIdToDelete}`, 'Login', token, (response) => {
+                const { status, data } = response;
 
-            const deleteOrderModal = bootstrap.Modal.getInstance(document.getElementById('deleteOrderModal'));
-            deleteOrderModal.hide();
-        } else {
-            alert('Gagal menghapus order!');
-        }
-    });
+                if (status >= 200 && status < 300) {
+                    orders.splice(currentDeleteIndex, 1);
+                    displayOrders({ data: { data: orders } });
+
+                    alert('Order berhasil dihapus!');
+
+                    const deleteOrderModal = bootstrap.Modal.getInstance(document.getElementById('deleteOrderModal'));
+                    deleteOrderModal.hide();
+                } else {
+                    alert('Gagal menghapus order!');
+                }
+            });
+        });
+    } else {
+        console.error("Element with id 'delete-order-form' not found.");
+    }
 });
