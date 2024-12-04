@@ -379,15 +379,43 @@ function openEditMenuPopup(index) {
     if (editForm) {
         // Isi data menu yang ada ke dalam form
         document.getElementById('edit-product-name').value = menu.name;
-        document.getElementById('edit-productCategory').value = menu.category_id;
+        document.getElementById('edit-product-category').value = menu.category_id;
         document.getElementById('edit-product-price').value = menu.price;
         document.getElementById('edit-product-description').value = menu.description;
         document.getElementById('edit-product-status').value = menu.status;
 
         // Tampilkan modal edit form
         $('#editProductModal').modal('show');
+    } else {
+        console.error('Form edit tidak ditemukan!');
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const editButtons = document.querySelectorAll(".edit-button");
+
+    editButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            const card = button.closest(".card");
+            const productName = card.querySelector(".product-name").textContent.trim();
+            const productPrice = card.querySelector(".product-price").textContent.trim();
+            const productDescription = card.querySelector(".product-description").textContent.trim();
+            const productCategory = card.getAttribute("data-category");
+            const productStatus = card.getAttribute("data-status");
+
+            document.getElementById("edit-product-name").value = productName;
+            document.getElementById("edit-product-price").value = productPrice;
+            document.getElementById("edit-product-description").value = productDescription;
+            if (productCategory) {
+                document.getElementById("edit-productCategory").value = productCategory;
+            }
+            if (productStatus) {
+                document.getElementById("product-status").value = productStatus;
+            }
+        });
+    });
+});
+
 
 // Pastikan fungsi tersedia di global scope
 window.openEditMenuPopup = openEditMenuPopup;
