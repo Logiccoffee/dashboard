@@ -105,46 +105,42 @@ row.appendChild(totalPriceCell);
 
 
          // Kolom aksi
-        const actionCell = document.createElement('td');
+         const actionCell = document.createElement('td');
 
-        // Tombol "Lihat" untuk menampilkan detail pesanan
-        const viewButton = document.createElement('button');
-        viewButton.className = 'btn btn-primary btn-sm';
-        viewButton.textContent = 'Lihat';
-        viewButton.addEventListener('click', () => {
-            alert(`Detail pesanan:\n\n${JSON.stringify(order, null, 2)}`);
-        });
-        actionCell.appendChild(viewButton);
-        
-        // Dropdown untuk Status Pesanan
-        const statusDropdown = document.createElement('select');
-        statusDropdown.className = 'form-control form-control-sm'; // CSS untuk tampilan dropdown
-        const statusOptions = ['Diproses', 'Selesai'];
-        
-        // Menambahkan pilihan status ke dropdown
-        statusOptions.forEach(status => {
-            const option = document.createElement('option');
-            option.value = status;
-            option.textContent = status;
-            statusDropdown.appendChild(option);
-        });
-        
-        // Menambahkan event listener untuk mengubah status pesanan
-        statusDropdown.addEventListener('change', () => {
-            const selectedStatus = statusDropdown.value;
-            alert(`Status pesanan diubah menjadi: ${selectedStatus}`);
-        });
-        
-        // Tambahkan dropdown status ke dalam kolom aksi
-        actionCell.appendChild(statusDropdown);
-        
-        // Tambahkan baris ke tabel
-        row.appendChild(actionCell);
-        container.appendChild(row);
-        
-
-        // Tambahkan baris ke tabel
-        container.appendChild(row);
+         // Tombol Status (dengan ikon ubah/edit)
+         const statusButton = document.createElement('button');
+         statusButton.className = 'btn btn-warning btn-sm'; // CSS untuk tombol status
+         statusButton.innerHTML = '<i class="fas fa-edit"></i> Status'; // Menambahkan ikon "edit" (menggunakan FontAwesome)
+         statusButton.addEventListener('click', () => {
+             const statusDropdown = document.createElement('select');
+             statusDropdown.className = 'form-control form-control-sm'; // Tampilan dropdown
+             
+             // Pilihan status
+             const statusOptions = ['Diproses', 'Selesai'];
+             statusOptions.forEach(status => {
+                 const option = document.createElement('option');
+                 option.value = status;
+                 option.textContent = status;
+                 statusDropdown.appendChild(option);
+             });
+         
+             // Menampilkan dropdown dan mengganti tombol status dengan dropdown
+             statusButton.replaceWith(statusDropdown);
+         
+             // Menambahkan event listener untuk mengubah status pesanan
+             statusDropdown.addEventListener('change', () => {
+                 const selectedStatus = statusDropdown.value;
+                 alert(`Status pesanan diubah menjadi: ${selectedStatus}`);
+             });
+         });
+         
+         // Kolom untuk menampilkan tombol status
+         actionCell.appendChild(statusButton);
+         
+         // Tambahkan baris ke tabel
+         row.appendChild(actionCell);
+         container.appendChild(row);
+         
     });
 }
 
