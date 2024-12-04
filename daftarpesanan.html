@@ -13,15 +13,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Signika:wght@300..700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js"></script>
+    
+    <!-- Memanggil croot.js sebagai module -->
     <script type="module" src="https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js"></script>
-
-
-    <!-- SweetAlert2 -->
+    
+    <!-- Memanggil SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-
 
     <style>
         /* Tambahkan gaya untuk submenu bertingkat */
@@ -51,14 +49,10 @@
             padding: 5px;
             font-size: 14px;
             border: 1px solid #c9994c !important;
-            /* Mengubah warna border */
             border-radius: 4px;
             display: inline-block;
-            /* Agar bisa menambahkan padding, dan lebar sesuai isi teks */
             text-align: center;
-            /* Pusatkan teks */
             margin-top: 3%;
-            /* Menambahkan jarak di atas border */
         }
     </style>
 </head>
@@ -90,7 +84,6 @@
                             <span id="user-name">Nama Pengguna</span> <!-- Nama pengguna akan diubah oleh JS -->
                             <br>
                             <span id="user-role" class="text-muted d-block text-end">Role Pengguna</span>
-                            <!-- Role pengguna akan diubah oleh JS -->
                         </div>
                         <i class="fa-solid fa-user ms-2"></i> <!-- Ikon user berada setelah nama dan role -->
                     </div>
@@ -105,7 +98,6 @@
             </div>
         </aside>
 
-        <!-- Sidebar akan ditambahkan dari sidebar.js -->
         <div id="sidebar-container"></div>
 
         <div id="content"></div>
@@ -131,37 +123,16 @@
                     <tbody id="transaction-list">
                         <!-- Data will be added here by JavaScript -->
                     </tbody>
-                    
+                </table>
             </div>
             
         </main>
     </div>
 
-    <!-- Sidebar -->
-    <script type="module" src="https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js"></script>
-
-
-    <script src="js/sidebar.js"></script>
-
-    <!-- <script src="js/order.js" type="module"></script> -->
+    <!-- Memanggil file JS lainnya -->
     <script type="module" src="js/order.js"></script>
-  
-    <script type="module" src="js/index.js"></script>
-
-
- 
-
-
-
-    <!-- Memanggil file JS -->
-    <!-- <script type="module" src="js/index.js"></script> -->
     <script src="js/sidebar.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/src/sweetalert2.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/index.js"></script>
 
 </body>
 
