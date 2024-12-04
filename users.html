@@ -71,19 +71,21 @@
     <section class="content">
         <h2 class="mt-4">Daftar Pengguna</h2>
         <div class="table-responsive">
-            <table>
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th>No</th> <!-- Kolom untuk nomor urut -->
                         <th>Nama Pengguna</th>
                         <th>Email</th>
                         <th>Peran</th>
                         <th>No. Telepon</th>
                         <th>Aksi</th>
                     </tr>
-                </thead>
-                <tbody id="user-list"></tbody> <!-- Baris pengguna akan ditambahkan di sini -->
-            </table>            
+                </thead>                
+                <tbody id="user-list">
+                    <!-- Data pengguna akan ditambahkan secara dinamis melalui JavaScript -->
+                </tbody>
+            </table>
         </div>
     </section>
 </main>
