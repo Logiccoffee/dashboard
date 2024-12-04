@@ -14,7 +14,7 @@ if (!token) {
 fetch(API_URL, {
     method: 'GET',
     headers: {
-        'login': token, 
+        'login': token,
         'Content-Type': 'application/json',
     }
 })
@@ -53,14 +53,13 @@ function displayOrders(orders) {
     
         // Kolom Kode Transaksi (orderNumber)
         const OrderNumberCell = document.createElement('td');
-        OrderNumberCell.textContent = order.OrderNumber || '-';  // Ganti dengan '-' jika kosong
+        OrderNumberCell.textContent = order.order_number || '-';  // Ganti dengan '-' jika kosong
         row.appendChild(OrderNumberCell);
     
         // Kolom Nomor Antrian (queueNumber)
         const QueueNumberCell = document.createElement('td');
-        QueueNumberCell.textContent = order.QueueNumber > 0 ? order.QueueNumber : '-';  // Ganti dengan '-' jika 0
+        QueueNumberCell.textContent = order.queue_number > 0 ? order.queue_number : '-';  // Ganti dengan '-' jika 0
         row.appendChild(QueueNumberCell);
-    
 
         // Kolom Nama Produk
         const menuNameCell = document.createElement('td');
@@ -78,14 +77,14 @@ function displayOrders(orders) {
 
         // Kolom Harga Total
         const totalPriceCell = document.createElement('td');
-        totalPriceCell.textContent = order.total || '-'; // Total harga dalam format Rupiah
+        const formattedTotal = order.total ? `Rp ${parseFloat(order.total.replace(/[^\d.-]/g, '')).toLocaleString('id-ID')}` : '-';
+        totalPriceCell.textContent = formattedTotal; // Total harga dalam format Rupiah
         row.appendChild(totalPriceCell);
 
-        /// Kolom Metode Pembayaran & Status
-const paymentStatusCell = document.createElement('td');
-paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
-row.appendChild(paymentStatusCell);
-
+        // Kolom Metode Pembayaran & Status
+        const paymentStatusCell = document.createElement('td');
+        paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
+        row.appendChild(paymentStatusCell);
 
         // Kolom Aksi
         const actionCell = document.createElement('td');
