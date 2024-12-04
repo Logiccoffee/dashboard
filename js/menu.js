@@ -446,6 +446,9 @@ function openEditMenuPopup(index) {
         imagePreview.src = 'path/to/default-image.jpg'; // Gambar default jika tidak ada
     }
 
+    // Kosongkan input file gambar (karena file input tidak bisa diisi melalui JS)
+    document.getElementById('edit-product-image').value = '';
+
     // Tampilkan modal
     const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
     editModal.show();
