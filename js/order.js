@@ -15,7 +15,7 @@ if (!token) {
 
 // Panggil API untuk mengambil data pesanan menggunakan fetch()
 fetch(API_URL, {
-    method: 'GET', // Menggunakan GET jika API sesuai
+    method: 'GET',
     headers: {
         'Authorization': `Bearer ${token}`, // Pastikan menggunakan 'Authorization' sebagai header untuk token
         'Content-Type': 'application/json',
@@ -50,62 +50,71 @@ function displayOrders(orders) {
     container.innerHTML = '';
 
     // Tampilkan data pesanan
-    orders.forEach((order) => {
-        const row = document.createElement('tr');
+    if (orders.length === 0) {
+        const noDataRow = document.createElement('tr');
+        const noDataCell = document.createElement('td');
+        noDataCell.colSpan = 7; // Jumlah kolom yang ada
+        noDataCell.textContent = 'Tidak ada pesanan.';
+        noDataRow.appendChild(noDataCell);
+        container.appendChild(noDataRow);
+    } else {
+        orders.forEach((order) => {
+            const row = document.createElement('tr');
 
-        // Kolom Kode Transaksi
-        const transactionCodeCell = document.createElement('td');
-        transactionCodeCell.textContent = order.orderNumber || '-';
-        row.appendChild(transactionCodeCell);
+            // Kolom Kode Transaksi
+            const transactionCodeCell = document.createElement('td');
+            transactionCodeCell.textContent = order.orderNumber || '-';
+            row.appendChild(transactionCodeCell);
 
-        // Kolom Nomor Antrian
-        const queueNumberCell = document.createElement('td');
-        queueNumberCell.textContent = order.queueNumber || '-';
-        row.appendChild(queueNumberCell);
+            // Kolom Nomor Antrian
+            const queueNumberCell = document.createElement('td');
+            queueNumberCell.textContent = order.queueNumber || '-';
+            row.appendChild(queueNumberCell);
 
-        // Kolom Nama Produk
-        const productNameCell = document.createElement('td');
-        productNameCell.textContent = order.orders
-            ? order.orders.map(item => item.productName).join(', ')
-            : '-';
-        row.appendChild(productNameCell);
+            // Kolom Nama Produk
+            const productNameCell = document.createElement('td');
+            productNameCell.textContent = order.orders
+                ? order.orders.map(item => item.productName).join(', ')
+                : '-';
+            row.appendChild(productNameCell);
 
-        // Kolom Jumlah + Harga Satuan
-        const quantityPriceCell = document.createElement('td');
-        quantityPriceCell.textContent = order.orders
-            ? order.orders.map(item => `${item.quantity} x Rp ${item.price}`).join(', ')
-            : '-';
-        row.appendChild(quantityPriceCell);
+            // Kolom Jumlah + Harga Satuan
+            const quantityPriceCell = document.createElement('td');
+            quantityPriceCell.textContent = order.orders
+                ? order.orders.map(item => `${item.quantity} x Rp ${item.price}`).join(', ')
+                : '-';
+            row.appendChild(quantityPriceCell);
 
-        // Kolom Harga Total
-        const totalPriceCell = document.createElement('td');
-        totalPriceCell.textContent = order.total ? `Rp ${order.total.toLocaleString()}` : '-';
-        row.appendChild(totalPriceCell);
+            // Kolom Harga Total
+            const totalPriceCell = document.createElement('td');
+            totalPriceCell.textContent = order.total ? `Rp ${order.total.toLocaleString()}` : '-';
+            row.appendChild(totalPriceCell);
 
-        // Kolom Metode Pembayaran
-        const paymentMethodCell = document.createElement('td');
-        paymentMethodCell.textContent = order.paymentMethod || '-';
-        row.appendChild(paymentMethodCell);
+            // Kolom Metode Pembayaran
+            const paymentMethodCell = document.createElement('td');
+            paymentMethodCell.textContent = order.paymentMethod || '-';
+            row.appendChild(paymentMethodCell);
 
-        // Kolom Status
-        const statusCell = document.createElement('td');
-        statusCell.textContent = order.status || '-';
-        row.appendChild(statusCell);
+            // Kolom Status
+            const statusCell = document.createElement('td');
+            statusCell.textContent = order.status || '-';
+            row.appendChild(statusCell);
 
-        // Kolom Aksi
-        const actionCell = document.createElement('td');
-        const viewButton = document.createElement('button');
-        viewButton.className = 'btn btn-primary btn-sm';
-        viewButton.textContent = 'Lihat';
-        viewButton.addEventListener('click', () => {
-            alert(`Detail pesanan:\n\n${JSON.stringify(order, null, 2)}`);
+            // Kolom Aksi
+            const actionCell = document.createElement('td');
+            const viewButton = document.createElement('button');
+            viewButton.className = 'btn btn-primary btn-sm';
+            viewButton.textContent = 'Lihat';
+            viewButton.addEventListener('click', () => {
+                alert(`Detail pesanan:\n\n${JSON.stringify(order, null, 2)}`);
+            });
+            actionCell.appendChild(viewButton);
+            row.appendChild(actionCell);
+
+            // Tambahkan baris ke tabel
+            container.appendChild(row);
         });
-        actionCell.appendChild(viewButton);
-        row.appendChild(actionCell);
-
-        // Tambahkan baris ke tabel
-        container.appendChild(row);
-    });
+    }
 }
 
 // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
