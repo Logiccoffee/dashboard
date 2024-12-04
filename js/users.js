@@ -7,14 +7,15 @@ import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js
 // Cek apakah cookie login ada, jika tidak arahkan ke halaman utama
 if (getCookie("login") === "") {
     console.log("Cookie login tidak ditemukan. Mengarahkan ke halaman utama.");
-    redirect("/");
+    redirect("/"); // Arahkan jika cookie tidak ada
 }
+
 // Ambil data pengguna menggunakan API
 getJSON(
     "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users",
     "login",
     getCookie("login"),
-    responseFunction
+    responseFunction // Fungsi untuk menangani respons
 );
 
 // Fungsi untuk menangani respons API
@@ -22,7 +23,7 @@ function responseFunction(result) {
     try {
         console.log("Respons API:", result); // Debug respons API
 
-        // Cek jika pengguna tidak ditemukan
+        // Cek status respons API
         if (result.status === 404) {
             console.log("Pengguna tidak ditemukan. Mengarahkan ke halaman pendaftaran.");
             setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu.");
@@ -30,20 +31,21 @@ function responseFunction(result) {
             return;
         }
 
-        // Ambil data pengguna
+        // Validasi dan proses data pengguna
         const userData = result.data;
-
-        // Validasi tipe data pengguna
         if (!userData) {
             throw new Error("Data pengguna tidak ditemukan!");
         }
 
         if (Array.isArray(userData)) {
             console.log("Data pengguna adalah array.");
-            userData.forEach((user, index) => addUserRow(user, index));
+            userData.forEach((user, index) => {
+                console.log("Menambahkan pengguna:", user); // Debug untuk setiap pengguna
+                addUserRow(user, index); // Tambahkan baris untuk setiap pengguna
+            });
         } else if (typeof userData === "object" && userData !== null) {
             console.log("Data pengguna adalah objek tunggal.");
-            addUserRow(userData, 0); // Tambahkan sebagai baris pertama
+            addUserRow(userData, 0); // Tambahkan satu baris untuk objek pengguna tunggal
         } else {
             throw new Error("Data pengguna bukan array atau objek!");
         }
@@ -80,7 +82,7 @@ function addUserRow(userData, index) {
         </td>
     `;
 
-    userList.appendChild(row);
+    userList.appendChild(row); // Pastikan baris ditambahkan ke tabel
 
     // Tambahkan opsi ke dropdown
     populateDropdown(userData._id, userData.role, roles);
@@ -91,8 +93,9 @@ function populateDropdown(userId, currentRole, roles) {
     const dropdownMenu = document.getElementById(`dropdown-role-${userId}`);
     dropdownMenu.innerHTML = ""; // Kosongkan opsi sebelumnya
 
+    // Menambahkan opsi ke dropdown jika peran berbeda
     roles.forEach((role) => {
-        if (role !== currentRole) {
+        if (role !== currentRole) { // Jangan menambahkan peran yang sudah dipilih
             const listItem = document.createElement("li");
             listItem.innerHTML = `
                 <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}')">
@@ -107,9 +110,9 @@ function populateDropdown(userId, currentRole, roles) {
 function changeRole(userId, newRole) {
     const roleElement = document.getElementById(`role-user-${userId}`);
     roleElement.textContent = newRole; // Perbarui peran di UI
-    alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`);
+    alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`); // Pemberitahuan kepada pengguna
 
     // Perbarui opsi dropdown
     const roles = ["User", "Dosen", "Admin"];
-    populateDropdown(userId, newRole, roles);
+    populateDropdown(userId, newRole, roles); // Isi dropdown kembali dengan peran yang tersedia
 }
