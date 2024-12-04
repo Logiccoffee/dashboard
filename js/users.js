@@ -23,9 +23,14 @@ function responseFunction(result) {
             return;
         }
 
+        // Ambil data pengguna
         const userData = result.data;
 
-        // Periksa apakah data pengguna berupa array atau objek tunggal
+        // Validasi tipe data pengguna
+        if (!userData) {
+            throw new Error("Data pengguna tidak ditemukan!");
+        }
+
         if (Array.isArray(userData)) {
             console.log("Data pengguna adalah array.");
             userData.forEach((user, index) => addUserRow(user, index));
@@ -33,7 +38,7 @@ function responseFunction(result) {
             console.log("Data pengguna adalah objek tunggal.");
             addUserRow(userData, 0); // Tambahkan sebagai baris pertama
         } else {
-            throw new Error("Data pengguna tidak valid!");
+            throw new Error("Data pengguna bukan array atau objek!");
         }
 
         console.log("Data pengguna berhasil diproses:", userData);
