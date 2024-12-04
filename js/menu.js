@@ -406,8 +406,9 @@ function openEditMenuPopup(index) {
     const priceField = document.getElementById('edit-product-price');
     const descriptionField = document.getElementById('edit-product-description');
     const statusField = document.getElementById('edit-product-status');
+    const image = document.getElementById('edit-product-image');
 
-    if (!nameField || !categoryField || !priceField || !descriptionField || !statusField) {
+    if (!nameField || !categoryField || !priceField || !descriptionField || !statusField || !image) {
         console.error('Form field tidak ditemukan!');
         return;
     }
@@ -418,6 +419,7 @@ function openEditMenuPopup(index) {
     priceField.value = menu.price || '';
     descriptionField.value = menu.description || '';
     statusField.value = menu.status || '';
+    image.src = menu.image || 'path/to/default-image.jpg'; // Tampilkan gambar di preview
 
     // Tampilkan modal
     const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
