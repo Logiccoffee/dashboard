@@ -1,9 +1,5 @@
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 
-// Array untuk menyimpan data pesanan
-let orders = [];
-
-// URL API
 // URL API
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
 
@@ -57,41 +53,41 @@ function displayOrders(orders) {
 
         // Kolom Kode Transaksi
         const transactionCodeCell = document.createElement('td');
-        transactionCodeCell.textContent = order.orderNumber || '-';
+        transactionCodeCell.textContent = order.order_number || '-'; // Jika order_number kosong
         row.appendChild(transactionCodeCell);
 
         // Kolom Nomor Antrian
         const queueNumberCell = document.createElement('td');
-        queueNumberCell.textContent = order.queueNumber || '-';
+        queueNumberCell.textContent = order.queue_number || '-'; // Jika queue_number kosong
         row.appendChild(queueNumberCell);
 
         // Kolom Nama Produk
-        const MenuNameCell = document.createElement('td');
-        MenuNameCell.textContent = order.orders && order.orders.length > 0
-            ? order.orders.map(item => item.menu_name).join(', ') // Sesuaikan dengan 'menu_name'
+        const menuNameCell = document.createElement('td');
+        menuNameCell.textContent = order.orders && order.orders.length > 0
+            ? order.orders.map(item => item.menu_name || 'Tidak Diketahui').join(', ') // Tangani kasus `menu_name` kosong
             : '-';
-        row.appendChild(MenuNameCell);
+        row.appendChild(menuNameCell);
 
         // Kolom Jumlah + Harga Satuan
         const quantityPriceCell = document.createElement('td');
         quantityPriceCell.textContent = order.orders && order.orders.length > 0
-            ? order.orders.map(item => `${item.quantity} x ${item.price}`).join(', ')
+            ? order.orders.map(item => `${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`).join(', ')
             : '-';
         row.appendChild(quantityPriceCell);
 
         // Kolom Harga Total
         const totalPriceCell = document.createElement('td');
-        totalPriceCell.textContent = order.total ? `Rp ${order.total.toLocaleString()}` : '-';
+        totalPriceCell.textContent = order.total || '-'; // Total harga dalam format Rupiah
         row.appendChild(totalPriceCell);
 
         // Kolom Metode Pembayaran
-        const PaymentMethodCell = document.createElement('td');
-        PaymentMethodCell.textContent = order.payment_method || '-'; // Sesuaikan dengan 'payment_method'
-        row.appendChild(PaymentMethodCell);
+        const paymentMethodCell = document.createElement('td');
+        paymentMethodCell.textContent = order.payment_method || '-'; // Jika payment_method kosong
+        row.appendChild(paymentMethodCell);
 
         // Kolom Status
         const statusCell = document.createElement('td');
-        statusCell.textContent = order.status || '-';
+        statusCell.textContent = order.status || '-'; // Jika status kosong
         row.appendChild(statusCell);
 
         // Kolom Aksi
