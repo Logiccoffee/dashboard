@@ -10,9 +10,6 @@ if (getCookie("login") === "") {
     redirect("/");
 }
 
-// Ambil data pengguna menggunakan API
-getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user", "login", getCookie("login"), responseFunction);
-
 // Fungsi untuk menangani respons API
 function responseFunction(result) {
     try {
@@ -29,31 +26,8 @@ function responseFunction(result) {
         if (userList) {
             const userData = result.data;
 
-            // Baris tabel HTML untuk pengguna
-            const userRow = `
-                <tr>
-                    <td>${userData.id || "-"}</td>
-                    <td>${userData.name || "Nama Tidak Diketahui"}</td>
-                    <td>${userData.email || "Email Tidak Diketahui"}</td>
-                    <td id="role-user-${userData.id || "-"}">${userData.role || "Peran Tidak Diketahui"}</td>
-                    <td>${userData.phone || "Nomor Telepon Tidak Diketahui"}</td>
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button"
-                                id="dropdownMenuButton-${userData.id}" data-bs-toggle="dropdown" aria-expanded="false">
-                                Role
-                            </button>
-                            <ul class="dropdown-menu" id="dropdown-role-${userData.id}" aria-labelledby="dropdownMenuButton-${userData.id}">
-                                <li><a class="dropdown-item" href="#">Admin</a></li>
-                                <li><a class="dropdown-item" href="#">User</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            `;
-
-            // Tambahkan baris ke tabel
-            userList.innerHTML += userRow;
+            // Tambahkan pengguna ke tabel
+            addUserRow(userData);
         }
 
         console.log("Data pengguna berhasil ditambahkan:", result.data);
@@ -63,41 +37,44 @@ function responseFunction(result) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+// Fungsi untuk menambahkan baris pengguna ke tabel
+function addUserRow(userData) {
+    const userList = document.getElementById("user-list");
     const roles = ["User", "Dosen", "Admin"];
-    
-    // Iterate over all rows to populate dropdown dynamically
-    document.querySelectorAll("tbody tr").forEach((row) => {
-        const userId = row.querySelector("td:nth-child(1)").textContent.trim(); // Get ID
-        const currentRole = row.querySelector(`#role-user-${userId}`).textContent.trim(); // Get Current Role
-        const dropdownMenu = document.querySelector(`#dropdown-role-${userId}`); // Dropdown Menu Element
 
-        // Generate options based on current role
-        roles.forEach((role) => {
-            if (role !== currentRole) { // Exclude current role from dropdown
-                const listItem = document.createElement("li");
-                listItem.innerHTML = `
-                    <a class="dropdown-item" href="#" onclick="changeRole(${userId}, '${role}')">
-                        <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
-                    </a>`;
-                dropdownMenu.appendChild(listItem);
-            }
-        });
-    });
-});
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td>${userData.id || "-"}</td>
+        <td>${userData.name || "Nama Tidak Diketahui"}</td>
+        <td>${userData.email || "Email Tidak Diketahui"}</td>
+        <td id="role-user-${userData.id || "-"}">${userData.role || "Peran Tidak Diketahui"}</td>
+        <td>${userData.phone || "Nomor Telepon Tidak Diketahui"}</td>
+        <td>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button"
+                    id="dropdownMenuButton-${userData.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                    Role
+                </button>
+                <ul class="dropdown-menu" id="dropdown-role-${userData.id}" aria-labelledby="dropdownMenuButton-${userData.id}">
+                    <!-- Opsi akan ditambahkan melalui JavaScript -->
+                </ul>
+            </div>
+        </td>
+    `;
 
-// Function to handle role change
-function changeRole(userId, newRole) {
-    const roleElement = document.querySelector(`#role-user-${userId}`);
-    roleElement.textContent = newRole; // Update role in UI
-    alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`);
+    userList.appendChild(row);
 
-    // Update dropdown options dynamically after role change
-    const dropdownMenu = document.querySelector(`#dropdown-role-${userId}`);
-    dropdownMenu.innerHTML = ""; // Clear existing options
-    const roles = ["User", "Dosen", "Admin"];
+    // Tambahkan opsi ke dropdown
+    populateDropdown(userData.id, userData.role, roles);
+}
+
+// Fungsi untuk mengisi dropdown dengan opsi peran
+function populateDropdown(userId, currentRole, roles) {
+    const dropdownMenu = document.getElementById(`dropdown-role-${userId}`);
+    dropdownMenu.innerHTML = ""; // Kosongkan opsi sebelumnya
+
     roles.forEach((role) => {
-        if (role !== newRole) { // Exclude new role from dropdown
+        if (role !== currentRole) {
             const listItem = document.createElement("li");
             listItem.innerHTML = `
                 <a class="dropdown-item" href="#" onclick="changeRole(${userId}, '${role}')">
@@ -107,3 +84,17 @@ function changeRole(userId, newRole) {
         }
     });
 }
+
+// Fungsi untuk mengubah peran pengguna
+function changeRole(userId, newRole) {
+    const roleElement = document.getElementById(`role-user-${userId}`);
+    roleElement.textContent = newRole; // Perbarui peran di UI
+    alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`);
+
+    // Perbarui opsi dropdown
+    const roles = ["User", "Dosen", "Admin"];
+    populateDropdown(userId, newRole, roles);
+}
+
+// Ambil data pengguna menggunakan API
+getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user", "login", getCookie("login"), responseFunction);
