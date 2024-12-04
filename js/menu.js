@@ -420,7 +420,7 @@ function openEditMenuPopup(index) {
 
     // Isi field di dalam modal dengan data menu
     document.getElementById('edit-product-name').value = menu.name || '';
-    document.getElementById('edit-product-price').value = menu.price || '';
+    document.getElementById('edit-product-price').value = formatPrice(menu.price) || ''; // Mengisi harga (formatkan harga sesuai locale)
     document.getElementById('edit-product-description').value = menu.description || '';
     document.getElementById('edit-product-image').value = ''; // Kosongkan karena input file tidak dapat diisi secara program
     document.getElementById('edit-product-status').value = menu.status || '';
@@ -445,6 +445,15 @@ function openEditMenuPopup(index) {
     // Tampilkan modal
     const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
     editModal.show();
+}
+
+// Fungsi untuk memformat harga agar lebih mudah dibaca (menggunakan titik sebagai pemisah ribuan)
+function formatPrice(price) {
+    if (price) {
+        // Format harga ke format IDR (contoh: 10,000,000)
+        return price.toLocaleString('id-ID');
+    }
+    return '';
 }
 
 // Fungsi untuk mengedit menu
