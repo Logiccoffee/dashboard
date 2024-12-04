@@ -1,5 +1,4 @@
-import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
-
+// Fungsi untuk memuat daftar pesanan
 const loadOrders = async () => {
     try {
         const apiURL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
@@ -12,7 +11,7 @@ const loadOrders = async () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'login': token // Tambahkan header login
+                'login': token, // Header login
             },
         });
 
