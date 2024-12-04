@@ -23,21 +23,20 @@ function responseFunction(result) {
             return;
         }
 
-        // Ambil data pengguna dari respons
         const userData = result.data;
 
-        // Validasi apakah data pengguna adalah array
-        if (!Array.isArray(userData)) {
-            throw new Error("Data pengguna bukan array!");
-        }
-
-        // Tambahkan data pengguna ke tabel
-        const userList = document.getElementById("user-list");
-        if (userList) {
+        // Periksa apakah data pengguna berupa array atau objek tunggal
+        if (Array.isArray(userData)) {
+            console.log("Data pengguna adalah array.");
             userData.forEach((user, index) => addUserRow(user, index));
+        } else if (typeof userData === "object" && userData !== null) {
+            console.log("Data pengguna adalah objek tunggal.");
+            addUserRow(userData, 0); // Tambahkan sebagai baris pertama
+        } else {
+            throw new Error("Data pengguna tidak valid!");
         }
 
-        console.log("Data pengguna berhasil ditambahkan:", userData);
+        console.log("Data pengguna berhasil diproses:", userData);
     } catch (error) {
         console.error("Terjadi kesalahan saat memproses respons:", error.message);
         setInner("content", "Terjadi kesalahan saat memproses data.");
@@ -54,15 +53,15 @@ function addUserRow(userData, index) {
         <td>${index + 1}</td> <!-- Nomor urut berdasarkan indeks -->
         <td>${userData.name || "Nama Tidak Diketahui"}</td>
         <td>${userData.email || "Email Tidak Diketahui"}</td>
-        <td id="role-user-${userData.id || "-"}">${userData.role || "Peran Tidak Diketahui"}</td>
-        <td>${userData.phone || "Nomor Telepon Tidak Diketahui"}</td>
+        <td id="role-user-${userData._id || "-"}">${userData.role || "Peran Tidak Diketahui"}</td>
+        <td>${userData.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
         <td>
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button"
-                    id="dropdownMenuButton-${userData.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                    id="dropdownMenuButton-${userData._id}" data-bs-toggle="dropdown" aria-expanded="false">
                     Role
                 </button>
-                <ul class="dropdown-menu" id="dropdown-role-${userData.id}" aria-labelledby="dropdownMenuButton-${userData.id}">
+                <ul class="dropdown-menu" id="dropdown-role-${userData._id}" aria-labelledby="dropdownMenuButton-${userData._id}">
                     <!-- Opsi akan ditambahkan melalui JavaScript -->
                 </ul>
             </div>
@@ -72,7 +71,7 @@ function addUserRow(userData, index) {
     userList.appendChild(row);
 
     // Tambahkan opsi ke dropdown
-    populateDropdown(userData.id, userData.role, roles);
+    populateDropdown(userData._id, userData.role, roles);
 }
 
 // Fungsi untuk mengisi dropdown dengan opsi peran
@@ -84,7 +83,7 @@ function populateDropdown(userId, currentRole, roles) {
         if (role !== currentRole) {
             const listItem = document.createElement("li");
             listItem.innerHTML = `
-                <a class="dropdown-item" href="#" onclick="changeRole(${userId}, '${role}')">
+                <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}')">
                     <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
                 </a>`;
             dropdownMenu.appendChild(listItem);
