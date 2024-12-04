@@ -318,6 +318,38 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// Ambil semua tombol "Ubah" dari setiap card
+const editButtons = document.querySelectorAll(".edit-button"); // Pastikan tombol memiliki class ini
+
+// Tambahkan event listener ke setiap tombol
+editButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+        // Ambil data dari atribut tombol atau elemen card
+        const card = button.closest(".card"); // Pastikan tombol ada dalam card
+        const productName = card.querySelector(".product-name").textContent;
+        const productPrice = card.querySelector(".product-price").textContent;
+        const productDescription = card.querySelector(".product-description").textContent;
+
+        // Isi data ke form popup
+        document.getElementById("edit-product-name").value = productName.trim();
+        document.getElementById("edit-product-price").value = productPrice.trim();
+        document.getElementById("edit-product-description").value = productDescription.trim();
+
+        // Jika ada kategori dan status, isi juga (opsional)
+        const productCategory = card.getAttribute("data-category");
+        const productStatus = card.getAttribute("data-status");
+
+        if (productCategory) {
+            document.getElementById("edit-productCategory").value = productCategory;
+        }
+
+        if (productStatus) {
+            document.getElementById("product-status").value = productStatus;
+        }
+    });
+});
+
+
 // Fungsi untuk membuka pop-up edit menu
 function openEditMenuPopup(index) {
     // Simpan indeks menu yang sedang diedit
