@@ -50,16 +50,20 @@ function displayOrders(orders) {
     // Tampilkan data pesanan
     orders.forEach((order) => {
         const row = document.createElement('tr');
+        
+        // Kolom Identitas (Gabungan orderNumber dan queueNumber)
+        const customerInfoCell = document.createElement('td');
     
-         // Kolom Kode Transaksi (orderNumber)
-         const orderNumberCell = document.createElement('td');
-         orderNumberCell.textContent = order.orderNumber  || '-'; // Ganti dengan '-' jika kosong
-         row.appendChild(orderNumberCell);
-         
-         // Kolom Nomor Antrian (queueNumber) ...
-         const queueNumberCell = document.createElement('td');
-         queueNumberCell.textContent = order.queueNumber > 0 ? order.queueNumber: '-';  // Ganti dengan '-' jika 0
-         row.appendChild(queueNumberCell);
+        // Format data untuk kolom
+        const customerInfoContent = `
+            Order Number: ${order.orderNumber || '-'}<br>
+            Queue Number: ${order.queueNumber > 0 ? order.queueNumber : '-'}
+        `;
+    
+        // Masukkan data ke kolom
+        customerInfoCell.innerHTML = customerInfoContent; 
+        row.appendChild(customerInfoCell);
+    
 
         // Kolom Nama Produk
         const menuNameCell = document.createElement('td');
