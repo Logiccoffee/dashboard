@@ -181,14 +181,14 @@ function addMenu(event) {
     // Validasi input menu
     if (!menuName || !menuCategory || !menuPrice || !menuDescription || !menuImage || !menuStatus) {
         alert('Semua data menu harus diisi, termasuk gambar!');
-        return false;
+        return;
     }
 
     // Validasi gambar
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!allowedTypes.includes(menuImage.type)) {
         alert('Format file tidak didukung. Harap unggah gambar dengan format JPG, PNG, atau GIF.');
-        return false;
+        return;
     }
 
     if (menuStatus === '') {
@@ -205,6 +205,9 @@ function addMenu(event) {
         return false;
     }
 
+    // Kirim menu untuk ditambahkan
+    submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImage);
+
     // Cek apakah kategori ada, jika tidak, tambahkan kategori baru
     if (!categories.some(category => category.id === menuCategory)) {
         // Jika kategori tidak ada, tambahkan kategori baru melalui API (misalnya, 'postJSON')
@@ -219,21 +222,11 @@ function addMenu(event) {
                 alert('Gagal menambah kategori baru!');
             }
         });
-    } else {
-        // Jika kategori sudah ada, lanjutkan menambah menu
-        submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage);
     }
 }
 
 // Fungsi untuk mengirim menu baru ke API
 function submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImage) {
-    // Validasi apakah menuImage adalah file yang valid
-    if (!(menuImage instanceof File)) {
-        alert('File gambar tidak valid. Harap unggah ulang gambar!');
-        console.error('menuImage bukan tipe File:', menuImage);
-        return;
-    }    
-
     // Konversi gambar ke Base64 jika diperlukan oleh API
     const reader = new FileReader();
     reader.onload = function () {
