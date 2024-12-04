@@ -61,7 +61,7 @@ function responseFunction(result) {
 // Fungsi untuk menambahkan baris pengguna ke tabel
 function addUserRow(userData, index) {
     const userList = document.getElementById("user-list");
-    const roles = ["User", "Dosen", "Admin"];
+    const roles = ["user", "admin", "dosen"];
 
     if (!userList) {
         console.error("Elemen dengan ID 'user-list' tidak ditemukan.");
@@ -127,6 +127,6 @@ function changeRole(userId, newRole) {
     alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`); // Pemberitahuan kepada pengguna
 
     // Perbarui opsi dropdown
-    const roles = ["User", "Dosen", "Admin"];
+    const roles = ["user", "admin", "dosen"];
     populateDropdown(userId, newRole, roles); // Isi ulang dropdown
 }
