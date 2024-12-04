@@ -16,6 +16,7 @@ if (!token) {
 
 // Panggil getJSON untuk mengambil data menu
 getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
+    console.log("Respons API menu:", response); // Debugging
     if (response.status === 200) {
         menus = response.data.data || []; // Menyimpan data menu yang ada
         displayMenus(response);
@@ -57,7 +58,7 @@ function displayMenus(response) {
                     <h5 class="card-title">${item.name}</h5>
                     <p class="card-text">Deskripsi: ${item.description || 'Tidak ada deskripsi'}</p>
                     <p class="card-text">Harga: ${item.price}</p>
-                    <p class="card-text">Status: ${item.status}</p>
+                    <p class="card-text">Status: ${item.status || 'Tidak Tersedia'}</p>
                 </div>
                 <div class="card-footer text-center">
                     <button class="btn btn-warning btn-edit" onclick="openEditMenuPopup(${index})">
@@ -114,13 +115,14 @@ function loadCategories() {
     getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', "Login", token, (response) => {
         console.log("Respons kategori:", response);  // Debugging untuk memastikan respons API
 
-        if (response.status === 200) {
-            // Pastikan categories adalah array yang valid
-            categories = Array.isArray(response.data.data) ? response.data.data : [];
+        // Tambahkan kode pengecekan di sini
+        if (response.status === 200 && Array.isArray(response.data.data)) {
+            categories = response.data.data; 
             displayCategories(categories); // Pastikan kategori yang ditampilkan adalah array
         } else {
-            console.error(`Error: ${response.status}`);
-            alert("Gagal memuat kategori. Silakan coba lagi.");
+            console.error("Kategori gagal dimuat. Menggunakan kategori default.");
+            categories = [{ id: 'default', name: 'Umum' }];
+            displayCategories(categories); // Tampilkan kategori default
         }
     });
 }
@@ -149,7 +151,7 @@ function displayStatuses() {
 }
 
 // Panggil fungsi displayStatuses saat modal dibuka
-document.getElementById('addProductModal').addEventListener('show.bs.modal', function() {
+document.getElementById('addProductModal').addEventListener('show.bs.modal', function () {
     console.log("Modal terbuka, memuat status...");
     displayStatuses(); // Memuat status saat modal dibuka
     loadCategories(); // Memuat kategori saat modal dibuka
@@ -168,6 +170,11 @@ function addMenu(event) {
     // Validasi input menu
     if (menuName === '' || menuCategory === '' || menuPrice === '' || !menuImage) {
         alert('Semua data menu harus diisi!');
+        return false;
+    }
+
+    if (menuStatus === '') {
+        alert('Harap pilih status untuk menu!');
         return false;
     }
 
