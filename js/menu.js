@@ -142,9 +142,9 @@ const statuses = ['Tersedia', 'Tidak Tersedia'];
 
 // Fungsi untuk menampilkan status dalam dropdown
 function displayStatuses() {
-    const statusSelect = document.getElementById('product-status');
+    const statusSelect = document.getElementById('edit-product-status');
     if (!statusSelect) {
-        console.error("Elemen dengan id 'product-status' tidak ditemukan.");
+        console.error("Elemen dengan id 'edit-product-status' tidak ditemukan.");
         return;
     }
 
@@ -340,7 +340,7 @@ editButtons.forEach((button) => {
 
         // Set kategori dan status jika ada
         if (productCategory) {
-            document.getElementById("edit-productCategory").value = productCategory;
+            document.getElementById("edit-product-category").value = productCategory;
         }
         if (productStatus) {
             document.getElementById("product-status").value = productStatus;
@@ -356,8 +356,8 @@ document.getElementById("editProductForm").addEventListener("submit", function (
     const updatedProductName = document.getElementById("edit-product-name").value;
     const updatedProductPrice = document.getElementById("edit-product-price").value;
     const updatedProductDescription = document.getElementById("edit-product-description").value;
-    const updatedProductCategory = document.getElementById("edit-productCategory").value;
-    const updatedProductStatus = document.getElementById("product-status").value;
+    const updatedProductCategory = document.getElementById("edit-product-category").value;
+    const updatedProductStatus = document.getElementById("edit-product-status").value;
 
     // Proses pembaruan data (misalnya mengirim data ke server, atau memperbarui elemen card)
     console.log("Data yang diperbarui:", {
@@ -411,10 +411,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById("edit-product-price").value = productPrice;
                 document.getElementById("edit-product-description").value = productDescription;
                 if (productCategory) {
-                    document.getElementById("edit-productCategory").value = productCategory;
+                    document.getElementById("edit-product-category").value = productCategory;
                 }
                 if (productStatus) {
-                    document.getElementById("product-status").value = productStatus;
+                    document.getElementById("edit-product-status").value = productStatus;
                 }
                 // Tampilkan modal
                 const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
@@ -435,7 +435,7 @@ function saveMenuChanges(event) {
     event.preventDefault(); // Mencegah form submit biasa
 
     const updatedMenuName = document.getElementById('edit-product-name').value.trim();
-    const updatedMenuCategory = document.getElementById('edit-productCategory').value.trim();
+    const updatedMenuCategory = document.getElementById('edit-product-category').value.trim();
     const updatedMenuPrice = document.getElementById('edit-product-price').value.trim();
     const updatedMenuDescription = document.getElementById('edit-product-description').value.trim();
     const updatedMenuStatus = document.getElementById('edit-product-status').value.trim();
