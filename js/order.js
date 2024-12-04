@@ -1,3 +1,4 @@
+// Mengimpor modul untuk HTTP request
 import { getJSON, postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { putJSON, deleteJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/api.js";
 
@@ -127,12 +128,6 @@ function addOrder(event) {
         price: orderPrice
     };
 
-    const token = getCookie('login');
-    if (!token) {
-        alert('Token tidak ditemukan, harap login terlebih dahulu!');
-        return;
-    }
-
     postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order', 'Login', token, newOrder, function (response) {
         const { status, data } = response;
 
@@ -180,12 +175,6 @@ document.getElementById('edit-order-form').addEventListener('submit', (event) =>
     const targetUrl = `https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order/${orders[currentEditIndex].id}`;
     const updatedOrderData = { status: updatedOrderStatus };
 
-    const token = getCookie('login');
-    if (!token) {
-        alert('Token tidak ditemukan, harap login terlebih dahulu!');
-        return;
-    }
-
     putJSON(targetUrl, 'Login', token, updatedOrderData, function (response) {
         const { status, data } = response;
 
@@ -231,5 +220,3 @@ document.getElementById('delete-order-form').addEventListener('submit', (event) 
         }
     });
 });
-
-// Mengambil data pesanan dari API
