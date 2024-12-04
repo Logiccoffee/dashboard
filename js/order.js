@@ -231,3 +231,40 @@ document.getElementById('delete-order-form').addEventListener('submit', (event) 
         }
     });
 });
+
+// Mengambil data pesanan dari API
+fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order')
+    .then(response => response.json())  // Mengonversi respons menjadi JSON
+    .then(data => {
+        console.log('Data pesanan berhasil diambil:', data);
+
+        // Mengambil jumlah pesanan dari data yang diterima
+        const orderCount = data.data.length; // Menghitung jumlah pesanan berdasarkan panjang array data
+
+        // Menampilkan jumlah pesanan ke elemen dengan ID 'order-count'
+        const orderCountElement = document.getElementById('order-count');
+        
+        if (orderCountElement) {
+            orderCountElement.textContent = orderCount; // Update dengan jumlah pesanan
+        }
+
+        // Jika ingin menampilkan data pesanan dalam tabel
+        const transactionList = document.getElementById('transaction-list');
+        if (transactionList) {
+            data.data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${item.nama}</td>
+                    <td>${item.tanggal}</td>
+                    <td>${item.status}</td>
+                    <td>${item.total}</td>
+                `;
+                transactionList.appendChild(row);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Terjadi kesalahan:', error);
+    });
+
