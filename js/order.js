@@ -15,16 +15,16 @@ if (!token) {
 
 // Panggil API untuk mengambil data pesanan menggunakan fetch()
 fetch(API_URL, {
-    method: 'GET', // or 'POST' depending on your API method
+    method: 'GET', // Menggunakan GET jika API sesuai
     headers: {
-        'login': token, // Menggunakan 'login' sebagai header untuk token
+        'Authorization': `Bearer ${token}`, // Pastikan menggunakan 'Authorization' sebagai header untuk token
         'Content-Type': 'application/json',
     }
 })
-    .then(response => response.json()) // Parse JSON from the response
+    .then(response => response.json()) // Parse JSON dari respons
     .then(response => {
         if (response.status === 200) {
-            const orders = response.data.data || [];
+            const orders = response.data || []; // Memastikan data diakses dengan benar
             displayOrders(orders);
         } else {
             console.error(`Error: ${response.status}`);
