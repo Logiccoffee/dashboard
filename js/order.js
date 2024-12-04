@@ -75,15 +75,17 @@ function displayOrders(orders) {
             : '-';
         row.appendChild(quantityPriceCell);
 
-        // Kolom Harga Total
-        const totalPriceCell = document.createElement('td');
-        // Hilangkan "Rp" jika sudah ada, lalu format ulang
-        let total = order.total ? order.total.toString().replace(/Rp\s*/, '') : '-';
-        totalPriceCell.textContent = total !== '-' 
-            ? parseFloat(total.replace(',', '')).toLocaleString('id-ID') 
-            : '-'; // Format angka tanpa "Rp"
-        
-        row.appendChild(totalPriceCell);
+      // Kolom Harga Total
+const totalPriceCell = document.createElement('td');
+
+// Pastikan order.total adalah angka valid
+let total = order.total ? order.total.toString().replace(/[^\d]/g, '') : '-'; // Hanya angka
+totalPriceCell.textContent = total !== '-' 
+    ? `Rp ${parseInt(total, 10).toLocaleString('id-ID')}` // Tambahkan kembali "Rp" jika valid
+    : '-'; // Jika kosong, tampilkan "-"
+
+row.appendChild(totalPriceCell);
+
         
 
 row.appendChild(totalPriceCell);
