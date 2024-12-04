@@ -27,7 +27,7 @@ function responseFunction(result) {
             const userData = result.data;
 
             // Tambahkan pengguna ke tabel
-            addUserRow(userData);
+            userData.forEach((user, index) => addUserRow(user, index)); // Tambahkan nomor urut
         }
 
         console.log("Data pengguna berhasil ditambahkan:", result.data);
@@ -38,13 +38,13 @@ function responseFunction(result) {
 }
 
 // Fungsi untuk menambahkan baris pengguna ke tabel
-function addUserRow(userData) {
+function addUserRow(userData, index) {
     const userList = document.getElementById("user-list");
     const roles = ["User", "Dosen", "Admin"];
 
     const row = document.createElement("tr");
     row.innerHTML = `
-        <td>${userData.id || "-"}</td>
+        <td>${index + 1}</td> <!-- Nomor urut berdasarkan indeks -->
         <td>${userData.name || "Nama Tidak Diketahui"}</td>
         <td>${userData.email || "Email Tidak Diketahui"}</td>
         <td id="role-user-${userData.id || "-"}">${userData.role || "Peran Tidak Diketahui"}</td>
@@ -97,4 +97,4 @@ function changeRole(userId, newRole) {
 }
 
 // Ambil data pengguna menggunakan API
-getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users", "login", getCookie("login"), responseFunction);
+getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user", "login", getCookie("login"), responseFunction);
