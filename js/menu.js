@@ -337,6 +337,7 @@ editButtons.forEach((button) => {
         const productPrice = card.querySelector(".product-price")?.textContent.trim() || '';
         const productDescription = card.querySelector(".product-description")?.textContent.trim() || '';
         const productCategory = card.getAttribute("data-category") || ''; // Ambil data kategori
+        const productImage = card.querySelector(".product-image")?.src || ''; // Ambil URL gambar
         const productStatus = card.getAttribute("data-status") || ''; // Ambil data status
 
         // Periksa apakah elemen-elemen ini ada
@@ -350,6 +351,7 @@ editButtons.forEach((button) => {
         document.getElementById("edit-product-price").value = productPrice;
         document.getElementById("edit-product-description").value = productDescription;
         document.getElementById("edit-product-category").value = productCategory;
+        document.getElementById("edit-product-image").src = productImage; // Masukkan gambar
         document.getElementById("edit-product-status").value = productStatus;
 
         // Tampilkan modal edit
@@ -555,57 +557,6 @@ document.getElementById('editProductForm').addEventListener('submit', function (
     const editProductModal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
     editProductModal.hide();
 });
-
-// Fungsi untuk menangani submit form saat mengubah menu
-function editMenu(event) {
-    event.preventDefault(); // Mencegah form submit default
-
-    const updatedMenuName = document.getElementById('edit-product-name').value.trim(); // Nama menu baru
-    if (updatedMenuName === '') {
-        alert('Nama menu tidak boleh kosong!');
-        return;
-    }
-
-    const targetUrl = `${'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu'}/${menus[currentEditIndex].id}`; // Endpoint API dengan ID menu
-
-    // Data yang akan diupdate
-    const updatedMenuData = { name: updatedMenuName };
-
-    // Ambil token dari cookie
-    const token = getCookie('login');
-    if (!token) {
-        alert('Token tidak ditemukan, harap login terlebih dahulu!');
-        return;
-    }
-
-    // Log untuk memeriksa data yang akan dikirim
-    console.log('Menu yang akan diubah:', updatedMenuData);
-
-    // Kirim data ke API untuk mengubah menu menggunakan putJSON
-    putJSON(targetUrl, 'Login', token, updatedMenuData, function (response) {
-        const { status, data } = response;
-
-        if (status >= 200 && status < 300) {
-            console.log('Menu berhasil diubah:', data);
-
-            // Perbarui data menu di array setelah berhasil diubah
-            menus[currentEditIndex].name = updatedMenuName;
-
-            // Render ulang daftar menu
-            displayMenus({ data: { data: menus } });
-
-            // Menutup modal setelah perubahan berhasil
-            const modal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
-            modal.hide(); // Menutup modal
-
-            // Reset form
-            document.getElementById('edit-product-name').value = '';
-        } else {
-            console.error('Gagal mengubah menu:', data);
-            alert('Gagal mengubah menu!');
-        }
-    });
-}
 
 // Fungsi untuk menghapus menu
 document.getElementById('confirm-delete').addEventListener('click', () => {
