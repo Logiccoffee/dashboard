@@ -171,7 +171,12 @@ function addMenu(event) {
     const menuDescription = document.getElementById('product-description').value.trim();
     const menuStatus = document.getElementById('product-status').value.trim(); // Ambil status
     console.log("Status yang dipilih:", menuStatus);
-    const menuImage = document.getElementById('product-image').files[0];
+    const menuImageInput = document.getElementById('product-image');
+    if (!menuImageInput || !menuImageInput.files || menuImageInput.files.length === 0) {
+        alert('Harap unggah file gambar!');
+        return false;
+    }
+    const menuImage = menuImageInput.files[0];
 
     // Validasi input menu
     if (!menuName || !menuCategory || !menuPrice || !menuDescription || !menuImage || !menuStatus) {
@@ -227,12 +232,13 @@ function submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatu
         alert('File gambar tidak valid. Harap unggah ulang gambar!');
         console.error('menuImage bukan tipe File:', menuImage);
         return;
-    }
+    }    
 
     // Konversi gambar ke Base64 jika diperlukan oleh API
     const reader = new FileReader();
     reader.onload = function () {
         const imageData = reader.result; // Data Base64 dari gambar
+        console.log('Gambar dalam format Base64:', imageData);
 
         const menuData = {
             name: menuName,
@@ -276,7 +282,7 @@ function submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatu
             }
         );
     };
-    
+
     reader.onerror = function (error) {
         console.error('Gagal membaca file gambar:', error);
         alert('Terjadi kesalahan saat membaca file gambar. Silakan coba lagi.');
