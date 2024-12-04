@@ -58,7 +58,7 @@ function displayOrders(orders) {
          
          // Kolom Nomor Antrian (queueNumber) ...
          const queueNumberCell = document.createElement('td');
-         queueNumberCell.textContent = order.queueNumber> 0 ? order.queueNumber: '-';  // Ganti dengan '-' jika 0
+         queueNumberCell.textContent = order.queueNumber > 0 ? order.queueNumber: '-';  // Ganti dengan '-' jika 0
          row.appendChild(queueNumberCell);
 
         // Kolom Nama Produk
@@ -77,9 +77,11 @@ function displayOrders(orders) {
 
         // Kolom Harga Total
         const totalPriceCell = document.createElement('td');
-        const formattedTotal = order.total ? `Rp ${parseFloat(order.total.replace(/[^\d.-]/g, '')).toLocaleString('id-ID')}` : '-';
-        totalPriceCell.textContent = formattedTotal; // Total harga dalam format Rupiah
+        totalPriceCell.textContent = order.total 
+            ? `Rp ${order.total.toLocaleString('id-ID')}` 
+            : '-'; // Gunakan tanda backtick untuk string template
         row.appendChild(totalPriceCell);
+        
 
         // Kolom Metode Pembayaran & Status
         const paymentStatusCell = document.createElement('td');
