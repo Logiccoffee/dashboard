@@ -202,7 +202,7 @@ function addMenu(event) {
                 // Reload kategori
                 loadCategories();
                 // Lanjutkan untuk menambahkan menu
-                submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage);
+                submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImage);
             } else {
                 alert('Gagal menambah kategori baru!');
             }
@@ -214,7 +214,7 @@ function addMenu(event) {
 }
 
 // Fungsi untuk mengirim menu baru ke API
-function submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage) {
+function submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImage) {
     // Konversi gambar ke Base64 jika diperlukan oleh API
     const reader = new FileReader();
     reader.onload = function () {
