@@ -331,13 +331,19 @@ editButtons.forEach((button) => {
             console.error("Card tidak ditemukan.");
             return;
         }
-        
-        // Ambil data dari card (misalnya nama, harga, deskripsi, dll)
-        const productName = card.querySelector(".product-name").textContent.trim();
-        const productPrice = card.querySelector(".product-price").textContent.trim();
-        const productDescription = card.querySelector(".product-description").textContent.trim();
-        const productCategory = card.getAttribute("data-category");  // Ambil data kategori
-        const productStatus = card.getAttribute("data-status");  // Ambil data status
+
+        // Ambil data dari card (pastikan selector sesuai dengan struktur HTML)
+        const productName = card.querySelector(".product-name")?.textContent.trim() || '';
+        const productPrice = card.querySelector(".product-price")?.textContent.trim() || '';
+        const productDescription = card.querySelector(".product-description")?.textContent.trim() || '';
+        const productCategory = card.getAttribute("data-category") || ''; // Ambil data kategori
+        const productStatus = card.getAttribute("data-status") || ''; // Ambil data status
+
+        // Periksa apakah elemen-elemen ini ada
+        if (!productName || !productPrice || !productDescription) {
+            console.error("Beberapa data tidak ditemukan pada card.");
+            return;
+        }
 
         // Isi data ke dalam form edit modal
         document.getElementById("edit-product-name").value = productName;
@@ -381,6 +387,7 @@ document.getElementById("editProductForm").addEventListener("submit", function (
     });
 
     // Jika perlu, kirim data ke server atau lakukan update pada DOM
+    alert("Perubahan berhasil disimpan!");
 });
 
 // Fungsi untuk membuka pop-up edit menu
