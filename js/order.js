@@ -1,3 +1,5 @@
+import { getJSON, postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+
 // URL API
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
 
@@ -8,16 +10,28 @@ if (!token) {
     throw new Error("Token tidak ditemukan. Harap login ulang.");
 }
 
-// Panggil API untuk mengambil data pesanan
-getJSON(API_URL, "Login", token, (response) => {
-    if (response.status === 200) {
-        const orders = response.data.data || [];
-        displayOrders(orders);
-    } else {
-        console.error(`Error: ${response.status}`);
-        alert("Gagal memuat data pesanan. Silakan coba lagi.");
+// Panggil API untuk mengambil data pesanan menggunakan fetch()
+fetch(API_URL, {
+    method: 'GET', // or 'POST' depending on your API method
+    headers: {
+        'Authorization': `Bearer ${token}`, // Assuming token is needed in the Authorization header
+        'Content-Type': 'application/json',
     }
-});
+})
+    .then(response => response.json()) // Parse JSON from the response
+    .then(response => {
+        if (response.status === 200) {
+            const orders = response.data.data || [];
+            displayOrders(orders);
+        } else {
+            console.error(`Error: ${response.status}`);
+            alert("Gagal memuat data pesanan. Silakan coba lagi.");
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching data: ", error);
+        alert("Terjadi kesalahan saat memuat data pesanan.");
+    });
 
 // Fungsi untuk menampilkan data pesanan di tabel
 function displayOrders(orders) {
