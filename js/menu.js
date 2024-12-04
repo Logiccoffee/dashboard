@@ -431,11 +431,10 @@ function openEditMenuPopup(index) {
 
     // Isi data ke form
     nameField.value = productName || '';
-    categoryField.value = productCategory || '';
-    priceField.value = productPrice || '';
+    priceField.value = parsePrice(productPrice) || '';  // Gunakan parsePrice untuk menghapus format harga
     descriptionField.value = productDescription || '';
     statusField.value = productStatus || '';
-    imagePreview.src = productImage || 'path/to/default-image.jpg';
+    imagePreview.src = productImage || 'path/to/default-image.jpg';  // Set gambar preview
 
     // **Set kategori yang dipilih di dropdown**
     categoryField.value = productCategory || '';  // Pastikan kategori yang dipilih sesuai
@@ -444,6 +443,13 @@ function openEditMenuPopup(index) {
     const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
     editProductModal.show();
 }
+
+function parsePrice(price) {
+    return parseFloat(price.replace(/[^\d,-]/g, '').replace(',', '.'));
+}
+
+priceField.value = parsePrice(productPrice) || '';
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const editButtons = document.querySelectorAll(".edit-button");
@@ -482,13 +488,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Pastikan fungsi tersedia di global scope
 window.openEditMenuPopup = openEditMenuPopup;
-
-function parsePrice(price) {
-    // Hapus simbol 'Rp' dan format ribuan
-    return parseFloat(price.replace(/[^\d.-]/g, '').replace(',', '.'));
-}
-
-priceField.value = parsePrice(productPrice) || '';
 
 // Fungsi untuk menyimpan perubahan pada menu
 function saveMenuChanges(event) {
