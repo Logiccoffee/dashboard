@@ -1,41 +1,40 @@
-// Pastikan SweetAlert2 sudah dimuat dengan benar di HTML
 import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
 
-// Fungsi untuk mengambil dan menampilkan data pesanan
 const loadOrders = async () => {
     try {
-        // Gantilah API URL sesuai dengan URL yang benar
         const apiURL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
 
-        // Lakukan permintaan GET ke API
+        // Token login
+        const token = "v4.public.eyJhbGlhcyI6IlNpbmR5IE1hdWxpbmEiLCJleHAiOiIyMDI0LTEyLTA1VDAxOjE2OjQ5WiIsImlhdCI6IjIwMjQtMTItMDRUMDc6MTY6NDlaIiwiaWQiOiI2MjgzMTk1ODAwMDIyIiwibmJmIjoiMjAyNC0xMi0wNFQwNzoxNjo0OVoifc0-IoeTaYbb8tA78VlO43Soou_BsdMHdGdscbHpJZVUri5wMo3h7Mq9zTSO4Zx8i66vDvt4nvAPEekOMYPskQ4";
+
+        // Fetch data dari API dengan header login
         const response = await fetch(apiURL, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                // Jika API memerlukan header autentikasi, masukkan di sini
-                // 'Authorization': 'Bearer <API_KEY>' 
+                'login': token // Tambahkan header login
             },
         });
 
-        // Jika response tidak berhasil, lemparkan error
+        // Cek jika respons gagal
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
 
-        // Ambil data dalam format JSON
+        // Parsing respons JSON
         const orders = await response.json();
         console.log("Data pesanan berhasil diambil:", orders);
 
-        // Ambil elemen tbody untuk menampilkan data pesanan
         const transactionList = document.getElementById("transaction-list");
-        transactionList.innerHTML = "";  // Bersihkan data sebelumnya
+        transactionList.innerHTML = ""; // Kosongkan daftar sebelumnya
 
+        // Cek jika tidak ada data pesanan
         if (orders.length === 0) {
             Swal.fire("Info", "Tidak ada data pesanan untuk ditampilkan.", "info");
             return;
         }
 
-        // Loop untuk menampilkan setiap pesanan
+        // Loop data pesanan dan tampilkan di tabel
         orders.forEach((order, index) => {
             const row = `
                 <tr>
@@ -51,7 +50,6 @@ const loadOrders = async () => {
                     </td>
                 </tr>
             `;
-            // Tambahkan row baru ke dalam tbody
             transactionList.innerHTML += row;
         });
     } catch (error) {
@@ -60,5 +58,5 @@ const loadOrders = async () => {
     }
 };
 
-// Pastikan untuk menjalankan fungsi loadOrders setelah halaman selesai dimuat
+// Panggil fungsi loadOrders saat halaman selesai dimuat
 document.addEventListener("DOMContentLoaded", loadOrders);
