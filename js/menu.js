@@ -418,32 +418,32 @@ function openEditMenuPopup(index) {
 document.addEventListener('DOMContentLoaded', () => {
     const editButtons = document.querySelectorAll(".edit-button");
 
-    editButtons.forEach((button) => {
+    editButtons.forEach((button, index) => {
         button.addEventListener("click", () => {
-            const card = button.closest(".card");
-            // Pastikan card ditemukan sebelum mengambil data
-            if (card) {
-                const productName = card.querySelector(".product-name").textContent.trim();
-                const productPrice = card.querySelector(".product-price").textContent.trim();
-                const productDescription = card.querySelector(".product-description").textContent.trim();
-                const productCategory = card.getAttribute("data-category");
-                const productStatus = card.getAttribute("data-status");
+            // Ambil menu berdasarkan index
+            const menu = menus[index]; // Pastikan 'menus' adalah array yang berisi data menu
 
-                // Isi form modal dengan data dari card
+            // Pastikan menu ditemukan
+            if (menu) {
+                // Ambil data dari menu
+                const productName = menu.name;
+                const productPrice = menu.price;
+                const productDescription = menu.description;
+                const productCategory = menu.category_id; // Pastikan ini sesuai dengan struktur data
+                const productStatus = menu.status;
+
+                // Isi form modal dengan data dari menu
                 document.getElementById("edit-product-name").value = productName;
                 document.getElementById("edit-product-price").value = productPrice;
                 document.getElementById("edit-product-description").value = productDescription;
-                if (productCategory) {
-                    document.getElementById("edit-product-category").value = productCategory;
-                }
-                if (productStatus) {
-                    document.getElementById("edit-product-status").value = productStatus;
-                }
+                document.getElementById("edit-product-category").value = productCategory;
+                document.getElementById("edit-product-status").value = productStatus;
+
                 // Tampilkan modal
                 const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
                 editProductModal.show();
             } else {
-                console.error('Card tidak ditemukan.');
+                console.error('Menu tidak ditemukan untuk index:', index);
             }
         });
     });
@@ -488,6 +488,8 @@ function submitEditMenu(name, category, price, description, status) {
         description: description,
         status: status
     };
+
+    const menuId = menus[currentEditIndex].id; // Ambil ID menu yang sedang diedit
 
     // Kirim permintaan PUT ke API untuk memperbarui menu
     postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', 'Login', token, updatedMenu, function (response) {
