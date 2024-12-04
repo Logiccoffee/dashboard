@@ -438,13 +438,9 @@ function openEditMenuPopup(index) {
         categoryDropdown.appendChild(option);
     });
 
-    // Menangani Gambar (input file)
+    // Untuk gambar, tidak bisa mengisi input file melalui JS, hanya biarkan kosong
     const imageInput = document.getElementById('edit-product-image');
-    // Gambar tidak bisa di-set melalui JS, jadi hanya menampilkan gambar yang ada sebelumnya
-    if (menu.image) {
-        // Menampilkan gambar lama yang sudah ada dalam input file
-        // Namun, kita tidak bisa mengisi input file melalui JavaScript, jadi kita biarkan gambar lama di form
-    }
+    imageInput.value = '';  // Pastikan input file tidak terisi otomatis
 
     // Tampilkan modal
     const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
@@ -456,7 +452,7 @@ function editMenu(event) {
     event.preventDefault(); // Mencegah form submit biasa
 
     const menuName = document.getElementById('edit-product-name').value.trim();
-    const menuCategory = document.getElementById('edit-productCategory').value.trim();
+    const menuCategory = document.getElementById('edit-product-category').value.trim();
     const menuPrice = document.getElementById('edit-product-price').value.trim();
     const menuDescription = document.getElementById('edit-product-description').value.trim();
     const menuStatus = document.getElementById('edit-product-status').value.trim(); // Ambil status
@@ -492,43 +488,46 @@ function editMenu(event) {
 
 // Fungsi untuk mengonversi gambar menjadi Base64
 function convertToBase64(file) {
-    const reader = new FileReader();
-    reader.onloadend = function () {
-        return reader.result; // Mengembalikan Base64
-    };
-    reader.readAsDataURL(file);
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            resolve(reader.result); // Mengembalikan Base64
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
 }
 
 // Fungsi untuk mengirimkan data menu yang sudah diedit ke API
-function submitEditMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImageData, index) {
+function submitEditMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImageData) {
     const menuData = {
         name: menuName,
         category_id: menuCategory,
         description: menuDescription,
         price: price,
         status: menuStatus,
-        image: imageBase64 || null // Jika tidak ada gambar baru, biarkan null
+        image: menuImageData || null // Jika tidak ada gambar baru, biarkan null
     };
 
-    // Memanggil fungsi putJSON dari library untuk mengirimkan data menu yang telah diedit
-    putJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', 'Login', token, menuData, function (response) {
-        if (response.status >= 200 && response.status < 300) {
-            alert('Menu berhasil diperbarui!');
-            // Ambil data terbaru setelah sukses
-            getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
-                if (response.status === 200) {
-                    menus = response.data.data || []; // Update data menu
-                    displayMenus(response); // Tampilkan menu terbaru
-                } else {
-                    console.error('Gagal memuat menu:', response);
-                }
-            });
-            // Menutup modal edit setelah sukses
-            $('#editProductModal').modal('hide');
-        } else {
-            alert(`Gagal memperbarui menu: ${response.message || 'Coba lagi.'}`);
-        }
-    });
+// Memanggil fungsi putJSON dari library untuk mengirimkan data menu yang telah diedit
+putJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', 'Login', token, menuData, function (response) {
+    if (response.status >= 200 && response.status < 300) {
+        alert('Menu berhasil diperbarui!');
+        // Ambil data terbaru setelah sukses
+        getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
+            if (response.status === 200) {
+                menus = response.data.data || []; // Update data menu
+                displayMenus(response); // Tampilkan menu terbaru
+            } else {
+                console.error('Gagal memuat menu:', response);
+            }
+        });
+        // Menutup modal edit setelah sukses
+        $('#editProductModal').modal('hide');
+    } else {
+        alert(`Gagal memperbarui menu: ${response.message || 'Coba lagi.'}`);
+    }
+});
 }
 
 // Fungsi untuk membuka pop-up edit kategori jika diperlukan
