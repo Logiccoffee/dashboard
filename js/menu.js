@@ -174,8 +174,15 @@ function addMenu(event) {
     const menuImage = document.getElementById('product-image').files[0];
 
     // Validasi input menu
-    if (menuName === '' || menuCategory === '' || menuPrice === '' || menuDescription === '' || !menuImage) {
-        alert('Semua data menu harus diisi!');
+    if (!menuName || !menuCategory || !menuPrice || !menuDescription || !menuImage || !menuStatus) {
+        alert('Semua data menu harus diisi, termasuk gambar!');
+        return false;
+    }
+
+    // Validasi gambar
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(menuImage.type)) {
+        alert('Format file tidak didukung. Harap unggah gambar dengan format JPG, PNG, atau GIF.');
         return false;
     }
 
@@ -262,12 +269,7 @@ function submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatu
             }
         );
     };
-    // Membaca file gambar dan mengonversinya menjadi Base64
-    if (menuImage) {
-        reader.readAsDataURL(menuImage);
-    } else {
-        alert('Harap pilih gambar!');
-    }
+    reader.readAsDataURL(menuImage);
 }
 
 // Memastikan DOM selesai dimuat
