@@ -63,7 +63,7 @@ function displayOrders(orders) {
         // Kolom Nama Menu
         const menuNameCell = document.createElement('td');
         menuNameCell.textContent = order.orders
-            ? order.orders.map(item => item.productName).join(', ')
+            ? order.orders.map(item => item.MenuName).join(', ')
             : '-';
         row.appendChild(menuNameCell);
 
@@ -81,7 +81,7 @@ function displayOrders(orders) {
 
         // Kolom Metode Pembayaran
         const paymentMethodCell = document.createElement('td');
-        paymentMethodCell.textContent = order.payment_method || '-';
+        paymentMethodCell.textContent = order.PaymentMethod || '-';
         row.appendChild(paymentMethodCell);
 
         // Kolom Status
