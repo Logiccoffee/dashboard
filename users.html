@@ -62,56 +62,33 @@
         <!-- Sidebar akan ditambahkan dari sidebar.js -->
         <div id="sidebar-container"></div>
 
-        <div id="content"></div>
-        <main class="content-wrap">
-            <header class="content-head">
-                <h1 class="dashboard-title">Manajemen Pengguna</h1>
-            </header>
-        
-            <section class="content">
-                <h2 class="mt-4">Daftar Pengguna</h2>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>No. Telepon</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="user-list">
-                            <!-- Contoh Baris Data -->
-                            <tr>
-                                <td>1</td>
-                                <td>Jane Doe</td>
-                                <td>jane.doe@example.com</td>
-                                <td id="role-user-1">user</td>
-                                <td>081234567890</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button 
-                                            class="btn btn-primary dropdown-toggle" 
-                                            type="button" 
-                                            id="dropdownMenuButton-1" 
-                                            data-bs-toggle="dropdown" 
-                                            aria-expanded="false">
-                                            Pilih Role
-                                        </button>
-                                        <ul class="dropdown-menu" id="dropdown-role-1" aria-labelledby="dropdownMenuButton-1">
-                                            <!-- Opsi role akan diisi melalui JavaScript -->
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <!-- Tambahkan data pengguna lainnya di sini -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </main>        
+<div id="content"></div>
+<main class="content-wrap">
+    <header class="content-head">
+        <h1 class="dashboard-title">Manajemen Pengguna</h1>
+    </header>
+
+    <section class="content">
+        <h2 class="mt-4">Daftar Pengguna</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>WhatsApp</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="user-list">
+                    <!-- Baris data akan ditambahkan di sini -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
 
     <!-- Sidebar -->
     <script src="js/sidebar.js"></script>
