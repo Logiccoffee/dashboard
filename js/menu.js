@@ -374,22 +374,33 @@ document.getElementById("editProductForm").addEventListener("submit", function (
 // Fungsi untuk membuka pop-up edit menu
 function openEditMenuPopup(index) {
     const menu = menus[index]; // Ambil menu berdasarkan index
-    const editForm = document.getElementById('editProductForm'); // Pastikan form edit ada
-
-    if (editForm) {
-        // Isi data menu yang ada ke dalam form
-        document.getElementById('edit-product-name').value = menu.name;
-        document.getElementById('edit-product-category').value = menu.category_id;
-        document.getElementById('edit-product-price').value = menu.price;
-        document.getElementById('edit-product-description').value = menu.description;
-        document.getElementById('edit-product-status').value = menu.status;
-
-        // Pastikan modal editProductModal ada di DOM dan tampilkan modal
-        const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
-        editProductModal.show();
-    } else {
-        console.error('Form edit tidak ditemukan!');
+    if (!menu) {
+        console.error('Menu tidak ditemukan untuk index:', index);
+        return;
     }
+
+    // Ambil elemen form
+    const nameField = document.getElementById('edit-product-name');
+    const categoryField = document.getElementById('edit-product-category');
+    const priceField = document.getElementById('edit-product-price');
+    const descriptionField = document.getElementById('edit-product-description');
+    const statusField = document.getElementById('edit-product-status');
+
+    if (!nameField || !categoryField || !priceField || !descriptionField || !statusField) {
+        console.error('Form field tidak ditemukan!');
+        return;
+    }
+
+    // Isi data menu ke form
+    nameField.value = menu.name || '';
+    categoryField.value = menu.category_id || '';
+    priceField.value = menu.price || '';
+    descriptionField.value = menu.description || '';
+    statusField.value = menu.status || '';
+
+    // Tampilkan modal
+    const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+    editProductModal.show();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
