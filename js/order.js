@@ -55,7 +55,7 @@ function displayOrders(orders) {
 
         // Kolom Kode Transaksi
         const transactionCodeCell = document.createElement('td');
-        transactionCodeCell.textContent = order.orderNumber;
+        transactionCodeCell.textContent = order.orderNumber || '-';
         row.appendChild(transactionCodeCell);
 
         // Kolom Nomor Antrian
@@ -65,19 +65,21 @@ function displayOrders(orders) {
 
         // Kolom Nama Produk
         const productNameCell = document.createElement('td');
-        productNameCell.textContent = order.orders.map((item) => item.productName).join(', ') || '-';
+        productNameCell.textContent = order.orders
+            ? order.orders.map(item => item.productName).join(', ')
+            : '-';
         row.appendChild(productNameCell);
 
         // Kolom Jumlah + Harga Satuan
         const quantityPriceCell = document.createElement('td');
         quantityPriceCell.textContent = order.orders
-            .map((item) => `${item.quantity} x ${item.price}`)
-            .join(', ') || '-';
+            ? order.orders.map(item => `${item.quantity} x Rp ${item.price}`).join(', ')
+            : '-';
         row.appendChild(quantityPriceCell);
 
         // Kolom Harga Total
         const totalPriceCell = document.createElement('td');
-        totalPriceCell.textContent = `Rp ${order.total.toLocaleString()}`;
+        totalPriceCell.textContent = order.total ? `Rp ${order.total.toLocaleString()}` : '-';
         row.appendChild(totalPriceCell);
 
         // Kolom Metode Pembayaran
