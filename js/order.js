@@ -1,77 +1,97 @@
-// Fungsi untuk menampilkan data pesanan di dalam tabel
-function displayOrders(response) {
-    const orderData = response.data.data; // Ambil data pesanan dari respons
-    const container = document.getElementById('transaction-list'); // Ganti 'order-list' menjadi 'transaction-list'
+import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+
+// Ambil token dari cookie dengan nama 'login'
+const token = getCookie('login');
+if (!token) {
+    alert('Token tidak ditemukan, harap login terlebih dahulu!');
+    throw new Error("Token tidak ditemukan. Harap login ulang.");
+}
+
+// Panggil API untuk mengambil data pesanan
+getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order', "Login", token, (response) => {
+    if (response.status === 200) {
+        const orders = response.data.data || [];
+        displayOrders(orders);
+    } else {
+        console.error(`Error: ${response.status}`);
+        alert("Gagal memuat data pesanan. Silakan coba lagi.");
+    }
+});
+
+// Fungsi untuk menampilkan data pesanan di tabel
+function displayOrders(orders) {
+    const container = document.getElementById('transaction-list');
 
     // Pastikan elemen container ditemukan
     if (!container) {
-        console.error("Elemen dengan id 'transaction-list' tidak ditemukan.");
+        console.error("Elemen dengan ID 'transaction-list' tidak ditemukan.");
         return;
     }
 
-    // Tampilkan data pesanan di dalam tabel
-    container.innerHTML = ''; // Hapus data lama jika ada
+    // Hapus data lama jika ada
+    container.innerHTML = '';
 
-    orderData.forEach((item, index) => {
-        // Membuat baris untuk setiap pesanan
+    // Tampilkan data pesanan
+    orders.forEach((order) => {
         const row = document.createElement('tr');
 
-        // Kolom Nama Pesanan
-        const nameCell = document.createElement('td');
-        nameCell.textContent = item.name;
+        // Kolom Kode Transaksi
+        const transactionCodeCell = document.createElement('td');
+        transactionCodeCell.textContent = order.orderNumber;
+        row.appendChild(transactionCodeCell);
 
-        // Kolom Total Harga
-        const priceCell = document.createElement('td');
-        priceCell.textContent = item.totalPrice;
+        // Kolom Nomor Antrian
+        const queueNumberCell = document.createElement('td');
+        queueNumberCell.textContent = order.queueNumber || '-';
+        row.appendChild(queueNumberCell);
+
+        // Kolom Nama Produk
+        const productNameCell = document.createElement('td');
+        productNameCell.textContent = order.orders.map((item) => item.productName).join(', ') || '-';
+        row.appendChild(productNameCell);
+
+        // Kolom Jumlah + Harga Satuan
+        const quantityPriceCell = document.createElement('td');
+        quantityPriceCell.textContent = order.orders
+            .map((item) => `${item.quantity} x ${item.price}`)
+            .join(', ') || '-';
+        row.appendChild(quantityPriceCell);
+
+        // Kolom Harga Total
+        const totalPriceCell = document.createElement('td');
+        totalPriceCell.textContent = `Rp ${order.total.toLocaleString()}`;
+        row.appendChild(totalPriceCell);
+
+        // Kolom Metode Pembayaran
+        const paymentMethodCell = document.createElement('td');
+        paymentMethodCell.textContent = order.paymentMethod || '-';
+        row.appendChild(paymentMethodCell);
 
         // Kolom Status
         const statusCell = document.createElement('td');
-        statusCell.textContent = item.status;
+        statusCell.textContent = order.status || '-';
+        row.appendChild(statusCell);
 
         // Kolom Aksi
         const actionCell = document.createElement('td');
-        actionCell.classList.add('text-center');
-
-        // Tombol Ubah
-        const editButton = document.createElement('button');
-        editButton.className = 'btn btn-warning me-2';
-        editButton.innerHTML = '<i class="fas fa-pen"></i> Ubah';
-        editButton.addEventListener('click', () => {
-            console.log(`Edit pesanan dengan index: ${index}`);
-            currentEditIndex = index;
-
-            // Menampilkan modal edit pesanan
-            const modal = new bootstrap.Modal(document.getElementById('editOrderModal'));
-            modal.show();
-
-            document.getElementById('edit-order-name').value = orders[index].name;
-            document.getElementById('edit-order-total').value = orders[index].totalPrice;
+        const viewButton = document.createElement('button');
+        viewButton.className = 'btn btn-primary btn-sm';
+        viewButton.textContent = 'Lihat';
+        viewButton.addEventListener('click', () => {
+            alert(`Detail pesanan:\n\n${JSON.stringify(order, null, 2)}`);
         });
-
-        // Tombol Hapus
-        const deleteButton = document.createElement('button');
-        deleteButton.className = 'btn btn-danger';
-        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Hapus';
-        deleteButton.addEventListener('click', () => {
-            console.log(`Hapus pesanan dengan index: ${index}`);
-            currentDeleteIndex = index;
-
-            // Menampilkan modal konfirmasi hapus
-            const deleteOrderModal = new bootstrap.Modal(document.getElementById('deleteOrderModal'));
-            deleteOrderModal.show();
-        });
-
-        // Tambahkan tombol ke kolom aksi
-        actionCell.appendChild(editButton);
-        actionCell.appendChild(deleteButton);
-
-        // Tambahkan kolom ke dalam baris
-        row.appendChild(nameCell);
-        row.appendChild(priceCell);
-        row.appendChild(statusCell);
+        actionCell.appendChild(viewButton);
         row.appendChild(actionCell);
 
-        // Tambahkan baris ke dalam container
+        // Tambahkan baris ke tabel
         container.appendChild(row);
     });
+}
+
+// Fungsi untuk mendapatkan nilai cookie berdasarkan nama
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null; // Jika cookie tidak ditemukan
 }
