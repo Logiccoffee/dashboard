@@ -80,10 +80,11 @@ function displayOrders(orders) {
         totalPriceCell.textContent = order.total || '-'; // Total harga dalam format Rupiah
         row.appendChild(totalPriceCell);
 
-        // Kolom Metode Pembayaran & Status
-            const paymentStatusCell = document.createElement('td');
-            paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
-            row.appendChild(paymentStatusCell);
+        /// Kolom Metode Pembayaran & Status
+const paymentStatusCell = document.createElement('td');
+paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
+row.appendChild(paymentStatusCell);
+
 
         // Kolom Aksi
         const actionCell = document.createElement('td');
