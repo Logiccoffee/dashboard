@@ -51,15 +51,15 @@ function displayOrders(orders) {
     orders.forEach((order) => {
         const row = document.createElement('tr');
     
-        // Kolom Kode Transaksi (orderNumber)
-        const OrderNumberCell = document.createElement('td');
-        OrderNumberCell.textContent = order.order_number || '-';  // Ganti dengan '-' jika kosong
-        row.appendChild(OrderNumberCell);
-    
-        // Kolom Nomor Antrian (queueNumber)
-        const QueueNumberCell = document.createElement('td');
-        QueueNumberCell.textContent = order.queue_number > 0 ? order.queue_number : '-';  // Ganti dengan '-' jika 0
-        row.appendChild(QueueNumberCell);
+         // Kolom Kode Transaksi (orderNumber)
+         const orderNumberCell = document.createElement('td');
+         orderNumberCell.textContent = order.order_number || '-'; // Ganti dengan '-' jika kosong
+         row.appendChild(orderNumberCell);
+         
+         // Kolom Nomor Antrian (queueNumber)
+         const queueNumberCell = document.createElement('td');
+         queueNumberCell.textContent = order.queue_number > 0 ? order.queue_number : '-';  // Ganti dengan '-' jika 0
+         row.appendChild(queueNumberCell);
 
         // Kolom Nama Produk
         const menuNameCell = document.createElement('td');
