@@ -71,6 +71,17 @@ function displayUsers(users) {
         // Tambahkan opsi dropdown untuk role
         populateDropdown(user._id, user.role);
     });
+
+    // Pasang event delegation untuk menangani klik pada dropdown
+    container.addEventListener('click', (event) => {
+        if (event.target.matches('.dropdown-item')) {
+            const userId = event.target.dataset.userId;
+            const newRole = event.target.dataset.role;
+
+            // Ubah peran pengguna
+            changeRole(userId, newRole);
+        }
+    });
 }
 
 // Fungsi untuk mengisi dropdown dengan opsi peran
@@ -94,7 +105,7 @@ function populateDropdown(userId, currentRole) {
     filteredRoles.forEach((role) => {
         const listItem = document.createElement('li');
         listItem.innerHTML = `
-            <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}')">
+            <a class="dropdown-item" href="#" data-user-id="${userId}" data-role="${role}">
                 <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
             </a>`;
         dropdownMenu.appendChild(listItem);
