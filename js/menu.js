@@ -55,12 +55,17 @@ function displayMenus(response) {
         // Membuat card untuk setiap menu
         const card = document.createElement('div');
         card.className = 'col-md-4 mb-4';
+
+        // Bagian deskripsi hanya ditambahkan jika ada
+        const descriptionHtml = item.description
+            ? `<p class="card-text">Deskripsi: ${item.description}</p>`
+            : '';
         card.innerHTML = `
             <div class="card h-100 shadow-sm">
                 <img src="${item.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">${item.name}</h5>
-                    <p class="card-text">Deskripsi: ${item.description || 'Tidak ada deskripsi'}</p>
+                    ${descriptionHtml} <!-- Tambahkan deskripsi hanya jika ada -->
                     <p class="card-text">Kategori: ${categoryName}</p>
                     <p class="card-text">Harga: ${item.price}</p>
                     <p class="card-text">Status: ${item.status || 'Tidak Tersedia'}</p>
@@ -183,8 +188,8 @@ function addMenu(event) {
     const menuImage = menuImageInput.files[0];
 
     // Validasi input menu
-    if (!menuName || !menuCategory || !menuPrice || !menuDescription || !menuImage || !menuStatus) {
-        alert('Semua data menu harus diisi, termasuk gambar!');
+    if (!menuName || !menuCategory || !menuPrice || !menuImage || !menuStatus) {
+        alert('Semua data menu harus diisi, kecuali deskripsi!');
         return;
     }
 
