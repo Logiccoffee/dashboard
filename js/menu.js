@@ -318,6 +318,69 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// Fungsi untuk membuka pop-up edit menu
+function openEditMenuPopup(index) {
+    // Simpan indeks menu yang sedang diedit
+    currentEditIndex = index;
+
+    // Ambil data menu berdasarkan indeks
+    const menu = menus[index];
+
+    if (!menu) {
+        alert("Menu tidak ditemukan.");
+        return;
+    }
+
+    // Isi form edit dengan data menu
+    document.getElementById('edit-product-category').value = menu.category_id || '';
+    document.getElementById('edit-product-name').value = menu.name || '';
+    document.getElementById('edit-product-price').value = menu.price || '';
+    document.getElementById('edit-product-image').value = ''; // Reset input file
+
+    // Tampilkan modal edit menu
+    const editProductModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+    editProductModal.show();
+}
+
+// Tangani submit form edit menu
+document.getElementById('editProductForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Mencegah reload halaman
+
+    if (currentEditIndex === null) {
+        alert("Tidak ada menu yang sedang diedit.");
+        return;
+    }
+
+    // Ambil data dari form
+    const updatedMenu = {
+        category_id: document.getElementById('edit-product-category').value,
+        name: document.getElementById('edit-product-name').value,
+        price: parseFloat(document.getElementById('edit-product-price').value),
+        // Gambar tidak langsung diupdate di sini (memerlukan upload terpisah)
+    };
+
+    if (!updatedMenu.name || isNaN(updatedMenu.price) || updatedMenu.price <= 0) {
+        alert("Data menu tidak valid. Pastikan semua field terisi dengan benar.");
+        return;
+    }
+
+    // Kirim data yang diperbarui ke API
+    const menuId = menus[currentEditIndex].id; // ID menu yang sedang diedit
+    putJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, "Login", token, updatedMenu, (response) => {
+        if (response.status === 200) {
+            alert("Menu berhasil diperbarui!");
+            menus[currentEditIndex] = response.data.data; // Update data menu
+            displayMenus({ data: { data: menus } }); // Refresh tampilan
+        } else {
+            alert("Gagal memperbarui menu.");
+        }
+    });
+
+    // Tutup modal
+    const editProductModal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+    editProductModal.hide();
+});
+
 // Fungsi untuk menangani submit form saat mengubah menu
 function editMenu(event) {
     event.preventDefault(); // Mencegah form submit default
