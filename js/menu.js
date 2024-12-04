@@ -117,7 +117,7 @@ function loadCategories() {
 
         // Tambahkan kode pengecekan di sini
         if (response.status === 200 && Array.isArray(response.data.data)) {
-            categories = response.data.data; 
+            categories = response.data.data;
             displayCategories(categories); // Pastikan kategori yang ditampilkan adalah array
         } else {
             console.error("Kategori gagal dimuat. Menggunakan kategori default.");
@@ -148,6 +148,9 @@ function displayStatuses() {
         option.textContent = status;
         statusSelect.appendChild(option);
     });
+
+    // Log untuk debugging
+    console.log("Dropdown status berhasil diisi:", statuses);
 }
 
 // Panggil fungsi displayStatuses saat modal dibuka
@@ -165,6 +168,7 @@ function addMenu(event) {
     const menuCategory = document.getElementById('productCategory').value.trim();
     const menuPrice = document.getElementById('product-price').value.trim();
     const menuStatus = document.getElementById('product-status').value.trim(); // Ambil status
+    console.log("Status yang dipilih:", menuStatus);
     const menuImage = document.getElementById('product-image').files[0];
 
     // Validasi input menu
@@ -233,24 +237,16 @@ function submitAddMenu(menuName, menuCategory, price, menuStatus, menuImage) {
         token,         // Nilai token dari cookie
         formData,       // Data menu dalam bentuk JSON
         function (response) {
-            const { status, data } = response;
-
-            if (status >= 200 && status < 300) {
-                console.log('Respons dari API:', data);
+            if (response.status >= 200 && response.status < 300) {
                 alert('Menu berhasil ditambahkan!');
-
-                // Menutup modal setelah menu ditambahkan
-                const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
-                modal.hide(); // Menutup modal
-
-                // Setelah menu berhasil ditambahkan, ambil data terbaru dari API
+                // Ambil data terbaru setelah sukses
                 getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
                     if (response.status === 200) {
                         menus = response.data.data || []; // Update data menu
                         displayMenus(response); // Tampilkan menu terbaru
                     } else {
-                        console.error(`Error: ${response.status}`);
-                        alert("Gagal memuat data menu. Silakan coba lagi.");
+                        console.error('Gagal menambah menu:', response);
+                        alert(`Gagal menambah menu: ${response.response || 'Coba lagi.'}`);
                     }
                 });
 
