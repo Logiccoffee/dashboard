@@ -58,7 +58,7 @@ function displayOrders(orders) {
          
          // Kolom Nomor Antrian (queueNumber) ...
          const queueNumberCell = document.createElement('td');
-         queueNumberCell.textContent = order.queueNumber > 0 ? order.queueNumber : '-';  // Ganti dengan '-' jika 0
+         queueNumberCell.textContent = order.queueNumber> 0 ? order.queueNumber: '-';  // Ganti dengan '-' jika 0
          row.appendChild(queueNumberCell);
 
         // Kolom Nama Produk
