@@ -10,56 +10,23 @@ if (getCookie("login") === "") {
     redirect("/");
 }
 
-// Fungsi untuk menangani respons API
-function responseFunction(result) {
-    try {
-        console.log("Respons API:", result); // Debug respons API
-
-        // Cek jika pengguna tidak ditemukan
-        if (result.status === 404) {
-            console.log("Pengguna tidak ditemukan. Mengarahkan ke halaman pendaftaran.");
-            setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu.");
-            redirect("/register");
-            return;
-        }
-
-        // Ambil data pengguna
-        const userData = result.data;
-
-        // Validasi tipe data pengguna
-        if (!userData) {
-            throw new Error("Data pengguna tidak ditemukan!");
-        }
-
-        if (Array.isArray(userData)) {
-            console.log("Data pengguna adalah array.");
-            userData.forEach((user, index) => addUserRow(user, index));
-        } else if (typeof userData === "object" && userData !== null) {
-            console.log("Data pengguna adalah objek tunggal.");
-            addUserRow(userData, 0); // Tambahkan sebagai baris pertama
-        } else {
-            throw new Error("Data pengguna bukan array atau objek!");
-        }
-
-        console.log("Data pengguna berhasil diproses:", userData);
-    } catch (error) {
-        console.error("Terjadi kesalahan saat memproses respons:", error.message);
-        setInner("content", "Terjadi kesalahan saat memproses data.");
-    }
-}
-
 // Fungsi untuk menambahkan baris pengguna ke tabel
 function addUserRow(userData, index) {
-    const userList = document.getElementById("user-list");
-    const roles = ["User", "Dosen", "Admin"];
+    const userList = document.getElementById("user-list"); // Pastikan elemen tabel sudah ada
+
+    // Jika data pengguna tidak lengkap, tampilkan 'Tidak Diketahui'
+    const name = userData.name || "Nama Tidak Diketahui";
+    const email = userData.email || "Email Tidak Diketahui";
+    const role = userData.role || "Peran Tidak Diketahui";
+    const phonenumber = userData.phonenumber || "Nomor Telepon Tidak Diketahui";
 
     const row = document.createElement("tr");
     row.innerHTML = `
         <td>${index + 1}</td> <!-- Nomor urut berdasarkan indeks -->
-        <td>${userData.name || "Nama Tidak Diketahui"}</td>
-        <td>${userData.email || "Email Tidak Diketahui"}</td>
-        <td id="role-user-${userData._id || "-"}">${userData.role || "Peran Tidak Diketahui"}</td>
-        <td>${userData.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
+        <td>${name}</td>
+        <td>${email}</td>
+        <td>${role}</td>
+        <td>${phonenumber}</td>
         <td>
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button"
@@ -76,11 +43,12 @@ function addUserRow(userData, index) {
     userList.appendChild(row);
 
     // Tambahkan opsi ke dropdown
-    populateDropdown(userData._id, userData.role, roles);
+    populateDropdown(userData._id, userData.role);
 }
 
 // Fungsi untuk mengisi dropdown dengan opsi peran
-function populateDropdown(userId, currentRole, roles) {
+function populateDropdown(userId, currentRole) {
+    const roles = ["User", "Dosen", "Admin"];
     const dropdownMenu = document.getElementById(`dropdown-role-${userId}`);
     dropdownMenu.innerHTML = ""; // Kosongkan opsi sebelumnya
 
@@ -103,14 +71,5 @@ function changeRole(userId, newRole) {
     alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`);
 
     // Perbarui opsi dropdown
-    const roles = ["User", "Dosen", "Admin"];
-    populateDropdown(userId, newRole, roles);
+    populateDropdown(userId, newRole);
 }
-
-// Ambil data pengguna menggunakan API
-getJSON(
-    "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users",
-    "login",
-    getCookie("login"),
-    responseFunction
-);
