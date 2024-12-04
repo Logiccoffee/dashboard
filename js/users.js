@@ -13,6 +13,9 @@ if (getCookie("login") === "") {
 // Fungsi untuk menangani respons API
 function responseFunction(result) {
     try {
+        console.log("Respons API:", result); // Debug respons API
+
+        // Cek jika pengguna tidak ditemukan
         if (result.status === 404) {
             console.log("Pengguna tidak ditemukan. Mengarahkan ke halaman pendaftaran.");
             setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu.");
@@ -20,18 +23,21 @@ function responseFunction(result) {
             return;
         }
 
-        // Menampilkan data pengguna di tabel
+        // Ambil data pengguna dari respons
+        const userData = result.data;
+
+        // Validasi apakah data pengguna adalah array
+        if (!Array.isArray(userData)) {
+            throw new Error("Data pengguna bukan array!");
+        }
+
+        // Tambahkan data pengguna ke tabel
         const userList = document.getElementById("user-list");
-
         if (userList) {
-            // Pastikan result.data adalah array
-            const userData = Array.isArray(result.data) ? result.data : [result.data];
-
-            // Tambahkan pengguna ke tabel
             userData.forEach((user, index) => addUserRow(user, index));
         }
 
-        console.log("Data pengguna berhasil ditambahkan:", result.data);
+        console.log("Data pengguna berhasil ditambahkan:", userData);
     } catch (error) {
         console.error("Terjadi kesalahan saat memproses respons:", error.message);
         setInner("content", "Terjadi kesalahan saat memproses data.");
@@ -98,4 +104,9 @@ function changeRole(userId, newRole) {
 }
 
 // Ambil data pengguna menggunakan API
-getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users", "login", getCookie("login"), responseFunction);
+getJSON(
+    "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users",
+    "login",
+    getCookie("login"),
+    responseFunction
+);
