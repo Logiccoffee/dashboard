@@ -342,6 +342,61 @@ function openEditMenuPopup(index) {
     editProductModal.show();
 }
 
+function saveEditedMenu(event) {
+    event.preventDefault();
+
+    // Validasi apakah ada menu yang sedang diedit
+    if (currentEditIndex === null) {
+        alert("Tidak ada menu yang sedang diedit.");
+        return;
+    }
+
+    // Ambil data dari form edit
+    const editedName = document.getElementById('edit-product-name').value.trim();
+    const editedCategory = document.getElementById('edit-productCategory').value.trim();
+    const editedPrice = document.getElementById('edit-product-price').value.trim();
+    const editedDescription = document.getElementById('edit-product-description').value.trim();
+    const editedStatus = document.getElementById('edit-product-status').value.trim();
+
+    // Validasi input
+    if (!editedName || !editedCategory || !editedPrice || !editedStatus) {
+        alert("Semua kolom wajib diisi!");
+        return;
+    }
+
+    // Update data menu
+    const menuToUpdate = menus[currentEditIndex];
+    const updatedMenu = {
+        ...menuToUpdate,
+        name: editedName,
+        category_id: editedCategory,
+        price: parseFloat(editedPrice),
+        description: editedDescription,
+        status: editedStatus
+    };
+
+    // Kirim data yang diperbarui ke API
+    putJSON(
+        `https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuToUpdate.id}`,
+        "Login",
+        token,
+        updatedMenu,
+        (response) => {
+            if (response.status === 200) {
+                alert("Menu berhasil diperbarui!");
+                menus[currentEditIndex] = updatedMenu; // Update data lokal
+                displayMenus({ data: { data: menus } }); // Refresh tampilan
+            } else {
+                alert("Gagal memperbarui menu!");
+            }
+        }
+    );
+
+    // Tutup modal edit
+    const editModal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+    editModal.hide();
+}
+
 // Tangani submit form edit menu
 document.getElementById('editProductForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Mencegah reload halaman
