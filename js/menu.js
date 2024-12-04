@@ -78,7 +78,7 @@ function displayMenus(response) {
                     <p class="card-text">Status: ${item.status || 'Tidak Tersedia'}</p>
                 </div>
                 <div class="card-footer text-center">
-                    <button class="btn btn-warning btn-edit" onclick="openEditMenuPopup(${index})">
+                    <button class="btn btn-warning btn-edit" data-index="${index}">
                         <i class="fas fa-pen"></i> Ubah
                     </button>
                     <button class="btn btn-danger btn-delete" onclick="confirmDelete(${index})">
@@ -88,6 +88,14 @@ function displayMenus(response) {
             </div>
         `;
         container.appendChild(card);
+    });
+    // Tambahkan event listener untuk tombol "Ubah" setelah menu ditampilkan
+    const editButtons = document.querySelectorAll('.btn-edit');
+    editButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const index = button.getAttribute('data-index');
+            openEditMenuPopup(index);
+        });
     });
 }
 
@@ -400,6 +408,12 @@ document.getElementById("editProductForm").addEventListener("submit", function (
 });
 
 function openEditMenuPopup(index) {
+    // Pastikan index valid
+    if (index === undefined || index === null) {
+        console.error("Index menu tidak valid.");
+        return;
+    }
+
     // Mengisi data menu yang akan diedit ke dalam modal
     const menu = menus[index];
     currentEditIndex = index; // Simpan indeks menu yang sedang diedit
