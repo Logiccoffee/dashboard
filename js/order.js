@@ -51,19 +51,21 @@ function displayOrders(orders) {
     orders.forEach((order) => {
         const row = document.createElement('tr');
         
-        // Kolom Identitas (Gabungan orderNumber dan queueNumber)
+        // Kolom Identitas (Gabungan orderNumber, queueNumber, name, whatsapp, dan note)
         const customerInfoCell = document.createElement('td');
     
         // Format data untuk kolom
         const customerInfoContent = `
             Order Number: ${order.orderNumber || '-'}<br>
-            Queue Number: ${order.queueNumber > 0 ? order.queueNumber : '-'}
+            Queue Number: ${order.queueNumber > 0 ? order.queueNumber : '-'}<br>
+            Name: ${order.user_info?.name || '-'}<br>
+            Whatsapp: ${order.user_info?.whatsapp || '-'}<br>
+            Note: ${order.user_info?.note || '-'}
         `;
     
         // Masukkan data ke kolom
         customerInfoCell.innerHTML = customerInfoContent; 
         row.appendChild(customerInfoCell);
-    
 
         // Kolom Nama Produk
         const menuNameCell = document.createElement('td');
