@@ -182,7 +182,6 @@ function displayStatuses() {
 document.getElementById('addProductModal').addEventListener('show.bs.modal', function () {
     console.log("Modal terbuka, memuat status...");
     displayStatuses(); // Memuat status saat modal dibuka
-    loadCategories(); // Memuat kategori saat modal dibuka
 });
 
 // Membuka popup form edit menu
@@ -205,6 +204,8 @@ function openEditMenuPopup(menuId) {
             console.log("Response dari API:", response);
             if (response.status === 200) {
                 const menu = response.data; // Data menu dari API
+
+                console.log('Menu Data:', menu); // Log untuk cek data menu yang diambil
 
                 // Isi form dengan data menu yang diambil
                 document.getElementById('edit-product-name').value = menu.name || '';
