@@ -62,117 +62,96 @@ function displayOrders(orders) {
         `;
         row.appendChild(customerInfoCell);
 
-                // Kolom Produk (Nama Produk, Jumlah dan Harga Satuan)
+        // Kolom Produk (Nama Produk, Jumlah dan Harga Satuan)
         const productInfoCell = document.createElement('td');
-
-        // Cek apakah ada data dalam order.orders
         if (order.orders && order.orders.length > 0) {
-            // Gabungkan Nama Produk, Kuantitas dan Harga Satuan dalam satu kolom
             productInfoCell.innerHTML = order.orders.map(item => {
                 return `${item.menu_name || 'Tidak Diketahui'} - ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`;
-            }).join('<br>'); // Menggunakan <br> untuk memisahkan tiap item dalam baris baru
+            }).join('<br>');
         } else {
-            productInfoCell.textContent = '-'; // Tampilkan '-' jika tidak ada data
+            productInfoCell.textContent = '-';
         }
+        row.appendChild(productInfoCell);
 
-            row.appendChild(productInfoCell)
+        // Kolom Harga Total
+        const totalPriceCell = document.createElement('td');
+        let total = order.total ? order.total.toString().replace(/[^\d]/g, '') : '-';
+        totalPriceCell.textContent = total !== '-' 
+            ? `Rp ${parseInt(total, 10).toLocaleString('id-ID')}`
+            : '-';
+        row.appendChild(totalPriceCell);
 
+        // Kolom Metode Pembayaran & Status
+        const paymentStatusCell = document.createElement('td');
+        paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
+        row.appendChild(paymentStatusCell);
 
+        // Kolom Aksi
+        const actionCell = document.createElement('td');
 
-      // Kolom Harga Total
-const totalPriceCell = document.createElement('td');
+        // Tombol Status
+        const statusButton = document.createElement('button');
+        statusButton.className = 'btn btn-warning btn-sm';
+        statusButton.innerHTML = '<i class="fas fa-edit"></i> Status';
+        statusButton.addEventListener('click', () => {
+            const statusDropdown = document.createElement('select');
+            statusDropdown.className = 'form-control form-control-sm';
 
-// Pastikan order.total adalah angka valid
-let total = order.total ? order.total.toString().replace(/[^\d]/g, '') : '-'; // Hanya angka
-totalPriceCell.textContent = total !== '-' 
-    ? ` ${parseInt(total, 10).toLocaleString('id-ID')}` // Tambahkan kembali "Rp" jika valid
-    : '-'; // Jika kosong, tampilkan "-"
+            // Pilihan status
+            const statusOptions = ['Diproses', 'Selesai'];
+            statusOptions.forEach(status => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = status;
+                if (order.status === status) option.selected = true;
+                statusDropdown.appendChild(option);
+            });
 
-row.appendChild(totalPriceCell);
+            // Ganti tombol dengan dropdown
+            statusButton.replaceWith(statusDropdown);
 
-        
+            // Event listener untuk update status
+            statusDropdown.addEventListener('change', () => {
+                const selectedStatus = statusDropdown.value;
 
-row.appendChild(totalPriceCell);
-
-
-        
-
-       // Kolom Metode Pembayaran & Status
-    const paymentStatusCell = document.createElement('td');
-    paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
-    row.appendChild(paymentStatusCell);
-
-    // Membuat kolom aksi untuk tabel
-    const actionCell = document.createElement('td');
-
-    // Tombol Status (dengan ikon ubah/edit)
-    const statusButton = document.createElement('button');
-    statusButton.className = 'btn btn-warning btn-sm'; // CSS untuk tombol status
-    statusButton.innerHTML = '<i class="fas fa-edit"></i> Status'; // Menambahkan ikon "edit" (menggunakan FontAwesome)
-
-    // Event Listener untuk Tombol Status
-    statusButton.addEventListener('click', () => {
-        // Membuat dropdown untuk pilihan status
-        const statusDropdown = document.createElement('select');
-        statusDropdown.className = 'form-control form-control-sm'; // Tampilan dropdown
-
-        // Pilihan status
-        const statusOptions = ['Diproses', 'Selesai'];
-        statusOptions.forEach(status => {
-            const option = document.createElement('option');
-            option.value = status;
-            option.textContent = status;
-            if (order.status === status) option.selected = true; // Set default value sesuai data order
-            statusDropdown.appendChild(option);
-        });
-
-        // Ganti tombol dengan dropdown
-        statusButton.replaceWith(statusDropdown);
-
-        // Event Listener untuk Dropdown
-        statusDropdown.addEventListener('change', () => {
-            const selectedStatus = statusDropdown.value;
-
-            // Update status di objek order
-            order.status = selectedStatus;
-
-            // Kirim perubahan ke server (contoh menggunakan fetch)
-            fetch(`/api/update-order-status`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: order.id, // Kirim ID order
-                    status: selectedStatus, // Kirim status yang baru
-                }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Update tampilan kolom Metode Pembayaran & Status
-                        paymentStatusCell.textContent = `${order.payment_method || '-'} - ${selectedStatus}`;
-                        alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
-                    } else {
-                        alert(`Gagal mengubah status: ${data.message}`);
-                    }
+                // Kirim perubahan ke server
+                fetch(`${API_URL}/update-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'login': token,
+                    },
+                    body: JSON.stringify({
+                        id: order.id,
+                        status: selectedStatus,
+                    }),
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan saat mengubah status.');
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert(`Status berhasil diubah menjadi: ${selectedStatus}`);
+                            order.status = selectedStatus;
+                            paymentStatusCell.textContent = `${order.payment_method || '-'} - ${selectedStatus}`;
+                        } else {
+                            alert(`Gagal mengubah status: ${data.message}`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Terjadi kesalahan saat mengubah status.');
+                    });
 
-            // Ganti kembali dropdown dengan tombol status
-            statusDropdown.replaceWith(statusButton);
+                // Ganti kembali dropdown menjadi tombol
+                statusDropdown.replaceWith(statusButton);
+            });
         });
+
+        actionCell.appendChild(statusButton);
+        row.appendChild(actionCell);
+
+        // Tambahkan baris ke tabel
+        container.appendChild(row);
     });
-
-    // Tambahkan tombol ke kolom aksi
-    actionCell.appendChild(statusButton);
-
-    // Tambahkan kolom aksi ke baris
-    row.appendChild(actionCell);
-});
 }
 
 // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
@@ -180,5 +159,5 @@ function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
-    return null; // Jika cookie tidak ditemukan
+    return null;
 }
