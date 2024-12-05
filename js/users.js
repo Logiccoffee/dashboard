@@ -75,12 +75,12 @@ function displayUsers(users) {
 
         // Tambahkan opsi dropdown untuk role
         const roles = ["user", "admin", "dosen"];
-        populateDropdown(user._id, user.role, roles);
+        populateDropdown(user._id, user.role, roles, users);
     });
 }
 
 // Fungsi untuk mengisi dropdown dengan opsi peran
-function populateDropdown(userId, currentRole, roles) {
+function populateDropdown(userId, currentRole, roles, users) {
     const dropdownMenu = document.getElementById(`dropdown-role-${userId}`);
     if (!dropdownMenu) {
         console.error(`Dropdown menu untuk userId ${userId} tidak ditemukan.`);
@@ -103,7 +103,7 @@ function populateDropdown(userId, currentRole, roles) {
     filteredRoles.forEach((role) => {
         const listItem = document.createElement('li');
         listItem.innerHTML = `
-            <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}')">
+            <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}', users)">
                 <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
             </a>`;
         dropdownMenu.appendChild(listItem);
@@ -111,7 +111,7 @@ function populateDropdown(userId, currentRole, roles) {
 }
 
 // Fungsi untuk mengubah peran pengguna
-function changeRole(userId, newRole) {
+function changeRole(userId, newRole, users) {
     const roleElement = document.getElementById(`role-user-${userId}`);
     if (!roleElement) {
         console.error(`Elemen role untuk userId ${userId} tidak ditemukan.`);
@@ -119,9 +119,18 @@ function changeRole(userId, newRole) {
     }
 
     roleElement.textContent = newRole; // Perbarui peran di UI
+
+    // Update role di array pengguna
+    const userIndex = users.findIndex(user => user._id === userId);
+    if (userIndex !== -1) {
+        users[userIndex].role = newRole; // Update role pada data pengguna
+    }
+
     alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`); // Pemberitahuan kepada pengguna
 
     // Perbarui opsi dropdown
     const roles = ["user", "admin", "dosen"];
-    populateDropdown(userId, newRole, roles); // Isi ulang dropdown
+    users.forEach(user => {
+        populateDropdown(user._id, user.role, roles, users); // Isi ulang dropdown untuk semua pengguna
+    });
 }
