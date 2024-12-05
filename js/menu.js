@@ -191,14 +191,27 @@ function openEditMenuPopup(menuId) {
     getJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, "login", token, function (response) {
         if (response.status === 200) {
             const menu = response.data; // Data menu dari API
-            
+
+            // Validasi elemen sebelum akses
+            const nameInput = document.getElementById('edit-product-name');
+            const categoryInput = document.getElementById('edit-product-category');
+            const descriptionInput = document.getElementById('edit-product-description');
+            const priceInput = document.getElementById('edit-product-price');
+            const statusInput = document.getElementById('edit-product-status');
+            const idInput = document.getElementById('edit-product-id');
+
+            if (!nameInput || !categoryInput || !descriptionInput || !priceInput || !statusInput || !idInput) {
+                console.error("Popup form elements are missing in the DOM.");
+                return;
+            }
+
             // Isi form dengan data menu yang diambil
-            document.getElementById('edit-product-name').value = menu.name;
-            document.getElementById('edit-product-category').value = menu.category_id; // Asumsikan category_id disediakan
-            document.getElementById('edit-product-description').value = menu.description || '';
-            document.getElementById('edit-product-price').value = menu.price;
-            document.getElementById('edit-product-status').value = menu.status || 'Tidak Tersedia';
-            document.getElementById('edit-product-id').value = menu.id; // Simpan ID menu untuk proses simpan
+            nameInput.value = menu.name || '';
+            categoryInput.value = menu.category_id || '';
+            descriptionInput.value = menu.description || '';
+            priceInput.value = menu.price || '';
+            statusInput.value = menu.status || 'Tidak Tersedia';
+            idInput.value = menu.id || '';
 
             // Tampilkan popup edit
             document.getElementById('editProductModal').classList.add('show');
@@ -246,7 +259,7 @@ function saveMenuEdits(event) {
             // Refresh data setelah sukses
             loadMenus();
             // Tutup popup
-            document.getElementById('edit-menu-popup').classList.remove('show');
+            document.getElementById('editProductModal').classList.remove('show');
         } else {
             alert(`Gagal memperbarui menu: ${response.message || 'Coba lagi.'}`);
         }
