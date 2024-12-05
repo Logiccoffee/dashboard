@@ -104,43 +104,74 @@ row.appendChild(totalPriceCell);
 
 
 
-         // Kolom aksi
-         const actionCell = document.createElement('td');
+         // Membuat kolom aksi untuk tabel
+const actionCell = document.createElement('td');
 
-         // Tombol Status (dengan ikon ubah/edit)
-         const statusButton = document.createElement('button');
-         statusButton.className = 'btn btn-warning btn-sm'; // CSS untuk tombol status
-         statusButton.innerHTML = '<i class="fas fa-edit"></i> Status'; // Menambahkan ikon "edit" (menggunakan FontAwesome)
-         statusButton.addEventListener('click', () => {
-             const statusDropdown = document.createElement('select');
-             statusDropdown.className = 'form-control form-control-sm'; // Tampilan dropdown
-             
-             // Pilihan status
-             const statusOptions = ['Diproses', 'Selesai'];
-             statusOptions.forEach(status => {
-                 const option = document.createElement('option');
-                 option.value = status;
-                 option.textContent = status;
-                 statusDropdown.appendChild(option);
-             });
-         
-             // Menampilkan dropdown dan mengganti tombol status dengan dropdown
-             statusButton.replaceWith(statusDropdown);
-         
-             // Menambahkan event listener untuk mengubah status pesanan
-             statusDropdown.addEventListener('change', () => {
-                 const selectedStatus = statusDropdown.value;
-                 alert(`Status pesanan diubah menjadi: ${selectedStatus}`);
-             });
-         });
-         
-         // Kolom untuk menampilkan tombol status
-         actionCell.appendChild(statusButton);
-         
-         // Tambahkan baris ke tabel
-         row.appendChild(actionCell);
-         container.appendChild(row);
-         
+// Tombol Status (dengan ikon ubah/edit)
+const statusButton = document.createElement('button');
+statusButton.className = 'btn btn-warning btn-sm'; // CSS untuk tombol status
+statusButton.innerHTML = '<i class="fas fa-edit"></i> Status'; // Menambahkan ikon "edit" (menggunakan FontAwesome)
+
+// Event Listener untuk Tombol Status
+statusButton.addEventListener('click', () => {
+    // Membuat dropdown untuk pilihan status
+    const statusDropdown = document.createElement('select');
+    statusDropdown.className = 'form-control form-control-sm'; // Tampilan dropdown
+
+    // Pilihan status
+    const statusOptions = ['Diproses', 'Selesai'];
+    statusOptions.forEach(status => {
+        const option = document.createElement('option');
+        option.value = status;
+        option.textContent = status;
+        if (order.status === status) option.selected = true; // Set default value sesuai data order
+        statusDropdown.appendChild(option);
+    });
+
+    // Ganti tombol dengan dropdown
+    statusButton.replaceWith(statusDropdown);
+
+    // Event Listener untuk Dropdown
+    statusDropdown.addEventListener('change', () => {
+        const selectedStatus = statusDropdown.value;
+
+        // Update status di objek order
+        order.status = selectedStatus;
+
+        // Kirim perubahan ke server (contoh menggunakan fetch)
+        fetch(`/api/update-order-status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: order.id, // Kirim ID order
+                status: selectedStatus, // Kirim status yang baru
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
+                } else {
+                    alert(`Gagal mengubah status: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat mengubah status.');
+            });
+
+        // Ganti kembali dropdown dengan tombol status
+        statusDropdown.replaceWith(statusButton);
+    });
+});
+
+// Tambahkan tombol ke kolom aksi
+actionCell.appendChild(statusButton);
+
+// Tambahkan kolom aksi ke baris
+row.appendChild(actionCell);
     });
 }
 
