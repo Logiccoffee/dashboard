@@ -18,13 +18,12 @@ if (!token) {
 fetch(API_URL, {
     method: 'GET',
     headers: {
-        'login': token, 
+        'login': token,
         'Content-Type': 'application/json',
     }
 })
     .then(response => response.json()) // Parse JSON dari respons
     .then(response => {
-        // Periksa status 'success' pada response
         if (response.status === "success") {
             const users = response.data || []; // Pastikan data diakses dengan benar
             displayUsers(users); // Tampilkan data pengguna
@@ -41,21 +40,17 @@ fetch(API_URL, {
 // Fungsi untuk menampilkan data pengguna di tabel
 function displayUsers(users) {
     const container = document.getElementById('user-list');
-
-    // Pastikan elemen container ditemukan
     if (!container) {
         console.error("Elemen dengan ID 'user-list' tidak ditemukan.");
         return;
     }
 
-    // Hapus data lama jika ada
-    container.innerHTML = '';
+    container.innerHTML = ''; // Kosongkan data lama
 
-    // Tampilkan data pengguna
     users.forEach((user, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${index + 1}</td> <!-- Nomor urut -->
+            <td>${index + 1}</td>
             <td>${user.name || "Nama Tidak Diketahui"}</td>
             <td>${user.email || "Email Tidak Diketahui"}</td>
             <td id="role-user-${user._id || "-"}">${user.role || "Peran Tidak Diketahui"}</td>
@@ -66,71 +61,55 @@ function displayUsers(users) {
                         id="dropdownMenuButton-${user._id}" data-bs-toggle="dropdown" aria-expanded="false">
                         Role
                     </button>
-                    <ul class="dropdown-menu" id="dropdown-role-${user._id}" aria-labelledby="dropdownMenuButton-${user._id}">
-                    </ul>
+                    <ul class="dropdown-menu" id="dropdown-role-${user._id}" aria-labelledby="dropdownMenuButton-${user._id}"></ul>
                 </div>
             </td>
         `;
         container.appendChild(row);
 
-        // Tambahkan opsi dropdown untuk role
+        // Tambahkan opsi dropdown
         const roles = ["user", "admin", "dosen"];
         populateDropdown(user._id, user.role, roles, users);
     });
 }
 
-// Fungsi untuk mengisi dropdown dengan opsi peran
+// Fungsi untuk mengisi dropdown
 function populateDropdown(userId, currentRole, roles, users) {
     const dropdownMenu = document.getElementById(`dropdown-role-${userId}`);
-    if (!dropdownMenu) {
-        console.error(`Dropdown menu untuk userId ${userId} tidak ditemukan.`);
-        return;
-    }
+    if (!dropdownMenu) return;
 
     dropdownMenu.innerHTML = ''; // Kosongkan opsi sebelumnya
 
-    // Tentukan opsi berdasarkan currentRole
-    let filteredRoles = [];
-    if (currentRole === "admin") {
-        filteredRoles = roles.filter(role => role === "user" || role === "dosen");
-    } else if (currentRole === "user") {
-        filteredRoles = roles.filter(role => role === "admin" || role === "dosen");
-    } else if (currentRole === "dosen") {
-        filteredRoles = roles.filter(role => role === "admin" || role === "user");
-    }
-
-    // Tambahkan opsi dropdown
+    const filteredRoles = roles.filter(role => role !== currentRole);
     filteredRoles.forEach((role) => {
         const listItem = document.createElement('li');
         listItem.innerHTML = `
-            <a class="dropdown-item" href="#" onclick="changeRole('${userId}', '${role}', users)">
+            <a class="dropdown-item" href="#">
                 <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
             </a>`;
+        listItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            changeRole(userId, role, users);
+        });
         dropdownMenu.appendChild(listItem);
     });
 }
 
-// Fungsi untuk mengubah peran pengguna
-function changeRole(userId, newRole, users) {
+// Buat fungsi global untuk mengubah role
+window.changeRole = function(userId, newRole, users) {
     const roleElement = document.getElementById(`role-user-${userId}`);
-    if (!roleElement) {
-        console.error(`Elemen role untuk userId ${userId} tidak ditemukan.`);
-        return;
-    }
+    if (!roleElement) return;
 
-    roleElement.textContent = newRole; // Perbarui peran di UI
+    roleElement.textContent = newRole;
 
-    // Update role di array pengguna
     const userIndex = users.findIndex(user => user._id === userId);
     if (userIndex !== -1) {
-        users[userIndex].role = newRole; // Update role pada data pengguna
+        users[userIndex].role = newRole;
     }
 
-    alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`); // Pemberitahuan kepada pengguna
-
-    // Perbarui opsi dropdown
+    alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`);
     const roles = ["user", "admin", "dosen"];
     users.forEach(user => {
-        populateDropdown(user._id, user.role, roles, users); // Isi ulang dropdown untuk semua pengguna
+        populateDropdown(user._id, user.role, roles, users);
     });
-}
+};
