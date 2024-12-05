@@ -172,9 +172,6 @@ row.appendChild(totalPriceCell);
 
     // Tambahkan kolom aksi ke baris
     row.appendChild(actionCell);
-
-    // Tambahkan baris ke container/tabel
-    container.appendChild(row);
 });
 }
 
