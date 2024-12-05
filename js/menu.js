@@ -350,14 +350,13 @@ function openEditMenuPopup(menuId) {
     const bootstrapModal = new bootstrap.Modal(editModal);
     bootstrapModal.show();
 
-    // Ambil data menu berdasarkan ID setelah modal terbuka
     getJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, "login", token, function (response) {
         console.log("Response dari API:", response);
         if (response.status === 200) {
             const menu = response.data; // Data menu dari API
-
+    
             console.log('Menu Data:', menu); // Log untuk cek data menu yang diambil
-
+    
             // Isi form dengan data menu yang diambil
             document.getElementById('edit-product-name').value = menu.name || '';
             document.getElementById('edit-product-category').value = menu.category_id || '';
@@ -366,7 +365,7 @@ function openEditMenuPopup(menuId) {
             document.getElementById('edit-product-status').value = menu.status || 'Tidak Tersedia';
         } else {
             alert('Gagal memuat data menu untuk diedit.');
-        }
+        }
     });
 }
 
