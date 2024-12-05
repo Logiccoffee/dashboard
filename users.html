@@ -62,45 +62,33 @@
         <!-- Sidebar akan ditambahkan dari sidebar.js -->
         <div id="sidebar-container"></div>
 
-<div id="content"></div>
-<main class="content-wrap">
-    <header class="content-head">
-        <h1 class="dashboard-title">Manajemen Pengguna</h1>
-    </header>
-
-    <section class="content">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="mt-4">Daftar Pengguna</h2>
-        </div>
-
-        <div class="table-responsive mt-3">
-            <table class="table table-bordered table-striped table-hover" aria-label="Daftar Pengguna">
-                <caption class="text-muted text-center">Data pengguna yang tersedia</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Role</th>
-                        <th scope="col">WhatsApp</th>
-                        <th scope="col">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="user-list">
-                    <!-- Placeholder jika data belum tersedia -->
-                    <tr>
-                        <td colspan="6" class="text-center">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
-</main>
-
+        <div id="content"></div>
+        <main class="content-wrap">
+            <header class="content-head">
+                <h1 class="dashboard-title">Manajemen Pengguna</h1>
+            </header>
+        
+            <section class="content">
+                <h2 class="mt-4">Daftar Pengguna</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>No. Telepon</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-list">
+                            <!-- Baris data akan ditambahkan di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
 
     <!-- Sidebar -->
     <script src="js/sidebar.js"></script>
