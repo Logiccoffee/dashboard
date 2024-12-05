@@ -136,7 +136,7 @@ function displayCategories(categories) {
 }
 
 // Fungsi untuk mengambil kategori dari API
-function loadCateg() {
+function loadCategories() {
     getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', "Login", token, (response) => {
         console.log("Respons kategori:", response);  // Debugging untuk memastikan respons API
 
@@ -182,6 +182,7 @@ function displayStatuses() {
 document.getElementById('addProductModal').addEventListener('show.bs.modal', function () {
     console.log("Modal terbuka, memuat status...");
     displayStatuses(); // Memuat status saat modal dibuka
+    loadCategories(); // Memuat kategori saat modal dibuka
 });
 
 // Membuka popup form edit menu
