@@ -195,10 +195,14 @@ function openEditMenuPopup(menuId) {
         return;
     }
 
+    // Isi input hidden dengan ID menu
+    document.getElementById('edit-product-id').value = menuId;
+
     // Event listener ketika modal selesai ditampilkan
     editModal.addEventListener('shown.bs.modal', function () {
         // Ambil data menu berdasarkan ID
         getJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, "login", token, function (response) {
+            console.log("Response dari API:", response);
             if (response.status === 200) {
                 const menu = response.data; // Data menu dari API
 
@@ -208,6 +212,7 @@ function openEditMenuPopup(menuId) {
                 document.getElementById('edit-product-description').value = menu.description || '';
                 document.getElementById('edit-product-price').value = menu.price || '';
                 document.getElementById('edit-product-status').value = menu.status || 'Tidak Tersedia';
+
             } else {
                 alert('Gagal memuat data menu untuk diedit.');
             }
@@ -221,57 +226,62 @@ function openEditMenuPopup(menuId) {
 
 // Fungsi untuk menyimpan perubahan menu
 function saveMenuEdits(event) {
-            event.preventDefault(); // Mencegah reload halaman
+    event.preventDefault(); // Mencegah reload halaman
 
-            const menuId = document.getElementById('edit-product-id').value; // Ambil ID menu
-            const menuName = document.getElementById('edit-product-name').value.trim();
-            const menuCategory = document.getElementById('edit-product-category').value.trim();
-            const menuPrice = document.getElementById('edit-product-price').value.trim();
-            const menuDescription = document.getElementById('edit-product-description').value.trim();
-            const menuStatus = document.getElementById('edit-product-status').value.trim();
+    const menuId = document.getElementById('edit-product-id').value.trim();
+    if (!menuId) {
+        alert('ID menu tidak ditemukan!');
+        return;
+    }
 
-            // Validasi input
-            if (!menuName || !menuCategory || !menuPrice || !menuStatus) {
-                alert('Semua data menu harus diisi!');
-                return;
-            }
+    const menuName = document.getElementById('edit-product-name').value.trim();
+    const menuCategory = document.getElementById('edit-product-category').value.trim();
+    const menuPrice = document.getElementById('edit-product-price').value.trim();
+    const menuDescription = document.getElementById('edit-product-description').value.trim();
+    const menuStatus = document.getElementById('edit-product-status').value.trim();
 
-            const price = parseFloat(menuPrice.replace(/\./g, '').replace(',', '.'));
-            if (isNaN(price) || price <= 0) {
-                alert('Harga harus berupa angka positif!');
-                return;
-            }
+    // Validasi input
+    if (!menuName || !menuCategory || !menuPrice || !menuStatus) {
+        alert('Semua data menu harus diisi!');
+        return;
+    }
 
-            const updatedMenu = {
-                name: menuName,
-                category_id: menuCategory,
-                price: price,
-                description: menuDescription,
-                status: menuStatus,
-            };
+    const price = parseFloat(menuPrice.replace(/\./g, '').replace(',', '.'));
+    if (isNaN(price) || price <= 0) {
+        alert('Harga harus berupa angka positif!');
+        return;
+    }
 
-            // Kirim data ke API untuk diperbarui
-            putJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, 'login', token, updatedMenu, function (response) {
-                if (response.status >= 200 && response.status < 300) {
-                    alert('Menu berhasil diperbarui!');
-                    // Refresh data setelah sukses
-                    loadMenus();
-                    // Tutup popup
-                    document.getElementById('editProductModal').classList.remove('show');
-                } else {
-                    alert(`Gagal memperbarui menu: ${response.message || 'Coba lagi.'}`);
-                }
-            });
+    const updatedMenu = {
+        name: menuName,
+        category_id: menuCategory,
+        price: price,
+        description: menuDescription,
+        status: menuStatus,
+    };
+
+    // Kirim data ke API untuk diperbarui
+    putJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, 'login', token, updatedMenu, function (response) {
+        if (response.status >= 200 && response.status < 300) {
+            alert('Menu berhasil diperbarui!');
+            // Refresh data setelah sukses
+            loadMenus();
+            // Tutup popup
+            document.getElementById('editProductModal').classList.remove('show');
+        } else {
+            alert(`Gagal memperbarui menu: ${response.message || 'Coba lagi.'}`);
         }
+    });
+}
 
 // Fungsi untuk memuat ulang menu setelah edit
 function loadMenus() {
-            getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', 'login', token, function (response) {
-                if (response.status === 200) {
-                    menus = response.data.data || []; // Perbarui daftar menu
-                    displayMenus(menus); // Tampilkan menu terbaru
-                } else {
-                    console.error('Gagal memuat menu:', response);
-                }
-            });
+    getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', 'login', token, function (response) {
+        if (response.status === 200) {
+            menus = response.data.data || []; // Perbarui daftar menu
+            displayMenus(menus); // Tampilkan menu terbaru
+        } else {
+            console.error('Gagal memuat menu:', response);
         }
+    });
+}
