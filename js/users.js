@@ -4,38 +4,50 @@ import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croo
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js";
 
-// URL API
-const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users";
+// URL API untuk memperbarui data pengguna
+const API_UPDATE_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users";
 
-// Ambil token dari cookie dengan nama 'login'
-const token = getCookie('login');
-if (!token) {
-    alert('Token tidak ditemukan, harap login terlebih dahulu!');
-    throw new Error("Token tidak ditemukan. Harap login ulang.");
-}
+// Mendapatkan token dari cookie
+const token = getCookie("login_token");
 
-// Panggil API untuk mengambil data pengguna menggunakan fetch()
-fetch(API_URL, {
-    method: 'GET',
-    headers: {
-        'login': token, 
-        'Content-Type': 'application/json',
+// Fungsi untuk mengubah peran pengguna
+function changeRole(userId, newRole) {
+    const roleElement = document.getElementById(`role-user-${userId}`);
+    if (!roleElement) {
+        console.error(`Elemen role untuk userId ${userId} tidak ditemukan.`);
+        return;
     }
-})
-    .then(response => response.json()) // Parse JSON dari respons
-    .then(response => {
-        if (response.status === "success") {
-            const users = response.data || [];
-            displayUsers(users); // Tampilkan data pengguna
-        } else {
-            console.error(`Error: ${response.status}`);
-            alert("Gagal memuat data pengguna. Silakan coba lagi.");
-        }
+
+    // Tampilkan loader sementara role sedang diubah
+    roleElement.textContent = "Mengubah...";
+
+    // Kirim permintaan PATCH ke server untuk memperbarui role
+    fetch(`${API_UPDATE_URL}/${userId}`, {
+        method: "PATCH",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Pastikan token dikirim jika diperlukan
+        },
+        body: JSON.stringify({ role: newRole }) // Kirim role baru
     })
-    .catch(error => {
-        console.error("Error fetching data: ", error);
-        alert("Terjadi kesalahan saat memuat data pengguna.");
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Gagal memperbarui role pengguna");
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Perbarui UI setelah berhasil
+            roleElement.textContent = newRole; // Tampilkan role baru
+            alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`); // Beri notifikasi
+            populateDropdown(userId, newRole); // Isi ulang dropdown
+        })
+        .catch(error => {
+            console.error("Terjadi kesalahan:", error);
+            roleElement.textContent = "Error"; // Tampilkan pesan error sementara
+            alert("Gagal mengubah peran pengguna. Silakan coba lagi.");
+        });
+}
 
 // Fungsi untuk menampilkan data pengguna di tabel
 function displayUsers(users) {
@@ -48,20 +60,23 @@ function displayUsers(users) {
     container.innerHTML = ''; // Hapus data lama jika ada
 
     users.forEach((user, index) => {
+        const userId = user._id || "-";
+        const userRole = user.role || "Peran Tidak Diketahui";
+
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${index + 1}</td> <!-- Nomor urut -->
             <td>${user.name || "Nama Tidak Diketahui"}</td>
             <td>${user.email || "Email Tidak Diketahui"}</td>
-            <td id="role-user-${user._id || "-"}">${user.role || "Peran Tidak Diketahui"}</td>
+            <td id="role-user-${userId}">${userRole}</td>
             <td>${user.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
             <td>
                 <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button"
-                        id="dropdownMenuButton-${user._id}" data-bs-toggle="dropdown" aria-expanded="false">
+                        id="dropdownMenuButton-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
                         Role
                     </button>
-                    <ul class="dropdown-menu" id="dropdown-role-${user._id}" aria-labelledby="dropdownMenuButton-${user._id}">
+                    <ul class="dropdown-menu" id="dropdown-role-${userId}" aria-labelledby="dropdownMenuButton-${userId}">
                     </ul>
                 </div>
             </td>
@@ -69,7 +84,7 @@ function displayUsers(users) {
         container.appendChild(row);
 
         // Tambahkan opsi dropdown untuk role
-        populateDropdown(user._id, user.role);
+        populateDropdown(userId, userRole);
     });
 
     // Pasang event delegation untuk menangani klik pada dropdown
@@ -110,19 +125,4 @@ function populateDropdown(userId, currentRole) {
             </a>`;
         dropdownMenu.appendChild(listItem);
     });
-}
-
-// Fungsi untuk mengubah peran pengguna
-function changeRole(userId, newRole) {
-    const roleElement = document.getElementById(`role-user-${userId}`);
-    if (!roleElement) {
-        console.error(`Elemen role untuk userId ${userId} tidak ditemukan.`);
-        return;
-    }
-
-    roleElement.textContent = newRole; // Perbarui peran di UI
-    alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`); // Pemberitahuan kepada pengguna
-
-    // Perbarui opsi dropdown
-    populateDropdown(userId, newRole);
 }
