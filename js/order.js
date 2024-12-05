@@ -97,82 +97,85 @@ row.appendChild(totalPriceCell);
 
         
 
-        // Kolom Metode Pembayaran & Status
-        const paymentStatusCell = document.createElement('td');
-        paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
-        row.appendChild(paymentStatusCell);
+       // Kolom Metode Pembayaran & Status
+    const paymentStatusCell = document.createElement('td');
+    paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
+    row.appendChild(paymentStatusCell);
 
+    // Membuat kolom aksi untuk tabel
+    const actionCell = document.createElement('td');
 
+    // Tombol Status (dengan ikon ubah/edit)
+    const statusButton = document.createElement('button');
+    statusButton.className = 'btn btn-warning btn-sm'; // CSS untuk tombol status
+    statusButton.innerHTML = '<i class="fas fa-edit"></i> Status'; // Menambahkan ikon "edit" (menggunakan FontAwesome)
 
-         // Membuat kolom aksi untuk tabel
-const actionCell = document.createElement('td');
+    // Event Listener untuk Tombol Status
+    statusButton.addEventListener('click', () => {
+        // Membuat dropdown untuk pilihan status
+        const statusDropdown = document.createElement('select');
+        statusDropdown.className = 'form-control form-control-sm'; // Tampilan dropdown
 
-// Tombol Status (dengan ikon ubah/edit)
-const statusButton = document.createElement('button');
-statusButton.className = 'btn btn-warning btn-sm'; // CSS untuk tombol status
-statusButton.innerHTML = '<i class="fas fa-edit"></i> Status'; // Menambahkan ikon "edit" (menggunakan FontAwesome)
+        // Pilihan status
+        const statusOptions = ['Diproses', 'Selesai'];
+        statusOptions.forEach(status => {
+            const option = document.createElement('option');
+            option.value = status;
+            option.textContent = status;
+            if (order.status === status) option.selected = true; // Set default value sesuai data order
+            statusDropdown.appendChild(option);
+        });
 
-// Event Listener untuk Tombol Status
-statusButton.addEventListener('click', () => {
-    // Membuat dropdown untuk pilihan status
-    const statusDropdown = document.createElement('select');
-    statusDropdown.className = 'form-control form-control-sm'; // Tampilan dropdown
+        // Ganti tombol dengan dropdown
+        statusButton.replaceWith(statusDropdown);
 
-    // Pilihan status
-    const statusOptions = ['Diproses', 'Selesai'];
-    statusOptions.forEach(status => {
-        const option = document.createElement('option');
-        option.value = status;
-        option.textContent = status;
-        if (order.status === status) option.selected = true; // Set default value sesuai data order
-        statusDropdown.appendChild(option);
-    });
+        // Event Listener untuk Dropdown
+        statusDropdown.addEventListener('change', () => {
+            const selectedStatus = statusDropdown.value;
 
-    // Ganti tombol dengan dropdown
-    statusButton.replaceWith(statusDropdown);
+            // Update status di objek order
+            order.status = selectedStatus;
 
-    // Event Listener untuk Dropdown
-    statusDropdown.addEventListener('change', () => {
-        const selectedStatus = statusDropdown.value;
-
-        // Update status di objek order
-        order.status = selectedStatus;
-
-        // Kirim perubahan ke server (contoh menggunakan fetch)
-        fetch(`/api/update-order-status`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: order.id, // Kirim ID order
-                status: selectedStatus, // Kirim status yang baru
-            }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
-                } else {
-                    alert(`Gagal mengubah status: ${data.message}`);
-                }
+            // Kirim perubahan ke server (contoh menggunakan fetch)
+            fetch(`/api/update-order-status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: order.id, // Kirim ID order
+                    status: selectedStatus, // Kirim status yang baru
+                }),
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat mengubah status.');
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update tampilan kolom Metode Pembayaran & Status
+                        paymentStatusCell.textContent = `${order.payment_method || '-'} - ${selectedStatus}`;
+                        alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
+                    } else {
+                        alert(`Gagal mengubah status: ${data.message}`);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat mengubah status.');
+                });
 
-        // Ganti kembali dropdown dengan tombol status
-        statusDropdown.replaceWith(statusButton);
+            // Ganti kembali dropdown dengan tombol status
+            statusDropdown.replaceWith(statusButton);
+        });
     });
+
+    // Tambahkan tombol ke kolom aksi
+    actionCell.appendChild(statusButton);
+
+    // Tambahkan kolom aksi ke baris
+    row.appendChild(actionCell);
+
+    // Tambahkan baris ke container/tabel
+    container.appendChild(row);
 });
-
-// Tambahkan tombol ke kolom aksi
-actionCell.appendChild(statusButton);
-
-// Tambahkan kolom aksi ke baris
-row.appendChild(actionCell);
-    });
 }
 
 // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
