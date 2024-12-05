@@ -346,8 +346,15 @@ function openEditMenuPopup(menuId) {
     // Isi input hidden dengan ID menu
     document.getElementById('edit-product-id').value = menuId;
 
-    // Event listener ketika modal selesai ditampilkan
-    editModal.addEventListener('shown.bs.modal', function () {
+    // Tampilkan modal
+    const bootstrapModal = new bootstrap.Modal(editModal);
+    bootstrapModal.show();
+}
+
+// Pastikan event listener untuk modal hanya ditambahkan sekali
+const editForm = document.getElementById('editProductForm');
+if (editForm) {
+    editForm.addEventListener('shown.bs.modal', function () {
         // Ambil data menu berdasarkan ID
         getJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, "login", token, function (response) {
             console.log("Response dari API:", response);
@@ -435,3 +442,4 @@ function loadMenus() {
         }
     });
 }
+
