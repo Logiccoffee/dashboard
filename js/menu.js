@@ -349,36 +349,25 @@ function openEditMenuPopup(menuId) {
     // Tampilkan modal
     const bootstrapModal = new bootstrap.Modal(editModal);
     bootstrapModal.show();
-}
 
-// Pastikan event listener untuk modal hanya ditambahkan sekali
-const editForm = document.getElementById('editProductForm');
-if (editForm) {
-    editForm.addEventListener('shown.bs.modal', function () {
-        // Ambil data menu berdasarkan ID
-        getJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, "login", token, function (response) {
-            console.log("Response dari API:", response);
-            if (response.status === 200) {
-                const menu = response.data; // Data menu dari API
+    // Ambil data menu berdasarkan ID setelah modal terbuka
+    getJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, "login", token, function (response) {
+        console.log("Response dari API:", response);
+        if (response.status === 200) {
+            const menu = response.data; // Data menu dari API
 
-                console.log('Menu Data:', menu); // Log untuk cek data menu yang diambil
+            console.log('Menu Data:', menu); // Log untuk cek data menu yang diambil
 
-                // Isi form dengan data menu yang diambil
-                document.getElementById('edit-product-name').value = menu.name || '';
-                document.getElementById('edit-product-category').value = menu.category_id || '';
-                document.getElementById('edit-product-description').value = menu.description || '';
-                document.getElementById('edit-product-price').value = menu.price || '';
-                document.getElementById('edit-product-status').value = menu.status || 'Tidak Tersedia';
-
-            } else {
-                alert('Gagal memuat data menu untuk diedit.');
-            }
-        });
+            // Isi form dengan data menu yang diambil
+            document.getElementById('edit-product-name').value = menu.name || '';
+            document.getElementById('edit-product-category').value = menu.category_id || '';
+            document.getElementById('edit-product-description').value = menu.description || '';
+            document.getElementById('edit-product-price').value = menu.price || '';
+            document.getElementById('edit-product-status').value = menu.status || 'Tidak Tersedia';
+        } else {
+            alert('Gagal memuat data menu untuk diedit.');
+        }
     });
-
-    // Tampilkan modal
-    const bootstrapModal = new bootstrap.Modal(editModal);
-    bootstrapModal.show();
 }
 
 // Fungsi untuk menyimpan perubahan menu
