@@ -77,15 +77,16 @@ function responseFunction(result) {
     }
 
     // Fungsi untuk menghapus semua cookie
-    function deleteAllCookies() {
-        document.cookie.split(";").forEach((cookie) => {
-            const [name] = cookie.split("=");
-            document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
-            console.log(`Cookie '${name.trim()}' deleted.`);
-        });
-        console.log("All cookies after deletion:", document.cookie);
+   // Fungsi untuk menghapus semua cookies
+   function deleteAllCookies() {
+    const cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+        const eqPos = cookie.indexOf("=");
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
     }
-
+    console.log("All cookies deleted.");
+}
     // Fungsi untuk menghapus data user dari UI
     function clearUserData() {
         const userElement = document.querySelector(".user-info");
