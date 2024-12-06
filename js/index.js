@@ -41,14 +41,22 @@ function responseFunction(result) {
     }
 
     function logout(event){
-        event.prevenDefault();
+        event.preventDefault();
         document.cookie = "login=; expires=Thu, 01 jan 1970 00:00;00 UTC; path=/"
         localStorage.removeItem("token");
         window.location.href = "https://logiccoffee.id.biz.id/";
         console.log("User Logged Out");
 
     }
-    document.addEventListener("DOMContentLoaded", function(){
+    document.addEventListener("DOMContentLoaded", function () {
+        const logoutButton = document.getElementById("logoutButtonId");
+        if (logoutButton) {
+            logoutButton.addEventListener("click", logout);
+
+        }
+        else {
+            console.error("Tombol logout tidak ditemukan")
+        }
         onClick("logoutButtonId", logout);
     });
     
