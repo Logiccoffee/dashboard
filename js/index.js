@@ -76,25 +76,24 @@ function responseFunction(result) {
         console.log(`Cookie '${cookieName}' has been deleted.`);
     }
 
-      // Fungsi untuk menghapus semua cookies
-      function deleteAllCookies() {
-        const cookies = document.cookie.split("; ");
-        for (let cookie of cookies) {
-            const eqPos = cookie.indexOf("=");
-            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-        }
-        console.log("All cookies deleted.");
-    }
+      // 4. Fungsi untuk menghapus semua cookie
+function deleteAllCookies() {
+    const cookies = document.cookie.split("; ");
+    cookies.forEach(cookie => {
+        const name = cookie.split("=")[0];
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+    });
+    console.log("Semua cookie telah dihapus.");
+}
 
     // Fungsi untuk menghapus data user dari UI
-    function clearUserData() {
-        const userElement = document.querySelector(".user-info");
-        if (userElement) {
-            userElement.innerHTML = "<p>User data cleared.</p>";
-            console.log("User data cleared from the UI.");
-        }
-    }
+    // function clearUserData() {
+    //     const userElement = document.querySelector(".user-info");
+    //     if (userElement) {
+    //         userElement.innerHTML = "<p>User data cleared.</p>";
+    //         console.log("User data cleared from the UI.");
+    //     }
+    // }
 
     // Fungsi logout
     function logout(event) {
@@ -111,7 +110,7 @@ function responseFunction(result) {
         clearUserData();
 
         // Redirect ke halaman utama
-        window.location.href = "https://logiccoffee.id.biz.id/";
+        redirect("https://logiccoffee.id.biz.id/");
         console.log("Redirected to homepage");
     }
 
