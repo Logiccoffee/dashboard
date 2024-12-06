@@ -70,27 +70,50 @@ function responseFunction(result) {
     //     }
     // });
 
+    // Fungsi untuk menghapus cookie tertentu
     function deleteCookie(cookieName) {
-        // Hapus cookie dengan nama tertentu
         document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
         console.log(`Cookie '${cookieName}' has been deleted.`);
     }
-    
+
+    // Fungsi untuk menghapus semua cookie
+    function deleteAllCookies() {
+        document.cookie.split(";").forEach((cookie) => {
+            const [name] = cookie.split("=");
+            document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+            console.log(`Cookie '${name.trim()}' deleted.`);
+        });
+        console.log("All cookies after deletion:", document.cookie);
+    }
+
+    // Fungsi untuk menghapus data user dari UI
+    function clearUserData() {
+        const userElement = document.querySelector(".user-info");
+        if (userElement) {
+            userElement.innerHTML = "<p>User data cleared.</p>";
+            console.log("User data cleared from the UI.");
+        }
+    }
+
+    // Fungsi logout
     function logout(event) {
         event.preventDefault();
         
-        // Hapus token login dari cookies
-        deleteCookie("login");
+        // Hapus semua cookies
+        deleteAllCookies();
         
-        // Hapus token dari localStorage (jika disimpan di sana juga)
+        // Hapus token dari localStorage
         localStorage.removeItem("login");
         console.log("Token removed from localStorage");
-    
-        // Redirect ke halaman utama setelah logout
+
+        // Hapus data dari UI
+        clearUserData();
+
+        // Redirect ke halaman utama
         window.location.href = "https://logiccoffee.id.biz.id/";
         console.log("Redirected to homepage");
     }
-    
+
     // Menambahkan event listener pada tombol logout
     document.addEventListener("DOMContentLoaded", function () {
         const logoutButton = document.getElementById("logoutButton");
