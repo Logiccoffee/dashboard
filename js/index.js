@@ -44,7 +44,7 @@ function responseFunction(result) {
         event.preventDefault();
 
         //hapus dari localstorage
-        localStorage.removeItem("token");
+        localStorage.removeItem("login");
         console.log("Token removed from localstorage");
 
         //hapus token dari cookie
