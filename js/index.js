@@ -78,9 +78,12 @@ function logout(event) {
     // Hapus data dari UI
     clearUserData();
     
-    // Redirect ke halaman utama
-    window.location.href = "https://logiccoffee.id.biz.id/";
-    console.log("Redirected to homepage");
+    // Tunggu sebentar sebelum redirect (untuk memastikan semua operasi selesai)
+    setTimeout(function() {
+        // Redirect ke halaman utama
+        window.location.href = "https://logiccoffee.id.biz.id/";
+        console.log("Redirected to homepage");
+    }, 200);  // Menunggu 200ms sebelum pindah halaman
 }
 
 // Menambahkan event listener pada tombol logout setelah DOM siap
