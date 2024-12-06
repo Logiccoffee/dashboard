@@ -40,10 +40,11 @@ function responseFunction(result) {
         setInner("content", "Terjadi kesalahan saat memproses data.");
     }
 
-    function logout(){
+    function logout(event){
+        event.prevenDefault();
         document.cookie = "login=; expires=Thu, 01 jan 1970 00:00;00 UTC; path=/"
         localStorage.removeItem("token");
-        window.location,href = "https://logiccoffee.id.biz.id/";
+        window.location.href = "https://logiccoffee.id.biz.id/";
         console.log("User Logged Out");
 
     }
