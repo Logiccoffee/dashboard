@@ -94,7 +94,6 @@ function deleteAllCookies() {
     //         console.log("User data cleared from the UI.");
     //     }
     // }
-
     function logout(event) {
         // Hapus semua cookies
         deleteAllCookies();
@@ -110,8 +109,8 @@ function deleteAllCookies() {
         window.location.href = "https://logiccoffee.id.biz.id/"; // Ganti dengan URL yang sesuai
         console.log("Redirected to homepage");
     }
+    
 
-    // Menambahkan event listener pada tombol logout
     document.addEventListener("DOMContentLoaded", function () {
         const logoutButton = document.getElementById("logoutButton");
         if (logoutButton) {
