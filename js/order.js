@@ -139,7 +139,7 @@ row.appendChild(totalPriceCell);
          
         //  // Tambahkan baris ke tabel
         //  row.appendChild(actionCell);
-        //  container.appendChild(row);
+        container.appendChild(row);
          
     });
 }
