@@ -17,12 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             <span class="sidebar-text">Dasbor</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="analitik.html" class="analitik-link">
-                            <i class="fa-solid fa-chart-line" style="margin-right: 10px;"></i>
-                            <span class="sidebar-text">Analitik</span>
-                        </a>
-                    </li>
                 </ul>
             </section>
 
@@ -66,12 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         <a href="daftarpesanan.html" class="daftarpesanan-link">
                             <i class="fa-solid fa-box" style="margin-right: 10px;"></i>
                             <span class="sidebar-text">Daftar Pesanan</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="keuangan.html" class="keuangan-link">
-                            <i class="fa-solid fa-hand-holding-dollar" style="margin-right: 10px;"></i>
-                            <span class="sidebar-text">Keuangan</span>
                         </a>
                     </li>
                 </ul>

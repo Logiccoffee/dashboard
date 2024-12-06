@@ -1,5 +1,5 @@
 import { getJSON, postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
-import { putJSON, deleteJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/api.js";
+import { putJSON} from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/api.js";
 
 // Array untuk menyimpan data menu
 let menus = [];
@@ -76,14 +76,6 @@ function displayMenus(response) {
                     <p class="card-text">Kategori: ${categoryName}</p>
                     <p class="card-text">Harga: ${item.price}</p>
                     <p class="card-text">Status: ${item.status || 'Tidak Tersedia'}</p>
-                </div>
-                <div class="card-footer text-center">
-                    <button class="btn btn-warning btn-edit" data-id="${item.id}">
-                        <i class="fas fa-pen"></i> Ubah
-                    </button>
-                    <button class="btn btn-danger btn-delete" onclick="confirmDelete(${item.id})">
-                        <i class="fas fa-trash-alt"></i> Hapus
-                    </button>
                 </div>
             </div>
         `;
