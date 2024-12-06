@@ -7,58 +7,44 @@ import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js
 // Fungsi untuk mengecek status login
 function checkLoginStatus() {
     const loginToken = getCookie("login");
-    
-    // Jika tidak ada cookie login, arahkan ke halaman login
+
     if (!loginToken) {
-        window.location.href = "https://logiccoffee.id.biz.id/login"; // Ganti dengan URL halaman login
-    } else {
-        console.log("Pengguna sudah login");
-        // Lanjutkan untuk menampilkan data pengguna jika diperlukan
+        // Jika token tidak ada, arahkan ke halaman login
+        console.log("Token tidak ditemukan. Redirecting to login...");
+        redirect("/login");
+        return;
     }
+
+    // Verifikasi token dengan API
+    getJSON("https://api.logiccoffee.id/verify-token", "token", loginToken, (result) => {
+        if (!result.valid) {
+            console.log("Token tidak valid. Redirecting to login...");
+            deleteAllCookies();
+            redirect("/login");
+        } else {
+            console.log("Pengguna masih login. Data valid.");
+            loadUserData(result.data);
+        }
+    });
 }
 
-// Panggil fungsi checkLoginStatus() di awal
-checkLoginStatus();
+// Fungsi untuk memuat data pengguna ke UI
+function loadUserData(data) {
+    const userNameElement = document.getElementById("user-name");
+    const userRoleElement = document.getElementById("user-role");
 
-// Cek apakah cookie login ada, jika tidak arahkan ke halaman utama
-if (getCookie("login") === "") {
-    console.log("Cookie login tidak ditemukan. Mengarahkan ke halaman utama.");
-    redirect("/");
-}
-
-// Ambil data pengguna menggunakan API
-getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user", "login", getCookie("login"), responseFunction);
-
-// Fungsi untuk menangani respons API
-function responseFunction(result) {
-    try {
-        if (result.status === 404) {
-            console.log("Pengguna tidak ditemukan. Mengarahkan ke halaman pendaftaran.");
-            setInner("content", "Silahkan lakukan pendaftaran terlebih dahulu.");
-            redirect("/register");
-            return; // Menghentikan eksekusi setelah redirect
-        }
-
-        // Menampilkan nama pengguna dan peran pengguna di elemen yang telah disediakan
-        const userNameElement = document.getElementById("user-name");
-        const userRoleElement = document.getElementById("user-role");
-
-        if (userNameElement && userRoleElement) {
-            userNameElement.textContent = result.data.name || "Nama Tidak Diketahui";
-            userRoleElement.textContent = result.data.role || "Peran Tidak Diketahui";
-        }
-
-        console.log("Data pengguna:", result.data);
-    } catch (error) {
-        console.error("Terjadi kesalahan saat memproses respons:", error.message);
-        setInner("content", "Terjadi kesalahan saat memproses data.");
+    if (userNameElement && userRoleElement) {
+        userNameElement.textContent = data.name || "Nama Pengguna";
+        userRoleElement.textContent = data.role || "Peran Pengguna";
     }
+
+    console.log("Data pengguna berhasil dimuat:", data);
 }
 
 // Fungsi untuk menghapus cookie tertentu
 function deleteCookie(cookieName) {
     document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
-    console.log(`Cookie '${cookieName}' has been deleted.`);
+    console.log(`Cookie '${cookieName}' telah dihapus.`);
 }
 
 // Fungsi untuk menghapus semua cookie
@@ -71,44 +57,50 @@ function deleteAllCookies() {
     console.log("Semua cookie telah dihapus.");
 }
 
-// Fungsi untuk menghapus data user dari UI
+// Fungsi untuk menghapus data pengguna dari UI
 function clearUserData() {
-    const userElement = document.querySelector(".user-info");
-    if (userElement) {
-        userElement.innerHTML = "<p>User data cleared.</p>";
-        console.log("User data cleared from the UI.");
-    }
+    const userNameElement = document.getElementById("user-name");
+    const userRoleElement = document.getElementById("user-role");
+
+    if (userNameElement) userNameElement.textContent = "Nama Pengguna";
+    if (userRoleElement) userRoleElement.textContent = "Peran Pengguna";
+
+    console.log("User data cleared from UI");
 }
 
 // Fungsi logout
 function logout(event) {
-    event.preventDefault();  // Pastikan preventDefault dipanggil agar form atau link tidak melakukan aksi default
-    
-    // Hapus semua cookies
+    event.preventDefault();
+
+    // Hapus semua cookie
     deleteAllCookies();
-    
-    // Hapus token dari localStorage dan sessionStorage
+
+    // Hapus token dan data dari localStorage
     localStorage.removeItem("login");
-    sessionStorage.clear();  // Menghapus data sesi jika ada
-    console.log("Token removed from localStorage and sessionStorage");
+    localStorage.removeItem("userData");
+
+    console.log("Token dan data pengguna dihapus dari localStorage");
 
     // Hapus data dari UI
     clearUserData();
-    
-    setTimeout(function() {
-        // Redirect ke halaman utama
+
+    // Redirect ke halaman utama
+    setTimeout(() => {
         window.location.href = "https://logiccoffee.id.biz.id/";
         console.log("Redirected to homepage");
-    }, 200);  // Menunggu 200ms sebelum pindah halaman
+    }, 200);
 }
 
-// Menambahkan event listener pada tombol logout setelah DOM siap
-document.addEventListener("DOMContentLoaded", function () {
+// Tambahkan event listener untuk tombol logout setelah DOM siap
+document.addEventListener("DOMContentLoaded", () => {
     const logoutButton = document.getElementById("logoutButton");
     if (logoutButton) {
-        logoutButton.addEventListener("click", logout); // Menambahkan event listener ke tombol
+        logoutButton.addEventListener("click", logout);
         console.log("Logout Button event listener attached.");
     } else {
-        console.error("Logout button not found.");
+        console.error("Logout button tidak ditemukan.");
     }
+
+    // Panggil fungsi cek login saat halaman dimuat
+    checkLoginStatus();
 });
