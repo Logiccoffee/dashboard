@@ -48,7 +48,8 @@ function responseFunction(result) {
         console.log("Token removed from localStorage");
     
         // Hapus token dari cookie
-        document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "login=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + location.hostname + ";";
+
         console.log("Cookie login removed");
     
         // Redirect ke landing page
