@@ -4,6 +4,22 @@ import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croo
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js";
 
+// Fungsi untuk mengecek status login
+function checkLoginStatus() {
+    const loginToken = getCookie("login");
+    
+    // Jika tidak ada cookie login, arahkan ke halaman login
+    if (!loginToken) {
+        window.location.href = "https://logiccoffee.id.biz.id/login"; // Ganti dengan URL halaman login
+    } else {
+        console.log("Pengguna sudah login");
+        // Lanjutkan untuk menampilkan data pengguna jika diperlukan
+    }
+}
+
+// Panggil fungsi checkLoginStatus() di awal
+checkLoginStatus();
+
 // Cek apakah cookie login ada, jika tidak arahkan ke halaman utama
 if (getCookie("login") === "") {
     console.log("Cookie login tidak ditemukan. Mengarahkan ke halaman utama.");
