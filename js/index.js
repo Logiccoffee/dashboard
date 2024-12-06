@@ -3,7 +3,7 @@ import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croo
 import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croot.js";
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js";
-import { onClick } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.4/element.js";
+import { onClick } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/element.js";
 
 // Cek apakah cookie login ada, jika tidak arahkan ke halaman utama
 if (getCookie("login") === "") {
@@ -42,22 +42,28 @@ function responseFunction(result) {
 
     function logout(event){
         event.preventDefault();
-        document.cookie = "login=; expires=Thu, 01 jan 1970 00:00;00 UTC; path=/"
-        localStorage.removeItem("token");
-        window.location.href = "https://logiccoffee.id.biz.id/";
-        console.log("User Logged Out");
 
+        //hapus dari localstorage
+        localStorage.removeItem("token");
+        console.log("Token removed from localstorage");
+
+        //hapus token dari cookie
+        document.cookie = "login=; Thu, 01 Jan 1970 00:00:00 UTC, path=/";
+        console.log("Cookie login removed");
+
+        //redirect ke landing page
+        window.location.href = "https://logiccoffee.id.biz.id/";
+        console.log("Redirect to homepage");
     }
+
     document.addEventListener("DOMContentLoaded", function () {
-        const logoutButton = document.getElementById("logoutButtonId");
+        const logoutButton = document.getElementById("logoutButton");
         if (logoutButton) {
             logoutButton.addEventListener("click", logout);
-
+            console.log("Logout Button event listener attached.");
+        } else {
+            console.error("Logout button not found.");
         }
-        else {
-            console.error("Tombol logout tidak ditemukan")
-        }
-        onClick("logoutButtonId", logout);
     });
     
 }
