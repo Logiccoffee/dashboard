@@ -47,5 +47,8 @@ function responseFunction(result) {
         console.log("User Logged Out");
 
     }
-    onClick("logoutButtonId", logout);
+    document.addEventListener("DOMContentLoaded", function(){
+        onClick("logoutButtonId", logout);
+    });
+    
 }
