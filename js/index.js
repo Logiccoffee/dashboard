@@ -55,60 +55,28 @@ function responseFunction(result) {
     }
 }
 
-// Fungsi untuk menghapus cookie tertentu
-function deleteCookie(cookieName) {
-    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
-    console.log(`Cookie '${cookieName}' has been deleted.`);
-}
-
-// Fungsi untuk menghapus semua cookie
-function deleteAllCookies() {
-    const cookies = document.cookie.split("; ");
-    cookies.forEach(cookie => {
-        const name = cookie.split("=")[0];
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
-    });
-    console.log("Semua cookie telah dihapus.");
-}
-
-// Fungsi untuk menghapus data user dari UI
-function clearUserData() {
-    const userElement = document.querySelector(".user-info");
-    if (userElement) {
-        userElement.innerHTML = "<p>User data cleared.</p>";
-        console.log("User data cleared from the UI.");
-    }
-}
-
 // Fungsi logout
 function logout(event) {
-    event.preventDefault();  // Pastikan preventDefault dipanggil agar form atau link tidak melakukan aksi default
-    
-    // Hapus semua cookies
-    deleteAllCookies();
-    
-    // Hapus token dari localStorage dan sessionStorage
-    localStorage.removeItem("login");
-    sessionStorage.clear();  // Menghapus data sesi jika ada
-    console.log("Token removed from localStorage and sessionStorage");
-
-    // Hapus data dari UI
-    clearUserData();
-    
-    setTimeout(function() {
-        // Redirect ke halaman utama
-        window.location.href = "https://logiccoffee.id.biz.id/";
-        console.log("Redirected to homepage");
-    }, 200);  // Menunggu 200ms sebelum pindah halaman
-}
-
-// Menambahkan event listener pada tombol logout setelah DOM siap
-document.addEventListener("DOMContentLoaded", function () {
-    const logoutButton = document.getElementById("logoutButton");
-    if (logoutButton) {
-        logoutButton.addEventListener("click", logout); // Menambahkan event listener ke tombol
-        console.log("Logout Button event listener attached.");
+    event.preventDefault(); // Mencegah perilaku default link
+  
+    // Hapus cookie dengan nama "login"
+    deleteCookie("login");
+  
+    // Cek apakah cookie berhasil dihapus
+    if (document.cookie.indexOf("login=") === -1) {
+        console.log("Cookie 'login' berhasil dihapus. Mengarahkan ke halaman utama.");
+        redirect("/");
     } else {
-        console.error("Logout button not found.");
+        console.error("Cookie 'login' gagal dihapus.");
     }
-});
+  }
+  
+  // Menjalankan logout saat tombol diklik
+  document.addEventListener("DOMContentLoaded", function () {
+    const logoutButton = document.querySelector(".logout-btn");
+    if (logoutButton) {
+        logoutButton.addEventListener("click", logout);
+    } else {
+        console.error("Tombol logout tidak ditemukan.");
+    }
+  });
