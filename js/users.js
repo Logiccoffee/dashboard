@@ -46,4 +46,70 @@ function displayUsers(users) {
     }
 
     container.innerHTML = ''; // Kosongkan data lama
+
+    users.forEach((user, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${user.name || "Nama Tidak Diketahui"}</td>
+            <td>${user.email || "Email Tidak Diketahui"}</td>
+            <td id="role-user-${user._id || "-"}">${user.role || "Peran Tidak Diketahui"}</td>
+            <td>${user.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button"
+                        id="dropdownMenuButton-${user._id}" data-bs-toggle="dropdown" aria-expanded="false">
+                        Role
+                    </button>
+                    <ul class="dropdown-menu" id="dropdown-role-${user._id}" aria-labelledby="dropdownMenuButton-${user._id}"></ul>
+                </div>
+            </td>
+        `;
+        container.appendChild(row);
+
+        // Tambahkan opsi dropdown
+        const roles = ["user", "admin", "dosen"];
+        populateDropdown(user._id, user.role, roles, users);
+    });
+}
+
+// Fungsi untuk mengisi dropdown
+function populateDropdown(userId, currentRole, roles, users) {
+    const dropdownMenu = document.getElementById(`dropdown-role-${userId}`);
+    if (!dropdownMenu) return;
+
+    dropdownMenu.innerHTML = ''; // Kosongkan opsi sebelumnya
+
+    const filteredRoles = roles.filter(role => role !== currentRole);
+    filteredRoles.forEach((role) => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+            <a class="dropdown-item" href="#">
+                <i class="fas fa-user text-primary"></i> Jadikan Sebagai ${role}
+            </a>`;
+        listItem.addEventListener('click', (e) => {
+            e.preventDefault();
+            changeRole(userId, role, users);
+        });
+        dropdownMenu.appendChild(listItem);
+    });
+}
+
+// Buat fungsi global untuk mengubah role
+window.changeRole = function(userId, newRole, users) {
+    const roleElement = document.getElementById(`role-user-${userId}`);
+    if (!roleElement) return;
+
+    roleElement.textContent = newRole;
+
+    const userIndex = users.findIndex(user => user._id === userId);
+    if (userIndex !== -1) {
+        users[userIndex].role = newRole;
+    }
+
+    alert(`Peran pengguna dengan ID ${userId} telah diubah menjadi ${newRole}`);
+    const roles = ["user", "admin", "dosen"];
+    users.forEach(user => {
+        populateDropdown(user._id, user.role, roles, users);
+    });
 };
