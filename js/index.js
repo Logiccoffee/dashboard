@@ -125,6 +125,8 @@ function responseFunction(result) {
             console.error("Logout button not found.");
         }
     });
+
+    
     
 
 }
