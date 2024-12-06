@@ -7,7 +7,7 @@ import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js
 // Fungsi untuk mengecek status login
 function checkLoginStatus() {
     const loginToken = getCookie("login");
-
+    
     // Jika tidak ada cookie login, arahkan ke halaman login
     if (!loginToken) {
         window.location.href = "https://logiccoffee.id.biz.id/login"; // Ganti dengan URL halaman login
@@ -27,7 +27,7 @@ if (getCookie("login") === "") {
 }
 
 // Ambil data pengguna menggunakan API
-getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user","login", getCookie("login"), responseFunction);
+getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/user", "login", getCookie("login"), responseFunction);
 
 // Fungsi untuk menangani respons API
 function responseFunction(result) {
@@ -58,7 +58,7 @@ function responseFunction(result) {
 // Fungsi untuk menghapus cookie tertentu
 function deleteCookie(cookieName) {
     document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
-    console.log(`Cookie '${cookieName}' telah dihapus.`);
+    console.log(`Cookie '${cookieName}' has been deleted.`);
 }
 
 // Fungsi untuk menghapus semua cookie
@@ -66,7 +66,7 @@ function deleteAllCookies() {
     const cookies = document.cookie.split("; ");
     cookies.forEach(cookie => {
         const name = cookie.split("=")[0];
-        deleteCookie(name);
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
     });
     console.log("Semua cookie telah dihapus.");
 }
@@ -83,19 +83,20 @@ function clearUserData() {
 // Fungsi logout
 function logout(event) {
     event.preventDefault();  // Pastikan preventDefault dipanggil agar form atau link tidak melakukan aksi default
-
+    
     // Hapus semua cookies
     deleteAllCookies();
-
-    // Hapus token dari localStorage
+    
+    // Hapus token dari localStorage dan sessionStorage
     localStorage.removeItem("login");
-    console.log("Token removed from localStorage");
+    sessionStorage.clear();  // Menghapus data sesi jika ada
+    console.log("Token removed from localStorage and sessionStorage");
 
     // Hapus data dari UI
     clearUserData();
-
+    
     setTimeout(function() {
-        // Redirect ke halaman utama setelah logout
+        // Redirect ke halaman utama
         window.location.href = "https://logiccoffee.id.biz.id/";
         console.log("Redirected to homepage");
     }, 200);  // Menunggu 200ms sebelum pindah halaman
