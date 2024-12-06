@@ -104,10 +104,10 @@ row.appendChild(totalPriceCell);
 
 
 
-         //Kolom aksi
+         // Kolom aksi
          const actionCell = document.createElement('td');
 
-         //Tombol Status (dengan ikon ubah/edit)
+         // Tombol Status (dengan ikon ubah/edit)
          const statusButton = document.createElement('button');
          statusButton.className = 'btn btn-warning btn-sm'; // CSS untuk tombol status
          statusButton.innerHTML = '<i class="fas fa-edit"></i> Status'; // Menambahkan ikon "edit" (menggunakan FontAwesome)
@@ -134,7 +134,7 @@ row.appendChild(totalPriceCell);
              });
          });
          
-         //Kolom untuk menampilkan tombol status
+         // Kolom untuk menampilkan tombol status
          actionCell.appendChild(statusButton);
          
          // Tambahkan baris ke tabel
