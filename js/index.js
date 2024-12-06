@@ -97,7 +97,7 @@ function deleteAllCookies() {
 
     // Fungsi logout
     function logout(event) {
-        event.preventDefault();
+        // event.preventDefault();
         
         // Hapus semua cookies
         deleteAllCookies();
@@ -118,7 +118,7 @@ function deleteAllCookies() {
     document.addEventListener("DOMContentLoaded", function () {
         const logoutButton = document.getElementById("logoutButton");
         if (logoutButton) {
-            logoutButton.addEventListener("click", logout);
+            logoutButton.addEventListener("click", logout); // Menambahkan event listener ke tombol
             console.log("Logout Button event listener attached.");
         } else {
             console.error("Logout button not found.");
