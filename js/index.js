@@ -78,7 +78,6 @@ function logout(event) {
     // Hapus data dari UI
     clearUserData();
     
-    // Tunggu sebentar sebelum redirect (untuk memastikan semua operasi selesai)
     setTimeout(function() {
         // Redirect ke halaman utama
         window.location.href = "https://logiccoffee.id.biz.id/";
