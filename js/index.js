@@ -40,26 +40,58 @@ function responseFunction(result) {
         setInner("content", "Terjadi kesalahan saat memproses data.");
     }
 
+    // function logout(event) {
+    //     event.preventDefault();
+    
+    //     // Hapus token dari localStorage
+    //     localStorage.removeItem("login");
+    //     console.log("Token removed from localStorage");
+    
+    //     // Hapus semua cookie
+    //     document.cookie.split(";").forEach((cookie) => {
+    //         const [name] = cookie.split("=");
+    //         document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    //         document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${location.hostname};`;
+    //     });
+    //     console.log("All cookies removed:", document.cookie);
+    
+    //     // Redirect ke landing page
+    //     window.location.href = "https://logiccoffee.id.biz.id/";
+    //     console.log("Redirected to homepage");
+    // }
+    
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     const logoutButton = document.getElementById("logoutButton");
+    //     if (logoutButton) {
+    //         logoutButton.addEventListener("click", logout);
+    //         console.log("Logout Button event listener attached.");
+    //     } else {
+    //         console.error("Logout button not found.");
+    //     }
+    // });
+
+    function deleteCookie(cookieName) {
+        // Hapus cookie dengan nama tertentu
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+        console.log(`Cookie '${cookieName}' has been deleted.`);
+    }
+    
     function logout(event) {
         event.preventDefault();
-    
-        // Hapus token dari localStorage
+        
+        // Hapus token login dari cookies
+        deleteCookie("login");
+        
+        // Hapus token dari localStorage (jika disimpan di sana juga)
         localStorage.removeItem("login");
         console.log("Token removed from localStorage");
     
-        // Hapus semua cookie
-        document.cookie.split(";").forEach((cookie) => {
-            const [name] = cookie.split("=");
-            document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-            document.cookie = `${name.trim()}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${location.hostname};`;
-        });
-        console.log("All cookies removed:", document.cookie);
-    
-        // Redirect ke landing page
+        // Redirect ke halaman utama setelah logout
         window.location.href = "https://logiccoffee.id.biz.id/";
         console.log("Redirected to homepage");
     }
     
+    // Menambahkan event listener pada tombol logout
     document.addEventListener("DOMContentLoaded", function () {
         const logoutButton = document.getElementById("logoutButton");
         if (logoutButton) {
