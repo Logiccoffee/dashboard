@@ -95,22 +95,19 @@ function deleteAllCookies() {
     //     }
     // }
 
-    // Fungsi logout
     function logout(event) {
-        // event.preventDefault();
-        
         // Hapus semua cookies
         deleteAllCookies();
-        
+    
         // Hapus token dari localStorage
         localStorage.removeItem("login");
         console.log("Token removed from localStorage");
-
+    
         // Hapus data dari UI
         clearUserData();
-
+    
         // Redirect ke halaman utama
-        redirect("https://logiccoffee.id.biz.id/");
+        window.location.href = "https://logiccoffee.id.biz.id/"; // Ganti dengan URL yang sesuai
         console.log("Redirected to homepage");
     }
 
@@ -124,6 +121,7 @@ function deleteAllCookies() {
             console.error("Logout button not found.");
         }
     });
+    
 
     
     
