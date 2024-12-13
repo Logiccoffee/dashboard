@@ -108,9 +108,17 @@ function handleRoleChange(userId, newRole) {
     .then(data => {
         console.log('Role berhasil diperbarui:', data);
 
-        const roleCell = document.getElementById(`role-user-${userId}`);
-        if (roleCell) {
-            roleCell.textContent = newRole;
+        // Cari indeks user yang diupdate
+        const userIndex = users.findIndex(user => user._id === userId);
+        if (userIndex !== -1) {
+            // Update role di tabel DOM
+            const userRow = document.getElementById(`user-row-${userId}`);
+            if (userRow) {
+                const roleCell = userRow.querySelector(`#role-user-${userId}`);
+                if (roleCell) {
+                    roleCell.textContent = newRole;
+                }
+            }
         }
     })
     .catch(error => {
@@ -118,3 +126,4 @@ function handleRoleChange(userId, newRole) {
         alert('Gagal memperbarui role. Coba lagi nanti.');
     });
 }
+
