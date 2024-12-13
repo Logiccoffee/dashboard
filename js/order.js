@@ -99,7 +99,7 @@ row.appendChild(totalPriceCell);
 
         
 
-        // Kolom Metode Pembayaran & Status
+   // Kolom Metode Pembayaran & Status
 const paymentStatusCell = document.createElement('td');
 paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
 row.appendChild(paymentStatusCell);
@@ -117,7 +117,7 @@ statusButton.addEventListener('click', () => {
     statusDropdown.className = 'form-control form-control-sm'; // Tampilan dropdown
 
     // Pilihan status
-    const statusOptions = ['Diproses', 'Selesai', 'Dibatalkan'];
+    const statusOptions = ['Diproses', 'Terkirim', 'Dibatalkan'];
     statusOptions.forEach(status => {
         const option = document.createElement('option');
         option.value = status;
@@ -138,7 +138,7 @@ statusButton.addEventListener('click', () => {
         const selectedStatus = statusDropdown.value;
 
         // Kirim data perubahan status ke server
-        fetch(`${API_URL}/${order.id}`, {
+        fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order/${order.id}`, {
             method: 'PUT', // Gunakan metode PUT untuk pembaruan
             headers: {
                 'Content-Type': 'application/json',
