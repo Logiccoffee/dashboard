@@ -104,7 +104,11 @@ users.forEach((user, index) => {
 
 // Fungsi untuk menangani perubahan role pengguna
 function handleRoleChange(userId, newRole) {
-    console.log(`User ID: ${userId}, Role Baru: ${newRole}`);
+    // Logika perubahan role
+    console.log(`Mengubah role untuk user ${userId} menjadi ${newRole}`);
+
+    // Pastikan fungsi ini ada di lingkup global
+    window.handleRoleChange = handleRoleChange;
 
     const updatedData = { role: newRole };
 
