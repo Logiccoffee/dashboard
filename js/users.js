@@ -94,7 +94,7 @@ function confirmUpdateRole(userId, currentRole, newRole) {
 
 // Fungsi untuk mengubah role pengguna di server
 function updateRole(userId, newRole) {
-    fetch(`${API_URL}/${userId}`, {
+    fetch(`$"https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users"/${userId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
