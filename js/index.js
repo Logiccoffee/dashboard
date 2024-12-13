@@ -107,8 +107,8 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order
     } else {
         alert('Gagal memuat data');
     }
-})
-.catch(error => {
-    console.error('Error fetching data:', error);
-    alert('Terjadi kesalahan');
 });
+// .catch(error => {
+//     console.error('Error fetching data:', error);
+//     alert('Terjadi kesalahan');
+// });
