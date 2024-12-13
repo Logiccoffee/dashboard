@@ -103,44 +103,29 @@ users.forEach((user, index) => {
 });
 
 // Fungsi untuk menangani perubahan role pengguna
-function handleRoleChange(userId, newRole) {
-    // Logika perubahan role
+export function handleRoleChange(userId, newRole) {
     console.log(`Mengubah role untuk user ${userId} menjadi ${newRole}`);
-
-    // Pastikan fungsi ini ada di lingkup global
-    window.handleRoleChange = handleRoleChange;
-
-    const updatedData = { role: newRole };
-
-    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users/${userId}`, {
+    
+    // Contoh: Kirim permintaan ke server untuk memperbarui role pengguna
+    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users${userId}/role`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'login': token // Sertakan token di header
         },
-        body: JSON.stringify(updatedData)
+        body: JSON.stringify({ role: newRole }),
     })
-    .then(response => {
-        if (!response.ok) {
-            console.error('Error response:', response);
-            throw new Error('Gagal memperbarui role pengguna');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Role berhasil diperbarui:', data);
-
-        // Cari indeks user yang diupdate
-        const userRow = document.getElementById(`user-row-${userId}`);
-        if (userRow) {
-            const roleCell = userRow.querySelector(`#role-user-${userId}`);
-            if (roleCell) {
-                roleCell.textContent = newRole;
+        .then((response) => {
+            if (response.ok) {
+                alert(`Role berhasil diubah menjadi ${newRole}`);
+            } else {
+                throw new Error('Gagal mengubah role');
             }
-        }
-    })
-    .catch(error => {
-        console.error('Terjadi kesalahan saat memperbarui role:', error);
-        alert('Gagal memperbarui role. Coba lagi nanti.');
-    });
+        })
+        .catch((error) => {
+            console.error('Terjadi kesalahan:', error);
+            alert('Terjadi kesalahan saat mengubah role.');
+        });
 }
+
+// Pastikan fungsi tersedia untuk dipanggil di elemen HTML
+window.handleRoleChange = handleRoleChange;
