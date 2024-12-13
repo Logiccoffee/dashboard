@@ -62,6 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             <span class="sidebar-text">Daftar Pesanan</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="keuangan.html" class="keuangan-link">
+                            <i class="fa-solid fa-sack-dollar" style="margin-right: 10px;"></i>
+                            <span class="sidebar-text">Keuangan</span>
+                        </a>
+                    </li>
                 </ul>
             </section>
         </nav>
