@@ -1,6 +1,17 @@
 import { onClick } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/element.js';
 
 
+// Hapus aksi setelah klik pada item dropdown
+document.querySelectorAll('.dropdown-menu a.dropdown-item').forEach((item) => {
+    item.addEventListener('click', function (event) {
+        event.preventDefault();  // Mencegah aksi default, misalnya reload atau navigasi
+        
+        // Di sini tidak ada aksi yang dilakukan, jadi bisa kosong
+        console.log("Dropdown item diklik, tapi tidak ada aksi.");
+    });
+});
+
+
 document.addEventListener('DOMContentLoaded', function () {
     function cetakLaporan(filterMethod) {
         const laporanKeuangan = document.querySelector('.table');
