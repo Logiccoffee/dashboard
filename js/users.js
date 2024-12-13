@@ -69,7 +69,7 @@ function generateDropdownMenu(userId, currentRole) {
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
         .filter(role => role !== currentRole)
-        .map(role => `<li><a class="dropdown-item" href="#" data-user-id="${userId}" onclick="handleRoleChange('${userId}', '${role}')">${role}</a></li>`)
+        .map(role => `<li><a class="dropdown-item" href="#" data-user-id="${userId}" onclick="window.handleRoleChange('${userId}', '${role}')">${role}</a></li>`)
         .join('');
 
     return `
