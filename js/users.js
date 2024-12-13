@@ -94,34 +94,33 @@ function confirmUpdateRole(userId, currentRole, newRole) {
 
 // Fungsi untuk mengubah role pengguna di server
 function updateRole(userId, newRole) {
-    fetch(`$"https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users"/${userId}`, {
+    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users/${userId}`, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json',
             'login': token,
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            role: newRole,
-        })
+        body: JSON.stringify({ role: newRole })
     })
         .then(response => response.json())
-        .then(data => {
-            console.log(data); // Log data dari server
-            if (data.status === 'success') {
+        .then(response => {
+            if (response.status === "success") {
+                // Perbarui kolom role di tabel secara langsung
+                const roleElement = document.getElementById(`role-user-${userId}`);
+                if (roleElement) {
+                    roleElement.textContent = capitalize(newRole); // Ubah teks kolom role
+                }
+
                 Swal.fire(
                     'Berhasil!',
-                    `Role berhasil diperbarui menjadi: ${capitalize(newRole)}.`,
+                    'Role berhasil diperbarui.',
                     'success'
-                ).then(() => {
-                    const roleCell = document.getElementById(`role-user-${userId}`);
-                    if (roleCell) {
-                        roleCell.textContent = capitalize(newRole); // Perbarui UI dengan role baru
-                    }
-                });
+                );
             } else {
+                console.error(`Error: ${response.status}`);
                 Swal.fire(
                     'Gagal!',
-                    `Gagal memperbarui role: ${data.message}`,
+                    'Gagal memperbarui role. Silakan coba lagi.',
                     'error'
                 );
             }
