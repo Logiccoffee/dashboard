@@ -48,7 +48,7 @@ function displayUsers(users) {
         const row = document.createElement('tr');
 
         // Buat opsi dropdown berdasarkan role pengguna
-        const dropdownOptions = generateDropdownOptions(user.role, user._id);
+        const dropdownOptions = generateDropdownOptions(user.role);
 
         row.innerHTML = `
             <td>${index + 1}</td>
@@ -68,17 +68,11 @@ function displayUsers(users) {
 }
 
 // Fungsi untuk menghasilkan opsi dropdown berdasarkan role
-function generateDropdownOptions(currentRole, userId) {
-    const roleMap = {
-        admin: ['dosen', 'user'],
-        dosen: ['admin', 'user'],
-        user: ['admin', 'dosen']
-    };
-
-    const options = roleMap[currentRole] || [];
-
-    return options
-        .map(role => `<button class='dropdown-item' onclick="handleRoleChange('${userId}', '${role}')">${role}</button>`) // Buat opsi
+function generateDropdownOptions(currentRole) {
+    const roles = ['admin', 'dosen', 'user'];
+    return roles
+        .filter(role => role !== currentRole) // Hapus role yang sama dengan pengguna saat ini
+        .map(role => `<button class='dropdown-item' onclick="handleRoleChange('${role}')">${role}</button>`) // Buat opsi
         .join('');
 }
 
