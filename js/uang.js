@@ -17,27 +17,18 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const dropdownItems = document.querySelectorAll(".dropdown-menu .dropdown-item");
+    const cetakButton = document.getElementById("cetakButton");
 
-    dropdownItems.forEach((item) => {
-        item.addEventListener("click", function (event) {
-            event.preventDefault(); // Hindari tindakan default
-            if (this.id === "cetakQris") {
-                alert("Fungsi Cetak QRIS diaktifkan!");
-                // Logika cetak QRIS bisa ditambahkan di sini
-                cetakLaporan("QRIS");
-            } else if (this.id === "cetakCash") {
-                alert("Fungsi Cetak Cash diaktifkan!");
-                // Logika cetak Cash bisa ditambahkan di sini
-                cetakLaporan("Cash");
-            }
-        });
+    cetakButton.addEventListener("click", function () {
+        alert("Laporan sedang dicetak!");
+        cetakLaporan();
     });
 
     // Fungsi cetak laporan
-    function cetakLaporan(jenis) {
-        console.log(`Mencetak laporan untuk metode: ${jenis}`);
-        // Tambahkan logika cetak di sini (misalnya, generate PDF atau buka halaman print)
+    function cetakLaporan() {
+        console.log("Mencetak laporan...");
+        // Tambahkan logika pencetakan, seperti generate PDF atau membuka halaman cetak
+        window.print(); // Contoh sederhana untuk membuka dialog cetak browser
     }
 });
 
