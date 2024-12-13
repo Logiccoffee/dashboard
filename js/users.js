@@ -105,11 +105,17 @@ function updateRole(userId, newRole) {
         .then(response => response.json())
         .then(response => {
             if (response.status === "success") {
+                // Perbarui kolom role di tabel secara langsung
+                const roleElement = document.getElementById(`role-user-${userId}`);
+                if (roleElement) {
+                    roleElement.textContent = capitalize(newRole); // Ubah teks kolom role
+                }
+
                 Swal.fire(
                     'Berhasil!',
                     'Role berhasil diperbarui.',
                     'success'
-                ).then(() => location.reload());
+                );
             } else {
                 console.error(`Error: ${response.status}`);
                 Swal.fire(
