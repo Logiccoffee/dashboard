@@ -16,7 +16,7 @@ fetch(API_URL, {
     headers: {
         'login': token,
         'Content-Type': 'application/json',
-    }
+    },
 })
     .then(response => response.json())
     .then(response => {
@@ -92,7 +92,7 @@ userList.addEventListener('click', event => {
 function handleRoleChange(userId, newRole) {
     console.log(`Mengubah role untuk user ${userId} menjadi ${newRole}`);
 
-    fetch(`$https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users/${userId}/role`, {
+    fetch(`${API_URL}/${userId}/role`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
