@@ -85,11 +85,14 @@ function logout(event) {
 
 
 
+// Mengambil token dari cookie
+const token = getCookie("login");
+
 // Mengambil data pesanan dari API
 fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order', {
     method: 'GET',
     headers: {
-        'login': token,
+        'login': token,  // Menggunakan token dari cookie
         'Content-Type': 'application/json',
     }
 })
@@ -109,4 +112,3 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order
     console.error('Error fetching data:', error);
     alert('Terjadi kesalahan');
 });
-
