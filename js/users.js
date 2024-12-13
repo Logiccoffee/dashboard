@@ -69,13 +69,13 @@ function generateDropdownMenu(userId, currentRole) {
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
         .filter(role => role !== currentRole)
-        .map(role => `<li><a class="dropdown-item" href="#" data-user-id="${userId}" onclick="window.handleRoleChange('${userId}', '${role}')">${role}</a></li>`)
+        .map(role => `<li><a class="dropdown-item" href="#" onclick="handleRoleChange('${userId}', '${role}')">${role}</a></li>`)
         .join('');
 
     return `
         <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
-                Role
+                ${currentRole}
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu-${userId}">
                 ${options}
@@ -84,30 +84,12 @@ function generateDropdownMenu(userId, currentRole) {
     `;
 }
 
-// Ambil elemen tbody di dalam table
-const userList = document.getElementById('user-list');
-
-// Anggap `users` adalah array objek pengguna yang sudah diambil dari server
-users.forEach((user, index) => {
-    const userRow = document.createElement('tr');
-    userRow.id = `user-row-${user._id}`;
-    userRow.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${user.name}</td>
-        <td>${user.email}</td>
-        <td id="role-user-${user._id}">${user.role}</td>
-        <td>${user.phone}</td>
-        <td>${generateDropdownMenu(user._id, user.role)}</td>
-    `;
-    userList.appendChild(userRow);
-});
-
 // Fungsi untuk menangani perubahan role pengguna
-export function handleRoleChange(userId, newRole) {
+function handleRoleChange(userId, newRole) {
     console.log(`Mengubah role untuk user ${userId} menjadi ${newRole}`);
     
-    // Contoh: Kirim permintaan ke server untuk memperbarui role pengguna
-    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users/${userId}/role`, {
+    // Kirim permintaan ke server untuk memperbarui role pengguna
+    fetch(`${API_URL}/${userId}/role`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -115,21 +97,20 @@ export function handleRoleChange(userId, newRole) {
         },
         body: JSON.stringify({ role: newRole }),
     })
-        .then((response) => {
-            console.log('Respons server:', response);
+        .then(response => {
             if (response.ok) {
-                alert(`Role berhasil diubah menjadi ${newRole}`);
-                // Update UI
+                // Perbarui role pada tabel secara dinamis
                 document.getElementById(`role-user-${userId}`).textContent = newRole;
+                alert(`Role berhasil diubah menjadi ${newRole}`);
             } else {
-                return response.json().then((data) => {
-                    console.error('Detail error:', data);
-                    throw new Error(data.message || 'Gagal mengubah role');
-                });
+                throw new Error('Gagal mengubah role');
             }
         })
-        .catch((error) => {
+        .catch(error => {
             console.error('Terjadi kesalahan:', error);
             alert('Terjadi kesalahan saat mengubah role.');
         });
-    }    
+}
+
+// Pastikan fungsi tersedia untuk dipanggil di elemen HTML
+window.handleRoleChange = handleRoleChange;
