@@ -46,9 +46,9 @@ function displayUsers(users) {
 
     users.forEach((user, index) => {
         const row = document.createElement('tr');
-
+        
         // Buat opsi dropdown berdasarkan role pengguna
-        const dropdownOptions = generateDropdownOptions(user.role, user._id);
+        const dropdownOptions = generateDropdownOptions(user.role);
 
         row.innerHTML = `
             <td>${index + 1}</td>
@@ -57,10 +57,9 @@ function displayUsers(users) {
             <td id="role-user-${user._id || "-"}">${user.role || "Peran Tidak Diketahui"}</td>
             <td>${user.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
             <td>
-                <button class="btn btn-primary" onclick="toggleDropdown('${user._id}')">Role</button>
-                <div id="dropdown-${user._id}" class="dropdown-menu" style="display: none;">
+                <select onchange="handleRoleChange('${user._id}', this.value)">
                     ${dropdownOptions}
-                </div>
+                </select>
             </td>
         `;
         container.appendChild(row);
@@ -68,17 +67,11 @@ function displayUsers(users) {
 }
 
 // Fungsi untuk menghasilkan opsi dropdown berdasarkan role
-function generateDropdownOptions(currentRole, userId) {
-    const roleMap = {
-        admin: ['dosen', 'user'],
-        dosen: ['admin', 'user'],
-        user: ['admin', 'dosen']
-    };
-
-    const options = roleMap[currentRole] || [];
-
-    return options
-        .map(role => `<button class='dropdown-item' onclick="handleRoleChange('${userId}', '${role}')">${role}</button>`) // Buat opsi
+function generateDropdownOptions(currentRole) {
+    const roles = ['admin', 'dosen', 'user'];
+    return roles
+        .filter(role => role !== currentRole) // Hapus role yang sama dengan pengguna saat ini
+        .map(role => `<option value="${role}">${role}</option>`) // Buat opsi
         .join('');
 }
 
@@ -87,14 +80,4 @@ function handleRoleChange(userId, newRole) {
     // Logika untuk mengupdate role pengguna
     console.log(`User ID: ${userId}, Role Baru: ${newRole}`);
     // Tambahkan logika pengiriman data ke server jika diperlukan
-}
-
-// Fungsi untuk menampilkan atau menyembunyikan dropdown
-function toggleDropdown(userId) {
-    const dropdown = document.getElementById(`dropdown-${userId}`);
-    if (dropdown.style.display === "none") {
-        dropdown.style.display = "block";
-    } else {
-        dropdown.style.display = "none";
-    }
 }
