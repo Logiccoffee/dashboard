@@ -114,7 +114,7 @@ statusButton.addEventListener('click', () => {
     // Dropdown status
     const statusDropdown = document.createElement('select');
     statusDropdown.className = 'form-control form-control-sm';
-    const statusOptions = ['Diproses', 'Terkirim', 'Dibatalkan'];
+    const statusOptions = ['Diproses', 'Terkirim', 'Selesai', 'Dibatalkan'];
     statusOptions.forEach(status => {
         const option = document.createElement('option');
         option.value = status;
@@ -146,9 +146,11 @@ statusButton.addEventListener('click', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
+                    // Update kolom status pada tabel
                     order.status = selectedStatus; // Perbarui status di objek lokal
                     paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status}`;
+
+                    alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
                 } else {
                     alert(`Gagal memperbarui status: ${data.message}`);
                 }
@@ -176,6 +178,7 @@ actionCell.appendChild(statusButton);
 row.appendChild(actionCell);
 
 container.appendChild(row);
+
     });
 }
 
