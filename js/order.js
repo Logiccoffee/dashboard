@@ -114,7 +114,7 @@ statusButton.addEventListener('click', () => {
     // Dropdown status
     const statusDropdown = document.createElement('select');
     statusDropdown.className = 'form-control form-control-sm';
-    const statusOptions = ['Diproses', 'Terkirim', 'Selesai', 'Dibatalkan'];
+    const statusOptions = ['diproses', 'terkirim', 'selesai', 'dibatalkan'];
     statusOptions.forEach(status => {
         const option = document.createElement('option');
         option.value = status;
@@ -133,7 +133,7 @@ statusButton.addEventListener('click', () => {
         const selectedStatus = statusDropdown.value;
 
         // Validasi status sebelum mengirimkan permintaan ke backend
-        if (selectedStatus === "Dibatalkan" && order.status !== "Terkirim") {
+        if (selectedStatus === "dibatalkan" && order.status !== "terkirim") {
             alert(`Pesanan tidak dapat dibatalkan karena status saat ini adalah: ${order.status}`);
             statusDropdown.replaceWith(statusButton); // Kembalikan ke tombol semula
             return;
