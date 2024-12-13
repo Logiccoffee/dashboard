@@ -18,22 +18,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 document.getElementById('cetakButton').addEventListener('click', function () {
+    // Ambil elemen laporan keuangan
     const laporan = document.getElementById('laporanKeuangan');
-
+    
     // Simpan konten asli halaman
     const originalContent = document.body.innerHTML;
 
-    // Ganti konten halaman dengan laporan keuangan
-    document.body.innerHTML = laporan.innerHTML;
+    // Ganti isi halaman dengan hanya laporan keuangan
+    document.body.innerHTML = laporan.outerHTML;
 
-    // Cetak laporan
+    // Cetak
     window.print();
 
-    // Kembalikan tampilan asli halaman
+    // Kembalikan konten asli halaman setelah cetak
     document.body.innerHTML = originalContent;
-
-    // Reload halaman untuk memulihkan event listener dan state
-    location.reload();
 });
 
 // document.addEventListener("DOMContentLoaded", function () {
