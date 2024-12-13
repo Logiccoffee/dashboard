@@ -153,9 +153,9 @@ statusButton.addEventListener('click', () => {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    // Update kolom status pada tabel
+                    // Update status di objek lokal dan kolom status pada tabel
                     order.status = selectedStatus; // Perbarui status di objek lokal
-                    paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status}`;
+                    paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status}`; // Update status di kolom
 
                     alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
                 } else {
@@ -185,6 +185,7 @@ actionCell.appendChild(statusButton);
 row.appendChild(actionCell);
 
 container.appendChild(row);
+
 
 
     });
