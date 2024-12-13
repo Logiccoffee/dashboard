@@ -20,16 +20,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const cetakButton = document.getElementById("cetakButton");
 
     cetakButton.addEventListener("click", function () {
-        alert("Laporan sedang dicetak!");
-        cetakLaporan();
+        window.print(); // Cetak hanya elemen yang ditampilkan sesuai CSS @media print
     });
-
-    // Fungsi cetak laporan
-    function cetakLaporan() {
-        console.log("Mencetak laporan...");
-        // Tambahkan logika pencetakan, seperti generate PDF atau membuka halaman cetak
-        window.print(); // Contoh sederhana untuk membuka dialog cetak browser
-    }
 });
 
 

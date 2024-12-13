@@ -21,6 +21,23 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <style>
+        @media print {
+            body * {
+                display: none; /* Sembunyikan semua elemen */
+            }
+            #laporanKeuangan, #laporanKeuangan * {
+                display: block; /* Tampilkan hanya elemen laporan */
+            }
+            #laporanKeuangan {
+                width: 100%; /* Buat tabel menyesuaikan halaman */
+            }
+            #laporanKeuangan .btn, #laporanKeuangan a {
+                display: none; /* Sembunyikan tombol atau tautan pada tabel */
+            }
+        }
+        </style>
+        
 </head>
 
 <body data-page="keuangan">
@@ -131,7 +148,7 @@
                 </section>
 
                 <!-- Tabel Laporan Keuangan -->
-                <section class="mt-4">
+                <section class="mt-4" id="laporanKeuangan">
                     <div class="laporan-header d-flex justify-content-between align-items-center">
                         <h2>Laporan Keuangan</h2>
                         <button class="btn btn-primary" id="cetakButton">
