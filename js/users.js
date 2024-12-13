@@ -84,6 +84,7 @@ function generateDropdownMenu(userId, currentRole) {
     `;
 }
 // Fungsi untuk menangani perubahan role pengguna
+// Fungsi untuk menangani perubahan role pengguna
 function handleRoleChange(userId, newRole) {
     console.log(`User ID: ${userId}, Role Baru: ${newRole}`);
 
@@ -110,10 +111,12 @@ function handleRoleChange(userId, newRole) {
         // Cari elemen baris pengguna di dalam DOM
         const userRow = document.getElementById(`user-row-${userId}`);
         if (userRow) {
-            const roleCell = userRow.querySelector(`#role-user-${userId}`);
-            if (roleCell) {
-                roleCell.textContent = newRole; // Update konten dengan role baru
-            }
+            setTimeout(() => {
+                const roleCell = userRow.querySelector(`#role-user-${userId}`);
+                if (roleCell) {
+                    roleCell.textContent = newRole; // Update konten dengan role baru
+                }
+            }, 100); // Tunggu 100ms agar DOM dapat diupdate sepenuhnya
         }
     })
     .catch(error => {
