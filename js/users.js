@@ -107,25 +107,29 @@ export function handleRoleChange(userId, newRole) {
     console.log(`Mengubah role untuk user ${userId} menjadi ${newRole}`);
     
     // Contoh: Kirim permintaan ke server untuk memperbarui role pengguna
-    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users${userId}`, {
+    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users/${userId}/role`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
+            'login': token,
         },
         body: JSON.stringify({ role: newRole }),
     })
         .then((response) => {
+            console.log('Respons server:', response);
             if (response.ok) {
                 alert(`Role berhasil diubah menjadi ${newRole}`);
+                // Update UI
+                document.getElementById(`role-user-${userId}`).textContent = newRole;
             } else {
-                throw new Error('Gagal mengubah role');
+                return response.json().then((data) => {
+                    console.error('Detail error:', data);
+                    throw new Error(data.message || 'Gagal mengubah role');
+                });
             }
         })
         .catch((error) => {
             console.error('Terjadi kesalahan:', error);
             alert('Terjadi kesalahan saat mengubah role.');
         });
-}
-
-// Pastikan fungsi tersedia untuk dipanggil di elemen HTML
-window.handleRoleChange = handleRoleChange;
+    }    
