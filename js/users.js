@@ -47,8 +47,8 @@ function generateUserTable(users) {
     users.forEach((user, index) => {
         const row = document.createElement('tr');
 
-        // Buat opsi dropdown berdasarkan role pengguna
-        const dropdownOptions = generateDropdownOptions(user.role);
+        // Buat dropdown opsi role
+        const dropdownMenu = generateDropdownMenu(user._id, user.role);
 
         row.innerHTML = `
             <td>${index + 1}</td>
@@ -57,22 +57,31 @@ function generateUserTable(users) {
             <td id="role-user-${user._id || "-"}">${user.role || "Peran Tidak Diketahui"}</td>
             <td>${user.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
             <td>
-                <select onchange="handleRoleChange('${user._id}', this.value)">
-                    ${dropdownOptions}
-                </select>
+                ${dropdownMenu}
             </td>
         `;
         container.appendChild(row);
     });
 }
 
-// Fungsi untuk menghasilkan opsi dropdown berdasarkan role
-function generateDropdownOptions(currentRole) {
+// Fungsi untuk menghasilkan dropdown menu dengan nama tombol di aksi "Ubah Peran"
+function generateDropdownMenu(userId, currentRole) {
     const roles = ['admin', 'dosen', 'user'];
-    return roles
-        .filter(role => role !== currentRole) // Hapus role yang sama dengan pengguna saat ini
-        .map(role => `<option value="${role}">${role}</option>`) // Buat opsi
+    const options = roles
+        .filter(role => role !== currentRole)
+        .map(role => `<li><a class="dropdown-item" href="#" onclick="handleRoleChange('${userId}', '${role}')">${role}</a></li>`)
         .join('');
+
+    return `
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
+                Ubah Peran
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu-${userId}">
+                ${options}
+            </ul>
+        </div>
+    `;
 }
 
 // Fungsi untuk menangani perubahan role pengguna
