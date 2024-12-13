@@ -112,3 +112,25 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order
 //     console.error('Error fetching data:', error);
 //     alert('Terjadi kesalahan');
 // });
+
+
+// Mengambil data kategori dari API
+fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', {
+    method: 'GET',
+    headers: {
+        'login': token,  // Menggunakan token dari cookie
+        'Content-Type': 'application/json',
+    }
+})
+.then(response => response.json())
+.then(data => {
+    if (data.status === 'success') {
+        // Menghitung jumlah total pesanan .
+        const totalcategoryCount = data.data.length;
+
+        // Menampilkan jumlah total pesanan pada elemen dengan id 'order-count'
+        document.getElementById('category-count').textContent = totalcategoryCount;
+    } else {
+        alert('Gagal memuat data');
+    }
+});
