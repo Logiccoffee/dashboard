@@ -126,15 +126,13 @@ function handleRoleChange(userId, newRole) {
     .then(data => {
         console.log('Role berhasil diperbarui:', data);
 
-        // Cari elemen baris pengguna di dalam DOM
+        // Cari indeks user yang diupdate
         const userRow = document.getElementById(`user-row-${userId}`);
         if (userRow) {
-            setTimeout(() => {
-                const roleCell = userRow.querySelector(`#role-user-${userId}`);
-                if (roleCell) {
-                    roleCell.textContent = newRole; // Update konten dengan role baru
-                }
-            }, 100); // Tunggu 100ms agar DOM dapat diupdate sepenuhnya
+            const roleCell = userRow.querySelector(`#role-user-${userId}`);
+            if (roleCell) {
+                roleCell.textContent = newRole;
+            }
         }
     })
     .catch(error => {
@@ -142,12 +140,3 @@ function handleRoleChange(userId, newRole) {
         alert('Gagal memperbarui role. Coba lagi nanti.');
     });
 }
-
-// Menyertakan event listener untuk mengaktifkan fungsi saat tombol diklik
-document.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', function(event) {
-        const userId = this.getAttribute('data-user-id'); // Sesuaikan dengan cara Anda menyimpan ID pengguna dalam HTML
-        const newRole = this.textContent; // Sesuaikan dengan bagaimana Anda mendapatkan role baru
-        handleRoleChange(userId, newRole);
-    });
-});
