@@ -84,25 +84,6 @@
                 </thead>
                 <tbody id="user-list">
                     <!-- Baris data akan ditambahkan di sini -->
-                    <!-- Contoh data row -->
-                    <tr id="user-row-${user._id}">
-                        <td>${index + 1}</td>
-                        <td>${user.name}</td>
-                        <td>${user.email}</td>
-                        <td id="role-user-${user._id}">${user.role}</td>
-                        <td>${user.phone}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu-${user._id}" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Role
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu-${user._id}">
-                                    <li><a class="dropdown-item" href="#" data-user-id="${user._id}" onclick="handleRoleChange('${user._id}', 'admin')">admin</a></li>
-                                    <li><a class="dropdown-item" href="#" data-user-id="${user._id}" onclick="handleRoleChange('${user._id}', 'user')">user</a></li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
