@@ -16,13 +16,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Fungsi untuk tombol dropdown cetak
 document.addEventListener("DOMContentLoaded", function () {
-    const dropdownMenu = document.getElementById("dropdownMenu");
     const dropdownItems = document.querySelectorAll(".dropdown-menu .dropdown-item");
 
     dropdownItems.forEach((item) => {
-        item.addEventListener("click", function () {
+        item.addEventListener("click", function (event) {
+            event.preventDefault(); // Hindari tindakan default tombol
+            console.log(`Clicked: ${this.id}`); // Debugging
             if (this.id === "cetakQris") {
                 alert("Fungsi Cetak QRIS diaktifkan!");
                 // Tambahkan logika cetak QRIS di sini
