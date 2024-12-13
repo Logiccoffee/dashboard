@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const profileDropdown = document.getElementById("profileDropdown");
     const dropdownMenu = profileDropdown.nextElementSibling;
 
-    profileDropdown.addEventListener("click", function (event) {
+    // Menggunakan fungsi onClick
+    onClick('profileDropdown', function (event) {
         event.preventDefault();
         dropdownMenu.classList.toggle("show");
     });
@@ -15,11 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!profileDropdown.contains(event.target)) {
             dropdownMenu.classList.remove("show");
         }
-    });
-
-    // Menggunakan fungsi onClick
-    onClick('profileDropdown', function() {
-        dropdownMenu.classList.toggle("show");
     });
 });
 
@@ -43,7 +39,13 @@ document.getElementById('cetakButton').addEventListener('click', function () {
 
 // Fungsi onClick yang sudah diberikan
 export function onClick(id, actionfunctionname) {
-    document.getElementById(id).onclick = actionfunctionname;
+    const element = document.getElementById(id);
+    if (element) {
+        // Tambahkan event listener menggunakan addEventListener
+        element.addEventListener('click', actionfunctionname);
+    } else {
+        console.error(`Element with id "${id}" not found.`);
+    }
 }
 
 
