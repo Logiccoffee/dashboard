@@ -1,5 +1,6 @@
 // Mengimpor modul eksternal
 import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11"; // Tambahkan SweetAlert2
 
 // URL API
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users";
@@ -53,7 +54,7 @@ function displayUsers(users) {
             <td id="role-user-${user._id || "-"}">${user.role || "Peran Tidak Diketahui"}</td>
             <td>${user.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
             <td>
-                <select class="form-select" aria-label="Aksi" onchange="updateRole('${user._id}', this.value)">
+                <select class="form-select" aria-label="Aksi" onchange="confirmUpdateRole('${user._id}', '${user.role}', this.value)">
                     ${getRoleOptions(user.role)}
                 </select>
             </td>
@@ -71,6 +72,26 @@ function getRoleOptions(currentRole) {
         .join('');
 }
 
+// Fungsi untuk meminta konfirmasi sebelum mengubah role pengguna
+function confirmUpdateRole(userId, currentRole, newRole) {
+    Swal.fire({
+        title: 'Konfirmasi Perubahan Role',
+        text: `Apakah Anda yakin ingin mengubah role dari ${capitalize(currentRole)} menjadi ${capitalize(newRole)}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Ubah',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            updateRole(userId, newRole);
+        } else {
+            location.reload(); // Kembalikan dropdown ke nilai semula jika dibatalkan
+        }
+    });
+}
+
 // Fungsi untuk mengubah role pengguna di server
 function updateRole(userId, newRole) {
     fetch(`${API_URL}/${userId}`, {
@@ -84,16 +105,27 @@ function updateRole(userId, newRole) {
         .then(response => response.json())
         .then(response => {
             if (response.status === "success") {
-                alert("Role berhasil diperbarui!");
-                location.reload(); // Muat ulang halaman untuk memperbarui tampilan
+                Swal.fire(
+                    'Berhasil!',
+                    'Role berhasil diperbarui.',
+                    'success'
+                ).then(() => location.reload());
             } else {
                 console.error(`Error: ${response.status}`);
-                alert("Gagal memperbarui role. Silakan coba lagi.");
+                Swal.fire(
+                    'Gagal!',
+                    'Gagal memperbarui role. Silakan coba lagi.',
+                    'error'
+                );
             }
         })
         .catch(error => {
             console.error("Error updating role: ", error);
-            alert("Terjadi kesalahan saat memperbarui role.");
+            Swal.fire(
+                'Kesalahan!',
+                'Terjadi kesalahan saat memperbarui role.',
+                'error'
+            );
         });
 }
 
