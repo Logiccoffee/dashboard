@@ -11,27 +11,28 @@ if (!token) {
 }
 
 // Panggil API untuk mengambil data pengguna
-fetch(API_URL, {
-    method: 'GET',
+fetch(`${API_URL}/${userId}/role`, {
+    method: 'PUT',
     headers: {
-        'login': token,
         'Content-Type': 'application/json',
+        'login': token,
     },
+    body: JSON.stringify({ role: newRole }),
 })
-    .then(response => response.json())
-    .then(response => {
-        if (response.status === "success") {
-            const users = response.data || [];
-            generateUserTable(users);
-        } else {
-            console.error(`Error: ${response.status}`);
-            alert("Gagal memuat data pengguna. Silakan coba lagi.");
-        }
-    })
-    .catch(error => {
-        console.error("Error fetching data: ", error);
-        alert("Terjadi kesalahan saat memuat data pengguna.");
-    });
+.then(response => {
+    if (!response.ok) {
+        return response.json().then(errorDetails => {
+            console.error("Detail error:", errorDetails);
+            throw new Error(`Gagal mengubah role: ${response.status}`);
+        });
+    }
+    document.getElementById(`role-user-${userId}`).textContent = newRole;
+    alert(`Role berhasil diubah menjadi ${newRole}`);
+})
+.catch(error => {
+    console.error('Terjadi kesalahan:', error);
+    alert('Terjadi kesalahan saat mengubah role.');
+});
 
 // Fungsi untuk menghasilkan tabel pengguna
 function generateUserTable(users) {
