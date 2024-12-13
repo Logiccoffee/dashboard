@@ -64,6 +64,7 @@ function generateUserTable(users) {
     });
 }
 
+// Fungsi untuk menghasilkan dropdown menu dengan nama tombol di aksi "Ubah Peran"
 function generateDropdownMenu(userId, currentRole) {
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
@@ -74,7 +75,7 @@ function generateDropdownMenu(userId, currentRole) {
     return `
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
-                ${currentRole}
+                Ubah Peran
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu-${userId}">
                 ${options}
