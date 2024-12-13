@@ -18,16 +18,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Fungsi untuk tombol dropdown cetak
 document.addEventListener("DOMContentLoaded", function () {
-    const cetakQris = document.getElementById("cetakQris");
-    const cetakCash = document.getElementById("cetakCash");
+    const dropdownMenu = document.getElementById("dropdownMenu");
+    const dropdownItems = document.querySelectorAll(".dropdown-menu .dropdown-item");
 
-    cetakQris.addEventListener("click", function () {
-        alert("Fungsi Cetak QRIS diaktifkan!");
-        // Tambahkan logika cetak QRIS di sini
-    });
-
-    cetakCash.addEventListener("click", function () {
-        alert("Fungsi Cetak Cash diaktifkan!");
-        // Tambahkan logika cetak Cash di sini
+    dropdownItems.forEach((item) => {
+        item.addEventListener("click", function () {
+            if (this.id === "cetakQris") {
+                alert("Fungsi Cetak QRIS diaktifkan!");
+                // Tambahkan logika cetak QRIS di sini
+            } else if (this.id === "cetakCash") {
+                alert("Fungsi Cetak Cash diaktifkan!");
+                // Tambahkan logika cetak Cash di sini
+            }
+        });
     });
 });
