@@ -100,13 +100,11 @@ row.appendChild(totalPriceCell);
         
 
         // Kolom Metode Pembayaran & Status
-        const paymentStatusCell = document.createElement('td');
-        paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
-        row.appendChild(paymentStatusCell);
+const paymentStatusCell = document.createElement('td');
+paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
+row.appendChild(paymentStatusCell);
 
-
-
-        // Kolom aksi
+// Kolom aksi
 const actionCell = document.createElement('td');
 
 // Tombol Status (dengan ikon ubah/edit)
@@ -117,7 +115,7 @@ statusButton.addEventListener('click', () => {
     // Dropdown status
     const statusDropdown = document.createElement('select');
     statusDropdown.className = 'form-control form-control-sm'; // Tampilan dropdown
-    
+
     // Pilihan status
     const statusOptions = ['Diproses', 'Selesai', 'Dibatalkan'];
     statusOptions.forEach(status => {
@@ -140,19 +138,32 @@ statusButton.addEventListener('click', () => {
         const selectedStatus = statusDropdown.value;
 
         // Kirim data perubahan status ke server
-        fetch(`${API_URL}/${order.id}`, { // Pastikan endpoint sesuai
-            method: 'PUT', // Atau metode yang sesuai untuk pembaruan data
+        fetch(`${API_URL}/${order.id}`, {
+            method: 'PUT', // Gunakan metode PUT untuk pembaruan
             headers: {
                 'Content-Type': 'application/json',
                 'login': token, // Tambahkan token autentikasi
             },
-            body: JSON.stringify({ status: selectedStatus }), // Kirim status baru
+            body: JSON.stringify({
+                status: selectedStatus,
+                updated_by: "kasir1", // Ganti dengan user ID atau nama pengguna
+                updated_by_role: "admin", // Role pengguna
+                updated_at: new Date().toISOString() // Tanggal dan waktu saat ini
+            }),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw new Error(err.message || 'Gagal memperbarui status');
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.status === 'success') {
                 alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
                 order.status = selectedStatus; // Perbarui status di objek lokal
+                paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status}`;
             } else {
                 alert(`Gagal memperbarui status: ${data.message}`);
             }
@@ -166,15 +177,24 @@ statusButton.addEventListener('click', () => {
             statusDropdown.replaceWith(statusButton);
         });
     });
+
+    // Jika pengguna ingin membatalkan perubahan, cukup klik di luar dropdown
+    document.addEventListener('click', function handleOutsideClick(event) {
+        if (!statusDropdown.contains(event.target)) {
+            // Ganti kembali ke tombol status
+            statusDropdown.replaceWith(statusButton);
+            document.removeEventListener('click', handleOutsideClick);
+        }
+    });
 });
 
 // Kolom untuk menampilkan tombol status
 actionCell.appendChild(statusButton);
 
-         
-         // Tambahkan baris ke tabel
-         row.appendChild(actionCell);
-        container.appendChild(row);
+// Tambahkan baris ke tabel
+row.appendChild(actionCell);
+container.appendChild(row);
+
          
     });
 }
