@@ -118,19 +118,29 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order
 fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', {
     method: 'GET',
     headers: {
-        'login': token,  // Menggunakan token dari cookie
+        'login': token,
         'Content-Type': 'application/json',
     }
 })
-.then(response => response.json())
-.then(data => {
-    if (data.status === 'success') {
-        // Menghitung jumlah total pesanan .
-        const totalcategoryCount = data.data.length;
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respons API:', data); // Debug isi respons
+        if (data.status === 'success' && Array.isArray(data.data)) {
+            const totalcategoryCount = data.data.length;
+            const categoryCountElement = document.getElementById('category-count');
+            if (categoryCountElement) {
+                categoryCountElement.textContent = totalcategoryCount;
+            } else {
+                console.error('Elemen dengan ID "category-count" tidak ditemukan.');
+            }
+        } else {
+            alert('Gagal memuat data');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+        alert('Terjadi kesalahan saat memuat data kategori.');
+    });
 
-        // Menampilkan jumlah total pesanan pada elemen dengan id 'order-count'
-        document.getElementById('category-count').textContent = totalcategoryCount;
-    } else {
-        alert('Gagal memuat data');
-    }
-});
+    
+;
