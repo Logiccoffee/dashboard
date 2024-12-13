@@ -142,7 +142,7 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/categ
         alert('Terjadi kesalahan saat memuat data kategori.');
     });
 
-    // Mengambil data kategori dari API menu
+    // Mengambil data menu dari API menu
 fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', {
     method: 'GET',
     headers: {
@@ -169,6 +169,35 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu'
         console.error('Error fetching data:', error);
         alert('Terjadi kesalahan saat memuat data kategori.');
     });
+
+       // Mengambil data users dari API menu
+fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users', {
+    method: 'GET',
+    headers: {
+        'login': token,
+        'Content-Type': 'application/json',
+    }
+})
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respons API:', data); // Debug isi respons
+        if (data.status === 'success' && Array.isArray(data.data)) {
+            const totalusersCount = data.data.length;
+            const usersCountElement = document.getElementById('users-count');
+            if (usersCountElement) {
+                usersCountElement.textContent = totalusersCount;
+            } else {
+                console.error('Elemen dengan ID "users-count" tidak ditemukan.');
+            }
+        } else {
+            alert('Gagal memuat data');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+        alert('Terjadi kesalahan saat memuat data kategori.');
+    });
+
 
 
 
