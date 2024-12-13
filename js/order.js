@@ -87,12 +87,16 @@ const totalPriceCell = document.createElement('td');
 // Pastikan order.total adalah angka valid
 let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
 
-// Format angka dengan pemisah ribuan
+// Cek jika simbol "Rp" sudah ada, jika belum tambahkan
+let formattedTotal = total.toLocaleString('id-ID');
+
+// Format angka dengan pemisah ribuan dan tambahkan simbol "Rp" hanya jika belum ada
 totalPriceCell.textContent = total !== 0
-    ? `${total.toLocaleString('id-ID')}` // Format dengan pemisah ribuan menggunakan format Indonesia
+    ? (formattedTotal.startsWith('Rp') ? formattedTotal : `Rp ${formattedTotal}`)
     : '-'; // Jika kosong atau tidak valid, tampilkan "-"
 
 row.appendChild(totalPriceCell);
+
 
 
 
