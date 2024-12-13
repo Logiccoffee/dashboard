@@ -152,6 +152,7 @@ statusButton.addEventListener('click', () => {
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data); // Log data dari server
                 if (data.status === 'success') {
                     // Update status di objek lokal dan kolom status pada tabel
                     order.status = selectedStatus; // Perbarui status di objek lokal
@@ -185,6 +186,8 @@ actionCell.appendChild(statusButton);
 row.appendChild(actionCell);
 
 container.appendChild(row);
+
+
 
 
 
