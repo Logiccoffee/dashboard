@@ -97,30 +97,31 @@ function updateRole(userId, newRole) {
     fetch(`${API_URL}/${userId}`, {
         method: 'PUT',
         headers: {
-            'login': token,
             'Content-Type': 'application/json',
+            'login': token,
         },
-        body: JSON.stringify({ role: newRole })
+        body: JSON.stringify({
+            role: newRole,
+        })
     })
         .then(response => response.json())
-        .then(response => {
-            if (response.status === "success") {
-                // Perbarui kolom role di tabel secara langsung
-                const roleElement = document.getElementById(`role-user-${userId}`);
-                if (roleElement) {
-                    roleElement.textContent = capitalize(newRole); // Ubah teks kolom role
-                }
-
+        .then(data => {
+            console.log(data); // Log data dari server
+            if (data.status === 'success') {
                 Swal.fire(
                     'Berhasil!',
-                    'Role berhasil diperbarui.',
+                    `Role berhasil diperbarui menjadi: ${capitalize(newRole)}.`,
                     'success'
-                );
+                ).then(() => {
+                    const roleCell = document.getElementById(`role-user-${userId}`);
+                    if (roleCell) {
+                        roleCell.textContent = capitalize(newRole); // Perbarui UI dengan role baru
+                    }
+                });
             } else {
-                console.error(`Error: ${response.status}`);
                 Swal.fire(
                     'Gagal!',
-                    'Gagal memperbarui role. Silakan coba lagi.',
+                    `Gagal memperbarui role: ${data.message}`,
                     'error'
                 );
             }
