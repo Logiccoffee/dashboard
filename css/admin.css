@@ -1121,25 +1121,4 @@ input {
   .dropdown .dropdown-toggle:hover {
     background-color: #aacdd0 !important; /* Mengubah warna latar belakang saat hover */
 /*color: #fff; Mengubah warna teks jika perlu */
-
- .dropdown-menu {
-        position: absolute;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        padding: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        min-width: 150px;
-    }
-    .dropdown-item {
-        display: block;
-        padding: 5px 10px;
-        text-align: left;
-        border: none;
-        background: none;
-        width: 100%;
-        cursor: pointer;
-    }
-    .dropdown-item:hover {
-        background-color: #f1f1f1;
-    }
+/*}
