@@ -75,7 +75,7 @@ function generateDropdownMenu(userId, currentRole) {
     return `
        <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
-                Ubah Peran
+                Role
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu-${userId}">
                 ${options}
@@ -107,12 +107,12 @@ function handleRoleChange(userId, newRole) {
     .then(data => {
         console.log('Role berhasil diperbarui:', data);
 
-        // Cari indeks user yang diupdate
+        // Cari elemen baris pengguna di dalam DOM
         const userRow = document.getElementById(`user-row-${userId}`);
         if (userRow) {
             const roleCell = userRow.querySelector(`#role-user-${userId}`);
             if (roleCell) {
-                roleCell.textContent = newRole;
+                roleCell.textContent = newRole; // Update konten dengan role baru
             }
         }
     })
