@@ -84,7 +84,7 @@ function logout(event) {
   });
 
 
- // Fungsi untuk mengambil data pesanan dari API dan menampilkan jumlah pesanan di index.html
+
 // Mengambil data pesanan dari API
 fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order', {
     method: 'GET',
