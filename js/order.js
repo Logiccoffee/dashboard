@@ -81,7 +81,7 @@ function displayOrders(orders) {
 
 
 
-  // Kolom Harga Total
+ // Kolom Harga Total
 const totalPriceCell = document.createElement('td');
 
 // Pastikan order.total adalah angka valid
@@ -90,12 +90,13 @@ let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke
 // Format angka dengan pemisah ribuan
 let formattedTotal = total.toLocaleString('id-ID');
 
-// Tambahkan "Rp" di depan angka yang diformat
+// Pastikan hanya satu "Rp" yang ditambahkan
 totalPriceCell.textContent = total !== 0
-    ? `Rp ${formattedTotal}` // Menambahkan "Rp" di depan angka yang diformat
+    ? `Rp ${formattedTotal}` // Menambahkan "Rp" hanya sekali
     : '-'; // Jika kosong atau tidak valid, tampilkan "-"
 
 row.appendChild(totalPriceCell);
+
 
         
 // Kolom Metode Pembayaran & Status
