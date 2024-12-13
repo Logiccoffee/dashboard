@@ -107,7 +107,7 @@ export function handleRoleChange(userId, newRole) {
     console.log(`Mengubah role untuk user ${userId} menjadi ${newRole}`);
     
     // Contoh: Kirim permintaan ke server untuk memperbarui role pengguna
-    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users${userId}/role`, {
+    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users${userId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
