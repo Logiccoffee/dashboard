@@ -81,21 +81,19 @@ function displayOrders(orders) {
 
 
 
-     // Kolom Harga Total
+   // Kolom Harga Total
 const totalPriceCell = document.createElement('td');
 
-// Pastikan order.total adalah angka valid dan format sesuai
-let total = order.total ? order.total.toString().replace(/[^\d.-]/g, '') : '-'; // Hanya angka dan titik atau tanda minus untuk angka negatif
+// Pastikan order.total adalah angka valid
+let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
 
-// Cek jika total bukan '-'
-if (total !== '-') {
-    // Format angka dengan pemisah ribuan dan tambahkan "Rp"
-    totalPriceCell.textContent = `Rp ${parseInt(total, 10).toLocaleString('id-ID')}`;
-} else {
-    totalPriceCell.textContent = '-'; // Jika kosong atau tidak valid, tampilkan "-"
-}
+// Format angka dengan pemisah ribuan
+totalPriceCell.textContent = total !== 0
+    ? `Rp ${total.toLocaleString('id-ID')}` // Format dengan pemisah ribuan menggunakan format Indonesia
+    : '-'; // Jika kosong atau tidak valid, tampilkan "-"
 
 row.appendChild(totalPriceCell);
+
 
 
 
