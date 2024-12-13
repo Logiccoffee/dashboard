@@ -75,7 +75,7 @@ function generateDropdownMenu(userId, currentRole) {
     return `
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
-                Ubah Peran
+                Role
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu-${userId}">
                 ${options}
