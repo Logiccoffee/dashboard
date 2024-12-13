@@ -81,25 +81,21 @@ function displayOrders(orders) {
 
 
 
-   // Kolom Harga Total
+  // Kolom Harga Total
 const totalPriceCell = document.createElement('td');
 
 // Pastikan order.total adalah angka valid
 let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
 
-// Cek jika simbol "Rp" sudah ada, jika belum tambahkan
+// Format angka dengan pemisah ribuan
 let formattedTotal = total.toLocaleString('id-ID');
 
-// Format angka dengan pemisah ribuan dan tambahkan simbol "Rp" hanya jika belum ada
+// Tambahkan "Rp" di depan angka yang diformat
 totalPriceCell.textContent = total !== 0
-    ? (formattedTotal.startsWith('Rp') ? formattedTotal : `Rp ${formattedTotal}`)
+    ? `Rp ${formattedTotal}` // Menambahkan "Rp" di depan angka yang diformat
     : '-'; // Jika kosong atau tidak valid, tampilkan "-"
 
 row.appendChild(totalPriceCell);
-
-
-
-
 
         
 // Kolom Metode Pembayaran & Status
