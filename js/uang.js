@@ -1,3 +1,5 @@
+import { onClick } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/element.js';
+
 // Fungsi untuk dropdown nama pengguna
 document.addEventListener("DOMContentLoaded", function () {
     const profileDropdown = document.getElementById("profileDropdown");
@@ -14,9 +16,14 @@ document.addEventListener("DOMContentLoaded", function () {
             dropdownMenu.classList.remove("show");
         }
     });
+
+    // Menggunakan fungsi onClick
+    onClick('profileDropdown', function() {
+        dropdownMenu.classList.toggle("show");
+    });
 });
 
-
+// Fungsi untuk cetak laporan keuangan
 document.getElementById('cetakButton').addEventListener('click', function () {
     // Ambil elemen laporan keuangan
     const laporan = document.getElementById('laporanKeuangan');
@@ -33,6 +40,12 @@ document.getElementById('cetakButton').addEventListener('click', function () {
     // Kembalikan konten asli halaman setelah cetak
     document.body.innerHTML = originalContent;
 });
+
+// Fungsi onClick yang sudah diberikan
+export function onClick(id, actionfunctionname) {
+    document.getElementById(id).onclick = actionfunctionname;
+}
+
 
 // document.addEventListener("DOMContentLoaded", function () {
 //     const dropdownItems = document.querySelectorAll(".dropdown-menu .dropdown-item");
