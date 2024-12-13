@@ -82,3 +82,79 @@ function logout(event) {
         console.error("Tombol logout tidak ditemukan.");
     }
   });
+
+
+  // Fungsi untuk menampilkan data pesanan di tabel
+function displayOrders(orders) {
+    const container = document.getElementById('transaction-list');
+    const totalOrdersElement = document.querySelector('.info-box .big'); // Menyasar elemen yang menampilkan jumlah pesanan
+
+    // Pastikan elemen container ditemukan
+    if (!container) {
+        console.error("Elemen dengan ID 'transaction-list' tidak ditemukan.");
+        return;
+    }
+
+    // Hapus data lama jika ada
+    container.innerHTML = '';
+
+    // Tampilkan data pesanan
+    orders.forEach((order) => {
+        const row = document.createElement('tr');
+
+        // Kolom Identitas / Customer Info
+        const customerInfoCell = document.createElement('td');
+        customerInfoCell.innerHTML = `
+            Order Number: ${order.orderNumber || '-'}<br>
+            Queue Number: ${order.queueNumber > 0 ? order.queueNumber : '-'}<br>
+            Name: ${order.user_info?.name || '-'}<br>
+            Whatsapp: ${order.user_info?.whatsapp || '-'}<br>
+            Note: ${order.user_info?.note || '-'}
+        `;
+        row.appendChild(customerInfoCell);
+
+        // Kolom Produk (Nama Produk, Jumlah dan Harga Satuan)
+        const productInfoCell = document.createElement('td');
+
+        if (order.orders && order.orders.length > 0) {
+            productInfoCell.innerHTML = order.orders.map(item => {
+                return `${item.menu_name || 'Tidak Diketahui'} - ${item.quantity} x Rp ${item.price.toLocaleString('id-ID')}`;
+            }).join('<br>');
+        } else {
+            productInfoCell.textContent = '-';
+        }
+
+        row.appendChild(productInfoCell);
+
+        // Kolom Harga Total
+        const totalPriceCell = document.createElement('td');
+        let total = order.total ? order.total : 0; // Pastikan order.total adalah angka valid
+        let formattedTotal = total.toLocaleString('id-ID');
+        totalPriceCell.textContent = total !== 0 ? `Rp ${formattedTotal}` : '-';
+
+        row.appendChild(totalPriceCell);
+
+        // Kolom Metode Pembayaran & Status
+        const paymentStatusCell = document.createElement('td');
+        paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
+        row.appendChild(paymentStatusCell);
+
+        // Kolom aksi
+        const actionCell = document.createElement('td');
+        const statusButton = document.createElement('button');
+        statusButton.className = 'btn btn-warning btn-sm';
+        statusButton.innerHTML = '<i class="fas fa-edit"></i> Status';
+        actionCell.appendChild(statusButton);
+        row.appendChild(actionCell);
+
+        container.appendChild(row);
+    });
+
+    // Hitung jumlah baris yang ada di dalam tabel
+    const totalRows = container.getElementsByTagName('tr').length;
+    
+    // Tampilkan jumlah baris pada elemen info-box
+    if (totalOrdersElement) {
+        totalOrdersElement.textContent = totalRows; // Menampilkan jumlah baris (jumlah pesanan)
+    }
+}
