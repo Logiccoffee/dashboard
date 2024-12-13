@@ -46,13 +46,55 @@ function displayUsers(users) {
 
     users.forEach((user, index) => {
         const row = document.createElement('tr');
+
+        // Buat opsi dropdown berdasarkan role pengguna
+        const dropdownOptions = generateDropdownOptions(user.role, user._id);
+
         row.innerHTML = `
             <td>${index + 1}</td>
             <td>${user.name || "Nama Tidak Diketahui"}</td>
             <td>${user.email || "Email Tidak Diketahui"}</td>
             <td id="role-user-${user._id || "-"}">${user.role || "Peran Tidak Diketahui"}</td>
             <td>${user.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
+            <td>
+                <button class="btn btn-primary" onclick="toggleDropdown('${user._id}')">Role</button>
+                <div id="dropdown-${user._id}" class="dropdown-menu" style="display: none;">
+                    ${dropdownOptions}
+                </div>
+            </td>
         `;
         container.appendChild(row);
     });
+}
+
+// Fungsi untuk menghasilkan opsi dropdown berdasarkan role
+function generateDropdownOptions(currentRole, userId) {
+    const roleMap = {
+        admin: ['dosen', 'user'],
+        dosen: ['admin', 'user'],
+        user: ['admin', 'dosen']
+    };
+
+    const options = roleMap[currentRole] || [];
+
+    return options
+        .map(role => `<button class='dropdown-item' onclick="handleRoleChange('${userId}', '${role}')">${role}</button>`) // Buat opsi
+        .join('');
+}
+
+// Fungsi untuk menangani perubahan role pengguna
+function handleRoleChange(userId, newRole) {
+    // Logika untuk mengupdate role pengguna
+    console.log(`User ID: ${userId}, Role Baru: ${newRole}`);
+    // Tambahkan logika pengiriman data ke server jika diperlukan
+}
+
+// Fungsi untuk menampilkan atau menyembunyikan dropdown
+function toggleDropdown(userId) {
+    const dropdown = document.getElementById(`dropdown-${userId}`);
+    if (dropdown.style.display === "none") {
+        dropdown.style.display = "block";
+    } else {
+        dropdown.style.display = "none";
+    }
 }
