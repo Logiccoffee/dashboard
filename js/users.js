@@ -23,7 +23,7 @@ fetch(API_URL, {
     .then(response => {
         if (response.status === "success") {
             const users = response.data || []; // Pastikan data diakses dengan benar
-            displayUsers(users); // Tampilkan data pengguna
+            generateUserTable(users); // Tampilkan data pengguna
         } else {
             console.error(`Error: ${response.status}`);
             alert("Gagal memuat data pengguna. Silakan coba lagi.");
@@ -34,8 +34,8 @@ fetch(API_URL, {
         alert("Terjadi kesalahan saat memuat data pengguna.");
     });
 
-// Fungsi untuk menampilkan data pengguna di tabel
-function displayUsers(users) {
+// Fungsi utama untuk menghasilkan tabel pengguna
+function generateUserTable(users) {
     const container = document.getElementById('user-list');
     if (!container) {
         console.error("Elemen dengan ID 'user-list' tidak ditemukan.");
@@ -46,7 +46,7 @@ function displayUsers(users) {
 
     users.forEach((user, index) => {
         const row = document.createElement('tr');
-        
+
         // Buat opsi dropdown berdasarkan role pengguna
         const dropdownOptions = generateDropdownOptions(user.role);
 
@@ -77,7 +77,39 @@ function generateDropdownOptions(currentRole) {
 
 // Fungsi untuk menangani perubahan role pengguna
 function handleRoleChange(userId, newRole) {
-    // Logika untuk mengupdate role pengguna
+    // Log perubahan untuk debugging
     console.log(`User ID: ${userId}, Role Baru: ${newRole}`);
-    // Tambahkan logika pengiriman data ke server jika diperlukan
+
+    // Data yang akan dikirim ke server
+    const updatedData = {
+        role: newRole
+    };
+
+    // Kirim permintaan PUT ke server
+    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Gagal memperbarui role pengguna');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Role berhasil diperbarui:', data);
+
+        // Perbarui tampilan role di tabel jika perlu
+        const roleCell = document.getElementById(`role-user-${userId}`);
+        if (roleCell) {
+            roleCell.textContent = newRole;
+        }
+    })
+    .catch(error => {
+        console.error('Terjadi kesalahan saat memperbarui role:', error);
+        alert('Gagal memperbarui role. Coba lagi nanti.');
+    });
 }
