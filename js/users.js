@@ -23,7 +23,7 @@ fetch(API_URL, {
     .then(response => {
         if (response.status === "success") {
             const users = response.data || []; // Pastikan data diakses dengan benar
-            displayUsers(users); // Tampilkan data pengguna
+            generateUserTable(users); // Tampilkan data pengguna
         } else {
             console.error(`Error: ${response.status}`);
             alert("Gagal memuat data pengguna. Silakan coba lagi.");
@@ -34,8 +34,8 @@ fetch(API_URL, {
         alert("Terjadi kesalahan saat memuat data pengguna.");
     });
 
-// Fungsi untuk menampilkan data pengguna di tabel
-function displayUsers(users) {
+// Fungsi utama untuk menghasilkan tabel pengguna
+function generateUserTable(users) {
     const container = document.getElementById('user-list');
     if (!container) {
         console.error("Elemen dengan ID 'user-list' tidak ditemukan.");
@@ -46,9 +46,9 @@ function displayUsers(users) {
 
     users.forEach((user, index) => {
         const row = document.createElement('tr');
-        
-        // Buat opsi dropdown berdasarkan role pengguna
-        const dropdownOptions = generateDropdownOptions(user.role);
+
+        // Buat dropdown opsi role
+        const dropdownMenu = generateDropdownMenu(user._id, user.role);
 
         row.innerHTML = `
             <td>${index + 1}</td>
@@ -57,27 +57,73 @@ function displayUsers(users) {
             <td id="role-user-${user._id || "-"}">${user.role || "Peran Tidak Diketahui"}</td>
             <td>${user.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
             <td>
-                <select onchange="handleRoleChange('${user._id}', this.value)">
-                    ${dropdownOptions}
-                </select>
+                ${dropdownMenu}
             </td>
         `;
         container.appendChild(row);
     });
 }
 
-// Fungsi untuk menghasilkan opsi dropdown berdasarkan role
-function generateDropdownOptions(currentRole) {
+// Fungsi untuk menghasilkan dropdown menu dengan nama tombol di aksi "Ubah Peran"
+function generateDropdownMenu(userId, currentRole) {
     const roles = ['admin', 'dosen', 'user'];
-    return roles
-        .filter(role => role !== currentRole) // Hapus role yang sama dengan pengguna saat ini
-        .map(role => `<option value="${role}">${role}</option>`) // Buat opsi
+    const options = roles
+        .filter(role => role !== currentRole)
+        .map(role => `<li><a class="dropdown-item" href="#" onclick="handleRoleChange('${userId}', '${role}')">${role}</a></li>`)
         .join('');
+
+    return `
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
+                Role
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu-${userId}">
+                ${options}
+            </ul>
+        </div>
+    `;
 }
 
 // Fungsi untuk menangani perubahan role pengguna
 function handleRoleChange(userId, newRole) {
-    // Logika untuk mengupdate role pengguna
     console.log(`User ID: ${userId}, Role Baru: ${newRole}`);
-    // Tambahkan logika pengiriman data ke server jika diperlukan
+
+    const updatedData = { role: newRole };
+
+    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'login': token // Sertakan token di header
+        },
+        body: JSON.stringify(updatedData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error('Error response:', response);
+            throw new Error('Gagal memperbarui role pengguna');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Role berhasil diperbarui:', data);
+
+        // Cari indeks user yang diupdate
+        const userIndex = users.findIndex(user => user._id === userId);
+        if (userIndex !== -1) {
+            // Update role di tabel DOM
+            const userRow = document.getElementById(`user-row-${userId}`);
+            if (userRow) {
+                const roleCell = userRow.querySelector(`#role-user-${userId}`);
+                if (roleCell) {
+                    roleCell.textContent = newRole;
+                }
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Terjadi kesalahan saat memperbarui role:', error);
+        alert('Gagal memperbarui role. Coba lagi nanti.');
+    });
 }
+
