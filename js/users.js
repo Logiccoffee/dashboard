@@ -46,13 +46,38 @@ function displayUsers(users) {
 
     users.forEach((user, index) => {
         const row = document.createElement('tr');
+        
+        // Buat opsi dropdown berdasarkan role pengguna
+        const dropdownOptions = generateDropdownOptions(user.role);
+
         row.innerHTML = `
             <td>${index + 1}</td>
             <td>${user.name || "Nama Tidak Diketahui"}</td>
             <td>${user.email || "Email Tidak Diketahui"}</td>
             <td id="role-user-${user._id || "-"}">${user.role || "Peran Tidak Diketahui"}</td>
             <td>${user.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
+            <td>
+                <select onchange="handleRoleChange('${user._id}', this.value)">
+                    ${dropdownOptions}
+                </select>
+            </td>
         `;
         container.appendChild(row);
     });
+}
+
+// Fungsi untuk menghasilkan opsi dropdown berdasarkan role
+function generateDropdownOptions(currentRole) {
+    const roles = ['admin', 'dosen', 'user'];
+    return roles
+        .filter(role => role !== currentRole) // Hapus role yang sama dengan pengguna saat ini
+        .map(role => `<option value="${role}">${role}</option>`) // Buat opsi
+        .join('');
+}
+
+// Fungsi untuk menangani perubahan role pengguna
+function handleRoleChange(userId, newRole) {
+    // Logika untuk mengupdate role pengguna
+    console.log(`User ID: ${userId}, Role Baru: ${newRole}`);
+    // Tambahkan logika pengiriman data ke server jika diperlukan
 }
