@@ -73,9 +73,9 @@ function generateDropdownMenu(userId, currentRole) {
         .join('');
 
     return `
-        <div class="dropdown">
-             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
-                Role
+       <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
+                Ubah Peran
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu-${userId}">
                 ${options}
@@ -83,7 +83,6 @@ function generateDropdownMenu(userId, currentRole) {
         </div>
     `;
 }
-
 // Fungsi untuk menangani perubahan role pengguna
 function handleRoleChange(userId, newRole) {
     console.log(`User ID: ${userId}, Role Baru: ${newRole}`);
