@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const cetakButton = document.getElementById("cetakButton");
 
     cetakButton.addEventListener("click", function () {
-        window.print(); // Cetak hanya elemen yang ditampilkan sesuai CSS @media print
+        // Gunakan window.print() untuk mencetak sesuai aturan @media print
+        window.print();
     });
 });
-
 
 // document.addEventListener("DOMContentLoaded", function () {
 //     const dropdownItems = document.querySelectorAll(".dropdown-menu .dropdown-item");
