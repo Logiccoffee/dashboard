@@ -64,16 +64,16 @@ function generateUserTable(users) {
     });
 }
 
-// Fungsi untuk menghasilkan dropdown menu dengan nama tombol di aksi "Ubah Peran"
+// Fungsi untuk menambahkan dropdown menu di setiap baris pengguna
 function generateDropdownMenu(userId, currentRole) {
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
         .filter(role => role !== currentRole)
-        .map(role => `<li><a class="dropdown-item" href="#" onclick="handleRoleChange('${userId}', '${role}')">${role}</a></li>`)
+        .map(role => `<li><a class="dropdown-item" href="#" data-user-id="${userId}" onclick="handleRoleChange('${userId}', '${role}')">${role}</a></li>`)
         .join('');
 
     return `
-       <div class="dropdown">
+        <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
                 Role
             </button>
@@ -83,7 +83,25 @@ function generateDropdownMenu(userId, currentRole) {
         </div>
     `;
 }
-// Fungsi untuk menangani perubahan role pengguna
+
+// Ambil elemen tbody di dalam table
+const userList = document.getElementById('user-list');
+
+// Anggap `users` adalah array objek pengguna yang sudah diambil dari server
+users.forEach((user, index) => {
+    const userRow = document.createElement('tr');
+    userRow.id = `user-row-${user._id}`;
+    userRow.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${user.name}</td>
+        <td>${user.email}</td>
+        <td id="role-user-${user._id}">${user.role}</td>
+        <td>${user.phone}</td>
+        <td>${generateDropdownMenu(user._id, user.role)}</td>
+    `;
+    userList.appendChild(userRow);
+});
+
 // Fungsi untuk menangani perubahan role pengguna
 function handleRoleChange(userId, newRole) {
     console.log(`User ID: ${userId}, Role Baru: ${newRole}`);
@@ -124,3 +142,12 @@ function handleRoleChange(userId, newRole) {
         alert('Gagal memperbarui role. Coba lagi nanti.');
     });
 }
+
+// Menyertakan event listener untuk mengaktifkan fungsi saat tombol diklik
+document.querySelectorAll('.dropdown-item').forEach(item => {
+    item.addEventListener('click', function(event) {
+        const userId = this.getAttribute('data-user-id'); // Sesuaikan dengan cara Anda menyimpan ID pengguna dalam HTML
+        const newRole = this.textContent; // Sesuaikan dengan bagaimana Anda mendapatkan role baru
+        handleRoleChange(userId, newRole);
+    });
+});
