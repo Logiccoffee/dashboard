@@ -89,7 +89,7 @@ let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke
 
 // Format angka dengan pemisah ribuan
 totalPriceCell.textContent = total !== 0
-    ? `Rp ${total.toLocaleString('id-ID')}` // Format dengan pemisah ribuan menggunakan format Indonesia
+    ? `${total.toLocaleString('id-ID')}` // Format dengan pemisah ribuan menggunakan format Indonesia
     : '-'; // Jika kosong atau tidak valid, tampilkan "-"
 
 row.appendChild(totalPriceCell);
