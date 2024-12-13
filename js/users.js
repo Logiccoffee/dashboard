@@ -77,24 +77,21 @@ function generateDropdownOptions(currentRole) {
 
 // Fungsi untuk menangani perubahan role pengguna
 function handleRoleChange(userId, newRole) {
-    // Log perubahan untuk debugging
     console.log(`User ID: ${userId}, Role Baru: ${newRole}`);
 
-    // Data yang akan dikirim ke server
-    const updatedData = {
-        role: newRole
-    };
+    const updatedData = { role: newRole };
 
-    // Kirim permintaan PUT ke server
     fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users/${userId}`, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'login': token // Sertakan token di header
         },
         body: JSON.stringify(updatedData)
     })
     .then(response => {
         if (!response.ok) {
+            console.error('Error response:', response);
             throw new Error('Gagal memperbarui role pengguna');
         }
         return response.json();
@@ -102,7 +99,6 @@ function handleRoleChange(userId, newRole) {
     .then(data => {
         console.log('Role berhasil diperbarui:', data);
 
-        // Perbarui tampilan role di tabel jika perlu
         const roleCell = document.getElementById(`role-user-${userId}`);
         if (roleCell) {
             roleCell.textContent = newRole;
