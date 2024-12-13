@@ -16,20 +16,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+
 document.getElementById('cetakButton').addEventListener('click', function () {
     const laporan = document.getElementById('laporanKeuangan');
 
-    // Menyembunyikan elemen lain selama pencetakan
+    // Pastikan semua elemen laporan keuangan, termasuk tabel, muncul saat pencetakan
+    const printContent = laporan.cloneNode(true); // Salin elemen laporan keuangan
     const originalContent = document.body.innerHTML;
-    document.body.innerHTML = laporan.outerHTML;
 
-    // Memulai pencetakan
+    // Ganti konten halaman dengan laporan keuangan
+    document.body.innerHTML = '';
+    document.body.appendChild(printContent);
+
+    // Cetak laporan
     window.print();
 
-    // Mengembalikan tampilan halaman seperti semula
+    // Kembalikan tampilan asli halaman
     document.body.innerHTML = originalContent;
+    location.reload(); // Reload halaman untuk mengembalikan event listener dan state
 });
-
 // document.addEventListener("DOMContentLoaded", function () {
 //     const dropdownItems = document.querySelectorAll(".dropdown-menu .dropdown-item");
 
