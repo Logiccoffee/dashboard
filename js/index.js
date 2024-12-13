@@ -114,7 +114,7 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order
 // });
 
 
-// Mengambil data kategori dari API
+// Mengambil data kategori dari API category
 fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', {
     method: 'GET',
     headers: {
