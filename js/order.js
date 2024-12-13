@@ -132,6 +132,13 @@ statusButton.addEventListener('click', () => {
     statusDropdown.addEventListener('change', () => {
         const selectedStatus = statusDropdown.value;
 
+        // Validasi status sebelum mengirimkan permintaan ke backend
+        if (selectedStatus === "Dibatalkan" && order.status !== "Terkirim") {
+            alert(`Pesanan tidak dapat dibatalkan karena status saat ini adalah: ${order.status}`);
+            statusDropdown.replaceWith(statusButton); // Kembalikan ke tombol semula
+            return;
+        }
+
         // Kirim data perubahan status ke server
         fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order/${order.id}`, {
             method: 'PUT',
@@ -178,6 +185,7 @@ actionCell.appendChild(statusButton);
 row.appendChild(actionCell);
 
 container.appendChild(row);
+
 
     });
 }
