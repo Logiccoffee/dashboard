@@ -1,7 +1,6 @@
-// Mengimpor modul eksternal
+// Import modul eksternal
 import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
-// URL API
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users";
 
 // Ambil token dari cookie dengan nama 'login'
@@ -11,7 +10,7 @@ if (!token) {
     throw new Error("Token tidak ditemukan. Harap login ulang.");
 }
 
-// Panggil API untuk mengambil data pengguna menggunakan fetch()
+// Panggil API untuk mengambil data pengguna
 fetch(API_URL, {
     method: 'GET',
     headers: {
@@ -19,11 +18,11 @@ fetch(API_URL, {
         'Content-Type': 'application/json',
     }
 })
-    .then(response => response.json()) // Parse JSON dari respons
+    .then(response => response.json())
     .then(response => {
         if (response.status === "success") {
-            const users = response.data || []; // Pastikan data diakses dengan benar
-            generateUserTable(users); // Tampilkan data pengguna
+            const users = response.data || [];
+            generateUserTable(users);
         } else {
             console.error(`Error: ${response.status}`);
             alert("Gagal memuat data pengguna. Silakan coba lagi.");
@@ -34,7 +33,7 @@ fetch(API_URL, {
         alert("Terjadi kesalahan saat memuat data pengguna.");
     });
 
-// Fungsi utama untuk menghasilkan tabel pengguna
+// Fungsi untuk menghasilkan tabel pengguna
 function generateUserTable(users) {
     const container = document.getElementById('user-list');
     if (!container) {
@@ -42,23 +41,16 @@ function generateUserTable(users) {
         return;
     }
 
-    container.innerHTML = ''; // Kosongkan data lama
-
+    container.innerHTML = '';
     users.forEach((user, index) => {
         const row = document.createElement('tr');
-
-        // Buat dropdown opsi role
-        const dropdownMenu = generateDropdownMenu(user._id, user.role);
-
         row.innerHTML = `
             <td>${index + 1}</td>
             <td>${user.name || "Nama Tidak Diketahui"}</td>
             <td>${user.email || "Email Tidak Diketahui"}</td>
-            <td id="role-user-${user._id || "-"}">${user.role || "Peran Tidak Diketahui"}</td>
+            <td id="role-user-${user._id}">${user.role || "Peran Tidak Diketahui"}</td>
             <td>${user.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
-            <td>
-                ${dropdownMenu}
-            </td>
+            <td>${generateDropdownMenu(user._id, user.role)}</td>
         `;
         container.appendChild(row);
     });
@@ -69,27 +61,38 @@ function generateDropdownMenu(userId, currentRole) {
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
         .filter(role => role !== currentRole)
-        .map(role => `<li><a class="dropdown-item" href="#" onclick="handleRoleChange('${userId}', '${role}')">${role}</a></li>`)
+        .map(role => `<li><a class="dropdown-item" href="#" data-user-id="${userId}" data-role="${role}">${role}</a></li>`)
         .join('');
 
     return `
         <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu-${userId}" data-bs-toggle="dropdown" aria-expanded="false">
-                ${currentRole}
+            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                Role
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu-${userId}">
+            <ul class="dropdown-menu">
                 ${options}
             </ul>
         </div>
     `;
 }
 
+// Delegasi event untuk dropdown role
+const userList = document.getElementById('user-list');
+userList.addEventListener('click', event => {
+    const target = event.target;
+    if (target.matches('a[data-user-id]')) {
+        event.preventDefault();
+        const userId = target.getAttribute('data-user-id');
+        const newRole = target.getAttribute('data-role');
+        handleRoleChange(userId, newRole);
+    }
+});
+
 // Fungsi untuk menangani perubahan role pengguna
 function handleRoleChange(userId, newRole) {
     console.log(`Mengubah role untuk user ${userId} menjadi ${newRole}`);
-    
-    // Kirim permintaan ke server untuk memperbarui role pengguna
-    fetch(`${API_URL}/${userId}/role`, {
+
+    fetch(`$https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users/${userId}/role`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -99,7 +102,6 @@ function handleRoleChange(userId, newRole) {
     })
         .then(response => {
             if (response.ok) {
-                // Perbarui role pada tabel secara dinamis
                 document.getElementById(`role-user-${userId}`).textContent = newRole;
                 alert(`Role berhasil diubah menjadi ${newRole}`);
             } else {
@@ -111,6 +113,3 @@ function handleRoleChange(userId, newRole) {
             alert('Terjadi kesalahan saat mengubah role.');
         });
 }
-
-// Pastikan fungsi tersedia untuk dipanggil di elemen HTML
-window.handleRoleChange = handleRoleChange;
