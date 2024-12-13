@@ -142,5 +142,35 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/categ
         alert('Terjadi kesalahan saat memuat data kategori.');
     });
 
-    
+    // Mengambil data kategori dari API menu
+fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', {
+    method: 'GET',
+    headers: {
+        'login': token,
+        'Content-Type': 'application/json',
+    }
+})
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respons API:', data); // Debug isi respons
+        if (data.status === 'success' && Array.isArray(data.data)) {
+            const totalmenuCount = data.data.length;
+            const menuCountElement = document.getElementById('menu-count');
+            if (menuCountElement) {
+                menuCountElement.textContent = totalmenuCount;
+            } else {
+                console.error('Elemen dengan ID "menu-count" tidak ditemukan.');
+            }
+        } else {
+            alert('Gagal memuat data');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+        alert('Terjadi kesalahan saat memuat data kategori.');
+    });
+
+
+
+
 ;
