@@ -1,7 +1,7 @@
 // Import modul eksternal
 import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
-const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/updateUserRole";
+const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users";
 
 // Ambil token dari cookie
 const token = getCookie('login');
