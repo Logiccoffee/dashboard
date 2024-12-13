@@ -11,14 +11,14 @@ if (!token) {
 }
 
 // Panggil API untuk mengambil data pengguna
-fetch(`$https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/updateUserRole`, {
+fetch(`$https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/updateUserRole}/${userId}/role`, {
     method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'login': token,
-        },
-        body: JSON.stringify({ email: userEmail, role: newRole }),
-    })
+    headers: {
+        'Content-Type': 'application/json',
+        'login': token,
+    },
+    body: JSON.stringify({ role: newRole }),
+})
 .then(response => {
     if (!response.ok) {
         return response.json().then(errorDetails => {
