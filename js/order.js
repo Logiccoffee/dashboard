@@ -92,7 +92,7 @@ let formattedTotal = total.toLocaleString('id-ID');
 
 // Pastikan hanya satu "Rp" yang ditambahkan
 totalPriceCell.textContent = total !== 0
-    ? `Rp ${formattedTotal}` // Menambahkan "Rp" hanya sekali
+    ? ` ${formattedTotal}` // Menambahkan "Rp" hanya sekali
     : '-'; // Jika kosong atau tidak valid, tampilkan "-"
 
 row.appendChild(totalPriceCell);
