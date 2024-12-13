@@ -16,13 +16,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const cetakButton = document.getElementById("cetakButton");
+document.getElementById('cetakButton').addEventListener('click', function () {
+    const laporan = document.getElementById('laporanKeuangan');
 
-    cetakButton.addEventListener("click", function () {
-        // Gunakan window.print() untuk mencetak sesuai aturan @media print
-        window.print();
-    });
+    // Menyembunyikan elemen lain selama pencetakan
+    const originalContent = document.body.innerHTML;
+    document.body.innerHTML = laporan.outerHTML;
+
+    // Memulai pencetakan
+    window.print();
+
+    // Mengembalikan tampilan halaman seperti semula
+    document.body.innerHTML = originalContent;
 });
 
 // document.addEventListener("DOMContentLoaded", function () {
