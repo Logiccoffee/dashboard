@@ -99,7 +99,7 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order
 .then(response => response.json())
 .then(data => {
     if (data.status === 'success') {
-        // Menghitung jumlah total pesanan
+        // Menghitung jumlah total pesanan .
         const totalOrdersCount = data.data.length;
 
         // Menampilkan jumlah total pesanan pada elemen dengan id 'order-count'
