@@ -47,18 +47,22 @@ function displayMenus(response) {
     // Bersihkan tampilan sebelumnya
     container.innerHTML = '';
 
+    const githubBaseUrl = 'https://raw.githubusercontent.com/Logiccoffee/img/main/menuImages/'; // URL default 
+    const defaultImage = 'default-image.jpg'; // Bisa digunakan jika Anda meng-upload gambar default ke server Anda
+
     menuData.forEach((item, index) => {
-        // Cari nama kategori berdasarkan category_id
         const category = categories.find(cat => cat.id === item.category_id);
         const categoryName = category ? category.name : 'Tidak ada kategori';
 
-        const githubBaseUrl = 'https://raw.githubusercontent.com/Logiccoffee/img/main/menuImages/';
+        // Memastikan gambar tidak null, undefined, atau string kosong
+        const menuImage = item.image && item.image.trim() !== "" && item.image.toLowerCase() !== "null"
+            ? `https://serveranda.com/${item.image}` // Jika ada gambar, gunakan URL server
+            : ''; // Jika tidak ada gambar, kosongkan gambar
 
-        const menuImage = item.image
-            ? `https://serveranda.com/${item.image}` // Gabungkan base URL + path gambar
-            : githubBaseUrl + 'default-image.jpg';
+        // Jika gambar tidak valid (kosong), gunakan gambar default
+        const imageSrc = menuImage ? menuImage : `${githubBaseUrl}${defaultImage}`;
 
-
+        console.log("Gambar digunakan:", menuImage); // Debugging URL gambar
 
         // Membuat card untuk setiap menu
         const card = document.createElement('div');
@@ -69,7 +73,7 @@ function displayMenus(response) {
         card.setAttribute('data-price', item.price || '');
         card.setAttribute('data-description', item.description || '');
         card.setAttribute('data-status', item.status || '');
-        card.setAttribute('data-image', menuImage);
+        card.setAttribute('data-image', imageSrc);
 
         // Bagian deskripsi hanya ditambahkan jika ada
         const descriptionHtml = item.description
