@@ -1,5 +1,5 @@
 import { getJSON, postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
-import { putJSON} from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/api.js";
+import { putJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/api.js";
 
 // Array untuk menyimpan data menu
 let menus = [];
@@ -52,6 +52,11 @@ function displayMenus(response) {
         const category = categories.find(cat => cat.id === item.category_id);
         const categoryName = category ? category.name : 'Tidak ada kategori';
 
+        // Validasi URL gambar
+        const menuImage = item.image && item.image.startsWith("http")
+            ? item.image
+            : 'path/to/default-image.jpg';
+
         // Membuat card untuk setiap menu
         const card = document.createElement('div');
         card.className = 'col-md-4 mb-4';
@@ -61,7 +66,7 @@ function displayMenus(response) {
         card.setAttribute('data-price', item.price || '');
         card.setAttribute('data-description', item.description || '');
         card.setAttribute('data-status', item.status || '');
-        card.setAttribute('data-image', item.image || 'path/to/default-image.jpg');
+        card.setAttribute('data-image', menuImage);
 
         // Bagian deskripsi hanya ditambahkan jika ada
         const descriptionHtml = item.description
@@ -69,7 +74,7 @@ function displayMenus(response) {
             : '';
         card.innerHTML = `
             <div class="card h-100 shadow-sm">
-                <img src="${item.image || 'path/to/default-image.jpg'}" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">
+                <img src="${menuImage}" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">${item.name}</h5>
                     ${descriptionHtml} <!-- Tambahkan deskripsi hanya jika ada -->
@@ -346,9 +351,9 @@ function openEditMenuPopup(menuId) {
         console.log("Response dari API:", response);
         if (response.status === 200) {
             const menu = response.data; // Data menu dari API
-    
+
             console.log('Menu Data:', menu); // Log untuk cek data menu yang diambil
-    
+
             // Isi form dengan data menu yang diambil
             document.getElementById('edit-product-name').value = menu.name || '';
             document.getElementById('edit-product-category').value = menu.category_id || '';
@@ -357,7 +362,7 @@ function openEditMenuPopup(menuId) {
             document.getElementById('edit-product-status').value = menu.status || 'Tidak Tersedia';
         } else {
             alert('Gagal memuat data menu untuk diedit.');
-        }
+        }
     });
 }
 
