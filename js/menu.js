@@ -52,10 +52,13 @@ function displayMenus(response) {
         const category = categories.find(cat => cat.id === item.category_id);
         const categoryName = category ? category.name : 'Tidak ada kategori';
 
-        // Validasi URL gambar
-        const menuImage = item.image && item.image.startsWith("http")
-            ? item.image
-            : 'path/to/default-image.jpg';
+        const githubBaseUrl = 'https://raw.githubusercontent.com/Logiccoffee/img/main/menuImages/';
+
+        const menuImage = item.image
+            ? `https://serveranda.com/${item.image}` // Gabungkan base URL + path gambar
+            : githubBaseUrl + 'default-image.jpg';
+
+
 
         // Membuat card untuk setiap menu
         const card = document.createElement('div');
