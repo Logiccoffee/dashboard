@@ -54,15 +54,15 @@ function displayMenus(response) {
         const category = categories.find(cat => cat.id === item.category_id);
         const categoryName = category ? category.name : 'Tidak ada kategori';
 
-        // Memastikan gambar tidak null, undefined, atau string kosong
+        // Memastikan gambar valid
         const menuImage = item.image && item.image.trim() !== "" && item.image.toLowerCase() !== "null"
-            ? (item.image.startsWith('http') ? item.image : `${githubBaseUrl}${item.image}`) // Pastikan gambar adalah URL yang valid
+            ? (item.image.startsWith('http') ? item.image : `${githubBaseUrl}${item.image}`)
             : ''; // Jika tidak ada gambar, kosongkan gambar
 
-        // Jika gambar tidak valid (kosong), gunakan gambar default dari sumber eksternal
+        // Jika gambar tidak valid, gunakan gambar default
         const imageSrc = menuImage ? menuImage : defaultImage;
 
-        console.log("Gambar digunakan:", menuImage); // Debugging URL gambar
+        console.log("Gambar digunakan:", imageSrc); // Debugging: Cek URL gambar
 
         // Membuat card untuk setiap menu
         const card = document.createElement('div');
