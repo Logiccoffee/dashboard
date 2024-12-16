@@ -248,56 +248,47 @@ function addMenu(event) {
 
 // Fungsi untuk mengirim menu baru ke API
 function submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImage) {
-    // Konversi gambar ke Base64 jika diperlukan oleh API
-    const reader = new FileReader();
-    reader.onload = function () {
-        const imageData = reader.result; // Data Base64 dari gambar
-        console.log('Gambar dalam format Base64:', imageData);
+    // Gunakan FormData untuk mengirim data termasuk file gambar
+    const formData = new FormData();
+    formData.append('name', menuName);
+    formData.append('category_id', menuCategory); // Kirim ID kategori, bukan nama
+    formData.append('description', menuDescription); // Sertakan deskripsi
+    formData.append('price', price);
+    formData.append('status', menuStatus);
+    formData.append('image', menuImage); // Tambahkan gambar langsung tanpa konversi
 
-        const menuData = {
-            name: menuName,
-            category_id: menuCategory, // Kirim ID kategori, bukan nama
-            description: menuDescription, // Sertakan deskripsi
-            price: price,
-            status: menuStatus,
-            image: imageData // Sertakan data gambar dalam Base64
-        };
+    console.log('Menu yang akan ditambahkan (FormData):', Array.from(formData.entries()));
 
-        console.log('Menu yang akan ditambahkan:', menuData);
+    // Memanggil fungsi postJSON dari library untuk mengirimkan data menu ke API
+    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu',        // URL API
+        'login',       // Nama header untuk token
+        token,         // Nilai token dari cookie
+        formData,       // Data menu dalam bentuk JSON
+        function (response) {
+            if (response.status >= 200 && response.status < 300) {
+                alert('Menu berhasil ditambahkan!');
+                // Ambil data terbaru setelah sukses
+                getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
+                    if (response.status === 200) {
+                        menus = response.data.data || []; // Update data menu
+                        displayMenus(response); // Tampilkan menu terbaru
+                    } else {
+                        console.error('Gagal memuat menu:', response);
+                    }
+                });
 
-        // Memanggil fungsi postJSON dari library untuk mengirimkan data menu ke API
-        postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu',        // URL API
-            'login',       // Nama header untuk token
-            token,         // Nilai token dari cookie
-            menuData,       // Data menu dalam bentuk JSON
-            function (response) {
-                if (response.status >= 200 && response.status < 300) {
-                    alert('Menu berhasil ditambahkan!');
-                    // Ambil data terbaru setelah sukses
-                    getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
-                        if (response.status === 200) {
-                            menus = response.data.data || []; // Update data menu
-                            displayMenus(response); // Tampilkan menu terbaru
-                        } else {
-                            console.error('Gagal memuat menu:', response);
-                        }
-                    });
-
-                    // Mengosongkan input form
-                    document.getElementById('product-name').value = '';
-                    document.getElementById('productCategory').value = '';
-                    document.getElementById('product-description').value = '';
-                    document.getElementById('product-price').value = '';
-                    document.getElementById('product-image').value = '';
-                    document.getElementById('product-status').value = '';  // Mengosongkan status
-                } else {
-                    alert(`Gagal menambah menu: ${response.message || 'Coba lagi.'}`);
-                }
+                // Mengosongkan input form
+                document.getElementById('product-name').value = '';
+                document.getElementById('productCategory').value = '';
+                document.getElementById('product-description').value = '';
+                document.getElementById('product-price').value = '';
+                document.getElementById('product-image').value = '';
+                document.getElementById('product-status').value = ''; // Mengosongkan status
+            } else {
+                alert(`Gagal menambah menu: ${response.message || 'Coba lagi.'}`);
             }
-        );
-    };
-    // Membaca file gambar sebagai Base64
-    reader.readAsDataURL(menuImage);
+        }
+    );
 }
 
 // Memastikan DOM selesai dimuat
