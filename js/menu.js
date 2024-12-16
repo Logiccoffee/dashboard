@@ -54,9 +54,13 @@ function displayMenus(response) {
         const category = categories.find(cat => cat.id === item.category_id);
         const categoryName = category ? category.name : 'Tidak ada kategori';
 
-        // Memastikan gambar valid
+        // Memastikan gambar valid dan mengonversi GitHub blob ke raw URL jika perlu
         const menuImage = item.image && item.image.trim() !== "" && item.image.toLowerCase() !== "null"
-            ? (item.image.startsWith('http') ? item.image : `${githubBaseUrl}${item.image}`)
+            ? (item.image.startsWith('http')
+                ? item.image
+                : item.image.includes('github.com')
+                    ? item.image.replace('github.com', 'raw.githubusercontent.com').replace('/blob', '')
+                    : `${githubBaseUrl}${item.image}`)
             : ''; // Jika tidak ada gambar, kosongkan gambar
 
         // Jika gambar tidak valid, gunakan gambar default
