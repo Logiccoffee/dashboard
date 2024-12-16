@@ -56,7 +56,7 @@ function displayMenus(response) {
 
         // Memastikan gambar tidak null, undefined, atau string kosong
         const menuImage = item.image && item.image.trim() !== "" && item.image.toLowerCase() !== "null"
-            ? `https://raw.githubusercontent.com/Logiccoffee/img/main/menuImages/${item.image}` // Gunakan URL gambar GitHub langsung
+            ? (item.image.startsWith('http') ? item.image : `${githubBaseUrl}${item.image}`) // Pastikan gambar adalah URL yang valid
             : ''; // Jika tidak ada gambar, kosongkan gambar
 
         // Jika gambar tidak valid (kosong), gunakan gambar default dari sumber eksternal
