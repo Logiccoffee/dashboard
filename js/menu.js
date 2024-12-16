@@ -47,8 +47,8 @@ function displayMenus(response) {
     // Bersihkan tampilan sebelumnya
     container.innerHTML = '';
 
-    const githubBaseUrl = 'https://raw.githubusercontent.com/Logiccoffee/img/main/menuImages/'; // URL default 
-    const defaultImage = 'default-image.jpg'; // Bisa digunakan jika Anda meng-upload gambar default ke server Anda
+    const githubBaseUrl = 'https://raw.githubusercontent.com/Logiccoffee/img/main/menuImages/';
+    const defaultImage = 'https://example.com/path/to/default-image.jpg'; // URL gambar default dari sumber eksternal
 
     menuData.forEach((item, index) => {
         const category = categories.find(cat => cat.id === item.category_id);
@@ -59,8 +59,8 @@ function displayMenus(response) {
             ? `https://raw.githubusercontent.com/Logiccoffee/img/main/menuImages/${item.image}` // Gunakan URL gambar GitHub langsung
             : ''; // Jika tidak ada gambar, kosongkan gambar
 
-        // Jika gambar tidak valid (kosong), gunakan gambar default dari GitHub
-        const imageSrc = menuImage ? menuImage : `${githubBaseUrl}${defaultImage}`;
+        // Jika gambar tidak valid (kosong), gunakan gambar default dari sumber eksternal
+        const imageSrc = menuImage ? menuImage : defaultImage;
 
         console.log("Gambar digunakan:", menuImage); // Debugging URL gambar
 
