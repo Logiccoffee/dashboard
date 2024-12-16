@@ -59,7 +59,7 @@ function displayMenus(response) {
             ? (item.image.startsWith('http')
                 ? item.image
                 : item.image.includes('github.com')
-                    ? item.image.replace('github.com', 'raw.githubusercontent.com').replace('/blob', '')
+                    ? item.image.replace('github.com', 'raw.githubusercontent.com').replace('/blob', '') // Mengubah 'blob' menjadi 'raw'
                     : `${githubBaseUrl}${item.image}`)
             : ''; // Jika tidak ada gambar, kosongkan gambar
 
