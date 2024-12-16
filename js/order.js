@@ -126,60 +126,79 @@ statusButton.addEventListener('click', () => {
     });
 
     // Ganti tombol dengan dropdown
-    statusButton.replaceWith(statusDropdown);
+    // Ganti tombol dengan dropdown
+statusButton.replaceWith(statusDropdown);
 
-    // Event listener untuk perubahan status
-    statusDropdown.addEventListener('change', () => {
-        const selectedStatus = statusDropdown.value;
+// Event listener untuk perubahan status
+statusDropdown.addEventListener('change', () => {
+    const selectedStatus = statusDropdown.value;
+    const validStatuses = ['diproses', 'terkirim', 'selesai', 'dibatalkan'];
 
-        // Validasi status sebelum mengirimkan permintaan ke backend
-        if (selectedStatus === "dibatalkan" && order.status !== "terkirim") {
-            alert(`Pesanan tidak dapat dibatalkan karena status saat ini adalah: ${order.status}`);
-            statusDropdown.replaceWith(statusButton); // Kembalikan ke tombol semula
-            return;
-        }
+    // Validasi status
+    if (!validStatuses.includes(selectedStatus)) {
+        alert("Status tidak valid. Silakan pilih dari: " + validStatuses.join(", "));
+        statusDropdown.replaceWith(statusButton);
+        return;
+    }
 
-        // Kirim data perubahan status ke server
-        fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders/${order.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'login': token,
-            },
-            body: JSON.stringify({
-                status: selectedStatus,
-            }),
+    if (selectedStatus === "dibatalkan" && order.status !== "terkirim") {
+        alert(`Pesanan tidak dapat dibatalkan karena status saat ini adalah: ${order.status}`);
+        statusDropdown.replaceWith(statusButton);
+        return;
+    }
+
+    // Periksa ID pesanan
+    if (!order.id) {
+        alert("Terjadi kesalahan: ID pesanan tidak ditemukan.");
+        console.error("ID pesanan tidak ditemukan.");
+        statusDropdown.replaceWith(statusButton);
+        return;
+    }
+
+    // Periksa token
+    if (!token) {
+        alert("Token login tidak ditemukan. Harap login ulang.");
+        console.error("Token tidak ditemukan.");
+        statusDropdown.replaceWith(statusButton);
+        return;
+    }
+
+    // Kirim data perubahan status ke server
+    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders/${order.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'login': token,
+        },
+        body: JSON.stringify({ status: selectedStatus }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                order.status = selectedStatus;
+                paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status}`;
+                alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
+            } else {
+                alert(`Gagal memperbarui status: ${data.message}`);
+            }
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data); // Log data dari server
-                if (data.status === 'success') {
-                    // Update status di objek lokal dan kolom status pada tabel
-                    order.status = selectedStatus; // Perbarui status di objek lokal
-                    paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status}`; // Update status di kolom
-
-                    alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
-                } else {
-                    alert(`Gagal memperbarui status: ${data.message}`);
-                }
-            })
-            .catch(error => {
-                console.error("Error updating status:", error);
-                alert("Terjadi kesalahan saat memperbarui status.");
-            })
-            .finally(() => {
-                // Kembalikan dropdown ke tombol setelah perubahan
-                statusDropdown.replaceWith(statusButton);
-            });
-    });
-
-    // Jika pengguna ingin membatalkan perubahan, cukup klik di luar dropdown
-    document.addEventListener('click', function handleOutsideClick(event) {
-        if (!statusDropdown.contains(event.target) && event.target !== statusButton) {
+        .catch(error => {
+            console.error("Error updating status:", error.message);
+            alert("Terjadi kesalahan saat memperbarui status.");
+        })
+        .finally(() => {
             statusDropdown.replaceWith(statusButton);
-            document.removeEventListener('click', handleOutsideClick);
-        }
-    });
+        });
+});
+
+// Event listener untuk klik di luar dropdown
+document.addEventListener('click', function handleOutsideClick(event) {
+    if (!statusDropdown.contains(event.target)) {
+        statusDropdown.replaceWith(statusButton);
+        document.removeEventListener('click', handleOutsideClick);
+    }
+});
+
 });
 
 actionCell.appendChild(statusButton);
