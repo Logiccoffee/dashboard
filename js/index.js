@@ -89,7 +89,7 @@ function logout(event) {
 const token = getCookie("login");
 
 // Mengambil data pesanan dari API
-fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order', {
+fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders', {
     method: 'GET',
     headers: {
         'login': token,  // Menggunakan token dari cookie

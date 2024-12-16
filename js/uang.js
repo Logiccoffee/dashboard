@@ -1,5 +1,5 @@
 // URL API
-const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
+const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders";
 
 // Ambil token dari cookie dengan nama 'login'
 const token = getCookie('login');

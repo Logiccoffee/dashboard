@@ -2,7 +2,7 @@ import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js"
 // import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
 // URL API
-const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order";
+const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders";
 
 // Ambil token dari cookie dengan nama 'login'
 const token = getCookie('login');
@@ -140,7 +140,7 @@ statusButton.addEventListener('click', () => {
         }
 
         // Kirim data perubahan status ke server
-        fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order/${order.id}`, {
+        fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders/${order.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
