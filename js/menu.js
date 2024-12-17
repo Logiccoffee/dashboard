@@ -204,8 +204,13 @@ function addMenu(event) {
     const menuPrice = document.getElementById('product-price').value.trim();
     const menuDescription = document.getElementById('product-description').value.trim();
     const menuStatus = document.getElementById('product-status').value.trim(); // Ambil status
-    console.log("Status yang dipilih:", `"${menuStatus}"`); // Debugging
-    if (!statuses.includes(menuStatus)) {
+    const formattedStatus = menuStatus.toLowerCase() === "tersedia"
+        ? "Tersedia"
+        : menuStatus.toLowerCase() === "tidak tersedia"
+            ? "Tidak Tersedia"
+            : "";
+
+    if (!statuses.includes(formattedStatus)) {
         alert('Status harus "Tersedia" atau "Tidak Tersedia"!');
         return;
     }
@@ -241,7 +246,7 @@ function addMenu(event) {
     formData.append('category_id', menuCategory);
     formData.append('price', price);
     formData.append('description', menuDescription);
-    formData.append('status', menuStatus);
+    formData.append('status', formattedStatus);
     formData.append('image', menuImage);
 
     // Kirim data ke API menggunakan postFileWithHeader
@@ -249,8 +254,7 @@ function addMenu(event) {
         'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', // URL API
         "Login", // Nama key token
         token, // Ambil token dari cookie
-        'product-image', // ID input file gambar
-        'image', // Nama field yang akan digunakan untuk file di server
+        formData, // Nama field yang akan digunakan untuk file di server
         (response) => {
             if (response && response.status === 200) {
                 alert('Menu berhasil ditambahkan!');
