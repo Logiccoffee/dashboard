@@ -14,32 +14,31 @@ if (!token) {
 // Variabel untuk menyimpan data pengguna
 let users = [];
 
-// Fungsi untuk memuat data pengguna
-async function fetchUsers() {
-    try {
-        const response = await fetch(API_URL, {
-            method: 'GET',
-            headers: {
-                'login': token,
-                'Content-Type': 'application/json',
-            },
-        });
-
-        const result = await response.json();
-        if (response.ok && result.status === "success") {
-            users = result.data || [];
+// Panggil API untuk mengambil data pengguna
+fetch(API_URL, {
+    method: 'GET',
+    headers: {
+        'login': token,
+        'Content-Type': 'application/json',
+    },
+})
+    .then(response => response.json())
+    .then(response => {
+        if (response.status === "success") {
+            users = response.data || []; // Simpan data pengguna di memori
+            console.log("Data pengguna berhasil dimuat:", users); // Log data pengguna
             generateUserTable(users);
         } else {
-            console.error(`Gagal memuat data pengguna. Status: ${result.status}`);
+            console.error(`Error: ${response.status}`);
             alert("Gagal memuat data pengguna. Silakan coba lagi.");
         }
-    } catch (error) {
-        console.error("Error fetching users:", error);
+    })
+    .catch(error => {
+        console.error("Error fetching data: ", error);
         alert("Terjadi kesalahan saat memuat data pengguna.");
-    }
-}
+    });
 
-// Fungsi untuk membuat tabel pengguna
+// Fungsi untuk menghasilkan tabel pengguna
 function generateUserTable(users) {
     const container = document.getElementById('user-list');
     if (!container) {
@@ -62,12 +61,16 @@ function generateUserTable(users) {
     });
 }
 
-// Fungsi untuk membuat dropdown menu di setiap baris pengguna
+// Fungsi untuk menambahkan dropdown menu di setiap baris pengguna
 function generateDropdownMenu(userId, currentRole) {
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
         .filter(role => role !== currentRole)
-        .map(role => `<li><a class="dropdown-item" href="#" data-user-id="${userId}" data-role="${role}">${role}</a></li>`)
+        .map(role => {
+            const html = `<li><a class="dropdown-item" href="#" data-user-id="${userId}" data-role="${role}">${role}</a></li>`;
+            console.log('Dropdown item:', html); // Log elemen HTML
+            return html;
+        })
         .join('');
 
     return `
@@ -82,29 +85,35 @@ function generateDropdownMenu(userId, currentRole) {
     `;
 }
 
-// Delegasi event untuk perubahan role pengguna
-document.addEventListener('click', event => {
+// Delegasi event untuk dropdown role
+const userList = document.getElementById('user-list');
+userList.addEventListener('click', event => {
     const target = event.target.closest('a[data-user-id]');
+    console.log('Target elemen:', target); // Log elemen target
     if (target) {
-        event.preventDefault();
         const userId = target.getAttribute('data-user-id');
         const newRole = target.getAttribute('data-role');
-        if (userId && newRole) {
-            handleRoleChange(userId, newRole);
+        console.log('User ID:', userId, 'New Role:', newRole); // Log atribut
+        if (!userId) {
+            console.error('Atribut data-user-id tidak ditemukan pada elemen:', target);
         } else {
-            console.error('Atribut data-user-id atau data-role tidak ditemukan pada elemen:', target);
+            handleRoleChange(userId, newRole);
         }
     }
 });
 
-// Fungsi untuk menangani perubahan role
+// Fungsi untuk menangani perubahan role pengguna
 async function handleRoleChange(userId, newRole) {
+    console.log("User ID yang diterima:", userId, "New Role:", newRole); // Log input
     const user = users.find(user => user._id === userId);
     if (!user) {
         console.error(`Pengguna dengan ID ${userId} tidak ditemukan.`);
         alert("Pengguna tidak ditemukan.");
         return;
     }
+
+    const userEmail = user.email; // Email ditemukan dari array users
+    console.log(`Mengubah role untuk user ${userEmail} menjadi ${newRole}`);
 
     try {
         const response = await fetch(UPDATE_ROLE_URL, {
@@ -114,24 +123,22 @@ async function handleRoleChange(userId, newRole) {
                 'login': token,
             },
             body: JSON.stringify({
-                email: user.email,
+                email: userEmail,
                 role: newRole,
             }),
         });
 
-        const result = await response.json();
+        const responseData = await response.json(); // Parse respons JSON
         if (response.ok) {
             document.getElementById(`role-user-${userId}`).textContent = newRole;
             alert(`Role berhasil diubah menjadi ${newRole}`);
         } else {
-            console.error('Gagal mengubah role:', result);
-            throw new Error(result.message || 'Gagal mengubah role');
+            console.error('Status HTTP:', response.status);
+            console.error('Respons API:', responseData);
+            throw new Error(responseData.message || 'Gagal mengubah role');
         }
     } catch (error) {
-        console.error('Error updating role:', error);
+        console.error('Terjadi kesalahan:', error);
         alert(`Terjadi kesalahan saat mengubah role: ${error.message}`);
     }
 }
-
-// Inisialisasi saat DOM siap
-document.addEventListener('DOMContentLoaded', fetchUsers);
