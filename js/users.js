@@ -11,6 +11,9 @@ if (!token) {
     throw new Error("Token tidak ditemukan. Harap login ulang.");
 }
 
+// Variabel untuk menyimpan data pengguna
+let users = [];
+
 // Panggil API untuk mengambil data pengguna
 fetch(API_URL, {
     method: 'GET',
@@ -22,7 +25,7 @@ fetch(API_URL, {
     .then(response => response.json())
     .then(response => {
         if (response.status === "success") {
-            const users = response.data || [];
+            users = response.data || []; // Simpan data pengguna di memori
             generateUserTable(users);
         } else {
             console.error(`Error: ${response.status}`);
@@ -91,12 +94,18 @@ userList.addEventListener('click', event => {
 
 // Fungsi untuk menangani perubahan role pengguna
 function handleRoleChange(userId, newRole) {
-    console.log(`Mengubah role untuk user ${userId} menjadi ${newRole}`);
+    // Cari email pengguna berdasarkan userId di array users
+    const user = users.find(user => user._id === userId);
+    if (!user) {
+        console.error(`Pengguna dengan ID ${userId} tidak ditemukan.`);
+        alert("Terjadi kesalahan: Pengguna tidak ditemukan.");
+        return;
+    }
 
-    // Ambil email pengguna yang sesuai dengan userId dari data pengguna yang tersedia
-    const userEmail = document.querySelector(`#role-user-${userId}`).textContent;
+    const userEmail = user.email; // Email ditemukan dari array users
+    console.log(`Mengubah role untuk user ${userEmail} menjadi ${newRole}`);
 
-    fetch(`${UPDATE_ROLE_URL}/${userId}`, {
+    fetch(UPDATE_ROLE_URL, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
