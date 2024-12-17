@@ -203,6 +203,7 @@ function addMenu(event) {
     const menuDescription = document.getElementById('product-description').value.trim();
     const menuStatus = document.getElementById('product-status').value.trim(); // Ambil status
     const menuImageInput = document.getElementById('product-image');
+    console.log(menuImageInput); // Debugging: cek apakah input gambar ditemukan
 
     // Validasi input
     if (!menuName || !menuCategory || !menuPrice || !menuStatus || !menuImageInput.files.length) {
