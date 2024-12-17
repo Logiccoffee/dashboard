@@ -272,25 +272,18 @@ function submitAddMenu(name, category_id, price, description, status, imageFile)
 
     console.log("Menu yang akan ditambahkan (FormData):", [...formData.entries()]);
 
-    // Menggunakan fungsi postJSON untuk mengirim FormData ke API
-    postJSON(
-        'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', // URL API
-        'login',            // Nama header untuk token (pastikan ini sesuai dengan API)
-        token,              // Token autentikasi dari cookie atau localStorage
-        formData,           // Data menu dalam bentuk FormData
-        (response) => {
-            console.log("Response saat menambah menu:", response);
-
-            // Cek apakah status berhasil (201 Created atau 200 OK)
-            if (response.status === 201 || response.status === 200) {
-                alert("Menu berhasil ditambahkan!");
-                location.reload(); // Refresh halaman setelah sukses
-            } else {
-                // Menangani error jika status tidak sesuai harapan
-                console.error("Gagal menambah menu. Status:", response.status, response.message);
-                alert(`Gagal menambah menu: ${response.message || 'Kesalahan tidak diketahui.'}`);
-            }
+    // Mengirim data ke API menggunakan POST (perhatikan pengiriman FormData)
+    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', 'Login', token, formData, function (response) {
+        if (response.status === 200) {
+            alert('Menu berhasil ditambahkan!');
+            // Lakukan apa yang perlu setelah sukses
+            menus.push(response.data); // Menambahkan menu baru ke daftar
+            displayMenus({ data: { data: menus } }); // Menampilkan daftar menu terbaru
+        } else {
+            alert('Gagal menambahkan menu!');
+            console.error('Error response:', response);
         }
+    }
     );
 
     // Reset form input setelah pengiriman
