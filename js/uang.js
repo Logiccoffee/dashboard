@@ -1,7 +1,7 @@
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 
-// Ambil data pesanan berdasarkan user id
-getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders", "login", getCookie("login"), displayKeuangan);
+// Ambil data pesanan
+getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders", "login", displayKeuangan);
 
 function displayKeuangan(orders) {
     const contentElement = document.querySelector(".content");
@@ -62,6 +62,7 @@ function displayKeuangan(orders) {
     // Tambahkan tabel ke dalam contentElement
     contentElement.appendChild(table);
 }
+
 
 
 
