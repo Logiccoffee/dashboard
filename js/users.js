@@ -48,6 +48,12 @@ function generateUserTable(users) {
 
     container.innerHTML = '';
     users.forEach((user, index) => {
+        // Periksa apakah user._id tersedia
+        if (!user._id) {
+            console.warn(`User dengan index ${index} tidak memiliki _id. Data pengguna:`, user);
+            user._id = `generated-id-${index}`; // ID sementara untuk debugging
+        }
+
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${index + 1}</td>
@@ -63,6 +69,11 @@ function generateUserTable(users) {
 
 // Fungsi untuk menambahkan dropdown menu di setiap baris pengguna
 function generateDropdownMenu(userId, currentRole) {
+    if (!userId) {
+        console.warn("User ID tidak ditemukan, menggunakan placeholder.");
+        userId = "placeholder-id"; // Placeholder untuk debugging
+    }
+
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
         .filter(role => role !== currentRole)
@@ -84,7 +95,6 @@ function generateDropdownMenu(userId, currentRole) {
         </div>
     `;
 }
-
 // Delegasi event untuk dropdown role
 const userList = document.getElementById('user-list');
 userList.addEventListener('click', event => {
