@@ -119,7 +119,107 @@ statusButton.addEventListener('click', () => {
 
     // Menambahkan opsi ke dropdown
     statusOptions.forEach(status => {
-        const option = document.createElement('option');
+        const option = document.createElement('option');// Kolom Metode Pembayaran & Status
+        const paymentStatusCell = document.createElement('td');
+        paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status || '-'}`;
+        row.appendChild(paymentStatusCell);
+        
+        // Kolom aksi
+        const actionCell = document.createElement('td');
+        
+        // Tombol Status (dengan ikon ubah/edit)
+        const statusButton = document.createElement('button');
+        statusButton.className = 'btn btn-warning btn-sm';
+        statusButton.innerHTML = '<i class="fas fa-edit"></i> Status';
+        
+        statusButton.addEventListener('click', () => {
+            // Dropdown Status
+            const statusDropdown = document.createElement('select');
+            statusDropdown.className = 'form-control form-control-sm';
+            const statusOptions = ['terkirim', 'diproses', 'selesai', 'dibatalkan'];
+        
+            // Menambahkan opsi ke dropdown
+            statusOptions.forEach(status => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = status;
+                if (status === order.status) {
+                    option.selected = true;
+                }
+                statusDropdown.appendChild(option);
+            });
+        
+            // Ganti tombol dengan dropdown
+            statusButton.replaceWith(statusDropdown);
+        
+            // Event listener untuk perubahan status
+            statusDropdown.addEventListener('change', () => {
+                const selectedStatus = statusDropdown.value;
+                const currentStatus = order.status;
+        
+                // Validasi urutan status
+                const statusOrder = ['terkirim', 'diproses', 'selesai']; // Urutan status
+                const currentIndex = statusOrder.indexOf(currentStatus);
+                const selectedIndex = statusOrder.indexOf(selectedStatus);
+        
+                if (selectedIndex === -1 || selectedIndex < currentIndex) {
+                    alert(`Status tidak valid. Anda hanya dapat melanjutkan status secara berurutan.`);
+                    statusDropdown.replaceWith(statusButton);
+                    return;
+                }
+        
+                // Validasi untuk pembatalan
+                if (selectedStatus === 'dibatalkan' && currentStatus === 'selesai') {
+                    alert(`Pesanan tidak dapat dibatalkan karena sudah berstatus 'selesai'.`);
+                    statusDropdown.replaceWith(statusButton);
+                    return;
+                }
+        
+                // Kirim perubahan status ke server
+                fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders/${order.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'login': token,
+                    },
+                    body: JSON.stringify({ status: selectedStatus }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Response dari server:", data);
+        
+                    if (data.status === 'success') {
+                        order.status = selectedStatus;
+                        paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status}`;
+                        alert(`Status berhasil diperbarui menjadi: ${selectedStatus}`);
+                    } else {
+                        alert(`Gagal memperbarui status: ${data.message || 'Terjadi kesalahan server'}`);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error saat memperbarui status:", error.message);
+                    alert("Terjadi kesalahan jaringan atau server. Silakan coba lagi.");
+                })
+                .finally(() => {
+                    statusDropdown.replaceWith(statusButton); // Kembalikan ke tombol
+                });
+            });
+        
+            // Event listener untuk klik di luar dropdown
+            function handleOutsideClick(event) {
+                if (!statusDropdown.contains(event.target) && event.target !== statusButton) {
+                    statusDropdown.replaceWith(statusButton);
+                    document.removeEventListener('click', handleOutsideClick);
+                }
+            }
+        
+            document.addEventListener('click', handleOutsideClick);
+        });
+        
+        actionCell.appendChild(statusButton);
+        row.appendChild(actionCell);
+        container.appendChild(row);
+        
         option.value = status;
         option.textContent = status;
         if (status === order.status) {
