@@ -1,8 +1,48 @@
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 
-// Pastikan script ini dijalankan setelah DOM siap
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
+    // Menampilkan data keuangan
     getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders", displayKeuangan);
+
+    // Fungsi dropdown untuk nama pengguna
+    const profileDropdown = document.getElementById("profileDropdown");
+    const dropdownMenu = profileDropdown ? profileDropdown.nextElementSibling : null;
+
+    if (profileDropdown && dropdownMenu) {
+        profileDropdown.addEventListener("click", function (event) {
+            event.preventDefault();
+            dropdownMenu.classList.toggle("show");
+        });
+
+        // Tutup dropdown jika klik di luar
+        document.addEventListener("click", function (event) {
+            if (profileDropdown && !profileDropdown.contains(event.target)) {
+                dropdownMenu.classList.remove("show");
+            }
+        });
+    }
+
+    // Fungsi cetak laporan
+    document.getElementById('cetakButton').addEventListener('click', function () {
+        const laporan = document.getElementById('laporanKeuangan');
+        
+        if (laporan) {
+            // Simpan konten asli halaman
+            const originalContent = document.body.innerHTML;
+
+            // Ganti isi halaman dengan hanya laporan keuangan
+            document.body.innerHTML = laporan.outerHTML;
+
+            // Cetak
+            window.print();
+
+            // Kembalikan konten asli halaman setelah cetak
+            document.body.innerHTML = originalContent;
+
+            // Pastikan event listener cetak tetap ada setelah pengembalian konten
+            document.getElementById('cetakButton').addEventListener('click', arguments.callee);
+        }
+    });
 });
 
 function getJSON(url, callback) {
@@ -60,43 +100,3 @@ function displayKeuangan(orders) {
     table.appendChild(tableBody);
     contentElement.appendChild(table);
 }
-
-
-
-
-
-// Fungsi untuk dropdown nama pengguna
-document.addEventListener("DOMContentLoaded", function () {
-    const profileDropdown = document.getElementById("profileDropdown");
-    const dropdownMenu = profileDropdown.nextElementSibling;
-
-    profileDropdown.addEventListener("click", function (event) {
-        event.preventDefault();
-        dropdownMenu.classList.toggle("show");
-    });
-
-    // Tutup dropdown jika klik di luar
-    document.addEventListener("click", function (event) {
-        if (!profileDropdown.contains(event.target)) {
-            dropdownMenu.classList.remove("show");
-        }
-    });
-});
-
-
-document.getElementById('cetakButton').addEventListener('click', function () {
-    // Ambil elemen laporan keuangan
-    const laporan = document.getElementById('laporanKeuangan');
-    
-    // Simpan konten asli halaman
-    const originalContent = document.body.innerHTML;
-
-    // Ganti isi halaman dengan hanya laporan keuangan
-    document.body.innerHTML = laporan.outerHTML;
-
-    // Cetak
-    window.print();
-
-    // Kembalikan konten asli halaman setelah cetak
-    document.body.innerHTML = originalContent;
-});
