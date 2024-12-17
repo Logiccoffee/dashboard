@@ -84,12 +84,16 @@ function generateDropdownMenu(userId, currentRole) {
 
 // Delegasi event untuk perubahan role pengguna
 document.addEventListener('click', event => {
-    const target = event.target;
-    if (target.matches('a[data-user-id]')) {
+    const target = event.target.closest('a[data-user-id]');
+    if (target) {
         event.preventDefault();
         const userId = target.getAttribute('data-user-id');
         const newRole = target.getAttribute('data-role');
-        handleRoleChange(userId, newRole);
+        if (userId && newRole) {
+            handleRoleChange(userId, newRole);
+        } else {
+            console.error('Atribut data-user-id atau data-role tidak ditemukan pada elemen:', target);
+        }
     }
 });
 
