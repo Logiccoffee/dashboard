@@ -93,6 +93,9 @@ userList.addEventListener('click', event => {
 function handleRoleChange(userId, newRole) {
     console.log(`Mengubah role untuk user ${userId} menjadi ${newRole}`);
 
+    // Ambil email pengguna yang sesuai dengan userId dari data pengguna yang tersedia
+    const userEmail = document.querySelector(`#role-user-${userId}`).textContent;
+
     fetch(`${UPDATE_ROLE_URL}/${userId}`, {
         method: 'PUT',
         headers: {
@@ -100,7 +103,7 @@ function handleRoleChange(userId, newRole) {
             'login': token,
         },
         body: JSON.stringify({
-            email: userEmail, // Harap sesuaikan dengan data yang diperlukan oleh API
+            email: userEmail,
             role: newRole,
         }),
     })
