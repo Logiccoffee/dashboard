@@ -213,10 +213,10 @@ function addMenu(event) {
         return;
     }
 
-    // Validasi status (harus Tersedia atau Tidak Tersedia)
+    // Validasi status (harus Tersedia, Tidak Tersedia, atau Habis)
     const validStatuses = ['Tersedia', 'Tidak Tersedia', 'Habis'];
     if (!validStatuses.includes(menuStatus)) {
-        alert('Status harus "Tersedia" atau "Tidak Tersedia"!');
+        alert('Status harus "Tersedia", "Tidak Tersedia", atau "Habis"!');
         return false;
     }
 
@@ -226,11 +226,6 @@ function addMenu(event) {
     if (!allowedTypes.includes(menuImage.type)) {
         alert('Format file tidak didukung! Hanya JPG, PNG, atau GIF.');
         return;
-    }
-
-    if (menuStatus === '') {
-        alert('Harap pilih status untuk menu!');
-        return false;
     }
 
     // Konversi harga ke float
@@ -259,7 +254,7 @@ function addMenu(event) {
         'product-image', // ID input file gambar
         'image', // Nama field yang akan digunakan untuk file di server
         (response) => {
-            if (response.status === 200) {
+            if (response && response.status === 200) {
                 alert('Menu berhasil ditambahkan!');
                 // Reload data menu
                 getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
