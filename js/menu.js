@@ -259,49 +259,52 @@ function addMenu(event) {
     }
 }
 
-// Fungsi untuk mengirim menu baru ke API
-function submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImage) {
-    // Gunakan FormData untuk mengirim data termasuk file gambar
+// Fungsi untuk submit data menu
+function submitAddMenu(name, category_id, price, description, status, imageFile) {
+    // Membuat objek FormData untuk mengirim data dalam bentuk multipart/form-data
     const formData = new FormData();
-    formData.append('name', menuName);
-    formData.append('category_id', menuCategory); // Kirim ID kategori, bukan nama
-    formData.append('description', menuDescription); // Sertakan deskripsi
-    formData.append('price', price);
-    formData.append('status', menuStatus);
-    formData.append('image', menuImage); // Tambahkan gambar langsung tanpa konversi
+    formData.append('name', name);                // Nama menu
+    formData.append('category_id', category_id);  // ID kategori
+    formData.append('description', description);  // Deskripsi
+    formData.append('price', price);              // Harga
+    formData.append('status', status);            // Status (Tersedia / Tidak Tersedia)
+    formData.append('image', imageFile);          // File gambar
 
-    console.log('Menu yang akan ditambahkan (FormData):', Array.from(formData.entries()));
+    console.log("Menu yang akan ditambahkan (FormData):", [...formData.entries()]);
 
-    // Memanggil fungsi postJSON dari library untuk mengirimkan data menu ke API
-    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu',        // URL API
-        'login',       // Nama header untuk token
-        token,         // Nilai token dari cookie
-        formData,       // Data menu dalam bentuk JSON
-        function (response) {
-            if (response.status >= 200 && response.status < 300) {
-                alert('Menu berhasil ditambahkan!');
-                // Ambil data terbaru setelah sukses
-                getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
-                    if (response.status === 200) {
-                        menus = response.data.data || []; // Update data menu
-                        displayMenus(response); // Tampilkan menu terbaru
-                    } else {
-                        console.error('Gagal memuat menu:', response);
-                    }
-                });
+    // Menggunakan fungsi postJSON untuk mengirim FormData ke API
+    postJSON(
+        'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', // URL API
+        'login',            // Nama header untuk token (pastikan ini sesuai dengan API)
+        token,              // Token autentikasi dari cookie atau localStorage
+        formData,           // Data menu dalam bentuk FormData
+        (response) => {
+            console.log("Response saat menambah menu:", response);
 
-                // Mengosongkan input form
-                document.getElementById('product-name').value = '';
-                document.getElementById('productCategory').value = '';
-                document.getElementById('product-description').value = '';
-                document.getElementById('product-price').value = '';
-                document.getElementById('product-image').value = '';
-                document.getElementById('product-status').value = ''; // Mengosongkan status
+            // Cek apakah status berhasil (201 Created atau 200 OK)
+            if (response.status === 201 || response.status === 200) {
+                alert("Menu berhasil ditambahkan!");
+                location.reload(); // Refresh halaman setelah sukses
             } else {
-                alert(`Gagal menambah menu: ${response.message || 'Coba lagi.'}`);
+                // Menangani error jika status tidak sesuai harapan
+                console.error("Gagal menambah menu. Status:", response.status, response.message);
+                alert(`Gagal menambah menu: ${response.message || 'Kesalahan tidak diketahui.'}`);
             }
         }
     );
+
+    // Reset form input setelah pengiriman
+    resetFormInputs();
+}
+
+// Fungsi untuk mengosongkan input form
+function resetFormInputs() {
+    document.getElementById('product-name').value = '';
+    document.getElementById('productCategory').value = '';
+    document.getElementById('product-description').value = '';
+    document.getElementById('product-price').value = '';
+    document.getElementById('product-image').value = '';
+    document.getElementById('product-status').value = ''; // Mengosongkan status
 }
 
 // Memastikan DOM selesai dimuat
