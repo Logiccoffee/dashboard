@@ -204,7 +204,12 @@ function addMenu(event) {
     const menuPrice = document.getElementById('product-price').value.trim();
     const menuDescription = document.getElementById('product-description').value.trim();
     const menuStatus = document.getElementById('product-status').value.trim(); // Ambil status
-    console.log("Status yang dipilih:", menuStatus);
+    console.log("Status yang dipilih:", `"${menuStatus}"`); // Debugging
+    if (!statuses.includes(menuStatus)) {
+        alert('Status harus "Tersedia" atau "Tidak Tersedia"!');
+        return;
+    }
+
     const menuImageInput = document.getElementById('product-image');
 
     // Validasi input wajib
@@ -212,11 +217,6 @@ function addMenu(event) {
         alert('Harap isi semua field wajib!');
         return;
     }
-
-    if (!statuses.includes(menuStatus)) {
-        alert('Status harus "Tersedia" atau "Tidak Tersedia"!');
-        return;
-    }    
 
     // Validasi gambar
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
