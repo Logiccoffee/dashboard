@@ -162,8 +162,8 @@ function loadCategories() {
     });
 }
 
-// Array untuk menyimpan data status (Tersedia / Tidak Tersedia)
-const statuses = ['Tersedia', 'Tidak Tersedia'];
+// Array untuk menyimpan data status (Tersedia / Tidak Tersedia / Habis)
+const statuses = ['Tersedia', 'Tidak Tersedia', 'Habis'];
 
 // Fungsi untuk menampilkan status dalam dropdown
 function displayStatuses() {
