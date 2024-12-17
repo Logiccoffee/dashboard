@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Load data menu dan kategori setelah DOM siap
-    loadCategories(); // Mengambil kategori dari API
-    loadMenus();      // Mengambil data menu dari API
+    loadCategories(token); // Mengambil kategori dari API
+    loadMenus(token);      // Mengambil data menu dari API
 
     // Event listener untuk modal "Tambah Produk"
     const addProductModal = document.getElementById('addProductModal');
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         addProductModal.addEventListener('show.bs.modal', function () {
             console.log("Modal terbuka, memuat status dan kategori...");
             displayStatuses(); // Load status dropdown
-            loadCategories();  // Load kategori dropdown
+            loadCategories(token);  // Load kategori dropdown
         });
     }
 
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Fungsi untuk mengambil kategori dari API
-    function loadCategories() {
+    function loadCategories(token) {
         getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', "Login", token, (response) => {
             console.log("Respons kategori:", response);  // Debugging untuk memastikan respons API
 
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Fungsi untuk menambah menu
-    function addMenu(event) {
+    function addMenu(event, token) {
         event.preventDefault(); // Mencegah form submit biasa agar bisa menggunakan JavaScript
 
         const menuName = document.getElementById('product-name').value.trim();
