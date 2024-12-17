@@ -55,13 +55,15 @@ function displayMenus(response) {
         const categoryName = category ? category.name : 'Tidak ada kategori';
 
         // Memastikan gambar valid dan mengonversi GitHub blob ke raw URL jika perlu
-        const menuImage = item.image && item.image.trim() !== "" && item.image.toLowerCase() !== "null"
+        let menuImage = item.image && item.image.trim() !== "" && item.image.toLowerCase() !== "null"
             ? (item.image.startsWith('http')
                 ? item.image
-                : item.image.includes('github.com')
-                    ? item.image.replace('github.com', 'raw.githubusercontent.com').replace('/blob', '') // Mengubah 'blob' menjadi 'raw'
-                    : `${githubBaseUrl}${item.image}`)
-            : ''; // Jika tidak ada gambar, kosongkan gambar
+                : `${githubBaseUrl}${item.image}`)
+            : '';
+
+        if (menuImage.includes('github.com') && menuImage.includes('/blob/')) {
+            menuImage = menuImage.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+        }
 
         // Jika gambar tidak valid, gunakan gambar default
         const imageSrc = menuImage ? menuImage : defaultImage;
