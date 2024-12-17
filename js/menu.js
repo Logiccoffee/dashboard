@@ -163,7 +163,7 @@ function loadCategories() {
 }
 
 // Array untuk menyimpan data status (Tersedia / Tidak Tersedia / Habis)
-const statuses = ['Tersedia', 'Tidak Tersedia', 'Habis'];
+const statuses = ['Tersedia', 'Tidak Tersedia'];
 
 // Fungsi untuk menampilkan status dalam dropdown
 function displayStatuses() {
@@ -214,9 +214,9 @@ function addMenu(event) {
     }
 
     if (!statuses.includes(menuStatus)) {
-        alert('Status harus "Tersedia", "Tidak Tersedia", atau "Habis"!');
-        return false;
-    }
+        alert('Status harus "Tersedia" atau "Tidak Tersedia"!');
+        return;
+    }    
 
     // Validasi gambar
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
