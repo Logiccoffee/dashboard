@@ -3,8 +3,6 @@ import { putJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/api.js";
 
 // Array untuk menyimpan data menu
 let menus = [];
-let currentEditIndex = null; // Untuk menyimpan index menu yang sedang diedit
-let currentDeleteIndex = null; // Untuk menyimpan index menu yang akan dihapus
 let categories = []; //untuk menyimpan data kategori
 
 // Ambil token dari cookie dengan nama 'login'
@@ -204,30 +202,22 @@ function addMenu(event) {
     const menuPrice = document.getElementById('product-price').value.trim();
     const menuDescription = document.getElementById('product-description').value.trim();
     const menuStatus = document.getElementById('product-status').value.trim(); // Ambil status
-    const formattedStatus = menuStatus.toLowerCase() === "tersedia"
-        ? "Tersedia"
-        : menuStatus.toLowerCase() === "tidak tersedia"
-            ? "Tidak Tersedia"
-            : "";
-
-    if (!statuses.includes(formattedStatus)) {
-        alert('Status harus "Tersedia" atau "Tidak Tersedia"!');
-        return;
-    }
-
     const menuImageInput = document.getElementById('product-image');
 
-    // Validasi input wajib
-    if (!menuName || !menuCategory || !menuPrice || !menuImageInput.files.length || !menuStatus) {
-        alert('Harap isi semua field wajib!');
+    // Validasi input
+    if (!menuName || !menuCategory || !menuPrice || !menuStatus || !menuImageInput.files.length) {
+        alert('Semua field wajib diisi!');
         return;
     }
 
-    // Validasi gambar
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!statuses.includes(menuStatus)) {
+        alert('Status tidak valid!');
+        return;
+    }
+
     const menuImage = menuImageInput.files[0];
-    if (!allowedTypes.includes(menuImage.type)) {
-        alert('Format file tidak didukung! Hanya JPG, PNG, atau GIF.');
+    if (!['image/jpeg', 'image/png', 'image/gif'].includes(menuImage.type)) {
+        alert('Format gambar tidak didukung. Gunakan JPG, PNG, atau GIF.');
         return;
     }
 
@@ -246,7 +236,7 @@ function addMenu(event) {
     formData.append('category_id', menuCategory);
     formData.append('price', price);
     formData.append('description', menuDescription);
-    formData.append('status', formattedStatus);
+    formData.append('status', menuStatus);
     formData.append('image', menuImage);
 
     // Kirim data ke API menggunakan postFileWithHeader
