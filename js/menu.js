@@ -213,9 +213,7 @@ function addMenu(event) {
         return;
     }
 
-    // Validasi status (harus Tersedia, Tidak Tersedia, atau Habis)
-    const validStatuses = ['Tersedia', 'Tidak Tersedia', 'Habis'];
-    if (!validStatuses.includes(menuStatus)) {
+    if (!statuses.includes(menuStatus)) {
         alert('Status harus "Tersedia", "Tidak Tersedia", atau "Habis"!');
         return false;
     }
