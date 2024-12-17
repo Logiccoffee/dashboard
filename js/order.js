@@ -136,16 +136,17 @@ statusButton.addEventListener('click', () => {
         const selectedStatus = statusDropdown.value;
         const validStatuses = ['diproses', 'terkirim', 'selesai', 'dibatalkan'];
 
-        // Validasi status
-        if (!validStatuses.includes(selectedStatus)) {
-            alert("Status tidak valid. Silakan pilih dari: " + validStatuses.join(", "));
-            statusDropdown.replaceWith(statusButton);
+        // Pastikan status yang dipilih ada
+        if (!selectedStatus || !validStatuses.includes(selectedStatus)) {
+            alert(`Status tidak valid. Silakan pilih dari: ${validStatuses.join(", ")}`);
+            statusDropdown.replaceWith(statusButton); // Kembalikan tombol
             return;
         }
 
+        // Cek apakah status dibatalkan bisa dipilih
         if (selectedStatus === "dibatalkan" && order.status !== "terkirim") {
             alert(`Pesanan tidak dapat dibatalkan karena status saat ini adalah: ${order.status}`);
-            statusDropdown.replaceWith(statusButton);
+            statusDropdown.replaceWith(statusButton); // Kembalikan tombol
             return;
         }
 
@@ -153,14 +154,14 @@ statusButton.addEventListener('click', () => {
         if (!order.id) {
             alert("Terjadi kesalahan: ID pesanan tidak ditemukan.");
             console.error("ID pesanan tidak ditemukan.");
-            statusDropdown.replaceWith(statusButton);
+            statusDropdown.replaceWith(statusButton); // Kembalikan tombol
             return;
         }
 
         if (!token) {
             alert("Token login tidak ditemukan. Harap login ulang.");
             console.error("Token tidak ditemukan.");
-            statusDropdown.replaceWith(statusButton);
+            statusDropdown.replaceWith(statusButton); // Kembalikan tombol
             return;
         }
 
@@ -173,7 +174,12 @@ statusButton.addEventListener('click', () => {
             },
             body: JSON.stringify({ status: selectedStatus }), // Hanya status yang diubah
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Gagal memperbarui status');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.status === 'success') {
                 order.status = selectedStatus; // Hanya mengubah status di objek lokal
@@ -207,6 +213,7 @@ actionCell.appendChild(statusButton);
 row.appendChild(actionCell);
 
 container.appendChild(row);
+
 
 
 
