@@ -2,6 +2,7 @@
 import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users";
+const UPDATE_ROLE_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/updateUserRole";
 
 // Ambil token dari cookie dengan nama 'login'
 const token = getCookie('login');
@@ -22,6 +23,7 @@ fetch(API_URL, {
     .then(response => {
         if (response.status === "success") {
             const users = response.data || [];
+            console.log("Data pengguna:", users); // Log data pengguna untuk debugging
             generateUserTable(users);
         } else {
             console.error(`Error: ${response.status}`);
@@ -38,7 +40,7 @@ function generateUserTable(users) {
     const container = document.getElementById('user-list');
     if (!container) {
         console.error("Elemen dengan ID 'user-list' tidak ditemukan.");
-        return;
+        throw new Error("Gagal memuat tabel pengguna. Elemen tidak ditemukan.");
     }
 
     container.innerHTML = '';
@@ -47,7 +49,7 @@ function generateUserTable(users) {
         row.innerHTML = `
             <td>${index + 1}</td>
             <td>${user.name || "Nama Tidak Diketahui"}</td>
-            <td>${user.email || "Email Tidak Diketahui"}</td>
+            <td id="email-user-${user._id}">${user.email || "Email Tidak Diketahui"}</td>
             <td id="role-user-${user._id}">${user.role || "Peran Tidak Diketahui"}</td>
             <td>${user.phonenumber || "Nomor Telepon Tidak Diketahui"}</td>
             <td>${generateDropdownMenu(user._id, user.role)}</td>
@@ -58,6 +60,8 @@ function generateUserTable(users) {
 
 // Fungsi untuk menambahkan dropdown menu di setiap baris pengguna
 function generateDropdownMenu(userId, currentRole) {
+    if (!userId) return '<span>Role tidak tersedia</span>'; // Penanganan jika ID tidak valid
+
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
         .filter(role => role !== currentRole)
@@ -78,6 +82,11 @@ function generateDropdownMenu(userId, currentRole) {
 
 // Delegasi event untuk dropdown role
 const userList = document.getElementById('user-list');
+if (!userList) {
+    console.error("Elemen dengan ID 'user-list' tidak ditemukan.");
+    throw new Error("Gagal memuat daftar pengguna. Elemen tidak ditemukan.");
+}
+
 userList.addEventListener('click', event => {
     const target = event.target;
     if (target.matches('a[data-user-id]')) {
@@ -90,26 +99,46 @@ userList.addEventListener('click', event => {
 
 // Fungsi untuk menangani perubahan role pengguna
 function handleRoleChange(userId, newRole) {
-    console.log(`Mengubah role untuk user ${userId} menjadi ${newRole}`);
+    if (!userId) {
+        console.error('User ID tidak valid.');
+        alert('Terjadi kesalahan. User ID tidak valid.');
+        return;
+    }
 
-    fetch(`${API_URL}/${userId}/role`, {
+    const emailElement = document.getElementById(`email-user-${userId}`);
+    if (!emailElement) {
+        console.error('Email pengguna tidak ditemukan.');
+        alert('Terjadi kesalahan. Email pengguna tidak ditemukan.');
+        return;
+    }
+
+    const userEmail = emailElement.textContent;
+
+    console.log(`Mengubah role untuk user ${userEmail} menjadi ${newRole}`);
+
+    fetch(UPDATE_ROLE_URL, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'login': token,
         },
-        body: JSON.stringify({ role: newRole }),
+        body: JSON.stringify({
+            email: userEmail,
+            role: newRole,
+        }),
     })
         .then(response => {
             if (response.ok) {
                 document.getElementById(`role-user-${userId}`).textContent = newRole;
                 alert(`Role berhasil diubah menjadi ${newRole}`);
             } else {
-                throw new Error('Gagal mengubah role');
+                return response.json().then(err => {
+                    throw new Error(err.message || 'Gagal mengubah role');
+                });
             }
         })
         .catch(error => {
             console.error('Terjadi kesalahan:', error);
-            alert('Terjadi kesalahan saat mengubah role.');
+            alert(`Terjadi kesalahan saat mengubah role: ${error.message}`);
         });
 }
