@@ -186,6 +186,36 @@ function displayStatuses() {
     console.log("Dropdown status berhasil diisi:", statuses);
 }
 
+// Memastikan DOM selesai dimuat
+document.addEventListener('DOMContentLoaded', function () {
+    // Ambil token dari cookie dengan nama 'login'
+    const token = getCookie('login');
+    if (!token) {
+        alert('Token tidak ditemukan, harap login terlebih dahulu!');
+        throw new Error("Token tidak ditemukan. Harap login ulang.");
+    }
+
+    // Panggil getJSON untuk mengambil data menu setelah token valid
+    getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
+        if (response.status === 200) {
+            menus = response.data.data || []; // Menyimpan data menu yang ada
+            displayMenus(response); // Menampilkan data menu yang diambil
+        } else {
+            console.error(`Error: ${response.status}`);
+            alert("Gagal memuat data menu. Silakan coba lagi.");
+        }
+    });
+
+    // Fungsi untuk menampilkan kategori saat halaman dimuat
+    loadCategories();
+
+    // Menambahkan event listener untuk form submit
+    const addProductForm = document.getElementById('addProductForm');
+    if (addProductForm) {
+        addProductForm.addEventListener('submit', addMenu);
+    }
+});
+
 // Panggil fungsi displayStatuses saat modal dibuka
 document.getElementById('addProductModal').addEventListener('show.bs.modal', function () {
     console.log("Modal terbuka, memuat status...");
@@ -268,36 +298,6 @@ function addMenu(event) {
 
 // Event listener untuk form submit
 document.getElementById('addProductModal').addEventListener('submit', addMenu);
-
-// Memastikan DOM selesai dimuat
-document.addEventListener('DOMContentLoaded', function () {
-    // Ambil token dari cookie dengan nama 'login'
-    const token = getCookie('login');
-    if (!token) {
-        alert('Token tidak ditemukan, harap login terlebih dahulu!');
-        throw new Error("Token tidak ditemukan. Harap login ulang.");
-    }
-
-    // Panggil getJSON untuk mengambil data menu setelah token valid
-    getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
-        if (response.status === 200) {
-            menus = response.data.data || []; // Menyimpan data menu yang ada
-            displayMenus(response); // Menampilkan data menu yang diambil
-        } else {
-            console.error(`Error: ${response.status}`);
-            alert("Gagal memuat data menu. Silakan coba lagi.");
-        }
-    });
-
-    // Fungsi untuk menampilkan kategori saat halaman dimuat
-    loadCategories();
-
-    // Menambahkan event listener untuk form submit
-    const addProductForm = document.getElementById('addProductForm');
-    if (addProductForm) {
-        addProductForm.addEventListener('submit', addMenu);
-    }
-});
 
 // Membuka popup form edit menu
 function openEditMenuPopup(menuId) {
