@@ -1,25 +1,30 @@
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 
-// Ambil data pesanan
-getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders", "login", displayKeuangan);
+// Pastikan script ini dijalankan setelah DOM siap
+document.addEventListener('DOMContentLoaded', function() {
+    getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders", displayKeuangan);
+});
+
+function getJSON(url, callback) {
+    fetch(url)
+        .then(response => response.json())
+        .then(data => callback(data))
+        .catch(error => console.error('Error fetching data:', error));
+}
 
 function displayKeuangan(orders) {
     const contentElement = document.querySelector(".content");
 
-    // Validasi elemen .content
     if (!contentElement) {
         console.error("Elemen dengan class 'content' tidak ditemukan.");
         return;
     }
 
-    // Bersihkan konten sebelumnya
     contentElement.innerHTML = "";
 
-    // Membuat tabel untuk menampilkan laporan keuangan
     const table = document.createElement("table");
     table.className = "keuangan-table";
 
-    // Membuat header tabel
     const tableHeader = document.createElement("thead");
     tableHeader.innerHTML = `
         <tr>
@@ -31,10 +36,8 @@ function displayKeuangan(orders) {
     `;
     table.appendChild(tableHeader);
 
-    // Membuat body tabel
     const tableBody = document.createElement("tbody");
 
-    // Iterasi setiap pesanan untuk menampilkan data yang dibutuhkan
     orders.forEach((order) => {
         const formattedDate = new Date(order.orderDate).toLocaleDateString("id-ID", {
             day: "2-digit",
@@ -42,10 +45,8 @@ function displayKeuangan(orders) {
             year: "numeric",
         });
 
-        // Menghitung total jumlah pesanan
         const totalQuantity = order.orders.reduce((sum, item) => sum + item.quantity, 0);
 
-        // Membuat baris baru untuk tabel
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${formattedDate}</td>
@@ -56,12 +57,10 @@ function displayKeuangan(orders) {
         tableBody.appendChild(row);
     });
 
-    // Menambahkan body ke dalam tabel
     table.appendChild(tableBody);
-
-    // Tambahkan tabel ke dalam contentElement
     contentElement.appendChild(table);
 }
+
 
 
 
