@@ -206,22 +206,18 @@ function addMenu(event) {
     const menuStatus = document.getElementById('product-status').value.trim(); // Ambil status
     console.log("Status yang dipilih:", menuStatus);
     const menuImageInput = document.getElementById('product-image');
-    if (!menuImageInput || !menuImageInput.files || menuImageInput.files.length === 0) {
-        alert('Harap unggah file gambar!');
-        return false;
-    }
-    const menuImage = menuImageInput.files[0];
 
-    // Validasi input menu
-    if (!menuName || !menuCategory || !menuPrice || !menuImage || !menuStatus) {
-        alert('Semua data menu harus diisi, kecuali deskripsi!');
+    // Validasi input wajib
+    if (!menuName || !menuCategory || !menuPrice || !menuImageInput.files.length || !menuStatus) {
+        alert('Harap isi semua field wajib!');
         return;
     }
 
     // Validasi gambar
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const menuImage = menuImageInput.files[0];
     if (!allowedTypes.includes(menuImage.type)) {
-        alert('Format file tidak didukung. Harap unggah gambar dengan format JPG, PNG, atau GIF.');
+        alert('Format file tidak didukung! Hanya JPG, PNG, atau GIF.');
         return;
     }
 
@@ -239,66 +235,37 @@ function addMenu(event) {
         return false;
     }
 
-    // Kirim menu untuk ditambahkan
-    submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImage);
-
-    // Cek apakah kategori ada, jika tidak, tambahkan kategori baru
-    if (!categories.some(category => category.id === menuCategory)) {
-        // Jika kategori tidak ada, tambahkan kategori baru melalui API (misalnya, 'postJSON')
-        postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/category', 'Login', token, { name: menuCategory }, function (response) {
-            if (response.status === 200) {
-                alert('Kategori baru berhasil ditambahkan!');
-                // Reload kategori
-                loadCategories();
-                // Lanjutkan untuk menambahkan menu
-                submitAddMenu(menuName, menuCategory, price, menuDescription, menuStatus, menuImage);
-            } else {
-                alert('Gagal menambah kategori baru!');
-            }
-        });
-    }
-}
-
-// Fungsi untuk submit data menu
-function submitAddMenu(name, category_id, price, description, status, imageFile) {
-    // Membuat objek FormData untuk mengirim data dalam bentuk multipart/form-data
+    // Menyiapkan FormData
     const formData = new FormData();
-    formData.append('name', name);                // Nama menu
-    formData.append('category_id', category_id);  // ID kategori
-    formData.append('description', description);  // Deskripsi
-    formData.append('price', price);              // Harga
-    formData.append('status', status);            // Status (Tersedia / Tidak Tersedia)
-    formData.append('image', imageFile);          // File gambar
+    formData.append('name', menuName);
+    formData.append('category_id', menuCategory);
+    formData.append('price', price);
+    formData.append('description', menuDescription);
+    formData.append('status', menuStatus);
+    formData.append('image', menuImage);
 
-    console.log("Menu yang akan ditambahkan (FormData):", [...formData.entries()]);
-
-    // Mengirim data ke API menggunakan POST (perhatikan pengiriman FormData)
-    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', 'Login', token, formData, function (response) {
+    // Kirim data ke API
+    postJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', 'Login', token, formData, (response) => {
         if (response.status === 200) {
             alert('Menu berhasil ditambahkan!');
-            // Lakukan apa yang perlu setelah sukses
-            menus.push(response.data); // Menambahkan menu baru ke daftar
-            displayMenus({ data: { data: menus } }); // Menampilkan daftar menu terbaru
+            // Reload data menu
+            getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', "Login", token, (response) => {
+                if (response.status === 200) {
+                    menus = response.data.data || [];
+                    displayMenus(response);
+                }
+            });
+            // Tutup modal setelah tambah menu
+            $('#addProductModal').modal('hide');
         } else {
-            alert('Gagal menambahkan menu!');
-            console.error('Error response:', response);
+            alert('Gagal menambahkan menu. Silakan coba lagi.');
+            console.error(response);
         }
-    }
-    );
-
-    // Reset form input setelah pengiriman
-    resetFormInputs();
+    });
 }
 
-// Fungsi untuk mengosongkan input form
-function resetFormInputs() {
-    document.getElementById('product-name').value = '';
-    document.getElementById('productCategory').value = '';
-    document.getElementById('product-description').value = '';
-    document.getElementById('product-price').value = '';
-    document.getElementById('product-image').value = '';
-    document.getElementById('product-status').value = ''; // Mengosongkan status
-}
+// Event listener untuk form submit
+document.getElementById('addProductModal').addEventListener('submit', addMenu);
 
 // Memastikan DOM selesai dimuat
 document.addEventListener('DOMContentLoaded', function () {
