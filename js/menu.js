@@ -213,6 +213,13 @@ function addMenu(event) {
         return;
     }
 
+    // Validasi status (harus Tersedia atau Tidak Tersedia)
+    const validStatuses = ['Tersedia', 'Tidak Tersedia', 'Habis'];
+    if (!validStatuses.includes(menuStatus)) {
+        alert('Status harus "Tersedia" atau "Tidak Tersedia"!');
+        return false;
+    }
+
     // Validasi gambar
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     const menuImage = menuImageInput.files[0];
