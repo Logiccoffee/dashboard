@@ -110,11 +110,14 @@ const actionCell = document.createElement('td');
 const statusButton = document.createElement('button');
 statusButton.className = 'btn btn-warning btn-sm';
 statusButton.innerHTML = '<i class="fas fa-edit"></i> Status';
+
 statusButton.addEventListener('click', () => {
-    // Dropdown status
+    // Membuat dropdown status
     const statusDropdown = document.createElement('select');
     statusDropdown.className = 'form-control form-control-sm';
     const statusOptions = ['diproses', 'terkirim', 'selesai', 'dibatalkan'];
+
+    // Menambahkan opsi ke dropdown
     statusOptions.forEach(status => {
         const option = document.createElement('option');
         option.value = status;
@@ -126,57 +129,55 @@ statusButton.addEventListener('click', () => {
     });
 
     // Ganti tombol dengan dropdown
-// Ganti tombol dengan dropdown
-statusButton.replaceWith(statusDropdown);
+    statusButton.replaceWith(statusDropdown);
 
-// Event listener untuk perubahan status
-statusDropdown.addEventListener('change', () => {
-    const selectedStatus = statusDropdown.value;
-    const validStatuses = ['diproses', 'terkirim', 'selesai', 'dibatalkan'];
+    // Event listener untuk perubahan status
+    statusDropdown.addEventListener('change', () => {
+        const selectedStatus = statusDropdown.value;
+        const validStatuses = ['diproses', 'terkirim', 'selesai', 'dibatalkan'];
 
-    // Validasi status
-    if (!validStatuses.includes(selectedStatus)) {
-        alert("Status tidak valid. Silakan pilih dari: " + validStatuses.join(", "));
-        statusDropdown.replaceWith(statusButton);
-        return;
-    }
+        // Validasi status
+        if (!validStatuses.includes(selectedStatus)) {
+            alert("Status tidak valid. Silakan pilih dari: " + validStatuses.join(", "));
+            statusDropdown.replaceWith(statusButton);
+            return;
+        }
 
-    if (selectedStatus === "dibatalkan" && order.status !== "terkirim") {
-        alert(`Pesanan tidak dapat dibatalkan karena status saat ini adalah: ${order.status}`);
-        statusDropdown.replaceWith(statusButton);
-        return;
-    }
+        if (selectedStatus === "dibatalkan" && order.status !== "terkirim") {
+            alert(`Pesanan tidak dapat dibatalkan karena status saat ini adalah: ${order.status}`);
+            statusDropdown.replaceWith(statusButton);
+            return;
+        }
 
-    // Periksa ID pesanan
-    if (!order.id) {
-        alert("Terjadi kesalahan: ID pesanan tidak ditemukan.");
-        console.error("ID pesanan tidak ditemukan.");
-        statusDropdown.replaceWith(statusButton);
-        return;
-    }
+        // Periksa ID pesanan dan token
+        if (!order.id) {
+            alert("Terjadi kesalahan: ID pesanan tidak ditemukan.");
+            console.error("ID pesanan tidak ditemukan.");
+            statusDropdown.replaceWith(statusButton);
+            return;
+        }
 
-    // Periksa token
-    if (!token) {
-        alert("Token login tidak ditemukan. Harap login ulang.");
-        console.error("Token tidak ditemukan.");
-        statusDropdown.replaceWith(statusButton);
-        return;
-    }
+        if (!token) {
+            alert("Token login tidak ditemukan. Harap login ulang.");
+            console.error("Token tidak ditemukan.");
+            statusDropdown.replaceWith(statusButton);
+            return;
+        }
 
-    // Kirim data perubahan status ke server
-    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders/${order.id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'login': token,
-        },
-        body: JSON.stringify({ status: selectedStatus }),
-    })
+        // Kirim data perubahan status ke server
+        fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders/${order.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'login': token,
+            },
+            body: JSON.stringify({ status: selectedStatus }), // Hanya status yang diubah
+        })
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                order.status = selectedStatus;
-                paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status}`;
+                order.status = selectedStatus; // Hanya mengubah status di objek lokal
+                paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status}`; // Update hanya status
                 alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
             } else {
                 alert(`Gagal memperbarui status: ${data.message}`);
@@ -187,18 +188,19 @@ statusDropdown.addEventListener('change', () => {
             alert("Terjadi kesalahan saat memperbarui status.");
         })
         .finally(() => {
-            statusDropdown.replaceWith(statusButton);
+            statusDropdown.replaceWith(statusButton); // Kembali ke tombol setelah perubahan
         });
-});
+    });
 
-// Event listener untuk klik di luar dropdown
-document.addEventListener('click', function handleOutsideClick(event) {
-    if (!statusDropdown.contains(event.target)) {
-        statusDropdown.replaceWith(statusButton);
-        document.removeEventListener('click', handleOutsideClick);
+    // Event listener untuk klik di luar dropdown
+    function handleOutsideClick(event) {
+        if (!statusDropdown.contains(event.target) && event.target !== statusButton) {
+            statusDropdown.replaceWith(statusButton); // Kembalikan tombol
+            document.removeEventListener('click', handleOutsideClick); // Hentikan event listener
+        }
     }
-});
 
+    document.addEventListener('click', handleOutsideClick);
 });
 
 actionCell.appendChild(statusButton);
@@ -210,8 +212,21 @@ container.appendChild(row);
 
 
 
+
     });
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
