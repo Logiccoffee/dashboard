@@ -1,37 +1,67 @@
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 
-// Fungsi untuk mengambil data laporan keuangan
-function getLaporanKeuangan() {
-    getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders', function(data) {
-        // Mengecek apakah data berhasil diterima dan merupakan array
-        if (Array.isArray(data)) {
-            const tbody = document.querySelector('#laporanKeuangan tbody');
-            tbody.innerHTML = ''; // Kosongkan tabel sebelum menambahkan data baru
+// Ambil data pesanan berdasarkan user id
+getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders", "login", getCookie("login"), displayKeuangan);
 
-            // Looping data untuk menambahkannya ke tabel
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.orderdate}</td>
-                    <td>${item.payment_method}</td>
-                    <td>Rp ${item.total}</td>
-                    <td>${item.quantity} Cup</td>
-                `;
-                tbody.appendChild(row);
-            });
-        } else {
-            console.error('Data tidak sesuai format');
-        }
-    }).fail(function(xhr, status, error) {
-        console.error('Terjadi kesalahan:', error);
+function displayKeuangan(orders) {
+    const contentElement = document.querySelector(".content");
+
+    // Validasi elemen .content
+    if (!contentElement) {
+        console.error("Elemen dengan class 'content' tidak ditemukan.");
+        return;
+    }
+
+    // Bersihkan konten sebelumnya
+    contentElement.innerHTML = "";
+
+    // Membuat tabel untuk menampilkan laporan keuangan
+    const table = document.createElement("table");
+    table.className = "keuangan-table";
+
+    // Membuat header tabel
+    const tableHeader = document.createElement("thead");
+    tableHeader.innerHTML = `
+        <tr>
+            <th>Tanggal Pemesanan</th>
+            <th>Metode Pembayaran</th>
+            <th>Total</th>
+            <th>Jumlah</th>
+        </tr>
+    `;
+    table.appendChild(tableHeader);
+
+    // Membuat body tabel
+    const tableBody = document.createElement("tbody");
+
+    // Iterasi setiap pesanan untuk menampilkan data yang dibutuhkan
+    orders.forEach((order) => {
+        const formattedDate = new Date(order.orderDate).toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        });
+
+        // Menghitung total jumlah pesanan
+        const totalQuantity = order.orders.reduce((sum, item) => sum + item.quantity, 0);
+
+        // Membuat baris baru untuk tabel
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${formattedDate}</td>
+            <td>${order.paymentMethod}</td>
+            <td>Rp ${order.total.toLocaleString("id-ID")}</td>
+            <td>${totalQuantity}</td>
+        `;
+        tableBody.appendChild(row);
     });
+
+    // Menambahkan body ke dalam tabel
+    table.appendChild(tableBody);
+
+    // Tambahkan tabel ke dalam contentElement
+    contentElement.appendChild(table);
 }
-
-// Panggil fungsi untuk menampilkan data saat halaman dimuat
-document.addEventListener('DOMContentLoaded', () => {
-    getLaporanKeuangan(); // Memanggil fungsi untuk mengambil data laporan keuangan
-});
-
 
 
 
