@@ -12,58 +12,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fungsi untuk mengambil dan menampilkan data
     async function getLaporanKeuangan() {
+        const token = getCookie('session'); // Ambil token dari cookie
         if (!token) {
             console.error("Token tidak ditemukan di cookie!");
             return;
         }
-
+    
         try {
-            // Permintaan fetch dengan header Authorization menggunakan cookie
             const response = await fetch(apiUrl, {
                 method: 'GET',
                 headers: {
-                    'login': token,
+                    'login': token, // Pastikan token benar
                     'Content-Type': 'application/json',
                 },
             });
-
-            // Jika respons tidak berhasil, tampilkan pesan kesalahan
+    
             if (!response.ok) {
                 console.error("Error fetching data:", response.status);
                 return;
             }
-
-            const data = await response.json();  // Parse response ke format JSON
-
-            // Bersihkan tabel sebelum menambahkan data baru
-            laporanKeuanganTbody.innerHTML = "";
-
-            // Looping melalui data dan memilih hanya yang diperlukan untuk laporan keuangan
+    
+            const data = await response.json();
+            console.log("Data yang diterima:", data); // Menampilkan data untuk debugging
+    
+            // Menampilkan laporan keuangan ke dalam tabel
+            laporanKeuanganTbody.innerHTML = ""; // Bersihkan tabel sebelum diisi
+    
             data.forEach(order => {
-                const tanggalPesanan = order.tanggal; // Ganti dengan nama field yang sesuai
-                const metodePembayaran = order.metode_pembayaran; // Ganti dengan nama field yang sesuai
-                const total = order.total; // Total pembayaran
-                const jumlah = order.jumlah; // Jumlah pesanan
-
-                // Membuat elemen baris baru
+                // Ambil informasi yang relevan dari order
+                const tanggalPesanan = new Date(order.orderDate).toLocaleDateString(); // Ubah tanggal menjadi format yang mudah dibaca
+                const metodePembayaran = order.paymentMethod;
+                const total = order.total;
+                const jumlah = order.orders.reduce((sum, item) => sum + item.quantity, 0); // Jumlahkan semua kuantitas item dalam pesanan
+    
                 const tr = document.createElement("tr");
-
-                // Isi data dalam baris
                 tr.innerHTML = `
                     <td>${tanggalPesanan}</td>
                     <td>${metodePembayaran}</td>
                     <td>${total}</td>
                     <td>${jumlah}</td>
                 `;
-
-                // Masukkan baris ke dalam tabel
+    
                 laporanKeuanganTbody.appendChild(tr);
             });
         } catch (error) {
             console.error("Terjadi kesalahan saat mengambil data:", error);
         }
     }
-
+    
     // Panggil fungsi untuk mengambil data saat halaman dimuat
     getLaporanKeuangan();
 });
