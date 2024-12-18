@@ -7,7 +7,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Fungsi dropdown untuk nama pengguna
     const profileDropdown = document.getElementById("profileDropdown");
     if (profileDropdown) {
-        const dropdownMenu = profileDropdown.nextElementSibling;
+        const dropdownMenu = document.querySelector(".dropdown-menu");
+
         if (dropdownMenu) {
             profileDropdown.addEventListener("click", function (event) {
                 event.preventDefault();
@@ -15,12 +16,13 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             document.addEventListener("click", function (event) {
-                if (!profileDropdown.contains(event.target)) {
+                if (!profileDropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
                     dropdownMenu.classList.remove("show");
                 }
             });
         }
     }
+    
 
     // Fungsi cetak laporan
     const cetakButton = document.getElementById('cetakButton');
