@@ -6,57 +6,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fungsi dropdown untuk nama pengguna
     const profileDropdown = document.getElementById("profileDropdown");
-    const dropdownMenu = profileDropdown ? profileDropdown.nextElementSibling : null;
+    if (profileDropdown) {
+        const dropdownMenu = profileDropdown.nextElementSibling;
+        if (dropdownMenu) {
+            profileDropdown.addEventListener("click", function (event) {
+                event.preventDefault();
+                dropdownMenu.classList.toggle("show");
+            });
 
-    if (profileDropdown && dropdownMenu) {
-        profileDropdown.addEventListener("click", function (event) {
-            event.preventDefault();
-            dropdownMenu.classList.toggle("show");
-        });
-
-        // Tutup dropdown jika klik di luar
-        document.addEventListener("click", function (event) {
-            if (profileDropdown && !profileDropdown.contains(event.target)) {
-                dropdownMenu.classList.remove("show");
-            }
-        });
+            document.addEventListener("click", function (event) {
+                if (!profileDropdown.contains(event.target)) {
+                    dropdownMenu.classList.remove("show");
+                }
+            });
+        }
     }
 
     // Fungsi cetak laporan
-    document.getElementById('cetakButton').addEventListener('click', function () {
-        const laporan = document.getElementById('laporanKeuangan');
-        
-        if (laporan) {
-            // Simpan konten asli halaman
-            const originalContent = document.body.innerHTML;
-
-            // Ganti isi halaman dengan hanya laporan keuangan
-            document.body.innerHTML = laporan.outerHTML;
-
-            // Cetak
-            window.print();
-
-            // Kembalikan konten asli halaman setelah cetak
-            document.body.innerHTML = originalContent;
-
-            // Pastikan event listener cetak tetap ada setelah pengembalian konten
-            document.getElementById('cetakButton').addEventListener('click', arguments.callee);
-        }
-    });
+    const cetakButton = document.getElementById('cetakButton');
+    if (cetakButton) {
+        cetakButton.addEventListener('click', function () {
+            const laporan = document.getElementById('laporanKeuangan');
+            if (laporan) {
+                const originalContent = document.body.innerHTML;
+                document.body.innerHTML = laporan.outerHTML;
+                window.print();
+                document.body.innerHTML = originalContent;
+                document.getElementById('cetakButton').addEventListener('click', arguments.callee);
+            }
+        });
+    }
 });
-
-function getJSON(url, callback) {
-    fetch(url)
-        .then(response => response.json())
-        .then(data => callback(data))
-        .catch(error => console.error('Error fetching data:', error));
-}
 
 function displayKeuangan(orders) {
     const contentElement = document.querySelector(".content");
 
     if (!contentElement) {
         console.error("Elemen dengan class 'content' tidak ditemukan.");
+        return;
+    }
+
+    if (!orders || orders.length === 0) {
+        contentElement.innerHTML = "<p>Tidak ada data keuangan yang tersedia.</p>";
         return;
     }
 
