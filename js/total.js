@@ -1,5 +1,5 @@
-import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
 // URL API
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders";
@@ -54,7 +54,7 @@ function displayOrders(orders) {
 
         // Kolom Tanggal Pesanan
         const orderDateCell = document.createElement('td');
-        orderDateCell.textContent = order.orderDate || '-'; // Menampilkan tanggal pesanan
+        orderDateCell.textContent = order.date || '-'; // Menampilkan tanggal pesanan
         row.appendChild(orderDateCell);
 
         // Kolom Metode Pembayaran
@@ -65,7 +65,7 @@ function displayOrders(orders) {
         // Kolom Total
         const totalPriceCell = document.createElement('td');
         let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
-        totalPriceCell.textContent = total !== 0 ? `Rp ${parseInt(total).toLocaleString('id-ID')}` : '-'; // Menampilkan total harga        
+        totalPriceCell.textContent = total !== 0 ? `Rp ${total.toLocaleString('id-ID')}` : '-'; // Menampilkan total harga
         row.appendChild(totalPriceCell);
 
         // Kolom Jumlah (Jumlah produk)
