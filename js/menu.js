@@ -26,18 +26,15 @@ getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/men
 
 // Fungsi untuk menampilkan daftar menu dalam bentuk card
 function displayMenus(response) {
-    // Validasi apakah response dan data valid
-    if (!response || !response.data) {
-        console.error("Respons dari API tidak valid.");
-        alert("Gagal memuat data menu.");
+    // Validasi apakah response.data.data ada dan valid
+    if (!response || !response.data || !Array.isArray(response.data.data)) {
+        console.error("Data menu tidak valid atau tidak ditemukan.");
+        // HAPUS ALERT berikut karena tidak diperlukan lagi:
+        // alert("Data menu tidak valid. Silakan hubungi administrator.");
         return;
     }
 
     const menuData = response.data.data; // Ambil data menu
-    if (!Array.isArray(menuData) || menuData.length === 0) {
-        console.warn("Data menu kosong.");
-        return; // Jangan tampilkan alert jika data kosong, hanya log
-    }
     const container = document.getElementById('productList');
 
     // Pastikan elemen container ditemukan
