@@ -76,11 +76,9 @@ function generateDropdownMenu(userId, currentRole) {
 
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
-        .filter(role => role !== currentRole)
+        .filter(role => role !== currentRole) // Hapus role saat ini dari opsi
         .map(role => {
-            const html = `<li><a class="dropdown-item" href="#" data-user-id="${userId}" data-role="${role}">${role}</a></li>`;
-            console.log('Dropdown item:', html); // Log elemen HTML
-            return html;
+            return `<li><a class="dropdown-item" href="#" data-user-id="${userId}" data-role="${role}">${role}</a></li>`;
         })
         .join('');
 
@@ -95,26 +93,20 @@ function generateDropdownMenu(userId, currentRole) {
         </div>
     `;
 }
+
 // Delegasi event untuk dropdown role
 const userList = document.getElementById('user-list');
 userList.addEventListener('click', event => {
     const target = event.target.closest('a[data-user-id]');
-    console.log('Target elemen:', target); // Log elemen target
     if (target) {
         const userId = target.getAttribute('data-user-id');
         const newRole = target.getAttribute('data-role');
-        console.log('User ID:', userId, 'New Role:', newRole); // Log atribut
-        if (!userId) {
-            console.error('Atribut data-user-id tidak ditemukan pada elemen:', target);
-        } else {
-            handleRoleChange(userId, newRole);
-        }
+        handleRoleChange(userId, newRole);
     }
 });
 
 // Fungsi untuk menangani perubahan role pengguna
 async function handleRoleChange(userId, newRole) {
-    console.log("User ID yang diterima:", userId, "New Role:", newRole); // Log input
     const user = users.find(user => user._id === userId);
     if (!user) {
         console.error(`Pengguna dengan ID ${userId} tidak ditemukan.`);
@@ -123,7 +115,6 @@ async function handleRoleChange(userId, newRole) {
     }
 
     const userEmail = user.email; // Email ditemukan dari array users
-    console.log(`Mengubah role untuk user ${userEmail} menjadi ${newRole}`);
 
     try {
         const response = await fetch(UPDATE_ROLE_URL, {
