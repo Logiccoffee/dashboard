@@ -105,6 +105,7 @@ function displayMenus(response) {
     });
     // Tambahkan event listener untuk tombol "Ubah" setelah menu ditampilkan
     const editButtons = document.querySelectorAll('.btn-edit');
+    console.log(`Jumlah tombol edit ditemukan: ${editButtons.length}`);
     editButtons.forEach(button => {
         button.addEventListener('click', function () {
             const menuId = button.getAttribute('data-id'); // Ambil ID menu
@@ -112,6 +113,15 @@ function displayMenus(response) {
         });
     });
 }
+
+document.getElementById('productList').addEventListener('click', function (event) {
+    if (event.target.closest('.btn-edit')) {
+        const button = event.target.closest('.btn-edit');
+        const menuId = button.getAttribute('data-id'); // Ambil ID menu
+        console.log(`Tombol Edit diklik untuk menu ID: ${menuId}`);
+        openEditMenuPopup(menuId);
+    }
+});
 
 // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
 function getCookie(name) {
@@ -327,12 +337,16 @@ document.getElementById('addProductForm').addEventListener('submit', addMenu);
 
 // Membuka popup form edit menu
 function openEditMenuPopup(menuId) {
+    console.log(`Popup edit terbuka untuk menu ID: ${menuId}`);
     const menu = menus.find(item => item.id == menuId); // Cari menu berdasarkan ID
 
     if (!menu) {
         alert('Menu tidak ditemukan!');
         return;
     }
+
+    // Log data menu untuk memastikan menu ditemukan
+    console.log("Data menu:", menu);
 
     // Mengisi data menu ke dalam form edit
     document.getElementById('edit-product-name').value = menu.name;
