@@ -94,8 +94,10 @@ function displayMenus(response) {
                     <p class="card-text">Kategori: ${categoryName}</p>
                     <p class="card-text">Harga: ${item.price}</p>
                     <p class="card-text">Status: ${item.status || 'Tidak Tersedia'}</p>
-                    <!-- Tombol Edit -->
-                    <button class="btn btn-primary btn-edit" data-id="${item.id}">Edit</button>
+                    <!-- Tombol Edit dengan background kuning dan ikon edit -->
+                    <button class="btn" style="background-color: yellow; color: black; border: none; display: flex; align-items: center;" data-id="${item.id}">
+                        <i class="fa fa-edit" style="margin-right: 8px;"></i> Edit
+                    </button>
                 </div>
             </div>
         `;
@@ -334,7 +336,7 @@ function openEditMenuPopup(menuId) {
 
     // Mengisi data menu ke dalam form edit
     document.getElementById('edit-product-name').value = menu.name;
-    document.getElementById('edit-productCategory').value = menu.category_id;
+    document.getElementById('edit-product-category').value = menu.category_id;
     document.getElementById('edit-product-price').value = menu.price;
     document.getElementById('edit-product-description').value = menu.description;
     document.getElementById('edit-product-status').value = menu.status;
