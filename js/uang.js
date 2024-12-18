@@ -1,105 +1,101 @@
-import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Menampilkan data keuangan
-    const headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer <your-token>"
-    };
+    // URL endpoint API
+    const apiUrl = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders";
     
-    getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders", headers, displayKeuangan);
-    
+    // Mengambil token dari cookie menggunakan getCookie
+    const token = getCookie("session");  // Ganti 'session' dengan nama cookie yang sesuai
 
-    // Fungsi dropdown untuk nama pengguna
-    const profileDropdown = document.getElementById("profileDropdown");
+    // Mengambil elemen tbody untuk menampilkan data ke dalam tabel
+    const laporanKeuanganTbody = document.querySelector("#laporanKeuangan tbody");
 
-    if (profileDropdown) {
-        const dropdownMenu = document.querySelector(".dropdown-menu");
-        if (dropdownMenu) {
-            profileDropdown.addEventListener("click", function (event) {
-                event.preventDefault();
-                dropdownMenu.classList.toggle("show");
-            });
-
-            document.addEventListener("click", function (event) {
-                if (!profileDropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                    dropdownMenu.classList.remove("show");
-                }
-            });
-        } else {
-            console.error("Dropdown menu tidak ditemukan.");
+    // Fungsi untuk mengambil dan menampilkan data
+    async function getLaporanKeuangan() {
+        if (!token) {
+            console.error("Token tidak ditemukan di cookie!");
+            return;
         }
-    } else {
-        console.error("Profile dropdown tidak ditemukan.");
-    }
-    
 
-    // Fungsi cetak laporan
-    const cetakButton = document.getElementById('cetakButton');
-    if (cetakButton) {
-        cetakButton.addEventListener('click', function () {
-            const laporan = document.getElementById('laporanKeuangan');
-            if (laporan) {
-                const originalContent = document.body.innerHTML;
-                document.body.innerHTML = laporan.outerHTML;
-                window.print();
-                document.body.innerHTML = originalContent;
-                document.getElementById('cetakButton').addEventListener('click', arguments.callee);
-            }
-        });
+        try {
+            // Permintaan fetch dengan header Authorization menggunakan cookie
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,  // Menambahkan token ke header
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();  // Parse response ke format JSON
+
+            // Bersihkan tabel sebelum menambahkan data baru
+            laporanKeuanganTbody.innerHTML = "";
+
+            // Looping melalui data dan menampilkan ke tabel
+            data.forEach(order => {
+                const tanggalPesanan = order.tanggal; // Sesuaikan jika format tanggal berbeda
+                const metodePembayaran = order.metode_pembayaran; // Sesuaikan nama field di API
+                const total = order.total; // Total pembayaran
+                const jumlah = order.jumlah; // Jumlah pesanan
+
+                // Membuat elemen baris baru
+                const tr = document.createElement("tr");
+
+                // Isi data dalam baris
+                tr.innerHTML = `
+                    <td>${tanggalPesanan}</td>
+                    <td>${metodePembayaran}</td>
+                    <td>${total}</td>
+                    <td>${jumlah}</td>
+                    <td><a href="invoice.html" class="btn btn-primary">Detail</a></td>
+                `;
+
+                // Masukkan baris ke dalam tabel
+                laporanKeuanganTbody.appendChild(tr);
+            });
+        } catch (error) {
+            console.error("Terjadi kesalahan saat mengambil data:", error);
+        }
     }
+
+    // Panggil fungsi untuk mengambil data saat halaman dimuat
+    getLaporanKeuangan();
 });
 
-function displayKeuangan(orders) {
-    const contentElement = document.querySelector(".content");
 
-    if (!contentElement) {
-        console.error("Elemen dengan class 'content' tidak ditemukan.");
-        return;
-    }
+// Fungsi untuk dropdown nama pengguna
+document.addEventListener("DOMContentLoaded", function () {
+    const profileDropdown = document.getElementById("profileDropdown");
+    const dropdownMenu = profileDropdown.nextElementSibling;
 
-    if (!orders || orders.length === 0) {
-        contentElement.innerHTML = "<p>Tidak ada data keuangan yang tersedia.</p>";
-        return;
-    }
-
-    contentElement.innerHTML = "";
-
-    const table = document.createElement("table");
-    table.className = "keuangan-table";
-
-    const tableHeader = document.createElement("thead");
-    tableHeader.innerHTML = `
-        <tr>
-            <th>Tanggal Pemesanan</th>
-            <th>Metode Pembayaran</th>
-            <th>Total</th>
-            <th>Jumlah</th>
-        </tr>
-    `;
-    table.appendChild(tableHeader);
-
-    const tableBody = document.createElement("tbody");
-
-    orders.forEach((order) => {
-        const formattedDate = new Date(order.orderDate).toLocaleDateString("id-ID", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-        });
-
-        const totalQuantity = order.orders.reduce((sum, item) => sum + item.quantity, 0);
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${formattedDate}</td>
-            <td>${order.paymentMethod}</td>
-            <td>Rp ${order.total.toLocaleString("id-ID")}</td>
-            <td>${totalQuantity}</td>
-        `;
-        tableBody.appendChild(row);
+    profileDropdown.addEventListener("click", function (event) {
+        event.preventDefault();
+        dropdownMenu.classList.toggle("show");
     });
 
-    table.appendChild(tableBody);
-    contentElement.appendChild(table);
-}
+    // Tutup dropdown jika klik di luar
+    document.addEventListener("click", function (event) {
+        if (!profileDropdown.contains(event.target)) {
+            dropdownMenu.classList.remove("show");
+        }
+    });
+});
+
+
+document.getElementById('cetakButton').addEventListener('click', function () {
+    // Ambil elemen laporan keuangan
+    const laporan = document.getElementById('laporanKeuangan');
+    
+    // Simpan konten asli halaman
+    const originalContent = document.body.innerHTML;
+
+    // Ganti isi halaman dengan hanya laporan keuangan
+    document.body.innerHTML = laporan.outerHTML;
+
+    // Cetak
+    window.print();
+
+    // Kembalikan konten asli halaman setelah cetak
+    document.body.innerHTML = originalContent;
+});
