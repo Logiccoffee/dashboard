@@ -1,5 +1,8 @@
 import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
+// Mengambil elemen tbody untuk menampilkan data ke dalam tabel
+const laporanKeuanganTbody = document.querySelector("#laporanKeuangan tbody");
+
 document.addEventListener("DOMContentLoaded", function () {
     // URL endpoint API
     const apiUrl = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders";
@@ -7,8 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Mengambil token dari cookie menggunakan getCookie
     const token = getCookie("session");  // Ganti 'session' dengan nama cookie yang sesuai
 
-    // Mengambil elemen tbody untuk menampilkan data ke dalam tabel
-    const laporanKeuanganTbody = document.querySelector("#laporanKeuangan tbody");
+    console.log(token);  // Periksa apakah token ditemukan di cookie
 
     // Fungsi untuk mengambil dan menampilkan data
     async function getLaporanKeuangan() {
@@ -22,12 +24,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch(apiUrl, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,  // Menambahkan token ke header
+                    'login': token,
                     'Content-Type': 'application/json',
                 },
             });
 
             const data = await response.json();  // Parse response ke format JSON
+
+            console.log(data);  // Periksa data yang diterima dari API
 
             // Bersihkan tabel sebelum menambahkan data baru
             laporanKeuanganTbody.innerHTML = "";
@@ -63,7 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
     getLaporanKeuangan();
 });
 
-
 // Fungsi untuk dropdown nama pengguna
 document.addEventListener("DOMContentLoaded", function () {
     const profileDropdown = document.getElementById("profileDropdown");
@@ -82,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
+// Event listener untuk tombol cetak
 document.getElementById('cetakButton').addEventListener('click', function () {
     // Ambil elemen laporan keuangan
     const laporan = document.getElementById('laporanKeuangan');
