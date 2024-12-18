@@ -53,7 +53,7 @@ function displayOrders(orders) {
 
         // Kolom Tanggal Pesanan
         const orderDateCell = document.createElement('td');
-        orderDateCell.textContent = order.date || '-'; // Menampilkan tanggal pesanan
+        orderDateCell.textContent = order.orderDate || '-'; // Menampilkan tanggal pesanan
         row.appendChild(orderDateCell);
 
         // Kolom Metode Pembayaran
