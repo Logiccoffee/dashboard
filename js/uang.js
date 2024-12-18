@@ -1,16 +1,14 @@
 import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
-// Mengambil elemen tbody untuk menampilkan data ke dalam tabel
-const laporanKeuanganTbody = document.querySelector("#laporanKeuangan tbody");
-
 document.addEventListener("DOMContentLoaded", function () {
-    // URL endpoint API
+    // URL endpoint API untuk mengambil data pesanan
     const apiUrl = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders";
     
     // Mengambil token dari cookie menggunakan getCookie
     const token = getCookie("session");  // Ganti 'session' dengan nama cookie yang sesuai
 
-    console.log(token);  // Periksa apakah token ditemukan di cookie
+    // Mengambil elemen tbody untuk menampilkan data ke dalam tabel
+    const laporanKeuanganTbody = document.querySelector("#laporanKeuangan tbody");
 
     // Fungsi untuk mengambil dan menampilkan data
     async function getLaporanKeuangan() {
@@ -29,17 +27,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
             });
 
-            const data = await response.json();  // Parse response ke format JSON
+            // Jika respons tidak berhasil, tampilkan pesan kesalahan
+            if (!response.ok) {
+                console.error("Error fetching data:", response.status);
+                return;
+            }
 
-            console.log(data);  // Periksa data yang diterima dari API
+            const data = await response.json();  // Parse response ke format JSON
 
             // Bersihkan tabel sebelum menambahkan data baru
             laporanKeuanganTbody.innerHTML = "";
 
-            // Looping melalui data dan menampilkan ke tabel
+            // Looping melalui data dan memilih hanya yang diperlukan untuk laporan keuangan
             data.forEach(order => {
-                const tanggalPesanan = order.tanggal; // Sesuaikan jika format tanggal berbeda
-                const metodePembayaran = order.metode_pembayaran; // Sesuaikan nama field di API
+                const tanggalPesanan = order.tanggal; // Ganti dengan nama field yang sesuai
+                const metodePembayaran = order.metode_pembayaran; // Ganti dengan nama field yang sesuai
                 const total = order.total; // Total pembayaran
                 const jumlah = order.jumlah; // Jumlah pesanan
 
@@ -52,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${metodePembayaran}</td>
                     <td>${total}</td>
                     <td>${jumlah}</td>
-                    <td><a href="invoice.html" class="btn btn-primary">Detail</a></td>
                 `;
 
                 // Masukkan baris ke dalam tabel
@@ -66,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Panggil fungsi untuk mengambil data saat halaman dimuat
     getLaporanKeuangan();
 });
+
 
 // Fungsi untuk dropdown nama pengguna
 document.addEventListener("DOMContentLoaded", function () {
