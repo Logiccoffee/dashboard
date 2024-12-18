@@ -76,7 +76,7 @@ function generateDropdownMenu(userId, currentRole) {
 
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
-        .filter(role => role !== currentRole) // Hapus role saat ini dari opsi
+        .filter(role => role !== currentRole) // Hanya tampilkan role yang bukan currentRole
         .map(role => {
             return `<li><a class="dropdown-item" href="#" data-user-id="${userId}" data-role="${role}">${role}</a></li>`;
         })
