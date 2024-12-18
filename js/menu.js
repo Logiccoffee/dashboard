@@ -312,11 +312,15 @@ function addMenu(event) {
         .then(response => response.json())
         .then(data => {
             if (data.status === 200 || data.status === 'success') {
-                menus = data.data || [];
-                displayMenus(data); // Update tampilan menu
+                console.log('Data menu baru:', data.data); // Debugging data terbaru
+                menus = Array.isArray(data.data) ? data.data : []; // Pastikan data dalam bentuk array
+                displayMenus(menus); // Update tampilan menu
 
-                // Tutup modal setelah data reload selesai
-                $('#addProductModal').modal('hide');
+                // Menutup modal tanpa jQuery
+                document.getElementById('addProductModal').classList.remove('show');
+                document.getElementById('addProductModal').setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('modal-open');
+                document.querySelector('.modal-backdrop').remove();
             }
         })
         .catch(error => {
