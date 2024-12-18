@@ -246,6 +246,13 @@ function addMenu(event) {
         return;
     }
 
+    if (!menuImageInput) {
+        alert("Input file gambar tidak ditemukan!");
+        return;
+    }
+
+    console.log(menuImageInput.files); // Debugging untuk memastikan files ada
+
     const menuImage = menuImageInput.files[0];
     if (!['image/jpeg', 'image/png', 'image/gif'].includes(menuImage.type)) {
         alert('Format gambar tidak didukung. Gunakan JPG, PNG, atau GIF.');
@@ -297,7 +304,7 @@ function addMenu(event) {
 }
 
 // Event listener untuk form submit
-document.getElementById('addProductModal').addEventListener('submit', addMenu);
+document.getElementById('addProductForm').addEventListener('submit', addMenu);
 
 // Membuka popup form edit menu
 function openEditMenuPopup(menuId) {
