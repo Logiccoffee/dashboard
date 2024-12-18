@@ -268,14 +268,15 @@ function addMenu(event) {
     formData.append('price', price);
     formData.append('description', menuDescription);
     formData.append('status', menuStatus);
-    formData.append('image', menuImage);
+    formData.append('menuImage', menuImage);
 
     // Kirim data ke API menggunakan postFileWithHeader
     postFileWithHeader(
         'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', // URL API
         "Login", // Nama key token
         token, // Ambil token dari cookie
-        formData, // Nama field yang akan digunakan untuk file di server
+        'product-image', //ID input file gambar
+        'menuImage', // Nama field untuk formData sesuai yang diterima backend
         (response) => {
             if (response && response.status === 200) {
                 alert('Menu berhasil ditambahkan!');
