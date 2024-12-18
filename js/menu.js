@@ -282,44 +282,46 @@ function addMenu(event) {
     formData.append('status', menuStatus);
     formData.append('menuImage', menuImage);
 
-    // Kirim data ke API menggunakan fetch
+    // Kirim data ke API
     fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', {
         method: 'POST',
         headers: {
-            'Login': token // Header diganti menjadi Login
-            // Tidak perlu 'Content-Type' karena FormData otomatis menambahkan boundary
+            'Login': token
         },
         body: formData
     })
-        .then(response => response.json())
         .then(response => {
-            if (response && response.status === 200) {
+            console.log('Respons server:', response);
+            return response.json(); // Parsing JSON
+        })
+        .then(response => {
+            console.log('Isi respons:', response); // Debugging
+
+            // Periksa struktur respons API
+            if (response && (response.status === 200 || response.status === 'success')) {
                 alert('Menu berhasil ditambahkan!');
 
-                // Reload data menu
-                fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', {
-                    headers: {
-                        'Login': token // Header untuk reload data juga menggunakan Login
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 200) {
-                            menus = data.data || [];
-                            displayMenus(data);
-                        }
-                    });
-
-                // Tutup modal setelah tambah menu
-                $('#addProductModal').modal('hide');
+                // Reload data menu setelah berhasil
+                return fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', {
+                    headers: { 'Login': token }
+                });
             } else {
-                alert('Gagal menambahkan menu. Silakan coba lagi.');
-                console.error(response);
+                throw new Error('Gagal menambahkan menu.'); // Lempar error jika respons gagal
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 200 || data.status === 'success') {
+                menus = data.data || [];
+                displayMenus(data); // Update tampilan menu
+
+                // Tutup modal setelah data reload selesai
+                $('#addProductModal').modal('hide');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Terjadi kesalahan saat mengirim data. Coba lagi nanti.');
+            alert(error.message || 'Terjadi kesalahan saat mengirim data. Coba lagi nanti.');
         });
 }
 
