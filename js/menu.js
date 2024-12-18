@@ -366,6 +366,10 @@ function openEditMenuPopup(menuId) {
     // Tampilkan popup form untuk mengedit
     document.getElementById('editProductModal').classList.add('show');
 
+    // Tampilkan popup
+    const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+    editModal.show();
+
     // Tambahkan event listener untuk form edit
     const editProductForm = document.getElementById('editProductForm');  // Pastikan ID form edit sesuai
     if (editProductForm) {
