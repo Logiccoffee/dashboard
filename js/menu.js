@@ -1,4 +1,4 @@
-import { getJSON, postFileWithHeader } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { putJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.3/api.js";
 
 // Array untuk menyimpan data menu
@@ -26,14 +26,18 @@ getJSON('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/men
 
 // Fungsi untuk menampilkan daftar menu dalam bentuk card
 function displayMenus(response) {
-    // Validasi apakah response.data.data ada
-    if (!response || !response.data || !response.data.data) {
-        console.error("Data menu tidak ditemukan di respons API.");
-        alert("Data menu tidak valid. Silakan hubungi administrator.");
+    // Validasi apakah response dan data valid
+    if (!response || !response.data) {
+        console.error("Respons dari API tidak valid.");
+        alert("Gagal memuat data menu.");
         return;
     }
 
-    const menuData = response.data.data; // Ambil data menu dari respons
+    const menuData = response.data.data; // Ambil data menu
+    if (!Array.isArray(menuData) || menuData.length === 0) {
+        console.warn("Data menu kosong.");
+        return; // Jangan tampilkan alert jika data kosong, hanya log
+    }
     const container = document.getElementById('productList');
 
     // Pastikan elemen container ditemukan
