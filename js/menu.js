@@ -275,8 +275,7 @@ function addMenu(event) {
         'https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', // URL API
         "Login", // Nama key token
         token, // Ambil token dari cookie
-        'product-image', //ID input file gambar
-        'menuImage', // Nama field untuk formData sesuai yang diterima backend
+        formData,
         (response) => {
             if (response && response.status === 200) {
                 alert('Menu berhasil ditambahkan!');
