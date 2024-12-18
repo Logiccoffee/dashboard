@@ -251,6 +251,11 @@ function addMenu(event) {
         return;
     }
 
+    if (!menuImageInput.files || menuImageInput.files.length === 0) {
+        alert('Tidak ada file gambar yang dipilih!');
+        return;
+    }
+    
     console.log(menuImageInput.files); // Debugging untuk memastikan files ada
 
     const menuImage = menuImageInput.files[0];
