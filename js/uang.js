@@ -2,13 +2,19 @@ import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js"
 
 document.addEventListener("DOMContentLoaded", function () {
     // Menampilkan data keuangan
-    getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders", displayKeuangan);
+    const headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer <your-token>"
+    };
+    
+    getJSON("https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders", headers, displayKeuangan);
+    
 
     // Fungsi dropdown untuk nama pengguna
     const profileDropdown = document.getElementById("profileDropdown");
+
     if (profileDropdown) {
         const dropdownMenu = document.querySelector(".dropdown-menu");
-
         if (dropdownMenu) {
             profileDropdown.addEventListener("click", function (event) {
                 event.preventDefault();
@@ -20,7 +26,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     dropdownMenu.classList.remove("show");
                 }
             });
+        } else {
+            console.error("Dropdown menu tidak ditemukan.");
         }
+    } else {
+        console.error("Profile dropdown tidak ditemukan.");
     }
     
 
