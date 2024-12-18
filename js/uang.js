@@ -3,16 +3,10 @@ import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croo
 document.addEventListener("DOMContentLoaded", function () {
     // URL endpoint API untuk mengambil data pesanan
     const apiUrl = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders";
-    
-    // Mengambil token dari cookie menggunakan getCookie
-    const token = getCookie("session");  // Ganti 'session' dengan nama cookie yang sesuai
+    const laporanKeuanganTbody = document.querySelector(".content");
 
-    // Mengambil elemen tbody untuk menampilkan data ke dalam tabel
-    const laporanKeuanganTbody = document.querySelector("#laporanKeuangan tbody");
-
-    // Fungsi untuk mengambil dan menampilkan data
     async function getLaporanKeuangan() {
-        const token = getCookie('session'); // Ambil token dari cookie
+        const token = getCookie('session');
         if (!token) {
             console.error("Token tidak ditemukan di cookie!");
             return;
@@ -22,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const response = await fetch(apiUrl, {
                 method: 'GET',
                 headers: {
-                    'login': token, // Pastikan token benar
+                    'login': token,
                     'Content-Type': 'application/json',
                 },
             });
@@ -33,17 +27,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
     
             const data = await response.json();
-            console.log("Data yang diterima:", data); // Menampilkan data untuk debugging
+            console.log("Data dari API:", data);
     
-            // Menampilkan laporan keuangan ke dalam tabel
-            laporanKeuanganTbody.innerHTML = ""; // Bersihkan tabel sebelum diisi
+            laporanKeuanganTbody.innerHTML = ""; // Bersihkan tabel
     
             data.forEach(order => {
-                // Ambil informasi yang relevan dari order
-                const tanggalPesanan = new Date(order.orderDate).toLocaleDateString(); // Ubah tanggal menjadi format yang mudah dibaca
+                const tanggalPesanan = new Date(order.orderDate).toLocaleDateString();
                 const metodePembayaran = order.paymentMethod;
                 const total = order.total;
-                const jumlah = order.orders.reduce((sum, item) => sum + item.quantity, 0); // Jumlahkan semua kuantitas item dalam pesanan
+                const jumlah = order.orders.reduce((sum, item) => sum + item.quantity, 0);
     
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
@@ -56,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 laporanKeuanganTbody.appendChild(tr);
             });
         } catch (error) {
-            console.error("Terjadi kesalahan saat mengambil data:", error);
+            console.error("Kesalahan saat mengambil data:", error);
         }
     }
     
