@@ -357,7 +357,15 @@ function openEditMenuPopup(menuId) {
     // Log data menu untuk memastikan menu ditemukan
     console.log("Data menu:", menu);
 
+    // Isi data menu ke dalam form modal edit
+    const modal = document.getElementById('editProductModal');
+    if (!modal) {
+        console.error("Modal edit tidak ditemukan.");
+        return;
+    }
+
     // Mengisi data menu ke dalam form edit
+    document.getElementById('edit-product-id').value = menu.id || ''; // ID
     document.getElementById('edit-product-name').value = menu.name;
     document.getElementById('edit-product-category').value = menu.category_id;
     document.getElementById('edit-product-price').value = menu.price;
