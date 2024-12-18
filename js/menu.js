@@ -335,6 +335,13 @@ function addMenu(event) {
 // Event listener untuk form submit
 document.getElementById('addProductForm').addEventListener('submit', addMenu);
 
+// Panggil fungsi displayStatuses saat modal dibuka
+document.getElementById('editProductModal').addEventListener('show.bs.modal', function () {
+    console.log("Modal edit terbuka, memuat status...");
+    displayStatuses(); // Memuat status saat modal dibuka
+    loadCategories(); // Memuat kategori saat modal dibuka
+});
+
 // Membuka popup form edit menu
 function openEditMenuPopup(menuId) {
     console.log(`Popup edit terbuka untuk menu ID: ${menuId}`);
