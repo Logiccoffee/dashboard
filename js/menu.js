@@ -73,6 +73,7 @@ function displayMenus(response) {
         const card = document.createElement('div');
         card.className = 'col-md-4 mb-4';
         card.setAttribute('data-index', index); // Tambahkan data-index
+        card.setAttribute('data-id', item.id); // Simpan ID menu
         card.setAttribute('data-name', item.name || '');
         card.setAttribute('data-category', item.category_id || '');
         card.setAttribute('data-price', item.price || '');
@@ -93,6 +94,8 @@ function displayMenus(response) {
                     <p class="card-text">Kategori: ${categoryName}</p>
                     <p class="card-text">Harga: ${item.price}</p>
                     <p class="card-text">Status: ${item.status || 'Tidak Tersedia'}</p>
+                    <!-- Tombol Edit -->
+                    <button class="btn btn-primary btn-edit" data-id="${item.id}">Edit</button>
                 </div>
             </div>
         `;
@@ -322,38 +325,125 @@ document.getElementById('addProductForm').addEventListener('submit', addMenu);
 
 // Membuka popup form edit menu
 function openEditMenuPopup(menuId) {
-    const editModal = document.getElementById('editProductModal');
+    const menu = menus.find(item => item.id == menuId); // Cari menu berdasarkan ID
 
-    // Pastikan modal sudah ada di DOM
-    if (!editModal) {
-        console.error("Modal untuk edit produk tidak ditemukan.");
+    if (!menu) {
+        alert('Menu tidak ditemukan!');
         return;
     }
 
-    // Isi input hidden dengan ID menu
-    document.getElementById('edit-product-id').value = menuId;
+    // Mengisi data menu ke dalam form edit
+    document.getElementById('edit-product-name').value = menu.name;
+    document.getElementById('edit-productCategory').value = menu.category_id;
+    document.getElementById('edit-product-price').value = menu.price;
+    document.getElementById('edit-product-description').value = menu.description;
+    document.getElementById('edit-product-status').value = menu.status;
+    document.getElementById('edit-product-image').setAttribute('data-old-image', menu.image); // Menyimpan gambar lama
 
-    // Tampilkan modal
-    const bootstrapModal = new bootstrap.Modal(editModal);
-    bootstrapModal.show();
+    // Tampilkan popup form untuk mengedit
+    document.getElementById('editProductModal').classList.add('show');
 
-    getJSON(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, "login", token, function (response) {
-        console.log("Response dari API:", response);
-        if (response.status === 200) {
-            const menu = response.data; // Data menu dari API
+    // Tambahkan event listener untuk form edit
+    const editProductForm = document.getElementById('editProductForm');  // Pastikan ID form edit sesuai
+    if (editProductForm) {
+        editProductForm.addEventListener('submit', function (event) {
+            editMenu(event, menuId);  // Panggil fungsi untuk mengedit menu
+        });
+    }
+}
 
-            console.log('Menu Data:', menu); // Log untuk cek data menu yang diambil
+// Fungsi untuk mengedit menu
+function editMenu(event, menuId) {
+    event.preventDefault(); // Mencegah form submit biasa agar bisa menggunakan JavaScript
 
-            // Isi form dengan data menu yang diambil
-            document.getElementById('edit-product-name').value = menu.name || '';
-            document.getElementById('edit-product-category').value = menu.category_id || '';
-            document.getElementById('edit-product-description').value = menu.description || '';
-            document.getElementById('edit-product-price').value = menu.price || '';
-            document.getElementById('edit-product-status').value = menu.status || 'Tidak Tersedia';
-        } else {
-            alert('Gagal memuat data menu untuk diedit.');
+    const menuName = document.getElementById('edit-product-name').value.trim();
+    const menuCategory = document.getElementById('edit-productCategory').value.trim();
+    const menuPrice = document.getElementById('edit-product-price').value.trim();
+    const menuDescription = document.getElementById('edit-product-description').value.trim();
+    const menuStatus = document.getElementById('edit-product-status').value.trim();
+    const menuImageInput = document.getElementById('edit-product-image');
+
+    // Validasi input
+    if (!menuName || !menuCategory || !menuPrice || !menuStatus) {
+        alert('Semua field wajib diisi!');
+        return;
+    }
+
+    if (!statuses.includes(menuStatus)) {
+        alert('Status tidak valid!');
+        return;
+    }
+
+    if (!menuImageInput || !menuImageInput.files.length) {
+        alert("Tidak ada file gambar yang dipilih atau input gambar tidak ditemukan!");
+        return;
+    }
+
+    const menuImage = menuImageInput.files[0];
+    if (!['image/jpeg', 'image/png', 'image/gif'].includes(menuImage.type)) {
+        alert('Format gambar tidak didukung. Gunakan JPG, PNG, atau GIF.');
+        return;
+    }
+
+    // Konversi harga ke float
+    const price = parseFloat(menuPrice.replace(/\./g, '').replace(',', '.'));
+
+    // Validasi apakah harga sudah valid
+    if (isNaN(price) || price <= 0) {
+        alert('Harga harus berupa angka positif!');
+        return false;
+    }
+
+    // Menyiapkan FormData
+    const formData = new FormData();
+    formData.append('name', menuName);
+    formData.append('category_id', menuCategory);
+    formData.append('price', price);
+    formData.append('description', menuDescription);
+    formData.append('status', menuStatus);
+
+    // Jika gambar baru dipilih, masukkan gambar ke formData
+    if (menuImageInput.files.length > 0) {
+        formData.append('menuImage', menuImage);
+    }
+
+    // Kirim data ke API untuk update menu
+    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, {
+        method: 'PUT', // Menggunakan PUT untuk update data
+        headers: {
+            'Login': token
+        },
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Gagal menghubungi server: ${response.status}`);
         }
+        return response.json();
+    })
+    .then(response => {
+        if (response.status === 200 || response.status === 'success') {
+            alert('Menu berhasil diperbarui!');
+            const updatedMenu = response.data;
+            // Update tampilan menu dengan menu yang baru
+            updateMenuInList(updatedMenu);
+        } else {
+            throw new Error('Gagal memperbarui menu.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert(error.message || 'Terjadi kesalahan saat memproses permintaan.');
     });
+}
+
+// Fungsi untuk memperbarui menu di tampilan
+function updateMenuInList(updatedMenu) {
+    const menuIndex = menus.findIndex(item => item.id === updatedMenu.id);
+    if (menuIndex !== -1) {
+        menus[menuIndex] = updatedMenu;
+        displayMenus({ data: { data: menus } }); // Update tampilan daftar menu
+    }
 }
 
 // Fungsi untuk menyimpan perubahan menu
