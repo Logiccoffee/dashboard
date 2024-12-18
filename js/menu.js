@@ -35,6 +35,7 @@ function displayMenus(response) {
     }
 
     const menuData = response.data.data; // Ambil data menu
+    menus = menuData
     const container = document.getElementById('productList');
 
     // Pastikan elemen container ditemukan
@@ -348,6 +349,7 @@ function openEditMenuPopup(menuId) {
     const menu = menus.find(item => item.id == menuId); // Cari menu berdasarkan ID
 
     if (!menu) {
+        console.error(`Menu dengan ID ${menuId} tidak ditemukan di data menus.`);
         alert('Menu tidak ditemukan!');
         return;
     }
