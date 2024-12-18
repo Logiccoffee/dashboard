@@ -380,6 +380,10 @@ function openEditMenuPopup(menuId) {
     const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
     editModal.show();
 
+    // Memanggil fungsi untuk menampilkan kategori dan status setelah modal terbuka
+    displayCategories(categories);
+    displayStatuses();
+
     // Tambahkan event listener untuk form edit
     const editProductForm = document.getElementById('editProductForm');  // Pastikan ID form edit sesuai
     if (editProductForm) {
