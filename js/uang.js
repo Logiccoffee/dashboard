@@ -10,44 +10,47 @@ getJSON(
 );
 
 function getLaporanKeuangan(response) {
-  // Pastikan response adalah objek dengan data 'orders'
-  if (!Array.isArray(response.data)) {
-    console.error("Data orders bukan array:", response);
-    return;
+    // Cek status dari response
+    if (response.status !== 200) {
+      console.error("Gagal mengambil data: ", response);
+      return;
+    }
+  
+    // Pastikan response.data adalah array
+    if (!Array.isArray(response.data)) {
+      console.error("Data orders bukan array:", response);
+      return;
+    }
+  
+    const laporanKeuanganTbody = document.querySelector(".content");
+    if (!laporanKeuanganTbody) {
+      console.error("Elemen dengan class 'content' tidak ditemukan di DOM.");
+      return;
+    }
+  
+    laporanKeuanganTbody.innerHTML = "";  // Bersihkan tabel sebelum menambahkan data baru
+  
+    // Looping untuk setiap order
+    response.data.forEach(order => {
+      const tanggalPesanan = new Date(order.orderDate).toLocaleDateString();
+      const metodePembayaran = order.paymentMethod || "-";
+      const total = order.total || 0;
+      
+      const jumlah = order.orders.reduce((sum, item) => sum + (item.quantity || 0), 0);
+  
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${tanggalPesanan}</td>
+        <td>${order.userInfo.name || "-"}</td>
+        <td>${metodePembayaran}</td>
+        <td>${total.toFixed(2)}</td>
+        <td>${jumlah}</td>
+      `;
+  
+      laporanKeuanganTbody.appendChild(tr);
+    });
   }
-
-  const laporanKeuanganTbody = document.querySelector(".content");  // Menemukan elemen tbody untuk laporan keuangan
-  if (!laporanKeuanganTbody) {
-    console.error("Elemen dengan class 'content' tidak ditemukan di DOM.");
-    return;
-  }
-
-  laporanKeuanganTbody.innerHTML = "";  // Bersihkan tabel sebelum menambahkan data baru
-
-  // Looping untuk setiap order yang ada dalam response
-  response.data.forEach(order => {
-    // Format tanggal pesanan
-    const tanggalPesanan = new Date(order.orderDate).toLocaleDateString();
-    const metodePembayaran = order.paymentMethod || "-";
-    const total = order.total || 0;
-    
-    // Menghitung jumlah item
-    const jumlah = order.orders.reduce((sum, item) => sum + (item.quantity || 0), 0);
-
-    // Membuat elemen tr baru untuk setiap order
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${tanggalPesanan}</td>
-      <td>${order.userInfo.name || "-"}</td>  <!-- Nama pengguna -->
-      <td>${metodePembayaran}</td>
-      <td>${total.toFixed(2)}</td>
-      <td>${jumlah}</td>
-    `;
-
-    laporanKeuanganTbody.appendChild(tr); // Menambahkan tr ke dalam tbody
-  });
-}
-
+  
 
 
 // Fungsi untuk dropdown nama pengguna
