@@ -1,4 +1,5 @@
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
 // URL API
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders";
@@ -53,7 +54,13 @@ function displayOrders(orders) {
 
         // Kolom Tanggal Pesanan
         const orderDateCell = document.createElement('td');
-        orderDateCell.textContent = order.orderDate || '-'; // Menampilkan tanggal pesanan
+        orderDateCell.textContent = order.orderDate
+            ? new Date(order.orderDate).toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            })
+            : '-';
         row.appendChild(orderDateCell);
 
         // Kolom Metode Pembayaran
