@@ -140,7 +140,7 @@ statusButton.addEventListener('click', () => {
         }
 
         // Kirim data perubahan status ke server
-        fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders/${order.id}`, {
+        fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order/${order.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
