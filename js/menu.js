@@ -95,7 +95,7 @@ function displayMenus(response) {
                     <p class="card-text">Harga: ${item.price}</p>
                     <p class="card-text">Status: ${item.status || 'Tidak Tersedia'}</p>
                     <!-- Tombol Edit dengan background kuning dan ikon edit -->
-                    <button class="btn" style="background-color: yellow; color: black; border: none; display: flex; align-items: center;" data-id="${item.id}">
+                    <button class="btn btn-edit" style="background-color: yellow; color: black; border: none; display: flex; align-items: center;" data-id="${item.id}">
                         <i class="fa fa-edit" style="margin-right: 8px;"></i> Edit
                     </button>
                 </div>
