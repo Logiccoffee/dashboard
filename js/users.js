@@ -76,7 +76,7 @@ function generateDropdownMenu(userId, currentRole) {
 
     const roles = ['admin', 'dosen', 'user'];
     const options = roles
-        .filter(role => role !== currentRole) // Hanya tampilkan role yang bukan currentRole
+        .filter(role => role !== currentRole) // Tampilkan semua role kecuali currentRole
         .map(role => {
             return `<li><a class="dropdown-item" href="#" data-user-id="${userId}" data-role="${role}">${role}</a></li>`;
         })
@@ -109,12 +109,11 @@ userList.addEventListener('click', event => {
 async function handleRoleChange(userId, newRole) {
     const user = users.find(user => user._id === userId);
     if (!user) {
-        console.error(`Pengguna dengan ID ${userId} tidak ditemukan.`);
         alert("Pengguna tidak ditemukan.");
         return;
     }
 
-    const userEmail = user.email; // Email ditemukan dari array users
+    const userEmail = user.email;
 
     try {
         const response = await fetch(UPDATE_ROLE_URL, {
@@ -129,17 +128,20 @@ async function handleRoleChange(userId, newRole) {
             }),
         });
 
-        const responseData = await response.json(); // Parse respons JSON
+        const responseData = await response.json();
         if (response.ok) {
+            // Perbarui tampilan role di tabel
             document.getElementById(`role-user-${userId}`).textContent = newRole;
+
+            // Regenerasi dropdown dengan semua opsi role, kecuali yang baru saja dipilih
+            const dropdownCell = document.querySelector(`a[data-user-id="${userId}"]`).closest('td');
+            dropdownCell.innerHTML = generateDropdownMenu(userId, newRole);
+
             alert(`Role berhasil diubah menjadi ${newRole}`);
         } else {
-            console.error('Status HTTP:', response.status);
-            console.error('Respons API:', responseData);
             throw new Error(responseData.message || 'Gagal mengubah role');
         }
     } catch (error) {
-        console.error('Terjadi kesalahan:', error);
         alert(`Terjadi kesalahan saat mengubah role: ${error.message}`);
     }
 }
