@@ -1,16 +1,17 @@
-import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
-// Ambil token dari cookie dengan nama 'login'
-const token = getCookie('login');
-if (!token) {
-    alert('Token tidak ditemukan, harap login terlebih dahulu!');
-    throw new Error("Token tidak ditemukan. Harap login ulang.");
-}
+// get data order by user id
+getJSON(
+  "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders",
+  "login",
+  getCookie("login"),
+  displayOrders
+);
 
 // Fungsi untuk menampilkan data pesanan di tabel
 function displayOrders(orders) {
-    const container = document.querySelector('.table tbody');
+    const container = document.querySelector('.table tbody');  // Pilih tbody dalam tabel
 
     // Pastikan elemen container ditemukan
     if (!container) {
@@ -25,12 +26,12 @@ function displayOrders(orders) {
     let totalKeuangan = 0;
 
     // Tampilkan data pesanan
-    orders.forEach(order => {
+    orders.forEach((order) => {
         const row = document.createElement('tr');
 
         // Kolom Tanggal Pesanan
         const orderDateCell = document.createElement('td');
-        orderDateCell.textContent = order.orderDate || '-';
+        orderDateCell.textContent = order.orderDate || '-'; // Menampilkan tanggal pesanan
         row.appendChild(orderDateCell);
 
         // Kolom Metode Pembayaran
@@ -40,19 +41,40 @@ function displayOrders(orders) {
 
         // Kolom Total
         const totalPriceCell = document.createElement('td');
-        const total = parseFloat(order.total || 0); // Parsing sebagai angka
+
+        // Ambil nilai total dari API
+        let total = typeof order.total === 'string'
+            ? parseInt(order.total.replace(/[^\d,]/g, '').replace(',', '.')) // Hapus simbol selain angka dan ganti koma dengan titik
+            : order.total || 0;  // Jika bukan string, langsung ambil nilainya
+
+        // Format angka dengan dua angka desimal (Rp xx.xxx,xx)
+        let formattedTotal = total.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        // Menampilkan total dalam format Rp xx.xxx,xx
         totalPriceCell.textContent = total > 0
-            ? `Rp ${total.toLocaleString('id-ID', { minimumFractionDigits: 2 })}`
+            ? `Rp ${formattedTotal}`  // Format angka dengan dua angka desimal
             : '-';
+
         row.appendChild(totalPriceCell);
 
-        // Tambahkan ke total keuangan
+
+
+
+        // Menambahkan total keuangan
         totalKeuangan += total;
+
+
+        // let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
+        // console.log("Nilai order.total sebelum format:", order.total); // Debugging untuk nilai awal
+        // totalPriceCell.textContent = total !== 0 ? `Rp ${total.toLocaleString('id-ID')}` : '-'; // Menampilkan total harga
+        // console.log("TextContent setelah format:", totalPriceCell.textContent); // Debugging untuk hasil akhir
+        // row.appendChild(totalPriceCell);
+
 
         // Kolom Jumlah (Jumlah produk)
         const quantityCell = document.createElement('td');
-        const quantity = order.orders.reduce((acc, item) => acc + (item.quantity || 0), 0);
-        quantityCell.textContent = quantity || '-';
+        const quantity = order.orders.reduce((acc, item) => acc + item.quantity, 0);  // Menjumlahkan kuantitas produk
+        quantityCell.textContent = quantity || '-'; // Menampilkan jumlah produk
         row.appendChild(quantityCell);
 
         container.appendChild(row);
@@ -62,23 +84,6 @@ function displayOrders(orders) {
     const totalKeuanganFormatted = totalKeuangan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
     document.getElementById('totalKeuangan').textContent = `Rp ${totalKeuanganFormatted}`;
 }
-
-// Panggil API menggunakan getJSON
-getJSON(
-    "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders",
-    "login",
-    token,
-    (response) => {
-        if (response.status === "success") {
-            const orders = response.data || [];
-            displayOrders(orders); // Tampilkan data pesanan
-        } else {
-            console.error(`Error: ${response.status}`);
-            alert("Gagal memuat data pesanan. Silakan coba lagi.");
-        }
-    }
-);
-
 
 //Fungsi button cetak
 document.getElementById('cetakButton').addEventListener('click', function () {
