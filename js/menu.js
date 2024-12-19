@@ -413,25 +413,25 @@ function openEditMenuPopup(menuId) {
 
 function parsePrice(priceString) {
     if (!priceString) return ''; // Jika string kosong, langsung kembalikan string kosong
-
+    
     console.log("Harga asli (input):", priceString); // Debugging input asli
 
-    // Hapus simbol "Rp", spasi, dan koma desimal
-    let cleanedPrice = priceString.replace(/Rp|,| /g, ''); // Hapus "Rp", koma, dan spasi
+    // Hapus simbol "Rp", koma, dan spasi
+    let cleanedPrice = priceString.replace(/Rp|,/g, '').trim(); // Hapus "Rp", koma, dan spasi
     console.log("Harga setelah menghapus simbol dan spasi:", cleanedPrice); // Debugging hasil setelah parsing simbol
 
     // Hapus tanda titik (pemisah ribuan)
     cleanedPrice = cleanedPrice.replace(/\./g, ''); // Hapus titik
     console.log("Harga setelah menghapus titik:", cleanedPrice); // Debugging hasil setelah parsing titik
 
-    // Ambil bagian sebelum koma desimal (jika ada)
+    // Ambil hanya bagian sebelum koma desimal (jika ada)
     if (cleanedPrice.includes(',')) {
-        cleanedPrice = cleanedPrice.split(',')[0];
+        cleanedPrice = cleanedPrice.split(',')[0]; // Ambil bagian sebelum koma
     }
     console.log("Harga setelah parsing koma desimal:", cleanedPrice); // Debugging hasil setelah parsing koma desimal
 
     // Konversi ke angka
-    const numericPrice = parseInt(cleanedPrice, 10);
+    const numericPrice = parseInt(cleanedPrice, 10); // Pastikan dikonversi ke angka
     console.log("Harga setelah konversi ke angka:", numericPrice); // Debugging hasil angka akhir
 
     return numericPrice || ''; // Kembalikan angka atau string kosong jika tidak valid
