@@ -71,8 +71,8 @@ function displayOrders(orders) {
             ? parseInt(order.total.replace(/[^0-9]/g, '')) // Menghapus karakter selain angka jika total berupa string
             : order.total || 0;
 
-        // Periksa apakah total benar
-        console.log("Total sebelum format:", total);
+        // Cek apakah total yang diterima sudah benar
+        console.log("Nilai order.total yang diterima:", order.total); // Ini akan memberi tahu kita nilai yang sebenarnya
 
         // Format angka dengan pemisah ribuan dan dua angka desimal
         let formattedTotal = total.toLocaleString('id-ID', {
@@ -85,9 +85,10 @@ function displayOrders(orders) {
             ? `Rp ${formattedTotal}`
             : '-';
 
-        console.log("Total setelah format:", formattedTotal);
+        console.log("Total setelah diformat:", formattedTotal); // Memeriksa hasil akhirnya
 
         row.appendChild(totalPriceCell);
+
 
         // Menambahkan total keuangan
         totalKeuangan += total;
