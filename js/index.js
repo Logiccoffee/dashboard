@@ -3,13 +3,13 @@ import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croo
 import { setInner } from "https://cdn.jsdelivr.net/gh/jscroot/element@0.1.5/croot.js";
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { redirect } from "https://cdn.jsdelivr.net/gh/jscroot/url@0.0.9/croot.js";
-import {deleteCookie} from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
+import { deleteCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 import { postJSON } from "https://cdn.jsdelivr.net/gh/jscroot/lib@0.0.4/api.js";
 
 // Fungsi untuk mengecek status login
 function checkLoginStatus() {
     const loginToken = getCookie("login");
-    
+
     // Jika tidak ada cookie login, arahkan ke halaman login
     if (!loginToken) {
         window.location.href = "https://logiccoffee.id.biz.id/login"; // Ganti dengan URL halaman login
@@ -60,10 +60,10 @@ function responseFunction(result) {
 // Fungsi logout
 function logout(event) {
     event.preventDefault(); // Mencegah perilaku default link
-  
+
     // Hapus cookie dengan nama "login"
     deleteCookie("login");
-  
+
     // Cek apakah cookie berhasil dihapus
     if (document.cookie.indexOf("login=") === -1) {
         console.log("Cookie 'login' berhasil dihapus. Mengarahkan ke halaman utama.");
@@ -71,17 +71,17 @@ function logout(event) {
     } else {
         console.error("Cookie 'login' gagal dihapus.");
     }
-  }
-  
-  // Menjalankan logout saat tombol diklik
-  document.addEventListener("DOMContentLoaded", function () {
+}
+
+// Menjalankan logout saat tombol diklik
+document.addEventListener("DOMContentLoaded", function () {
     const logoutButton = document.querySelector(".logout-btn");
     if (logoutButton) {
         logoutButton.addEventListener("click", logout);
     } else {
         console.error("Tombol logout tidak ditemukan.");
     }
-  });
+});
 
 
 
@@ -96,18 +96,18 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order
         'Content-Type': 'application/json',
     }
 })
-.then(response => response.json())
-.then(data => {
-    if (data.status === 'success') {
-        // Menghitung jumlah total pesanan .
-        const totalOrdersCount = data.data.length;
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Menghitung jumlah total pesanan .
+            const totalOrdersCount = data.data.length;
 
-        // Menampilkan jumlah total pesanan pada elemen dengan id 'order-count'
-        document.getElementById('order-count').textContent = totalOrdersCount;
-    } else {
-        alert('Gagal memuat data');
-    }
-});
+            // Menampilkan jumlah total pesanan pada elemen dengan id 'order-count'
+            document.getElementById('order-count').textContent = totalOrdersCount;
+        } else {
+            alert('Gagal memuat data');
+        }
+    });
 // .catch(error => {
 //     console.error('Error fetching data:', error);
 //     alert('Terjadi kesalahan');
@@ -142,7 +142,7 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/categ
         alert('Terjadi kesalahan saat memuat data kategori.');
     });
 
-    // Mengambil data menu dari API menu
+// Mengambil data menu dari API menu
 fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu', {
     method: 'GET',
     headers: {
@@ -170,7 +170,7 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu'
         alert('Terjadi kesalahan saat memuat data kategori.');
     });
 
-       // Mengambil data users dari API menu
+// Mengambil data users dari API menu
 fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users', {
     method: 'GET',
     headers: {
@@ -199,34 +199,15 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users
     });
 
 // Mengambil data orders dari API menu
-fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders', {
-    method: 'GET',
-    headers: {
-        'login': token,
-        'Content-Type': 'application/json',
-    }
-})
-    .then(response => response.json())
-    .then(data => {
-        console.log('Respons API:', data); // Debug isi respons
-        if (data.status === 'success' && Array.isArray(data.data)) {
-            const totalRevenue = data.data.reduce((sum, order) => sum + parseFloat(order.total), 0);
-            const revenueElement = document.getElementById('total-revenue');
-            if (revenueElement) {
-                revenueElement.textContent = `Rp ${totalRevenue.toFixed(2)}`; // Format dengan dua angka desimal
-            } else {
-                console.error('Elemen dengan ID "total-revenue" tidak ditemukan.');
-            }
-        } else {
-            alert('Gagal memuat data');
-        }
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-        alert('Terjadi kesalahan saat memuat data keuangan.');
-    });
+// Variabel untuk menyimpan total keuangan
+let totalKeuangan = 0;
 
+// Menambahkan total keuangan
+totalKeuangan += total;
 
+// Format total keuangan dan masukkan ke dalam elemen
+const totalKeuanganFormatted = totalKeuangan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
+document.getElementById('totalKeuangan').textContent = `Rp ${totalKeuanganFormatted}`;
 
 
 ;
