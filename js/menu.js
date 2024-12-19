@@ -508,21 +508,20 @@ function editMenu(event, menuId) {
         },
         body: formData
     })
-        .then(response => {
+        .then(async response => {
+            const responseBody = await response.json(); // Ambil respons JSON
+            console.log('Response status:', response.status);
+            console.log('Response body:', responseBody); // Log isi respons
             if (!response.ok) {
-                throw new Error(`Gagal menghubungi server: ${response.status}`);
+                throw new Error(`Gagal menghubungi server: ${response.status} - ${responseBody.message || 'Unknown error'}`);
             }
-            return response.json();
+            return responseBody;
         })
-        .then(response => {
-            if (response.status === 200 || response.status === 'success') {
-                alert('Menu berhasil diperbarui!');
-                const updatedMenu = response.data;
-                // Update tampilan menu dengan menu yang baru
-                updateMenuInList(updatedMenu);
-            } else {
-                throw new Error('Gagal memperbarui menu.');
-            }
+        .then(data => {
+            alert('Menu berhasil diperbarui!');
+            console.log('Data yang diterima:', data);
+            // Perbarui UI dengan data terbaru
+            updateMenuInList(data);
         })
         .catch(error => {
             console.error('Error:', error);
