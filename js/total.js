@@ -70,11 +70,11 @@ function displayOrders(orders) {
 
         // Ambil nilai total dari API
         let total = typeof order.total === 'string'
-            ? parseInt(order.total.replace(/[^0-9]/g, ''))  // Hapus karakter selain angka
+            ? parseInt(order.total.replace(/[^\d,]/g, '').replace(',', '.')) // Hapus simbol selain angka dan ganti koma dengan titik
             : order.total || 0;  // Jika bukan string, langsung ambil nilainya
 
         // Debug: Cek nilai yang diterima
-        console.log("Nilai total yang diterima:", order.total);  // Ini akan memperlihatkan apakah ada yang salah dengan nilai yang diterima
+        console.log("Nilai total yang diterima:", order.total);  // Memastikan format data yang diterima
 
         // Format angka dengan pemisah ribuan dan dua angka desimal
         let formattedTotal = total.toLocaleString('id-ID', {
@@ -83,7 +83,7 @@ function displayOrders(orders) {
         });
 
         // Debug: Cek hasil format angka
-        console.log("Formatted Total setelah format:", formattedTotal);  // Ini akan menampilkan hasil format final
+        console.log("Formatted Total setelah format:", formattedTotal);  // Memastikan hasil akhir format
 
         // Menampilkan total harga dengan format "Rp" jika lebih besar dari 0
         totalPriceCell.textContent = total > 0
@@ -91,6 +91,7 @@ function displayOrders(orders) {
             : '-';
 
         row.appendChild(totalPriceCell);
+
 
 
 
