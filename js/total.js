@@ -1,4 +1,5 @@
 import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
+import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
 // URL API
 const API_URL = "https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders";
@@ -64,8 +65,11 @@ function displayOrders(orders) {
         // Kolom Total
         const totalPriceCell = document.createElement('td');
         let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
+        console.log("Nilai order.total sebelum format:", order.total); // Debugging untuk nilai awal
         totalPriceCell.textContent = total !== 0 ? `Rp ${total.toLocaleString('id-ID')}` : '-'; // Menampilkan total harga
+        console.log("TextContent setelah format:", totalPriceCell.textContent); // Debugging untuk hasil akhir
         row.appendChild(totalPriceCell);
+
 
         // Kolom Jumlah (Jumlah produk)
         const quantityCell = document.createElement('td');
