@@ -216,7 +216,7 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order
             // Format total keuangan ke dalam format Rupiah
             const totalKeuanganFormatted = totalKeuangan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
 
-            // Menampilkan total keseluruhan ke elemen dengan ID 'totalKeuangan'
+            // Menampilkan total keuangan di elemen dengan ID 'totalKeuangan'
             const totalKeuanganElement = document.getElementById('totalKeuangan');
             if (totalKeuanganElement) {
                 totalKeuanganElement.textContent = `Rp ${totalKeuanganFormatted}`;
