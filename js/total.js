@@ -70,10 +70,10 @@ function displayOrders(orders) {
         let total = typeof order.total === 'string'
             ? parseInt(order.total.replace(/[^0-9]/g, ''))
             : order.total || 0;
-        // Format angka dengan pemisah ribuan, tanpa desimal
-        let formattedTotal = total.toLocaleString('id-ID', { 
-            minimumFractionDigits: 0, 
-            maximumFractionDigits: 0 // Pastikan tidak ada angka desimal
+        // Format angka dengan pemisah ribuan dan dua angka desimal
+        let formattedTotal = total.toLocaleString('id-ID', {
+            minimumFractionDigits: 2,  // Menampilkan dua angka di belakang koma
+            maximumFractionDigits: 2   // Maksimal dua angka di belakang koma
         });
         // Tambahkan "Rp" hanya sekali
         totalPriceCell.textContent = total > 0
@@ -81,8 +81,8 @@ function displayOrders(orders) {
             : '-';
         row.appendChild(totalPriceCell);
 
-         // Menambahkan total keuangan
-         totalKeuangan += total;
+        // Menambahkan total keuangan
+        totalKeuangan += total;
 
 
         // let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
@@ -101,7 +101,7 @@ function displayOrders(orders) {
         container.appendChild(row);
     });
 
-// Format total keuangan dan masukkan ke dalam elemen
-const totalKeuanganFormatted = totalKeuangan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
-document.getElementById('totalKeuangan').textContent = `Rp ${totalKeuanganFormatted}`;
+    // Format total keuangan dan masukkan ke dalam elemen
+    const totalKeuanganFormatted = totalKeuangan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
+    document.getElementById('totalKeuangan').textContent = `Rp ${totalKeuanganFormatted}`;
 }
