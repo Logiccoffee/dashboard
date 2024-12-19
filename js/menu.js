@@ -382,7 +382,7 @@ function openEditMenuPopup(menuId) {
         document.getElementById('edit-product-id').value = menu.id || ''; // ID
         document.getElementById('edit-product-name').value = menu.name;
         document.getElementById('edit-product-category').value = menu.category_id;
-        document.getElementById('edit-product-price').value = menu.price;
+        document.getElementById('edit-product-price').value = parsePrice(menu.price);
         document.getElementById('edit-product-description').value = menu.description;
         document.getElementById('edit-product-status').value = menu.status;
         document.getElementById('edit-product-image').setAttribute('data-old-image', menu.image); // Menyimpan gambar lama
@@ -393,6 +393,13 @@ function openEditMenuPopup(menuId) {
 
     //tampilkan modal
     modal.show();
+}
+
+// Fungsi untuk mengonversi harga dari format "Rp 20.000,00" menjadi angka
+function parsePrice(priceString) {
+    if (!priceString) return '';
+    // Hapus simbol mata uang, titik, dan koma
+    return parseFloat(priceString.replace(/[^0-9]/g, ''));
 }
 
 // Fungsi untuk mengedit menu
