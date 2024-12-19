@@ -71,7 +71,10 @@ function displayOrders(orders) {
             ? parseInt(order.total.replace(/[^0-9]/g, ''))
             : order.total || 0;
         // Format angka dengan pemisah ribuan, tanpa desimal
-        let formattedTotal = total.toLocaleString('id-ID', { minimumFractionDigits: 0 });
+        let formattedTotal = total.toLocaleString('id-ID', { 
+            minimumFractionDigits: 0, 
+            maximumFractionDigits: 0 // Pastikan tidak ada angka desimal
+        });
         // Tambahkan "Rp" hanya sekali
         totalPriceCell.textContent = total > 0
             ? `Rp ${formattedTotal}`
