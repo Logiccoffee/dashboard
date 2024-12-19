@@ -523,32 +523,40 @@ function editMenu(event, menuId) {
         body: formData
     })
     .then(async (response) => {
+        if (response.status === 304) {
+            // Data tidak berubah, tutup modal tanpa memperbarui UI
+            const modal = document.getElementById('editProductModal');
+            const bootstrapModal = bootstrap.Modal.getInstance(modal);
+            if (bootstrapModal) {
+                bootstrapModal.hide();
+            }
+            alert('Data tidak berubah.');
+            return;
+        }
+        
         if (!response.ok) {
             const errorMessage = `Gagal: ${response.status} - ${response.statusText}`;
-            throw new Error(errorMessage);
+            console.error(errorMessage); // Log error ke console untuk debugging
+            alert(errorMessage);
+            return; // Hentikan eksekusi jika status bukan 200 OK
         }
-
-        // Periksa apakah ada body di respons
-        const responseBody = await response.text(); // Mengambil respons sebagai teks
+    
+        const responseBody = await response.text();
         const updatedMenu = responseBody ? JSON.parse(responseBody) : null;
-
-        // Tutup modal
+    
         const modal = document.getElementById('editProductModal');
         const bootstrapModal = bootstrap.Modal.getInstance(modal);
-        bootstrapModal.hide();
-
-        // Perbarui tampilan data
+        if (bootstrapModal) {
+            bootstrapModal.hide();
+        }
+    
         if (updatedMenu) {
             updateMenuInList(updatedMenu);
             alert('Menu berhasil diperbarui!');
         } else {
             console.warn('Tidak ada data yang diterima dari server, tetapi menu diperbarui.');
         }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert(error.message || 'Terjadi kesalahan.');
-    });
+    })    
 }
 
 // Event listener untuk form submit
