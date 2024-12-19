@@ -67,12 +67,14 @@ function displayOrders(orders) {
 
         // Kolom Total
         const totalPriceCell = document.createElement('td');
-        let total = typeof order.total === 'string'
-            ? parseInt(order.total.replace(/[^0-9]/g, '')) // Menghapus karakter selain angka jika total berupa string
-            : order.total || 0;
 
-        // Cek apakah total yang diterima sudah benar
-        console.log("Nilai order.total yang diterima:", order.total); // Ini akan memberi tahu kita nilai yang sebenarnya
+        // Ambil nilai total dari API
+        let total = typeof order.total === 'string'
+            ? parseInt(order.total.replace(/[^0-9]/g, ''))  // Hapus karakter selain angka
+            : order.total || 0;  // Jika bukan string, langsung ambil nilainya
+
+        // Debug: Cek nilai yang diterima
+        console.log("Nilai total yang diterima:", order.total);  // Ini akan memperlihatkan apakah ada yang salah dengan nilai yang diterima
 
         // Format angka dengan pemisah ribuan dan dua angka desimal
         let formattedTotal = total.toLocaleString('id-ID', {
@@ -80,14 +82,16 @@ function displayOrders(orders) {
             maximumFractionDigits: 2   // Maksimal dua angka di belakang koma
         });
 
-        // Tambahkan "Rp" di depan total
+        // Debug: Cek hasil format angka
+        console.log("Formatted Total setelah format:", formattedTotal);  // Ini akan menampilkan hasil format final
+
+        // Menampilkan total harga dengan format "Rp" jika lebih besar dari 0
         totalPriceCell.textContent = total > 0
             ? `Rp ${formattedTotal}`
             : '-';
 
-        console.log("Total setelah diformat:", formattedTotal); // Memeriksa hasil akhirnya
-
         row.appendChild(totalPriceCell);
+
 
 
         // Menambahkan total keuangan
