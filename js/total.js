@@ -73,9 +73,6 @@ function displayOrders(orders) {
             ? parseInt(order.total.replace(/[^\d,]/g, '').replace(',', '.')) // Hapus simbol selain angka dan ganti koma dengan titik
             : order.total || 0;  // Jika bukan string, langsung ambil nilainya
 
-        // Debug: Cek nilai yang diterima
-        console.log("Nilai total yang diterima:", order.total);  // Memastikan format data yang diterima
-
         // Format angka dengan dua angka desimal (Rp xx.xxx,xx)
         let formattedTotal = total.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -115,7 +112,7 @@ function displayOrders(orders) {
 }
 
 //Fungsi button cetak
-document.getElementById('cetakButton').addEventListener('click', function () {
+document.getElementById('cetakButton').addEventListener('click', function() {
     // Ambil seluruh konten yang ingin dicetak (total keuangan dan tabel laporan keuangan)
     const contentToPrint = document.querySelector('.content').innerHTML;
 
@@ -152,6 +149,13 @@ document.getElementById('cetakButton').addEventListener('click', function () {
                     }
                     .box-content p {
                         margin: 0;
+                    }
+                    /* Pastikan info-box tercetak dengan baik */
+                    .info-box {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 10px;
                     }
                 </style>
             </head>
