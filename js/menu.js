@@ -412,8 +412,12 @@ function openEditMenuPopup(menuId) {
 // Fungsi untuk mengonversi harga dari format "Rp 20.000,00" menjadi angka
 function parsePrice(priceString) {
     if (!priceString) return '';
-    // Hapus simbol mata uang, titik, dan koma
-    return parseFloat(priceString.replace(/[^0-9]/g, ''));
+    // Hapus simbol mata uang (Rp) dan spasi
+    let cleanedPrice = priceString.replace(/Rp|,/g, '').trim();
+    // Ganti tanda titik menjadi koma (jika menggunakan format desimal)
+    cleanedPrice = cleanedPrice.replace(/\./g, '');
+    // Konversi menjadi angka
+    return parseFloat(cleanedPrice) || '';
 }
 
 // Fungsi untuk mengisi dropdown
