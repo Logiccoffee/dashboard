@@ -436,11 +436,19 @@ function editMenu(event, menuId) {
     event.preventDefault(); // Mencegah form submit biasa agar bisa menggunakan JavaScript
 
     const menuName = document.getElementById('edit-product-name').value.trim();
-    const menuCategory = document.getElementById('edit-productCategory').value.trim();
+    const menuCategory = document.getElementById('edit-product-category').value.trim();
     const menuPrice = document.getElementById('edit-product-price').value.trim();
     const menuDescription = document.getElementById('edit-product-description').value.trim();
     const menuStatus = document.getElementById('edit-product-status').value.trim();
     const menuImageInput = document.getElementById('edit-product-image');
+
+    const menuImageUrlInput = document.getElementById('edit-product-image-url');
+    if (menuImageUrlInput) {
+        const imageUrl = menuImageUrlInput.value.trim(); // Ambil URL gambar
+        console.log("URL Gambar:", imageUrl); // Debugging
+    } else {
+        console.error("Input gambar URL tidak ditemukan!");
+    }
 
     // Validasi input
     if (!menuName || !menuCategory || !menuPrice || !menuStatus) {
