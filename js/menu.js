@@ -409,15 +409,17 @@ function openEditMenuPopup(menuId) {
     modal.show();
 }
 
-// Fungsi untuk mengonversi harga dari format "Rp 20.000,00" menjadi angka
+// Fungsi untuk mengonversi harga dari format "Rp 20.000,00" menjadi angka tanpa desimal
 function parsePrice(priceString) {
     if (!priceString) return '';
     // Hapus simbol mata uang (Rp) dan spasi
     let cleanedPrice = priceString.replace(/Rp|,/g, '').trim();
-    // Ganti tanda titik menjadi koma (jika menggunakan format desimal)
+    // Hapus tanda titik yang merupakan pemisah ribuan
     cleanedPrice = cleanedPrice.replace(/\./g, '');
+    // Hapus bagian desimal (setelah koma)
+    cleanedPrice = cleanedPrice.split(',')[0];
     // Konversi menjadi angka
-    return parseFloat(cleanedPrice) || '';
+    return parseInt(cleanedPrice) || '';
 }
 
 // Fungsi untuk mengisi dropdown
