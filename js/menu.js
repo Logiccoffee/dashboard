@@ -450,9 +450,14 @@ function editMenu(event, menuId) {
     }
 
     // Validasi status
-    const validStatuses = ['tersedia', 'tidak tersedia', 'habis'];
-    if (!validStatuses.includes(menuStatus.toLowerCase())) {
+    const statuses = ['tersedia', 'tidak tersedia', 'habis'];
+    if (!statuses.includes(menuStatus.toLowerCase())) {
         alert("Status tidak valid! Gunakan 'tersedia', 'tidak tersedia', atau 'habis'.");
+        return;
+    }
+
+    if (!statuses.includes(menuStatus)) {
+        alert('Status tidak valid!');
         return;
     }
 
