@@ -524,21 +524,30 @@ function editMenu(event, menuId) {
     })
     .then(async (response) => {
         const responseBody = await response.json();
-        console.log('Respons dari server:', responseBody); // Tambahkan ini
         if (!response.ok) {
             throw new Error(`Gagal: ${response.status} - ${responseBody.message}`);
         }
+
+        // Modal tertutup secara otomatis
+        const modal = document.getElementById('editProductModal');
+        const bootstrapModal = bootstrap.Modal.getInstance(modal);
+        bootstrapModal.hide();
+
+        // Perbarui data di tampilan
+        updateMenuInList(responseBody);
         alert('Menu berhasil diperbarui!');
-        updateMenuInList(responseBody); // Perbarui data di UI
     })
     .catch((error) => {
-        console.error('Error:', error); // Tambahkan log error untuk debugging
+        console.error('Error:', error);
         alert(error.message || 'Terjadi kesalahan.');
     });
 }
 
 // Event listener untuk form submit
-document.getElementById('editProductForm').addEventListener('submit', (event) => editMenu(event, menuId));
+document.getElementById('editProductForm').addEventListener('submit', (event) => {
+    const menuId = document.getElementById('edit-product-id').value; // Pastikan ID menu diambil dari input hidden
+    editMenu(event, menuId);
+});
 
 // Fungsi untuk memperbarui menu di tampilan
 function updateMenuInList(updatedMenu) {
