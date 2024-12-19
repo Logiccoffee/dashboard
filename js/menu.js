@@ -441,6 +441,7 @@ function editMenu(event, menuId) {
     const menuDescription = document.getElementById('edit-product-description').value.trim();
     const menuStatus = document.getElementById('edit-product-status').value.trim();
     const menuImageInput = document.getElementById('edit-product-image');
+    const menuImageUrl = document.getElementById('edit-product-image-url').value.trim();
 
     // Validasi input
     if (!menuName || !menuCategory || !menuPrice || !menuStatus) {
@@ -449,19 +450,9 @@ function editMenu(event, menuId) {
     }
 
     // Validasi status
-    const statuses = ['tersedia', 'tidak tersedia', 'habis'];
-    if (!statuses.includes(menuStatus.toLowerCase())) {
+    const validStatuses = ['tersedia', 'tidak tersedia', 'habis'];
+    if (!validStatuses.includes(menuStatus.toLowerCase())) {
         alert("Status tidak valid! Gunakan 'tersedia', 'tidak tersedia', atau 'habis'.");
-        return;
-    }
-
-    if (!statuses.includes(menuStatus)) {
-        alert('Status tidak valid!');
-        return;
-    }
-
-    if (!menuImageInput || !menuImageInput.files.length) {
-        alert("Tidak ada file gambar yang dipilih atau input gambar tidak ditemukan!");
         return;
     }
 
@@ -488,20 +479,13 @@ function editMenu(event, menuId) {
     formData.append('description', menuDescription);
     formData.append('status', menuStatus);
 
-    // Jika gambar baru dipilih, masukkan gambar ke formData
-    if (menuImageInput && menuImageInput.files.length > 0) {
-        const menuImage = menuImageInput.files[0];
-        if (!['image/jpeg', 'image/png', 'image/gif'].includes(menuImage.type)) {
-            alert('Format gambar tidak didukung. Gunakan JPG, PNG, atau GIF.');
-            return;
-        }
-        formData.append('menuImage', menuImage);
-    }
-
-    // Debugging data yang akan dikirim
-    console.log('Data yang dikirim:');
-    for (let pair of formData.entries()) {
-        console.log(pair[0] + ':', pair[1]);
+    if (menuImageInput.files.length > 0) {
+        formData.append('menuImage', menuImageInput.files[0]);
+    } else if (menuImageUrl) {
+        formData.append('image', menuImageUrl);
+    } else {
+        alert('Harap unggah gambar baru atau gunakan URL gambar lama.');
+        return;
     }
 
     // Kirim data ke API untuk update menu
@@ -512,25 +496,18 @@ function editMenu(event, menuId) {
         },
         body: formData
     })
-        .then(async response => {
-            const responseBody = await response.json(); // Ambil respons JSON
-            console.log('Response status:', response.status);
-            console.log('Response body:', responseBody); // Log isi respons
-            if (!response.ok) {
-                throw new Error(`Gagal menghubungi server: ${response.status} - ${responseBody.message || 'Unknown error'}`);
-            }
-            return responseBody;
-        })
-        .then(data => {
-            alert('Menu berhasil diperbarui!');
-            console.log('Data yang diterima:', data);
-            // Perbarui UI dengan data terbaru
-            updateMenuInList(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert(error.message || 'Terjadi kesalahan saat memproses permintaan.');
-        });
+    .then(async (response) => {
+        const responseBody = await response.json();
+        if (!response.ok) {
+            throw new Error(`Gagal: ${response.status} - ${responseBody.message}`);
+        }
+        alert('Menu berhasil diperbarui!');
+        updateMenuInList(responseBody); // Perbarui data di UI
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert(error.message || 'Terjadi kesalahan.');
+    });
 }
 
 // Fungsi untuk memperbarui menu di tampilan
