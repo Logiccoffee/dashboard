@@ -65,10 +65,22 @@ function displayOrders(orders) {
         // Kolom Total
         const totalPriceCell = document.createElement('td');
         let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
-        console.log("Nilai order.total sebelum format:", order.total); // Debugging untuk nilai awal
-        totalPriceCell.textContent = total !== 0 ? `Rp ${total.toLocaleString('id-ID')}` : '-'; // Menampilkan total harga
-        console.log("TextContent setelah format:", totalPriceCell.textContent); // Debugging untuk hasil akhir
+
+        // Format angka dengan pemisah ribuan
+        let formattedTotal = total.toLocaleString('id-ID');
+
+        // Pastikan hanya satu "Rp" yang ditambahkan
+        totalPriceCell.textContent = total !== 0
+            ? `Rp ${formattedTotal}` // Menambahkan "Rp" hanya sekali
+            : '-'; // Jika kosong atau tidak valid, tampilkan "-"
+
         row.appendChild(totalPriceCell);
+
+        // let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
+        // console.log("Nilai order.total sebelum format:", order.total); // Debugging untuk nilai awal
+        // totalPriceCell.textContent = total !== 0 ? `Rp ${total.toLocaleString('id-ID')}` : '-'; // Menampilkan total harga
+        // console.log("TextContent setelah format:", totalPriceCell.textContent); // Debugging untuk hasil akhir
+        // row.appendChild(totalPriceCell);
 
 
         // Kolom Jumlah (Jumlah produk)
@@ -82,9 +94,9 @@ function displayOrders(orders) {
 }
 
 // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
-function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-    return null; // Jika cookie tidak ditemukan
-}
+// function getCookie(name) {
+//     const value = `; ${document.cookie}`;
+//     const parts = value.split(`; ${name}=`);
+//     if (parts.length === 2) return parts.pop().split(';').shift();
+//     return null;
+// }
