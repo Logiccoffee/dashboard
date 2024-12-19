@@ -68,17 +68,25 @@ function displayOrders(orders) {
         // Kolom Total
         const totalPriceCell = document.createElement('td');
         let total = typeof order.total === 'string'
-            ? parseInt(order.total.replace(/[^0-9]/g, ''))
+            ? parseInt(order.total.replace(/[^0-9]/g, '')) // Menghapus karakter selain angka jika total berupa string
             : order.total || 0;
+
+        // Periksa apakah total benar
+        console.log("Total sebelum format:", total);
+
         // Format angka dengan pemisah ribuan dan dua angka desimal
         let formattedTotal = total.toLocaleString('id-ID', {
             minimumFractionDigits: 2,  // Menampilkan dua angka di belakang koma
             maximumFractionDigits: 2   // Maksimal dua angka di belakang koma
         });
-        // Tambahkan "Rp" hanya sekali
+
+        // Tambahkan "Rp" di depan total
         totalPriceCell.textContent = total > 0
             ? `Rp ${formattedTotal}`
             : '-';
+
+        console.log("Total setelah format:", formattedTotal);
+
         row.appendChild(totalPriceCell);
 
         // Menambahkan total keuangan
