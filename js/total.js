@@ -58,23 +58,22 @@ function displayOrders(orders) {
         row.appendChild(orderDateCell);
 
         // Kolom Metode Pembayaran
-        const paymentMethodCell = document.createElement('td');
-        paymentMethodCell.textContent = order.payment_method || '-'; // Menampilkan metode pembayaran
-        row.appendChild(paymentMethodCell);
-
-        // Kolom Total
         const totalPriceCell = document.createElement('td');
-        let total = typeof order.total === 'number' ? order.total : 0; // Pastikan nilai berupa angka
+
+        // Bersihkan nilai total dari "Rp" atau format lain sebelumnya
+        let total = typeof order.total === 'string' 
+            ? parseInt(order.total.replace(/[^0-9]/g, '')) 
+            : order.total || 0;
         
         // Format angka dengan pemisah ribuan
         let formattedTotal = total.toLocaleString('id-ID', { minimumFractionDigits: 0 });
         
-        // Jika total > 0, tambahkan "Rp"; jika tidak, tampilkan "-"
+        // Tambahkan "Rp" hanya sekali
         totalPriceCell.textContent = total > 0 
             ? `Rp ${formattedTotal}` 
             : '-';
         
-        row.appendChild(totalPriceCell);
+        row.appendChild(totalPriceCell);        
         
 
         // let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
