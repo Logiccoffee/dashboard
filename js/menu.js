@@ -389,7 +389,11 @@ function openEditMenuPopup(menuId) {
         document.getElementById('edit-product-price').value = parsePrice(menu.price);
         document.getElementById('edit-product-description').value = menu.description;
         document.getElementById('edit-product-status').value = menu.status;
-        document.getElementById('edit-product-image').setAttribute('data-old-image', menu.image); // Menyimpan gambar lama
+        document.getElementById('edit-product-old-image').value = menu.image || '';
+
+        // Debugging gambar lama
+        console.log("Gambar lama:", menu.image);
+        document.getElementById('old-image-url').textContent = `Gambar Lama: ${menu.image}`;
 
         // Pastikan event listener ini hanya berjalan sekali
         modalElement.removeEventListener('shown.bs.modal', onModalShown);
