@@ -231,6 +231,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (addProductForm) {
         addProductForm.addEventListener('submit', addMenu);
     }
+
+    // Menambahkan event listener untuk form submit
+    const editProductForm = document.getElementById('editProductForm');
+    if (editProductForm) {
+        editProductForm.addEventListener('submit', editMenu);
+    }
 });
 
 // Panggil fungsi displayStatuses saat modal dibuka
