@@ -198,6 +198,33 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users
         alert('Terjadi kesalahan saat memuat data kategori.');
     });
 
+// Mengambil data orders dari API menu
+fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders', {
+    method: 'GET',
+    headers: {
+        'login': token,
+        'Content-Type': 'application/json',
+    }
+})
+    .then(response => response.json())
+    .then(data => {
+        console.log('Respons API:', data); // Debug isi respons
+        if (data.status === 'success' && Array.isArray(data.data)) {
+            const totalRevenue = data.data.reduce((sum, order) => sum + parseFloat(order.total), 0);
+            const revenueElement = document.getElementById('total-revenue');
+            if (revenueElement) {
+                revenueElement.textContent = `Rp ${totalRevenue.toFixed(2)}`; // Format dengan dua angka desimal
+            } else {
+                console.error('Elemen dengan ID "total-revenue" tidak ditemukan.');
+            }
+        } else {
+            alert('Gagal memuat data');
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+        alert('Terjadi kesalahan saat memuat data keuangan.');
+    });
 
 
 
