@@ -413,7 +413,7 @@ function openEditMenuPopup(menuId) {
 
 function parsePrice(priceString) {
     if (!priceString) return ''; // Jika string kosong, langsung kembalikan string kosong
-    
+
     console.log("Harga asli (input):", priceString); // Debugging input asli
 
     // Hapus simbol "Rp", koma, dan spasi
@@ -522,41 +522,34 @@ function editMenu(event, menuId) {
         },
         body: formData
     })
-    .then(async (response) => {
-        if (response.status === 304) {
-            // Data tidak berubah, tutup modal tanpa memperbarui UI
+        .then(async (response) => {
+            if (!response.ok) {
+                const errorMessage = `Gagal: ${response.status} - ${response.statusText}`;
+                console.error(errorMessage); // Log error ke console untuk debugging
+                alert(errorMessage);
+                return; // Hentikan eksekusi jika respons gagal
+            }
+
+            const responseBody = await response.text();
+            const updatedMenu = responseBody ? JSON.parse(responseBody) : null;
+
+            // Tutup modal
             const modal = document.getElementById('editProductModal');
             const bootstrapModal = bootstrap.Modal.getInstance(modal);
             if (bootstrapModal) {
                 bootstrapModal.hide();
             }
-            alert('Data tidak berubah.');
-            return;
-        }
-        
-        if (!response.ok) {
-            const errorMessage = `Gagal: ${response.status} - ${response.statusText}`;
-            console.error(errorMessage); // Log error ke console untuk debugging
-            alert(errorMessage);
-            return; // Hentikan eksekusi jika status bukan 200 OK
-        }
-    
-        const responseBody = await response.text();
-        const updatedMenu = responseBody ? JSON.parse(responseBody) : null;
-    
-        const modal = document.getElementById('editProductModal');
-        const bootstrapModal = bootstrap.Modal.getInstance(modal);
-        if (bootstrapModal) {
-            bootstrapModal.hide();
-        }
-    
-        if (updatedMenu) {
-            updateMenuInList(updatedMenu);
+
+            // Perbarui UI
+            if (updatedMenu) {
+                updateMenuInList(updatedMenu); // Perbarui menu di UI
+            }
             alert('Menu berhasil diperbarui!');
-        } else {
-            console.warn('Tidak ada data yang diterima dari server, tetapi menu diperbarui.');
-        }
-    })    
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert(error.message || 'Terjadi kesalahan.');
+        });
 }
 
 // Event listener untuk form submit
