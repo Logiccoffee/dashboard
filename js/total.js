@@ -59,10 +59,11 @@ function displayOrders(orders) {
 
         // Kolom Metode Pembayaran
         const paymentMethodCell = document.createElement('td');
-        paymentMethodCell.textContent = order.payment_method || '-'; // Menampilkan metode pembayaran
+        paymentMethodCell.textContent = order.paymentMethod || order.payment_method || '-';
+        // paymentMethodCell.textContent = order.payment_method || '-'; // Menampilkan metode pembayaran
         row.appendChild(paymentMethodCell);
 
-        // Kolom Metode Pembayaran
+        // Kolom Total
         const totalPriceCell = document.createElement('td');
 
         // Bersihkan nilai total dari "Rp" atau format lain sebelumnya
