@@ -307,30 +307,30 @@ function addMenu(event) {
         },
         body: formData
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Gagal menghubungi server: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(response => {
-        if (response.status === 200 || response.status === 'success') {
-            alert('Menu berhasil ditambahkan!');
-            const newMenu = response.data;
-            menus.push(newMenu);
-            displayMenus({ data: { data: menus } });
-            document.getElementById('addProductModal').classList.remove('show');
-            document.body.classList.remove('modal-open');
-            const backdrop = document.querySelector('.modal-backdrop');
-            if (backdrop) backdrop.remove();
-        } else {
-            throw new Error('Gagal menambahkan menu.');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert(error.message || 'Terjadi kesalahan saat memproses permintaan.');
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Gagal menghubungi server: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(response => {
+            if (response.status === 200 || response.status === 'success') {
+                alert('Menu berhasil ditambahkan!');
+                const newMenu = response.data;
+                menus.push(newMenu);
+                displayMenus({ data: { data: menus } });
+                document.getElementById('addProductModal').classList.remove('show');
+                document.body.classList.remove('modal-open');
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) backdrop.remove();
+            } else {
+                throw new Error('Gagal menambahkan menu.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(error.message || 'Terjadi kesalahan saat memproses permintaan.');
+        });
 }
 
 // Event listener untuk form submit
@@ -364,6 +364,14 @@ function openEditMenuPopup(menuId) {
         return;
     }
 
+    // Memanggil fungsi untuk menampilkan kategori dan status setelah modal terbuka
+    displayCategories(categories);
+    displayStatuses();
+
+    console.log("Elemen kategori:", document.getElementById('edit-product-category'));
+    console.log("Elemen harga:", document.getElementById('edit-product-price'));
+    console.log("Elemen status:", document.getElementById('edit-product-status'));
+
     // Mengisi data menu ke dalam form edit
     document.getElementById('edit-product-id').value = menu.id || ''; // ID
     document.getElementById('edit-product-name').value = menu.name;
@@ -379,10 +387,6 @@ function openEditMenuPopup(menuId) {
     // Tampilkan popup
     const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
     editModal.show();
-
-    // Memanggil fungsi untuk menampilkan kategori dan status setelah modal terbuka
-    displayCategories(categories);
-    displayStatuses();
 
     // Tambahkan event listener untuk form edit
     const editProductForm = document.getElementById('editProductForm');  // Pastikan ID form edit sesuai
@@ -456,26 +460,26 @@ function editMenu(event, menuId) {
         },
         body: formData
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Gagal menghubungi server: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(response => {
-        if (response.status === 200 || response.status === 'success') {
-            alert('Menu berhasil diperbarui!');
-            const updatedMenu = response.data;
-            // Update tampilan menu dengan menu yang baru
-            updateMenuInList(updatedMenu);
-        } else {
-            throw new Error('Gagal memperbarui menu.');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert(error.message || 'Terjadi kesalahan saat memproses permintaan.');
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Gagal menghubungi server: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(response => {
+            if (response.status === 200 || response.status === 'success') {
+                alert('Menu berhasil diperbarui!');
+                const updatedMenu = response.data;
+                // Update tampilan menu dengan menu yang baru
+                updateMenuInList(updatedMenu);
+            } else {
+                throw new Error('Gagal memperbarui menu.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(error.message || 'Terjadi kesalahan saat memproses permintaan.');
+        });
 }
 
 // Fungsi untuk memperbarui menu di tampilan
