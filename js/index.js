@@ -209,14 +209,25 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order
 })
     .then(response => response.json())
     .then(data => {
-        console.log('Respons API:', data); // Debug isi respons
         if (data.status === 'success' && Array.isArray(data.data)) {
-            // Menghitung total keuangan dari semua orders
-            const totalKeuangan = data.data.reduce((accumulator, order) => accumulator + order.total, 0);
+            // Variabel untuk menyimpan total keuangan
+            let totalKeuangan = 0;
 
-            // Menampilkan total keuangan dalam format Rupiah
+            // Menghitung total keuangan dari semua orders
+            data.data.forEach(order => {
+                totalKeuangan += order.total; // Menambahkan nilai total dari setiap order
+            });
+
+            // Format total keuangan dalam format Rupiah
             const totalKeuanganFormatted = totalKeuangan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
-            document.getElementById('totalKeuangan').textContent = `Rp ${totalKeuanganFormatted}`;
+
+            // Menampilkan total keuangan ke elemen dengan ID 'totalKeuangan'
+            const totalKeuanganElement = document.getElementById('totalKeuangan');
+            if (totalKeuanganElement) {
+                totalKeuanganElement.textContent = `Rp ${totalKeuanganFormatted}`;
+            } else {
+                console.error('Elemen dengan ID "totalKeuangan" tidak ditemukan.');
+            }
         } else {
             alert('Gagal memuat data orders.');
         }
@@ -225,3 +236,4 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order
         console.error('Error fetching data:', error);
         alert('Terjadi kesalahan saat memuat data orders.');
     });
+
