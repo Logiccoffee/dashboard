@@ -64,17 +64,18 @@ function displayOrders(orders) {
 
         // Kolom Total
         const totalPriceCell = document.createElement('td');
-        let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
-
+        let total = typeof order.total === 'number' ? order.total : 0; // Pastikan nilai berupa angka
+        
         // Format angka dengan pemisah ribuan
-        let formattedTotal = total.toLocaleString('id-ID');
-
-        // Pastikan hanya satu "Rp" yang ditambahkan
-        totalPriceCell.textContent = total !== 0
-            ? `Rp ${formattedTotal}` // Menambahkan "Rp" hanya sekali
-            : '-'; // Jika kosong atau tidak valid, tampilkan "-"
-
+        let formattedTotal = total.toLocaleString('id-ID', { minimumFractionDigits: 0 });
+        
+        // Jika total > 0, tambahkan "Rp"; jika tidak, tampilkan "-"
+        totalPriceCell.textContent = total > 0 
+            ? `Rp ${formattedTotal}` 
+            : '-';
+        
         row.appendChild(totalPriceCell);
+        
 
         // let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
         // console.log("Nilai order.total sebelum format:", order.total); // Debugging untuk nilai awal
