@@ -442,12 +442,16 @@ function editMenu(event, menuId) {
     const menuStatus = document.getElementById('edit-product-status').value.trim();
     const menuImageInput = document.getElementById('edit-product-image');
 
-    const menuImageUrlInput = document.getElementById('edit-product-image-url');
-    const imageUrl = menuImageUrlInput ? menuImageUrlInput.value.trim() : null;
-
     // Validasi input
     if (!menuName || !menuCategory || !menuPrice || !menuStatus) {
         alert('Semua field wajib diisi!');
+        return;
+    }
+
+    // Validasi status
+    const statuses = ['Tersedia', 'Tidak Tersedia', 'Habis'];
+    if (!statuses.includes(menuStatus.toLowerCase())) {
+        alert("Status tidak valid! Gunakan 'tersedia', 'tidak tersedia', atau 'habis'.");
         return;
     }
 
