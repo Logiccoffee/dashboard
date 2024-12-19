@@ -386,7 +386,9 @@ function openEditMenuPopup(menuId) {
         document.getElementById('edit-product-id').value = menu.id || ''; // ID
         document.getElementById('edit-product-name').value = menu.name;
         document.getElementById('edit-product-category').value = menu.category_id;
-        document.getElementById('edit-product-price').value = parsePrice(menu.price);
+        console.log("Harga sebelum parsing:", menu.price); // Debugging harga asli
+        document.getElementById('edit-product-price').value = parsePrice(menu.price); // Parsing harga
+        console.log("Harga setelah parsing:", parsePrice(menu.price)); // Debugging hasil parsing
         document.getElementById('edit-product-description').value = menu.description;
         document.getElementById('edit-product-status').value = menu.status;
         // Menampilkan URL gambar di input teks
@@ -410,17 +412,29 @@ function openEditMenuPopup(menuId) {
 }
 
 function parsePrice(priceString) {
-    if (!priceString) return '';
-    console.log("Harga asli (input):", priceString); // Log input asli
+    if (!priceString) return ''; // Jika string kosong, langsung kembalikan string kosong
+
+    console.log("Harga asli (input):", priceString); // Debugging input asli
 
     // Hapus simbol "Rp", spasi, dan koma desimal
-    let cleanedPrice = priceString.replace(/Rp\.|\s|,/g, '');
-    // Hapus tanda titik pemisah ribuan
-    cleanedPrice = cleanedPrice.replace(/\./g, '');
+    let cleanedPrice = priceString.replace(/Rp|,| /g, ''); // Hapus "Rp", koma, dan spasi
+    console.log("Harga setelah menghapus simbol dan spasi:", cleanedPrice); // Debugging hasil setelah parsing simbol
+
+    // Hapus tanda titik (pemisah ribuan)
+    cleanedPrice = cleanedPrice.replace(/\./g, ''); // Hapus titik
+    console.log("Harga setelah menghapus titik:", cleanedPrice); // Debugging hasil setelah parsing titik
+
     // Ambil bagian sebelum koma desimal (jika ada)
-    cleanedPrice = cleanedPrice.split(',')[0];
-    console.log("Harga setelah parsing:", cleanedPrice); // Log hasil parsing
-    return parseInt(cleanedPrice, 10) || ''; // Konversi ke angka
+    if (cleanedPrice.includes(',')) {
+        cleanedPrice = cleanedPrice.split(',')[0];
+    }
+    console.log("Harga setelah parsing koma desimal:", cleanedPrice); // Debugging hasil setelah parsing koma desimal
+
+    // Konversi ke angka
+    const numericPrice = parseInt(cleanedPrice, 10);
+    console.log("Harga setelah konversi ke angka:", numericPrice); // Debugging hasil angka akhir
+
+    return numericPrice || ''; // Kembalikan angka atau string kosong jika tidak valid
 }
 
 // Fungsi untuk mengisi dropdown
