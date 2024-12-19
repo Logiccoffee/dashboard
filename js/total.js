@@ -112,8 +112,8 @@ function displayOrders(orders) {
 }
 
 //Fungsi button cetak
-document.getElementById('cetakButton').addEventListener('click', function() {
-    // Ambil seluruh konten yang ingin dicetak (total keuangan dan tabel laporan keuangan)
+document.getElementById('cetakButton').addEventListener('click', function () {
+    // Ambil seluruh konten yang ingin dicetak, termasuk infobox dan tabel
     const contentToPrint = document.querySelector('.content').innerHTML;
 
     // Buat jendela baru untuk cetak
@@ -129,6 +129,7 @@ document.getElementById('cetakButton').addEventListener('click', function() {
                         font-family: Arial, sans-serif;
                         margin: 20px;
                     }
+                    /* Tabel */
                     .table {
                         width: 100%;
                         border-collapse: collapse;
@@ -142,20 +143,28 @@ document.getElementById('cetakButton').addEventListener('click', function() {
                         background-color: #343a40;
                         color: #fff;
                     }
-                    #totalKeuanganBox {
-                        background-color: #f0f0f0;
-                        padding: 10px;
-                        margin-bottom: 20px;
-                    }
-                    .box-content p {
-                        margin: 0;
-                    }
-                    /* Pastikan info-box tercetak dengan baik */
+                    /* Info-Box Styles */
                     .info-box {
                         display: flex;
                         justify-content: center;
                         align-items: center;
                         gap: 10px;
+                        border: 1px solid #ddd;
+                        padding: 10px;
+                        margin-bottom: 15px; /* Jarak antar info-box */
+                    }
+                    .box-content {
+                        text-align: left;
+                    }
+                    .box-icon {
+                        font-size: 40px;
+                    }
+                    .box-content p {
+                        margin: 0;
+                    }
+                    /* Styling untuk tombol cetak */
+                    #cetakButton {
+                        display: none;
                     }
                 </style>
             </head>
