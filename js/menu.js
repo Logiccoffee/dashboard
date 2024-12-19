@@ -523,19 +523,27 @@ function editMenu(event, menuId) {
         body: formData
     })
     .then(async (response) => {
-        const responseBody = await response.json();
         if (!response.ok) {
-            throw new Error(`Gagal: ${response.status} - ${responseBody.message}`);
+            const errorMessage = `Gagal: ${response.status} - ${response.statusText}`;
+            throw new Error(errorMessage);
         }
 
-        // Modal tertutup secara otomatis
+        // Periksa apakah ada body di respons
+        const responseBody = await response.text(); // Mengambil respons sebagai teks
+        const updatedMenu = responseBody ? JSON.parse(responseBody) : null;
+
+        // Tutup modal
         const modal = document.getElementById('editProductModal');
         const bootstrapModal = bootstrap.Modal.getInstance(modal);
         bootstrapModal.hide();
 
-        // Perbarui data di tampilan
-        updateMenuInList(responseBody);
-        alert('Menu berhasil diperbarui!');
+        // Perbarui tampilan data
+        if (updatedMenu) {
+            updateMenuInList(updatedMenu);
+            alert('Menu berhasil diperbarui!');
+        } else {
+            console.warn('Tidak ada data yang diterima dari server, tetapi menu diperbarui.');
+        }
     })
     .catch((error) => {
         console.error('Error:', error);
