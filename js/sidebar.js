@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     </li>
                     <li>
                         <a href="keuangan.html" class="keuangan-link">
-                            <i class="fa-solid fa-sack-dollar" style="margin-right: 10px;"></i>
+                            <i class="fa-solid fa-dollar-sign" style="margin-right: 10px;"></i>
                             <span class="sidebar-text">Keuangan</span>
                         </a>
                     </li>
