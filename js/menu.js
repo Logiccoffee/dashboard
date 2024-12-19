@@ -412,14 +412,12 @@ function openEditMenuPopup(menuId) {
 // Fungsi untuk mengonversi harga dari format "Rp 20.000,00" menjadi angka tanpa desimal
 function parsePrice(priceString) {
     if (!priceString) return '';
-    // Hapus simbol mata uang (Rp) dan spasi
-    let cleanedPrice = priceString.replace(/Rp|,/g, '').trim();
-    // Hapus tanda titik yang merupakan pemisah ribuan
-    cleanedPrice = cleanedPrice.replace(/\./g, '');
-    // Hapus bagian desimal (setelah koma)
-    cleanedPrice = cleanedPrice.split(',')[0];
-    // Konversi menjadi angka
-    return parseInt(cleanedPrice) || '';
+    console.log("Input harga:", priceString); // Debug awal
+    let cleanedPrice = priceString.replace(/Rp|\s|,/g, ''); // Hapus "Rp", spasi, dan koma
+    cleanedPrice = cleanedPrice.replace(/\./g, ''); // Hapus titik
+    cleanedPrice = cleanedPrice.split(',')[0]; // Ambil bagian sebelum koma
+    console.log("Harga setelah parse:", cleanedPrice); // Debug hasil
+    return parseInt(cleanedPrice, 10) || ''; // Konversi ke angka
 }
 
 // Fungsi untuk mengisi dropdown
