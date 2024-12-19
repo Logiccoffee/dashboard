@@ -199,43 +199,44 @@ fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/users
     });
 
 
-    fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders', {
-        method: 'GET',
-        headers: {
-            'login': token, // Pastikan token sudah diatur sebelumnya
-            'Content-Type': 'application/json',
+// Mengambil data orders dari API menu
+fetch('https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/orders', {
+    method: 'GET',
+    headers: {
+        'login': token, // Pastikan token sudah diatur sebelumnya
+        'Content-Type': 'application/json',
+    }
+})
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success' && Array.isArray(data.data)) {
+            console.log('Respons API:', data);
+
+            // Menghitung total keuangan dari semua orders
+            const totalKeuangan = data.data.reduce((acc, order) => {
+                console.log('Menambahkan:', acc, '+', order.total);
+                return acc + order.total;
+            }, 0);
+
+            console.log('Total Keseluruhan:', totalKeuangan);
+
+            // Format total keuangan ke dalam format Rupiah
+            const totalKeuanganFormatted = totalKeuangan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
+
+            // Menampilkan total keuangan ke elemen dengan ID 'totalKeuangan'
+            const totalKeuanganElement = document.getElementById('totalKeuangan');
+            if (totalKeuanganElement) {
+                totalKeuanganElement.textContent = `Rp ${totalKeuanganFormatted}`;
+                console.log('Total Keuangan Ditampilkan:', totalKeuanganFormatted);
+            } else {
+                console.error('Elemen dengan ID "totalKeuangan" tidak ditemukan.');
+            }
+        } else {
+            console.error('Gagal memuat data orders:', data.message);
+            alert('Gagal memuat data orders.');
         }
     })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success' && Array.isArray(data.data)) {
-                // Debug isi data dari API
-                console.log('Respons API:', data);
-    
-                // Menghitung total keseluruhan uang
-                const totalKeuangan = data.data.reduce((accumulator, order) => {
-                    console.log('Order Total:', order.total); // Debug setiap nilai total
-                    return accumulator + order.total;
-                }, 0);
-    
-                // Format total keuangan ke dalam format Rupiah
-                const totalKeuanganFormatted = totalKeuangan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
-    
-                // Menampilkan total keseluruhan ke elemen dengan ID 'totalKeuangan'
-                const totalKeuanganElement = document.getElementById('totalKeuangan');
-                if (totalKeuanganElement) {
-                    totalKeuanganElement.textContent = `Rp ${totalKeuanganFormatted}`;
-                    console.log('Total Keuangan Ditampilkan:', totalKeuanganFormatted);
-                } else {
-                    console.error('Elemen dengan ID "totalKeuangan" tidak ditemukan.');
-                }
-            } else {
-                console.error('Gagal memuat data orders:', data.message);
-                alert('Gagal memuat data orders.');
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-            alert('Terjadi kesalahan saat memuat data orders.');
-        });
-    
+    .catch(error => {
+        console.error('Error fetching data:', error);
+        alert('Terjadi kesalahan saat memuat data orders.');
+    });
