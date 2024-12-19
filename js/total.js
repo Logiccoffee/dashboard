@@ -48,6 +48,9 @@ function displayOrders(orders) {
     // Hapus data lama jika ada
     container.innerHTML = '';
 
+    // Variabel untuk menyimpan total keuangan
+    let totalKeuangan = 0;
+
     // Tampilkan data pesanan
     orders.forEach((order) => {
         const row = document.createElement('tr');
@@ -60,26 +63,24 @@ function displayOrders(orders) {
         // Kolom Metode Pembayaran
         const paymentMethodCell = document.createElement('td');
         paymentMethodCell.textContent = order.paymentMethod || order.payment_method || '-';
-        // paymentMethodCell.textContent = order.payment_method || '-'; // Menampilkan metode pembayaran
         row.appendChild(paymentMethodCell);
 
         // Kolom Total
         const totalPriceCell = document.createElement('td');
-
-        // Bersihkan nilai total dari "Rp" atau format lain sebelumnya
         let total = typeof order.total === 'string'
             ? parseInt(order.total.replace(/[^0-9]/g, ''))
             : order.total || 0;
-
         // Format angka dengan pemisah ribuan
         let formattedTotal = total.toLocaleString('id-ID', { minimumFractionDigits: 0 });
-
         // Tambahkan "Rp" hanya sekali
         totalPriceCell.textContent = total > 0
             ? `Rp ${formattedTotal}`
             : '-';
 
         row.appendChild(totalPriceCell);
+
+         // Menambahkan total keuangan
+         totalKeuangan += total;
 
 
         // let total = order.total ? order.total : 0; // Jika order.total tidak ada, set ke 0
@@ -97,12 +98,8 @@ function displayOrders(orders) {
 
         container.appendChild(row);
     });
-}
 
-// Fungsi untuk mendapatkan nilai cookie berdasarkan nama
-// function getCookie(name) {
-//     const value = `; ${document.cookie}`;
-//     const parts = value.split(`; ${name}=`);
-//     if (parts.length === 2) return parts.pop().split(';').shift();
-//     return null;
-// }
+// Format total keuangan dan masukkan ke dalam elemen
+const totalKeuanganFormatted = totalKeuangan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
+document.getElementById('totalKeuangan').textContent = `Rp ${totalKeuanganFormatted}`;
+}
