@@ -99,6 +99,10 @@ function displayMenus(response) {
                     <button class="btn btn-edit" style="background-color: yellow; color: black; border: none; display: flex; align-items: center;" data-id="${item.id}">
                         <i class="fa fa-edit" style="margin-right: 8px;"></i> Edit
                     </button>
+                    <!-- Tombol Hapus -->
+                    <button class="btn btn-delete" style="background-color: red; color: white; border: none; display: flex; align-items: center;" data-id="${item.id}" data-bs-toggle="modal" data-bs-target="#deleteProductModal">
+                    <i class="fa fa-trash" style="margin-right: 8px;"></i> Hapus
+                    </button>
                 </div>
             </div>
         `;
@@ -111,6 +115,15 @@ function displayMenus(response) {
         button.addEventListener('click', function () {
             const menuId = button.getAttribute('data-id'); // Ambil ID menu
             openEditMenuPopup(menuId);
+        });
+    });
+
+    const deleteButtons = document.querySelectorAll('.btn-delete');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const menuId = button.getAttribute('data-id'); // Ambil ID menu
+            const confirmDeleteButton = document.getElementById('confirm-delete');
+            confirmDeleteButton.setAttribute('data-id', menuId); // Simpan ID ke tombol konfirmasi
         });
     });
 }
@@ -566,6 +579,45 @@ function updateMenuInList(updatedMenu) {
         displayMenus({ data: { data: menus } }); // Update tampilan daftar menu
     }
 }
+
+document.getElementById('confirm-delete').addEventListener('click', function () {
+    const menuId = this.getAttribute('data-id'); // Ambil ID menu dari tombol
+    if (!menuId) return;
+
+    // Kirim permintaan DELETE ke API
+    fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, {
+        method: 'DELETE', // Menggunakan metode DELETE
+        headers: {
+            'Login': token // Pastikan token ada dalam headers
+        }
+    })
+        .then(async (response) => {
+            if (!response.ok) {
+                console.error(`Gagal menghapus menu: ${response.status}`);
+                alert('Gagal menghapus menu. Silakan coba lagi.');
+                return;
+            }
+
+            // Tutup modal
+            const modal = document.getElementById('deleteProductModal');
+            const bootstrapModal = bootstrap.Modal.getInstance(modal);
+            if (bootstrapModal) {
+                bootstrapModal.hide();
+            }
+
+            // Hapus menu dari daftar
+            const cardToDelete = document.querySelector(`.card[data-id="${menuId}"]`);
+            if (cardToDelete) {
+                cardToDelete.parentElement.remove(); // Hapus card dari DOM
+            }
+
+            alert('Menu berhasil dihapus!');
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menghapus menu.');
+        });
+});
 
 // Fungsi untuk menyimpan perubahan menu
 function saveMenuEdits(event) {
