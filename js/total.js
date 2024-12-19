@@ -113,3 +113,55 @@ function displayOrders(orders) {
     const totalKeuanganFormatted = totalKeuangan.toLocaleString('id-ID', { minimumFractionDigits: 0 });
     document.getElementById('totalKeuangan').textContent = `Rp ${totalKeuanganFormatted}`;
 }
+
+//Fungsi button cetak
+document.getElementById('cetakButton').addEventListener('click', function () {
+    // Ambil seluruh konten yang ingin dicetak (total keuangan dan tabel laporan keuangan)
+    const contentToPrint = document.querySelector('.content').innerHTML;
+
+    // Buat jendela baru untuk cetak
+    const printWindow = window.open('', '', 'width=800,height=600');
+
+    // Tulis HTML ke dalam jendela cetak
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Cetak Laporan Keuangan</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 20px;
+                    }
+                    .table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                    .table th, .table td {
+                        padding: 8px;
+                        border: 1px solid #ddd;
+                        text-align: left;
+                    }
+                    .table-dark {
+                        background-color: #343a40;
+                        color: #fff;
+                    }
+                    #totalKeuanganBox {
+                        background-color: #f0f0f0;
+                        padding: 10px;
+                        margin-bottom: 20px;
+                    }
+                    .box-content p {
+                        margin: 0;
+                    }
+                </style>
+            </head>
+            <body>
+                ${contentToPrint} <!-- Konten yang ingin dicetak -->
+            </body>
+        </html>
+    `);
+
+    // Setelah menulis ke dokumen, cetak
+    printWindow.document.close(); // Menutup dokumen
+    printWindow.print();  // Menampilkan dialog cetak
+});
