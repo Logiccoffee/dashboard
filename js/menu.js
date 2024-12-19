@@ -409,14 +409,17 @@ function openEditMenuPopup(menuId) {
     modal.show();
 }
 
-// Fungsi untuk mengonversi harga dari format "Rp 20.000,00" menjadi angka tanpa desimal
 function parsePrice(priceString) {
     if (!priceString) return '';
-    console.log("Input harga:", priceString); // Debug awal
-    let cleanedPrice = priceString.replace(/Rp|\s|,/g, ''); // Hapus "Rp", spasi, dan koma
-    cleanedPrice = cleanedPrice.replace(/\./g, ''); // Hapus titik
-    cleanedPrice = cleanedPrice.split(',')[0]; // Ambil bagian sebelum koma
-    console.log("Harga setelah parse:", cleanedPrice); // Debug hasil
+    console.log("Harga asli (input):", priceString); // Log input asli
+
+    // Hapus simbol "Rp", spasi, dan koma desimal
+    let cleanedPrice = priceString.replace(/Rp\.|\s|,/g, '');
+    // Hapus tanda titik pemisah ribuan
+    cleanedPrice = cleanedPrice.replace(/\./g, '');
+    // Ambil bagian sebelum koma desimal (jika ada)
+    cleanedPrice = cleanedPrice.split(',')[0];
+    console.log("Harga setelah parsing:", cleanedPrice); // Log hasil parsing
     return parseInt(cleanedPrice, 10) || ''; // Konversi ke angka
 }
 
