@@ -460,7 +460,7 @@ function editMenu(event, menuId) {
     const menuCategory = document.getElementById('edit-product-category').value.trim();
     const menuPrice = document.getElementById('edit-product-price').value.trim();
     const menuDescription = document.getElementById('edit-product-description').value.trim();
-    const menuStatus = document.getElementById('edit-product-status').value.trim();
+    const menuStatus = document.getElementById('edit-product-status').value.trim().toLowerCase();
     const menuImageInput = document.getElementById('edit-product-image');
     const menuImageUrl = document.getElementById('edit-product-image-url').value.trim();
 
@@ -472,7 +472,8 @@ function editMenu(event, menuId) {
 
     // Validasi status
     const statuses = ['tersedia', 'tidak tersedia', 'habis'];
-    if (!statuses.includes(menuStatus.toLowerCase())) {
+    if (!statuses.includes(menuStatus)) {
+        console.log("Status yang dimasukkan:", menuStatus);
         alert("Status tidak valid! Gunakan 'tersedia', 'tidak tersedia', atau 'habis'.");
         return;
     }
@@ -510,6 +511,8 @@ function editMenu(event, menuId) {
     } else {
         formData.append('image', menuImageUrl);
     }
+
+    console.log('Form Data yang dikirim:', [...formData.entries()]); // Debugging log
 
     // Kirim data ke API untuk update menu
     fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, {
