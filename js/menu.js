@@ -118,6 +118,7 @@ function displayMenus(response) {
         });
     });
 
+    // Tombol hapus pada setiap menu card
     const deleteButtons = document.querySelectorAll('.btn-delete');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function () {
@@ -605,10 +606,10 @@ document.getElementById('confirm-delete').addEventListener('click', function () 
                 bootstrapModal.hide();
             }
 
-            // Hapus menu dari daftar
+            // Hapus card menu dari DOM tanpa refresh halaman
             const cardToDelete = document.querySelector(`.card[data-id="${menuId}"]`);
             if (cardToDelete) {
-                cardToDelete.parentElement.remove(); // Hapus card dari DOM
+                cardToDelete.parentElement.remove(); // Hapus card dari parent container
             }
 
             alert('Menu berhasil dihapus!');
