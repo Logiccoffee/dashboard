@@ -374,6 +374,10 @@ function openEditMenuPopup(menuId) {
 
     const modal = new bootstrap.Modal(modalElement);
 
+    // Pastikan opsi kategori dan status terisi
+    populateDropdown('edit-product-category', categories); // Isi dropdown kategori
+    populateDropdown('edit-product-status', ['Tersedia', 'Tidak Tersedia', 'Habis']); // Isi dropdown status
+
     // Tambahkan event listener untuk mengisi form saat modal terbuka sepenuhnya
     modalElement.addEventListener('shown.bs.modal', function onModalShown() {
         console.log("Modal edit sudah sepenuhnya terbuka, mengisi form...");
@@ -400,6 +404,21 @@ function parsePrice(priceString) {
     if (!priceString) return '';
     // Hapus simbol mata uang, titik, dan koma
     return parseFloat(priceString.replace(/[^0-9]/g, ''));
+}
+
+// Fungsi untuk mengisi dropdown
+function populateDropdown(dropdownId, options) {
+    const dropdown = document.getElementById(dropdownId);
+    if (!dropdown) return;
+
+    dropdown.innerHTML = options
+        .map(option => {
+            if (typeof option === 'object') {
+                return `<option value="${option.id}">${option.name}</option>`;
+            }
+            return `<option value="${option}">${option}</option>`;
+        })
+        .join('');
 }
 
 // Fungsi untuk mengedit menu
