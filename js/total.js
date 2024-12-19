@@ -76,12 +76,16 @@ function displayOrders(orders) {
         // Debug: Cek nilai yang diterima
         console.log("Nilai total yang diterima:", order.total);  // Memastikan format data yang diterima
 
-        // Menampilkan total harga dengan format "Rp" jika lebih besar dari 0
+        // Format angka dengan dua angka desimal (Rp xx.xxx,xx)
+        let formattedTotal = total.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        // Menampilkan total dalam format Rp xx.xxx,xx
         totalPriceCell.textContent = total > 0
-            ? `Rp ${total.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            ? `Rp ${formattedTotal}`  // Format angka dengan dua angka desimal
             : '-';
 
         row.appendChild(totalPriceCell);
+
 
 
 
