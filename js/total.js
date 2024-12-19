@@ -70,13 +70,12 @@ function displayOrders(orders) {
         let total = typeof order.total === 'string'
             ? parseInt(order.total.replace(/[^0-9]/g, ''))
             : order.total || 0;
-        // Format angka dengan pemisah ribuan
+        // Format angka dengan pemisah ribuan, tanpa desimal
         let formattedTotal = total.toLocaleString('id-ID', { minimumFractionDigits: 0 });
         // Tambahkan "Rp" hanya sekali
         totalPriceCell.textContent = total > 0
             ? `Rp ${formattedTotal}`
             : '-';
-
         row.appendChild(totalPriceCell);
 
          // Menambahkan total keuangan
