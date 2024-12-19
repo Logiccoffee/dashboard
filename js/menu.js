@@ -537,6 +537,9 @@ function editMenu(event, menuId) {
     });
 }
 
+// Event listener untuk form submit
+document.getElementById('editProductForm').addEventListener('submit', (event) => editMenu(event, menuId));
+
 // Fungsi untuk memperbarui menu di tampilan
 function updateMenuInList(updatedMenu) {
     const menuIndex = menus.findIndex(item => item.id === updatedMenu.id);
