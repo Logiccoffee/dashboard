@@ -443,12 +443,7 @@ function editMenu(event, menuId) {
     const menuImageInput = document.getElementById('edit-product-image');
 
     const menuImageUrlInput = document.getElementById('edit-product-image-url');
-    if (menuImageUrlInput) {
-        const imageUrl = menuImageUrlInput.value.trim(); // Ambil URL gambar
-        console.log("URL Gambar:", imageUrl); // Debugging
-    } else {
-        console.error("Input gambar URL tidak ditemukan!");
-    }
+    const imageUrl = menuImageUrlInput ? menuImageUrlInput.value.trim() : null;
 
     // Validasi input
     if (!menuName || !menuCategory || !menuPrice || !menuStatus) {
@@ -489,9 +484,11 @@ function editMenu(event, menuId) {
     formData.append('description', menuDescription);
     formData.append('status', menuStatus);
 
-    // Jika gambar baru dipilih, masukkan gambar ke formData
-    if (menuImageInput.files.length > 0) {
-        formData.append('menuImage', menuImage);
+    // Gambar baru atau gambar lama
+    if (menuImageInput && menuImageInput.files.length > 0) {
+        formData.append('menuImage', menuImageInput.files[0]);
+    } else if (imageUrl) {
+        formData.append('image_url', imageUrl); // Gunakan URL gambar lama
     }
 
     // Kirim data ke API untuk update menu
