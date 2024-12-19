@@ -389,14 +389,16 @@ function openEditMenuPopup(menuId) {
         document.getElementById('edit-product-price').value = parsePrice(menu.price);
         document.getElementById('edit-product-description').value = menu.description;
         document.getElementById('edit-product-status').value = menu.status;
-        // Mengupdate gambar lama dan menampilkannya di preview
-        const imageUrl = menu.image; // Gambar yang diterima dari server
-        const imagePreviewElement = document.getElementById('edit-product-image-preview');
+        // Menampilkan URL gambar di input teks
+        const imageUrl = menu.image; // URL gambar dari data
+        const imageUrlInput = document.getElementById('edit-product-image-url');
         if (imageUrl) {
-            imagePreviewElement.src = imageUrl; // Menampilkan gambar di preview
+            imageUrlInput.value = imageUrl; // Tampilkan URL gambar
+        } else {
+            imageUrlInput.value = ''; // Kosongkan jika tidak ada gambar
         }
 
-        // Menyimpan gambar lama sebagai data-old-image (untuk referensi jika tidak diganti)
+        // Menyimpan gambar lama sebagai data-old-image
         document.getElementById('edit-product-image').setAttribute('data-old-image', imageUrl);
 
         // Pastikan event listener ini hanya berjalan sekali
