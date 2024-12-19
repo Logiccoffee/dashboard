@@ -11,14 +11,17 @@ getJSON(
 
 // Fungsi untuk menampilkan data pesanan di tabel
 function displayOrders(orders) {
-    const container = document.querySelector('.table tbody');  // Pilih tbody dalam tabel
+  // Pastikan orders.data adalah array
+  const data = Array.isArray(orders.data) ? orders.data : [];
+  console.log(data); // Debug untuk memastikan data adalah array
 
-    // Pastikan elemen container ditemukan
-    if (!container) {
-        console.error("Elemen dengan class 'table' tidak ditemukan.");
-        return;
-    }
+  const container = document.querySelector('.table tbody');
 
+  if (!container) {
+      console.error("Elemen dengan class 'table' tidak ditemukan.");
+      return;
+  }
+  
     // Hapus data lama jika ada
     container.innerHTML = '';
 
