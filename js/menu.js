@@ -501,7 +501,7 @@ function editMenu(event, menuId) {
     const formData = new FormData();
     formData.append('name', menuName);
     formData.append('category_id', menuCategory);
-    formData.append('price', price);
+    formData.append('price', parseFloat(price));
     formData.append('description', menuDescription);
     formData.append('status', menuStatus);
 
@@ -519,18 +519,19 @@ function editMenu(event, menuId) {
         },
         body: formData
     })
-        .then(async (response) => {
-            const responseBody = await response.json();
-            if (!response.ok) {
-                throw new Error(`Gagal: ${response.status} - ${responseBody.message}`);
-            }
-            alert('Menu berhasil diperbarui!');
-            updateMenuInList(responseBody); // Perbarui data di UI
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert(error.message || 'Terjadi kesalahan.');
-        });
+    .then(async (response) => {
+        const responseBody = await response.json();
+        console.log('Respons dari server:', responseBody); // Tambahkan ini
+        if (!response.ok) {
+            throw new Error(`Gagal: ${response.status} - ${responseBody.message}`);
+        }
+        alert('Menu berhasil diperbarui!');
+        updateMenuInList(responseBody); // Perbarui data di UI
+    })
+    .catch((error) => {
+        console.error('Error:', error); // Tambahkan log error untuk debugging
+        alert(error.message || 'Terjadi kesalahan.');
+    });
 }
 
 // Fungsi untuk memperbarui menu di tampilan
