@@ -232,10 +232,13 @@ document.addEventListener('DOMContentLoaded', function () {
         addProductForm.addEventListener('submit', addMenu);
     }
 
-    // Menambahkan event listener untuk form submit
+    // Tambahkan event listener untuk form edit (hanya sekali)
     const editProductForm = document.getElementById('editProductForm');
     if (editProductForm) {
-        editProductForm.addEventListener('submit', editMenu);
+        editProductForm.addEventListener('submit', function (event) {
+            const menuId = document.getElementById('edit-product-id').value; // Ambil ID menu
+            editMenu(event, menuId); // Panggil fungsi edit menu
+        });
     }
 });
 
@@ -363,44 +366,33 @@ function openEditMenuPopup(menuId) {
     // Log data menu untuk memastikan menu ditemukan
     console.log("Data menu:", menu);
 
-    // Isi data menu ke dalam form modal edit
-    const modal = document.getElementById('editProductModal');
-    if (!modal) {
+    const modalElement = document.getElementById('editProductModal');
+    if (!modalElement) {
         console.error("Modal edit tidak ditemukan.");
         return;
     }
 
-    // Memanggil fungsi untuk menampilkan kategori dan status setelah modal terbuka
-    displayCategories(categories);
-    displayStatuses();
+    const modal = new bootstrap.Modal(modalElement);
 
-    console.log("Elemen kategori:", document.getElementById('edit-product-category'));
-    console.log("Elemen harga:", document.getElementById('edit-product-price'));
-    console.log("Elemen status:", document.getElementById('edit-product-status'));
+    // Tambahkan event listener untuk mengisi form saat modal terbuka sepenuhnya
+    modalElement.addEventListener('shown.bs.modal', function onModalShown() {
+        console.log("Modal edit sudah sepenuhnya terbuka, mengisi form...");
 
-    // Mengisi data menu ke dalam form edit
-    document.getElementById('edit-product-id').value = menu.id || ''; // ID
-    document.getElementById('edit-product-name').value = menu.name;
-    document.getElementById('edit-product-category').value = menu.category_id;
-    document.getElementById('edit-product-price').value = menu.price;
-    document.getElementById('edit-product-description').value = menu.description;
-    document.getElementById('edit-product-status').value = menu.status;
-    document.getElementById('edit-product-image').setAttribute('data-old-image', menu.image); // Menyimpan gambar lama
+        // Mengisi data menu ke dalam form edit
+        document.getElementById('edit-product-id').value = menu.id || ''; // ID
+        document.getElementById('edit-product-name').value = menu.name;
+        document.getElementById('edit-product-category').value = menu.category_id;
+        document.getElementById('edit-product-price').value = menu.price;
+        document.getElementById('edit-product-description').value = menu.description;
+        document.getElementById('edit-product-status').value = menu.status;
+        document.getElementById('edit-product-image').setAttribute('data-old-image', menu.image); // Menyimpan gambar lama
 
-    // Tampilkan popup form untuk mengedit
-    document.getElementById('editProductModal').classList.add('show');
+        // Pastikan event listener ini hanya berjalan sekali
+        modalElement.removeEventListener('shown.bs.modal', onModalShown);
+    });
 
-    // Tampilkan popup
-    const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
-    editModal.show();
-
-    // Tambahkan event listener untuk form edit
-    const editProductForm = document.getElementById('editProductForm');  // Pastikan ID form edit sesuai
-    if (editProductForm) {
-        editProductForm.addEventListener('submit', function (event) {
-            editMenu(event, menuId);  // Panggil fungsi untuk mengedit menu
-        });
-    }
+    //tampilkan modal
+    modal.show();
 }
 
 // Fungsi untuk mengedit menu
