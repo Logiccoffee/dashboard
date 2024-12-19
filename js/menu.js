@@ -389,7 +389,15 @@ function openEditMenuPopup(menuId) {
         document.getElementById('edit-product-price').value = parsePrice(menu.price);
         document.getElementById('edit-product-description').value = menu.description;
         document.getElementById('edit-product-status').value = menu.status;
-        document.getElementById('edit-product-image').setAttribute('data-old-image', menu.image); // Menyimpan gambar lama
+        // Mengupdate gambar lama dan menampilkannya di preview
+        const imageUrl = menu.image; // Gambar yang diterima dari server
+        const imagePreviewElement = document.getElementById('edit-product-image-preview');
+        if (imageUrl) {
+            imagePreviewElement.src = imageUrl; // Menampilkan gambar di preview
+        }
+
+        // Menyimpan gambar lama sebagai data-old-image (untuk referensi jika tidak diganti)
+        document.getElementById('edit-product-image').setAttribute('data-old-image', imageUrl);
 
         // Pastikan event listener ini hanya berjalan sekali
         modalElement.removeEventListener('shown.bs.modal', onModalShown);
