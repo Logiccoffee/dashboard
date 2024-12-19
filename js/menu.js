@@ -456,14 +456,14 @@ function editMenu(event, menuId) {
         return;
     }
 
-    if (!statuses.includes(menuStatus)) {
-        alert('Status tidak valid!');
+    const menuImage = menuImageInput.files[0];
+    if (menuImage && !['image/jpeg', 'image/png', 'image/gif'].includes(menuImage.type)) {
+        alert('Format gambar tidak didukung. Gunakan JPG, PNG, atau GIF.');
         return;
     }
 
-    const menuImage = menuImageInput.files[0];
-    if (!['image/jpeg', 'image/png', 'image/gif'].includes(menuImage.type)) {
-        alert('Format gambar tidak didukung. Gunakan JPG, PNG, atau GIF.');
+    if (!menuImageInput.files.length && !menuImageUrl) {
+        alert('Harap unggah gambar baru atau gunakan URL gambar lama.');
         return;
     }
 
@@ -484,13 +484,10 @@ function editMenu(event, menuId) {
     formData.append('description', menuDescription);
     formData.append('status', menuStatus);
 
-    if (menuImageInput.files.length > 0) {
-        formData.append('menuImage', menuImageInput.files[0]);
-    } else if (menuImageUrl) {
-        formData.append('image', menuImageUrl);
+    if (menuImage) {
+        formData.append('menuImage', menuImage);
     } else {
-        alert('Harap unggah gambar baru atau gunakan URL gambar lama.');
-        return;
+        formData.append('image', menuImageUrl);
     }
 
     // Kirim data ke API untuk update menu
@@ -501,18 +498,18 @@ function editMenu(event, menuId) {
         },
         body: formData
     })
-    .then(async (response) => {
-        const responseBody = await response.json();
-        if (!response.ok) {
-            throw new Error(`Gagal: ${response.status} - ${responseBody.message}`);
-        }
-        alert('Menu berhasil diperbarui!');
-        updateMenuInList(responseBody); // Perbarui data di UI
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert(error.message || 'Terjadi kesalahan.');
-    });
+        .then(async (response) => {
+            const responseBody = await response.json();
+            if (!response.ok) {
+                throw new Error(`Gagal: ${response.status} - ${responseBody.message}`);
+            }
+            alert('Menu berhasil diperbarui!');
+            updateMenuInList(responseBody); // Perbarui data di UI
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert(error.message || 'Terjadi kesalahan.');
+        });
 }
 
 // Fungsi untuk memperbarui menu di tampilan
