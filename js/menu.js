@@ -449,7 +449,7 @@ function editMenu(event, menuId) {
     }
 
     // Validasi status
-    const statuses = ['Tersedia', 'Tidak Tersedia', 'Habis'];
+    const statuses = ['tersedia', 'tidak tersedia', 'habis'];
     if (!statuses.includes(menuStatus.toLowerCase())) {
         alert("Status tidak valid! Gunakan 'tersedia', 'tidak tersedia', atau 'habis'.");
         return;
