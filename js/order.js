@@ -1,4 +1,3 @@
-import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
 // URL API
@@ -88,14 +87,55 @@ function displayOrders(orders) {
         // Kolom Aksi
         const actionCell = document.createElement('td');
         const statusButton = document.createElement('button');
-        statusButton.className = 'btn btn-warning btn-sm';
-        statusButton.innerHTML = '<i class="fas fa-edit"></i> Status';
-        statusButton.addEventListener('click', () => {
-            // Logika dropdown status
+        statusButton.className = 'btn btn-warning btn-sm dropdown-toggle';
+        statusButton.innerHTML = '<i class="fas fa-edit"></i> Ubah Status';
+        statusButton.setAttribute('data-bs-toggle', 'dropdown');
+        const dropdownMenu = document.createElement('ul');
+        dropdownMenu.className = 'dropdown-menu';
+
+        // Tambahkan opsi status ke dropdown
+        const statuses = ['Pending', 'Processing', 'Completed', 'Cancelled'];
+        statuses.forEach(status => {
+            const dropdownItem = document.createElement('li');
+            const dropdownLink = document.createElement('a');
+            dropdownLink.className = 'dropdown-item';
+            dropdownLink.textContent = status;
+            dropdownLink.addEventListener('click', () => updateOrderStatus(order.orderNumber, status));
+            dropdownItem.appendChild(dropdownLink);
+            dropdownMenu.appendChild(dropdownItem);
         });
+
         actionCell.appendChild(statusButton);
+        actionCell.appendChild(dropdownMenu);
         row.appendChild(actionCell);
 
         container.appendChild(row);
     });
+}
+
+// Fungsi untuk memperbarui status pesanan
+function updateOrderStatus(orderNumber, newStatus) {
+    const updateUrl = `${API_URL}/${orderNumber}/status`; // Endpoint untuk update status
+    fetch(updateUrl, {
+        method: 'PUT',
+        headers: {
+            'login': token,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+    })
+        .then(response => response.json())
+        .then(response => {
+            if (response.status === "success") {
+                alert(`Status pesanan ${orderNumber} berhasil diubah menjadi ${newStatus}.`);
+                location.reload(); // Muat ulang halaman untuk memperbarui data
+            } else {
+                console.error(`Error: ${response.status}`);
+                alert("Gagal memperbarui status. Silakan coba lagi.");
+            }
+        })
+        .catch(error => {
+            console.error("Error updating status: ", error);
+            alert("Terjadi kesalahan saat memperbarui status pesanan.");
+        });
 }
