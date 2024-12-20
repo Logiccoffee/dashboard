@@ -532,9 +532,7 @@ function editMenu(event, menuId) {
     fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, {
         method: 'PUT', // Menggunakan PUT untuk update data
         headers: {
-            'Login': token,
-            'Cache-Control': 'no-cache', // Tambahkan header ini untuk memastikan tidak ada cache
-            'Pragma': 'no-cache', // Tambahkan header ini untuk memastikan tidak ada cache
+            'Login': token
         },
         body: formData
     })
@@ -561,6 +559,9 @@ function editMenu(event, menuId) {
                 updateMenuInList(updatedMenu); // Perbarui menu di UI
             }
             alert('Menu berhasil diperbarui!');
+
+            // Refresh halaman setelah penghapusan berhasil
+            location.reload();
         })
         .catch((error) => {
             console.error('Error:', error);
