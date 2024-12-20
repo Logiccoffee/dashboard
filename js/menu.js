@@ -609,7 +609,7 @@ document.getElementById('confirm-delete').addEventListener('click', function () 
             // Hapus card menu dari DOM tanpa refresh halaman
             const cardToDelete = document.querySelector(`.card[data-id="${menuId}"]`);
             if (cardToDelete) {
-                cardToDelete.parentElement.remove(); // Hapus card dari parent container
+                cardToDelete.remove(); // Hapus card dari parent container
             }
 
             alert('Menu berhasil dihapus!');
