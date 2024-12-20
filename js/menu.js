@@ -559,6 +559,8 @@ function editMenu(event, menuId) {
                 updateMenuInList(updatedMenu); // Perbarui menu di UI
             }
             alert('Menu berhasil diperbarui!');
+
+            loadMenus()
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -615,10 +617,9 @@ document.getElementById('confirm-delete').addEventListener('click', function () 
                 bootstrapModal.hide(); // Pastikan modal ditutup setelah penghapusan
             }
 
-            // Cek kembali jumlah kartu yang tersisa setelah penghapusan
-            const remainingCards = document.querySelectorAll('.card');
-            console.log("Jumlah kartu yang tersisa:", remainingCards.length); // Debugging: jumlah kartu tersisa
-            alert('Menu berhasil dihapus!');
+            // Refresh halaman setelah penghapusan berhasil
+            location.reload();
+
         })
         .catch((error) => {
             console.error('Error:', error);
