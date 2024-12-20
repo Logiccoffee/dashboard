@@ -601,24 +601,23 @@ document.getElementById('confirm-delete').addEventListener('click', function () 
                 return;
             }
 
+            // Hapus card menu dari DOM tanpa refresh halaman
+            const cardToDelete = document.querySelector(`.card[data-id="${menuId}"]`);
+            if (cardToDelete) {
+                console.log("Card ditemukan, menghapus dari DOM...");
+                cardToDelete.remove(); // Hapus card dari parent container
+            }
+
             // Tutup modal setelah penghapusan
             const modal = document.getElementById('deleteProductModal');
             const bootstrapModal = bootstrap.Modal.getInstance(modal);
             if (bootstrapModal) {
-                bootstrapModal.hide();
+                bootstrapModal.hide(); // Pastikan modal ditutup setelah penghapusan
             }
 
-            // Hapus card menu dari DOM tanpa refresh halaman
-            const cardToDelete = document.querySelector(`.card[data-id="${menuId}"]`);
-            if (cardToDelete) {
-                console.log("Card ditemukan, menghapus dari DOM..."); // Debugging: memastikan card ditemukan
-                cardToDelete.remove(); // Hapus card dari parent container
-            }
-
-            // Tambahkan log untuk memastikan kartu telah dihapus
+            // Cek kembali jumlah kartu yang tersisa setelah penghapusan
             const remainingCards = document.querySelectorAll('.card');
             console.log("Jumlah kartu yang tersisa:", remainingCards.length); // Debugging: jumlah kartu tersisa
-
             alert('Menu berhasil dihapus!');
         })
         .catch((error) => {
