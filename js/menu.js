@@ -585,6 +585,8 @@ document.getElementById('confirm-delete').addEventListener('click', function () 
     const menuId = this.getAttribute('data-id'); // Ambil ID menu dari tombol
     if (!menuId) return;
 
+    console.log("Menghapus menu dengan ID:", menuId); // Debugging: cek ID yang dihapus
+
     // Kirim permintaan DELETE ke API
     fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/menu/${menuId}`, {
         method: 'DELETE', // Menggunakan metode DELETE
@@ -609,6 +611,7 @@ document.getElementById('confirm-delete').addEventListener('click', function () 
             // Hapus card menu dari DOM tanpa refresh halaman
             const cardToDelete = document.querySelector(`.card[data-id="${menuId}"]`);
             if (cardToDelete) {
+                console.log("Card ditemukan, menghapus dari DOM..."); // Debugging: memastikan card ditemukan
                 cardToDelete.remove(); // Hapus card dari parent container
             }
 
