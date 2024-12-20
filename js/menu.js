@@ -122,7 +122,7 @@ function displayMenus(response) {
     const deleteButtons = document.querySelectorAll('.btn-delete');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function () {
-            const menuId = button.getAttribute('data-id'); // Ambil ID menu
+            const menuId = button.getAttribute('data-id');
             const confirmDeleteButton = document.getElementById('confirm-delete');
             confirmDeleteButton.setAttribute('data-id', menuId); // Simpan ID ke tombol konfirmasi
         });
