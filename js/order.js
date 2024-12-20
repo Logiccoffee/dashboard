@@ -1,3 +1,4 @@
+import { getJSON } from "https://cdn.jsdelivr.net/gh/jscroot/api@0.0.7/croot.js";
 import { getCookie } from "https://cdn.jsdelivr.net/gh/jscroot/cookie@0.0.1/croot.js";
 
 // URL API
@@ -20,9 +21,8 @@ fetch(API_URL, {
 })
     .then(response => response.json()) // Parse JSON dari respons
     .then(response => {
-        // Periksa status 'success' pada response
         if (response.status === "success") {
-            const orders = response.data || []; // Pastikan data diakses dengan benar
+            const orders = response.data || [];
             displayOrders(orders); // Tampilkan data pesanan
         } else {
             console.error(`Error: ${response.status}`);
@@ -37,17 +37,13 @@ fetch(API_URL, {
 // Fungsi untuk menampilkan data pesanan di tabel
 function displayOrders(orders) {
     const container = document.getElementById('transaction-list');
-
-    // Pastikan elemen container ditemukan
     if (!container) {
         console.error("Elemen dengan ID 'transaction-list' tidak ditemukan.");
         return;
     }
 
-    // Hapus data lama jika ada
-    container.innerHTML = '';
+    container.innerHTML = ''; // Bersihkan kontainer sebelum render
 
-    // Tampilkan data pesanan
     orders.forEach((order) => {
         const row = document.createElement('tr');
 
@@ -62,7 +58,7 @@ function displayOrders(orders) {
         `;
         row.appendChild(customerInfoCell);
 
-        // Kolom Produk
+        // Kolom Produk (Nama Produk, Jumlah, dan Harga Satuan)
         const productInfoCell = document.createElement('td');
         if (order.orders && order.orders.length > 0) {
             productInfoCell.innerHTML = order.orders.map(item => {
@@ -75,8 +71,8 @@ function displayOrders(orders) {
 
         // Kolom Harga Total
         const totalPriceCell = document.createElement('td');
-        const total = order.total || 0;
-        totalPriceCell.textContent = total !== 0 ? total.toLocaleString('id-ID') : '-';
+        const total = order.total ? order.total : 0;
+        totalPriceCell.textContent = total !== 0 ? `Rp ${total.toLocaleString('id-ID')}` : '-';
         row.appendChild(totalPriceCell);
 
         // Kolom Metode Pembayaran & Status
@@ -86,56 +82,65 @@ function displayOrders(orders) {
 
         // Kolom Aksi
         const actionCell = document.createElement('td');
-        const statusButton = document.createElement('button');
-        statusButton.className = 'btn btn-warning btn-sm dropdown-toggle';
-        statusButton.innerHTML = '<i class="fas fa-edit"></i> Ubah Status';
-        statusButton.setAttribute('data-bs-toggle', 'dropdown');
-        const dropdownMenu = document.createElement('ul');
-        dropdownMenu.className = 'dropdown-menu';
 
-        // Tambahkan opsi status ke dropdown
-        const statuses = ['Pending', 'Processing', 'Completed', 'Cancelled'];
-        statuses.forEach(status => {
-            const dropdownItem = document.createElement('li');
-            const dropdownLink = document.createElement('a');
-            dropdownLink.className = 'dropdown-item';
-            dropdownLink.textContent = status;
-            dropdownLink.addEventListener('click', () => updateOrderStatus(order.orderNumber, status));
-            dropdownItem.appendChild(dropdownLink);
-            dropdownMenu.appendChild(dropdownItem);
+        // Tombol Status (dengan dropdown)
+        const statusButton = document.createElement('button');
+        statusButton.className = 'btn btn-warning btn-sm';
+        statusButton.innerHTML = '<i class="fas fa-edit"></i> Status';
+        statusButton.addEventListener('click', () => {
+            const statusDropdown = document.createElement('select');
+            statusDropdown.className = 'form-control form-control-sm';
+            const statusOptions = ['diproses', 'terkirim', 'selesai', 'dibatalkan'];
+
+            statusOptions.forEach(status => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = status;
+                if (status === order.status) option.selected = true;
+                statusDropdown.appendChild(option);
+            });
+
+            statusButton.replaceWith(statusDropdown);
+
+            statusDropdown.addEventListener('change', () => {
+                const selectedStatus = statusDropdown.value;
+                if (selectedStatus === "dibatalkan" && order.status !== "terkirim") {
+                    alert(`Pesanan tidak dapat dibatalkan karena status saat ini adalah: ${order.status}`);
+                    statusDropdown.replaceWith(statusButton);
+                    return;
+                }
+
+                fetch(`https://asia-southeast2-awangga.cloudfunctions.net/logiccoffee/data/order/${order.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'login': token,
+                    },
+                    body: JSON.stringify({ status: selectedStatus }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            order.status = selectedStatus;
+                            paymentStatusCell.textContent = `${order.payment_method || '-'} - ${order.status}`;
+                            alert(`Status pesanan berhasil diubah menjadi: ${selectedStatus}`);
+                        } else {
+                            alert(`Gagal memperbarui status: ${data.message}`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error updating status:", error);
+                        alert("Terjadi kesalahan saat memperbarui status.");
+                    })
+                    .finally(() => {
+                        statusDropdown.replaceWith(statusButton);
+                    });
+            });
         });
 
         actionCell.appendChild(statusButton);
-        actionCell.appendChild(dropdownMenu);
         row.appendChild(actionCell);
 
         container.appendChild(row);
     });
-}
-
-// Fungsi untuk memperbarui status pesanan
-function updateOrderStatus(orderNumber, newStatus) {
-    const updateUrl = `${API_URL}/${orderNumber}/status`; // Endpoint untuk update status
-    fetch(updateUrl, {
-        method: 'PUT',
-        headers: {
-            'login': token,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status: newStatus }),
-    })
-        .then(response => response.json())
-        .then(response => {
-            if (response.status === "success") {
-                alert(`Status pesanan ${orderNumber} berhasil diubah menjadi ${newStatus}.`);
-                location.reload(); // Muat ulang halaman untuk memperbarui data
-            } else {
-                console.error(`Error: ${response.status}`);
-                alert("Gagal memperbarui status. Silakan coba lagi.");
-            }
-        })
-        .catch(error => {
-            console.error("Error updating status: ", error);
-            alert("Terjadi kesalahan saat memperbarui status pesanan.");
-        });
 }
