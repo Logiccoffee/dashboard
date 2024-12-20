@@ -601,7 +601,7 @@ document.getElementById('confirm-delete').addEventListener('click', function () 
                 return;
             }
 
-            // Tutup modal
+            // Tutup modal setelah penghapusan
             const modal = document.getElementById('deleteProductModal');
             const bootstrapModal = bootstrap.Modal.getInstance(modal);
             if (bootstrapModal) {
@@ -614,6 +614,10 @@ document.getElementById('confirm-delete').addEventListener('click', function () 
                 console.log("Card ditemukan, menghapus dari DOM..."); // Debugging: memastikan card ditemukan
                 cardToDelete.remove(); // Hapus card dari parent container
             }
+
+            // Tambahkan log untuk memastikan kartu telah dihapus
+            const remainingCards = document.querySelectorAll('.card');
+            console.log("Jumlah kartu yang tersisa:", remainingCards.length); // Debugging: jumlah kartu tersisa
 
             alert('Menu berhasil dihapus!');
         })
